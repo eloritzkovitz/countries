@@ -3,19 +3,24 @@ import { CountryFlag } from "./CountryFlag";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { useCountryData } from "../../context/CountryDataContext";
+import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Country } from "../../types/country";
 import { getLanguagesDisplay } from "../../utils/countryData";
 
 type CountryDetailsModalProps = {
   country: Country;
   onClose: () => void;
+  isOpen: boolean
 };
 
 export function CountryDetailsModal({
   country,
   onClose,
+  isOpen,
 }: CountryDetailsModalProps) {
   const { currencies, loading, error } = useCountryData();
+
+  useKeyHandler(() => onClose(), ["Escape"], isOpen);
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading..." />;

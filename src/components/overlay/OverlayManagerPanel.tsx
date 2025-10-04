@@ -4,14 +4,23 @@ import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { useCountryData } from "../../context/CountryDataContext";
 import { useOverlayContext } from "../../context/OverlayContext";
+import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Overlay } from "../../types/overlay";
 import { OverlayEditModal } from "./OverlayEditModal";
 
-export default function OverlayManagerPanel() {
+interface OverlayManagerPanelProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function OverlayManagerPanel({ isOpen, onClose }: OverlayManagerPanelProps) {
   const { countries, loading, error } = useCountryData();
   const { overlays, addOverlay, editOverlay, removeOverlay, toggleOverlayVisibility } = useOverlayContext();
   const [modalOverlay, setModalOverlay] = useState<Overlay | null>(null);
   const [isNew, setIsNew] = useState(false);
+
+  // Close modal on Escape key
+  useKeyHandler(() => onClose(), ["Escape"], isOpen);
 
   // Country options for react-select
   const countryOptions = countries.map((c) => ({

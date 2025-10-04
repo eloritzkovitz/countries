@@ -79,6 +79,7 @@ export default function CountryMapPage() {
         {modalCountry && (
           <CountryDetailsModal
             country={modalCountry}
+            isOpen={!!modalCountry}
             onClose={() => setModalCountry(null)}
           />
         )}
@@ -155,7 +156,7 @@ export default function CountryMapPage() {
           >
             ×
           </button>
-          <OverlayManagerPanel />
+          <OverlayManagerPanel isOpen={showOverlayManager} onClose={() => setShowOverlayManager(false)} />
         </div>
       )}
     </div>
