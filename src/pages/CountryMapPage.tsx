@@ -2,6 +2,8 @@ import { useState } from "react";
 import { FaLayerGroup } from "react-icons/fa";
 import { CountryDetailsModal } from "../components/CountryDetailsModal";
 import { CountrySidebarPanel } from "../components/CountrySidebarPanel";
+import { ErrorMessage } from "../components/common/ErrorMessage";
+import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { MapScale } from "../components/MapScale";
 import OverlayManagerPanel from "../components/OverlayManagerPanel";
 import { WorldMap } from "../components/WorldMap";
@@ -11,7 +13,7 @@ import type { Country } from "../types/country";
 
 export default function CountryMapPage() {
   // Map state
-  const { countries } = useCountryData();
+  const { countries, loading, error } = useCountryData();
   const { zoom, setZoom, center, setCenter, handleMoveEnd } = useMapView(
     1,
     [0, 20]
@@ -35,6 +37,10 @@ export default function CountryMapPage() {
   const handleCountryHover = (isoCode: string | null) => {
     setHoveredIsoCode(isoCode);
   };
+
+  // Show loading or error states
+  if (loading) return <LoadingSpinner message="Loading countries..." />;
+  if (error) return <ErrorMessage error={error} />;
 
   return (
     <div style={{ display: "flex", height: "100vh", background: "#f5f6fa" }}>

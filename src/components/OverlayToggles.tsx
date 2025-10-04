@@ -1,7 +1,13 @@
+import { LoadingSpinner } from "./common/LoadingSpinner";
+import { ErrorMessage } from "./common/ErrorMessage";
 import { useOverlayContext } from "../context/OverlayContext";
 
 export function OverlayToggles() {
-  const { overlays, toggleOverlayVisibility } = useOverlayContext();
+  const { overlays, toggleOverlayVisibility, loading, error } = useOverlayContext();
+
+  // Show loading or error states
+  if (loading) return <LoadingSpinner message="Loading overlays..." />;
+  if (error) return <ErrorMessage error={error} />;
 
   return (
     <div
@@ -15,11 +21,15 @@ export function OverlayToggles() {
     >
       <h2>Overlays</h2>
       {overlays.map((overlay) => (
-        <label key={overlay.id} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <label
+          key={overlay.id}
+          style={{ display: "flex", alignItems: "center", gap: 10 }}
+        >
           <input
             type="checkbox"
             checked={overlay.visible}
-            onChange={() => toggleOverlayVisibility(overlay.id)} />          
+            onChange={() => toggleOverlayVisibility(overlay.id)}
+          />
           <span
             style={{
               display: "inline-block",

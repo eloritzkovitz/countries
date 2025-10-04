@@ -1,5 +1,7 @@
 import ReactDOM from "react-dom";
 import { CountryFlag } from "./CountryFlag";
+import { LoadingSpinner } from "./common/LoadingSpinner";
+import { ErrorMessage } from "./common/ErrorMessage";
 import { useCountryData } from "../context/CountryDataContext";
 import type { Country } from "../types/country";
 import { getLanguagesDisplay } from "../utils/countryData";
@@ -13,8 +15,11 @@ export function CountryDetailsModal({
   country,
   onClose,
 }: CountryDetailsModalProps) {
-  const { currencies } = useCountryData();
+  const { currencies, loading, error } = useCountryData();
 
+  // Show loading or error states
+  if (loading) return <LoadingSpinner message="Loading..." />;
+  if (error) return <ErrorMessage error={error} />;
   if (!country) return null;
 
   return ReactDOM.createPortal(

@@ -14,12 +14,16 @@ type OverlayContextType = {
   editOverlay: (overlay: Overlay) => void;
   removeOverlay: (id: string) => void;
   toggleOverlayVisibility: (id: string) => void;
+  loading: boolean;
+  error: string | null;
 };
 
 const OverlayContext = createContext<OverlayContextType | undefined>(undefined);
 
 export function OverlayProvider({ children }: { children: React.ReactNode }) {
   const [overlays, setOverlays] = useState<Overlay[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Dynamically import travel data to initialize overlays
   useEffect(() => {
@@ -29,16 +33,28 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
       import.meta.env.VITE_TRAVEL_DATA_URL || "/data/travelData.json";
 
     Promise.all([
-      fetch(overlaysConfigUrl).then((res) => res.json()),
-      fetch(travelDataUrl).then((res) => res.json()),
-    ]).then(([overlaysConfig, travelData]) => {
-      setOverlays(
-        overlaysConfig.map((cfg: { dataKey: string | number }) => ({
-          ...cfg,
-          countries: travelData[cfg.dataKey] || [],
-        }))
-      );
-    });
+      fetch(overlaysConfigUrl).then((res) => {
+        if (!res.ok) throw new Error("Failed to load overlays config");
+        return res.json();
+      }),
+      fetch(travelDataUrl).then((res) => {
+        if (!res.ok) throw new Error("Failed to load travel data");
+        return res.json();
+      }),
+    ])
+      .then(([overlaysConfig, travelData]) => {
+        setOverlays(
+          overlaysConfig.map((cfg: { dataKey: string | number }) => ({
+            ...cfg,
+            countries: travelData[cfg.dataKey] || [],
+          }))
+        );
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
   }, []);
 
   // Add, edit, remove overlay functions
@@ -70,6 +86,8 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
         editOverlay,
         removeOverlay,
         toggleOverlayVisibility,
+        loading,
+        error,
       }}
     >
       {children}

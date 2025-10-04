@@ -2,6 +2,8 @@ import { useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { BaseMapLayer } from "./BaseMapLayer";
 import { OverlayLayer } from "./OverlayLayer";
+import { LoadingSpinner } from "./common/LoadingSpinner";
+import { ErrorMessage } from "./common/ErrorMessage";
 import { useOverlayContext } from "../context/OverlayContext";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
 
@@ -35,7 +37,11 @@ export function WorldMap({
   const dimensions = useContainerDimensions(containerRef);
 
   // Get overlays and toggles from context
-  const { overlays } = useOverlayContext();
+  const { overlays, loading, error } = useOverlayContext();
+
+  // Show loading or error states
+  if (loading) return <LoadingSpinner message="Loading overlays..." />;
+  if (error) return <ErrorMessage error={error} />;
 
   return (
     <div ref={containerRef} style={{ width: "100%", height: "100%" }}>

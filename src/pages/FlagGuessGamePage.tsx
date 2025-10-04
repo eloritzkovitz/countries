@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { CountryFlag } from "../components/CountryFlag";
+import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { ErrorMessage } from "../components/common/ErrorMessage";
 import { useCountryData } from "../context/CountryDataContext";
 import type { Country } from "../types/country";
 import { getRandomCountry } from "../utils/countryData";
 
 export default function FlagGuessGamePage() {
-  const { countries } = useCountryData();
+  const { countries, loading, error } = useCountryData();
   const [currentCountry, setCurrentCountry] = useState<Country | null>(() =>
     countries.length ? getRandomCountry(countries) : null
   );
@@ -26,7 +28,10 @@ export default function FlagGuessGamePage() {
     setResult(null);
   };
 
-  if (!countries.length || !currentCountry) {
+  // Show loading or error states
+  if (loading) return <LoadingSpinner message="Loading countries..." />;
+  if (error) return <ErrorMessage error={error} />;
+  if (!currentCountry) {
     return (
       <div
         style={{
@@ -34,9 +39,10 @@ export default function FlagGuessGamePage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          fontSize: "1.2rem",
         }}
       >
-        <div>Loading countries...</div>
+        <div>No country selected. Please try again or reload the page.</div>
       </div>
     );
   }

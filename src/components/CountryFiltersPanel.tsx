@@ -1,5 +1,7 @@
 import { FaUndo } from "react-icons/fa";
 import { FilterSelect } from "./FilterSelect";
+import { LoadingSpinner} from "./common/LoadingSpinner";
+import { ErrorMessage } from "./common/ErrorMessage";
 import { filtersConfig } from "../config/filtersConfig";
 import { useCountryData } from "../context/CountryDataContext";
 import type { Overlay } from "../types/overlay";
@@ -31,7 +33,7 @@ export function CountryFiltersPanel({
   overlaySelections,
   setOverlaySelections,
 }: CountryFiltersPanelProps) {
-  const { countries } = useCountryData();
+  const { countries, loading, error } = useCountryData();
 
   const subregionOptions =
     selectedRegion && selectedRegion !== ""
@@ -49,6 +51,10 @@ export function CountryFiltersPanel({
       }, {} as Record<string, string>)
     );
   }
+
+  // Show loading or error states
+  if (loading) return <LoadingSpinner message="Loading filters..." />;
+  if (error) return <ErrorMessage error={error} />;
 
   return (
     <div

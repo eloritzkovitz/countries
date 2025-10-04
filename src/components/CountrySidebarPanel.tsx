@@ -3,6 +3,8 @@ import { FaFilter } from "react-icons/fa";
 import { CountryDetailsModal } from "./CountryDetailsModal";
 import { CountryFiltersPanel } from "./CountryFiltersPanel";
 import { CountryList } from "./CountryList";
+import { LoadingSpinner } from "./common/LoadingSpinner";
+import { ErrorMessage } from "./common/ErrorMessage";
 import { useCountryData } from "../context/CountryDataContext";
 import { useOverlayContext } from "../context/OverlayContext";
 import type { Country } from "../types/country";
@@ -23,7 +25,7 @@ export function CountrySidebarPanel({
   onHover: (iso: string | null) => void;
   onCountryInfo?: (country: Country) => void;
 }) {
-  const { countries, allRegions, allSubregions } = useCountryData();
+  const { countries, allRegions, allSubregions, loading, error } = useCountryData();
   const { overlays } = useOverlayContext();
 
   // Individual overlay filter selections: { [overlayId]: "all" | "only" | "exclude" }
@@ -62,6 +64,10 @@ export function CountrySidebarPanel({
     setModalCountry(country);
     if (onCountryInfo) onCountryInfo(country);
   };
+
+  // Show loading or error states
+  if (loading) return <LoadingSpinner message="Loading countries..." />;
+  if (error) return <ErrorMessage error={error} />;
 
   return (
     <div
