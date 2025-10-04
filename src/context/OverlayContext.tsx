@@ -25,28 +25,28 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Dynamically import travel data to initialize overlays
+  // Dynamically import user data to initialize overlays
   useEffect(() => {
     const overlaysConfigUrl =
       import.meta.env.VITE_OVERLAYS_CONFIG_URL || "/data/overlays.json";
-    const travelDataUrl =
-      import.meta.env.VITE_TRAVEL_DATA_URL || "/data/travelData.json";
+    const userDataUrl =
+      import.meta.env.VITE_USER_DATA_URL || "/data/userData.json";
 
     Promise.all([
       fetch(overlaysConfigUrl).then((res) => {
         if (!res.ok) throw new Error("Failed to load overlays config");
         return res.json();
       }),
-      fetch(travelDataUrl).then((res) => {
-        if (!res.ok) throw new Error("Failed to load travel data");
+      fetch(userDataUrl).then((res) => {
+        if (!res.ok) throw new Error("Failed to load user data");
         return res.json();
       }),
     ])
-      .then(([overlaysConfig, travelData]) => {
+      .then(([overlaysConfig, userData]) => {
         setOverlays(
           overlaysConfig.map((cfg: { dataKey: string | number }) => ({
             ...cfg,
-            countries: travelData[cfg.dataKey] || [],
+            countries: userData[cfg.dataKey] || [],
           }))
         );
         setLoading(false);

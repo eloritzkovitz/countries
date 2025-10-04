@@ -1,7 +1,7 @@
 # Countries Explorer
 
 A fully-configurable country explorer built with React, Vite, and TypeScript.  
-All country, currency, travel, and overlay data sources are **generic, config-driven and environment-configurable**, loaded from JSON files.  
+All country, currency, user and overlay data sources are **generic, config-driven and environment-configurable**, loaded from JSON files.  
 Supports user-defined overlays, flexible filters, and easy data extension for any dataset.
 
 ## Features
@@ -19,18 +19,18 @@ All main data sources are loaded from JSON files in the `public/data` folder.
 You can change their location or swap datasets by editing the `.env` file.
 
 | Data Type        | Default Path                | Env Variable                    |
-|------------------|----------------------------|---------------------------------|
+|------------------|----------------------------|----------------------------------|
+| Map GeoJSON      | `/data/countries.geojson`   | `VITE_MAP_GEO_URL`              |
 | Countries        | `/data/countries.json`      | `VITE_COUNTRY_DATA_URL`         |
 | Currencies       | `/data/currencies.json`     | `VITE_CURRENCY_DATA_URL`        |
-| Travel Data      | `/data/travelData.json`     | `VITE_TRAVEL_DATA_URL`          |
 | Overlays Config  | `/data/overlays.json`       | `VITE_OVERLAYS_CONFIG_URL`      |
-| Map GeoJSON      | `/data/countries.geojson`   | `VITE_MAP_GEO_URL`              |
+| User Data        | `/data/userData.json`       | `VITE_USER_DATA_URL`            |
 
 ## Customizing Data & Overlays
 
 1. **Edit JSON files in `public/data`**  
    - Example: Add your own overlays in `overlays.json`
-   - Example: Update visited countries in `travelData.json`
+   - Example: Update visited countries in `userData.json`
 
 2. **Update `.env` to point to your data files**  
    - No code changes needed—just edit the paths.
