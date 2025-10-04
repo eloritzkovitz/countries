@@ -21,12 +21,10 @@ export function CountryFlag({
     <img
       src={getFlagUrl(isoCode, size)}
       alt={alt || `${isoCode} flag`}
-      style={{
-        width,
-        height,
-        objectFit: "cover",        
-        ...style,
-      }}
+      width={width}
+      height={height}
+      className="inline-block rounded"
+      style={style}
     />
   );
 }

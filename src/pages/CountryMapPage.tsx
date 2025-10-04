@@ -43,20 +43,9 @@ export default function CountryMapPage() {
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#f5f6fa" }}>
+    <div className="flex h-screen bg-gray-100">
       {/* Map and toolbar */}
-      <div
-        style={{
-          flex: 2,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "stretch",
-          justifyContent: "stretch",
-          position: "relative",
-          height: "100vh",
-          minHeight: 0,
-        }}
-      >
+      <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
         <MapScale
           scale={zoom}
           minScale={1}
@@ -94,23 +83,7 @@ export default function CountryMapPage() {
       {/* Overlay Manager Button */}
       <button
         onClick={() => setShowOverlayManager((v) => !v)}
-        style={{
-          position: "fixed",
-          left: 32,
-          bottom: 32,
-          zIndex: 100,
-          background: "#0078d4",
-          color: "#fff",
-          border: "none",
-          width: 56,
-          height: 56,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-          cursor: "pointer",
-          padding: 0,
-        }}
+        className="fixed left-8 bottom-8 z-[100] bg-blue-600 text-white w-14 h-14 flex items-center justify-center shadow-lg cursor-pointer p-0 rounded-full border-none hover:bg-blue-700 transition-colors"
         aria-label={
           showOverlayManager ? "Close Overlays Panel" : "Open Overlays Panel"
         }
@@ -121,42 +94,22 @@ export default function CountryMapPage() {
       {/* Overlay Manager Modal */}
       {showOverlayManager && (
         <div
-          style={{
-            position: "fixed",
-            left: 32,
-            bottom: 100,
-            zIndex: 101,
-            minWidth: 340,
-            background: "#fff",
-            padding: 28,
-            borderRadius: 16,
-            boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
-            transition: "opacity 0.2s",
-            maxWidth: 600,
-            maxHeight: "90vh",
-            overflowY: "auto",
-          }}
+          className="fixed left-8 bottom-[100px] z-[101] min-w-[340px] max-w-[600px] max-h-[90vh] bg-white p-7 rounded-2xl shadow-2xl overflow-y-auto transition-opacity"
           onClick={() => setShowOverlayManager(false)}
           aria-modal="true"
           role="dialog"
         >
           <button
             onClick={() => setShowOverlayManager(false)}
-            style={{
-              position: "absolute",
-              top: 16,
-              right: 16,
-              background: "none",
-              border: "none",
-              fontSize: 24,
-              cursor: "pointer",
-              color: "#0078d4",
-            }}
+            className="absolute top-4 right-4 bg-none border-none text-2xl text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
             aria-label="Close Overlay Manager"
           >
             ×
           </button>
-          <OverlayManagerPanel isOpen={showOverlayManager} onClose={() => setShowOverlayManager(false)} />
+          <OverlayManagerPanel
+            isOpen={showOverlayManager}
+            onClose={() => setShowOverlayManager(false)}
+          />
         </div>
       )}
     </div>

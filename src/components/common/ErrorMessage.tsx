@@ -1,12 +1,8 @@
-export function ErrorMessage({ error }: { error: string }) {
+export function ErrorMessage({ error }: { error: string | Error }) {
   return (
-    <div style={{
-      color: "red",
-      textAlign: "center",
-      marginTop: "4rem",
-      fontSize: "1.3rem"
-    }}>
-      Error: {error}
+    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+      <strong className="font-bold">Error:</strong>{" "}
+      <span className="block">{typeof error === "string" ? error : error.message}</span>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { FaUndo } from "react-icons/fa";
+import { FaTimes, FaUndo } from "react-icons/fa";
 import { FilterSelect } from "../common/FilterSelect";
 import { LoadingSpinner} from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
@@ -32,6 +32,7 @@ export function CountryFiltersPanel({
   overlays,
   overlaySelections,
   setOverlaySelections,
+  onHide,
 }: CountryFiltersPanelProps) {
   const { countries, loading, error } = useCountryData();
 
@@ -57,15 +58,17 @@ export function CountryFiltersPanel({
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        padding: "2rem 1.5rem 1.5rem 1.5rem",
-        boxSizing: "border-box",
-      }}
-    >
-      <h2 style={{ marginTop: 0, marginBottom: "1.5rem" }}>Filters</h2>
+    <div className="relative w-full p-8 pt-8 pb-6 box-border">
+      {/* Close button */}
+      <button
+        type="button"
+        onClick={onHide}
+        className="absolute top-4 right-4 bg-none border-none text-2xl text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
+        aria-label="Close filters panel"
+      >
+        <FaTimes />
+      </button>
+      <h2 className="mt-0 mb-6 text-lg font-bold">Filters</h2>
       {/* Render region and subregion filters from config */}
       {filtersConfig
         .filter(f => f.key !== "overlay")
@@ -117,21 +120,7 @@ export function CountryFiltersPanel({
       <button
         type="button"
         onClick={handleResetFilters}
-        style={{
-          marginTop: "1.5rem",
-          padding: "0.5rem 1.5rem",
-          borderRadius: 6,
-          border: "none",
-          background: "#eee",
-          color: "#333",
-          fontWeight: "bold",
-          cursor: "pointer",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 8,
-        }}
+        className="mt-6 py-2 px-6 rounded border-none bg-gray-200 text-gray-700 font-bold cursor-pointer w-full flex items-center justify-center gap-2 hover:bg-gray-300 transition-colors"
       >
         <FaUndo />
         Reset Filters

@@ -1,29 +1,8 @@
-export function LoadingSpinner({ message = "Loading..." }: { message?: string }) {
+export function LoadingSpinner({ message }: { message?: string }) {
   return (
-    <div style={{
-      textAlign: "center",
-      marginTop: "4rem",
-      fontSize: "1.3rem",
-      color: "#555"
-    }}>
-      <div className="spinner" style={{
-        margin: "0 auto 1rem auto",
-        width: 32,
-        height: 32,
-        border: "4px solid #eee",
-        borderTop: "4px solid #0078d4",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite"
-      }} />
-      {message}
-      <style>
-        {`
-          @keyframes spin {
-            0% { transform: rotate(0deg);}
-            100% { transform: rotate(360deg);}
-          }
-        `}
-      </style>
+    <div className="flex flex-col items-center justify-center py-8">
+      <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-600 border-solid mb-4"></div>
+      {message && <div className="text-blue-700 font-semibold">{message}</div>}
     </div>
   );
 }

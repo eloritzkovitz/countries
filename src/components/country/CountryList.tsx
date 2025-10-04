@@ -20,38 +20,24 @@ export function CountryList({
 }: CountryListProps) {
   const highlightIsoCode = hoveredIsoCode || selectedIsoCode;
   return (
-    <ul
-      style={{
-        listStyle: "none",
-        padding: 0,
-        margin: 0,
-        width: "100%",
-      }}
-    >
-      {countries.map((country) => (
-        <li
-          key={country.isoCode}
-          onClick={() => onCountryInfo ? onCountryInfo(country) : onSelect(country.isoCode)}          
-          onMouseEnter={() => onHover(country.isoCode)}
-          onMouseLeave={() => onHover(null)}
-          style={{
-            padding: "0.5rem 1rem",
-            margin: "0.2rem 0",
-            borderRadius: 6,
-            cursor: "pointer",
-            background:
-              highlightIsoCode === country.isoCode ? "#e6f0fa" : "transparent",
-            fontWeight:
-              highlightIsoCode === country.isoCode ? "bold" : "normal",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.7rem",
-          }}
-        >
-          <CountryFlag isoCode={country.isoCode} />          
-          <span>{country.name}</span>
-        </li>
-      ))}
+    <ul className="list-none p-0 m-0 w-full">
+      {countries.map((country) => {
+        const isHighlighted = highlightIsoCode === country.isoCode;
+        return (
+          <li
+            key={country.isoCode}
+            onClick={() => onCountryInfo ? onCountryInfo(country) : onSelect(country.isoCode)}
+            onMouseEnter={() => onHover(country.isoCode)}
+            onMouseLeave={() => onHover(null)}
+            className={`px-4 py-2 my-1 rounded cursor-pointer flex items-center gap-3 transition
+              ${isHighlighted ? "bg-blue-50 font-bold" : ""}
+            `}
+          >
+            <CountryFlag isoCode={country.isoCode} />
+            <span>{country.name}</span>
+          </li>
+        );
+      })}
     </ul>
   );
 }

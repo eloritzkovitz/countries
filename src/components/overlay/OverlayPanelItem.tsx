@@ -15,54 +15,25 @@ export function OverlayPanelItem({
   onRemove,
 }: OverlayPanelItemProps) {
   return (
-    <li
-      style={{
-        marginBottom: 14,
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        background: "#f5f6fa",
-        borderRadius: 8,
-        padding: "8px 10px",
-      }}
-    >
+    <li className="mb-4 flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
       <span
-        style={{
-          display: "inline-block",
-          width: 22,
-          height: 22,
-          background: overlay.color,
-          borderRadius: 6,
-          marginRight: 2,
-          border: "2px solid #ccc",
-        }}
+        className="inline-block w-[22px] h-[22px] rounded-md border-2 border-gray-300 mr-1"
+        style={{ background: overlay.color }}
         title={overlay.name}
       />
-      <strong style={{ flex: 1 }}>{overlay.name}</strong>
+      <strong className="flex-1">{overlay.name}</strong>
       <button
         onClick={() => onToggleVisibility(overlay.id)}
-        style={{
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          color: overlay.visible ? "#0078d4" : "#aaa",
-          fontSize: 18,
-          marginRight: 4,
-        }}
+        className={`mx-1 text-lg transition-colors ${
+          overlay.visible ? "text-blue-600" : "text-gray-400"
+        }`}
         title={overlay.visible ? "Hide overlay" : "Show overlay"}
         aria-label={overlay.visible ? "Hide overlay" : "Show overlay"}
       >
         {overlay.visible ? <FaEye /> : <FaEyeSlash />}
       </button>
       <button
-        style={{
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          color: "#0078d4",
-          fontSize: 18,
-          marginRight: 4,
-        }}
+        className="mx-1 text-blue-600 text-lg hover:text-blue-800 transition-colors"
         onClick={() => onEdit(overlay)}
         title="Edit overlay"
         aria-label="Edit overlay"
@@ -70,13 +41,7 @@ export function OverlayPanelItem({
         <FaEdit />
       </button>
       <button
-        style={{
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          color: "#d32f2f",
-          fontSize: 18,
-        }}
+        className="mx-1 text-red-600 text-lg hover:text-red-800 transition-colors"
         onClick={() => onRemove(overlay.id)}
         title="Remove overlay"
         aria-label="Remove overlay"

@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "4.1.14",
     "@types/react-router-dom": "5.3.3",
     "rc-slider": "11.1.9",
     "react": "^19.1.1",
