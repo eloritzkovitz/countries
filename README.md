@@ -1,7 +1,7 @@
 # Countries Explorer
 
 A fully-configurable country explorer built with React, Vite, and TypeScript.  
-All country, currency, travel, and overlay data sources are **generic, config-driven, and environment-configurable** loaded from JSON files.  
+All country, currency, travel, and overlay data sources are **generic, config-driven and environment-configurable**, loaded from JSON files.  
 Supports user-defined overlays, flexible filters, and easy data extension for any dataset.
 
 ## Features
