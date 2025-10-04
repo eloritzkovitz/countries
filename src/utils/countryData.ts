@@ -1,0 +1,44 @@
+import type { Country } from "../types/country";
+import type { FlagSize } from "../types/flag";
+
+/**
+ * Extracts the ISO country code from various possible property names.
+ * @param properties - The properties object from a geographical feature.
+ * @returns The ISO country code in uppercase, or undefined if not found.
+ */
+export function getCountryIsoCode(properties: any): string | undefined {
+  return (
+    properties.ISO_A2?.toUpperCase?.() ||
+    properties["ISO3166-1-Alpha-2"]?.toUpperCase?.()
+  );
+}
+
+/**
+ * Gets a random country from the provided list.
+ * @param countries - Array of country objects.
+ * @returns A random country object from the array.
+ */
+export function getRandomCountry(countries: Country[]) {
+  return countries[Math.floor(Math.random() * countries.length)];
+}
+
+/**
+ * Gets the URL of a country's flag based on its ISO code.
+ * @param isoCode - The ISO code of the country.
+ * @param size - The size of the flag image.
+ * @returns The URL of the country's flag image.
+ */
+export function getFlagUrl(isoCode: string, size: FlagSize = "32x24") {
+  if (!isoCode) return "";
+  return `https://flagcdn.com/${size}/${isoCode.toLowerCase()}.png`;
+}
+
+/**
+ * Gets a formatted string of languages.
+ * @param languages - An array of language names.
+ * @returns A comma-separated string of languages or "None" if empty.
+ */
+export function getLanguagesDisplay(languages?: string[]) {
+  if (!languages || languages.length === 0) return "None";
+  return languages.join(", ");
+}

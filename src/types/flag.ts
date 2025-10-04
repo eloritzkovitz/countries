@@ -1,0 +1,1 @@
+export type FlagSize = "32x24" | "64x48" | "96x72" | "160x120";
