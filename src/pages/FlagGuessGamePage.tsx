@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { CountryFlag } from "../components/CountryFlag";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorMessage } from "../components/common/ErrorMessage";
+import { CountryFlag } from "../components/country/CountryFlag";
 import { useCountryData } from "../context/CountryDataContext";
 import type { Country } from "../types/country";
 import { getRandomCountry } from "../utils/countryData";

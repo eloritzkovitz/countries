@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FaLayerGroup, FaPlus, FaEdit, FaTrash, FaEye, FaEyeSlash } from "react-icons/fa";
-import { LoadingSpinner } from "./common/LoadingSpinner";
-import { ErrorMessage } from "./common/ErrorMessage";
-import { useCountryData } from "../context/CountryDataContext";
-import { useOverlayContext } from "../context/OverlayContext";
-import type { Overlay } from "../types/overlay";
+import { LoadingSpinner } from "../common/LoadingSpinner";
+import { ErrorMessage } from "../common/ErrorMessage";
+import { useCountryData } from "../../context/CountryDataContext";
+import { useOverlayContext } from "../../context/OverlayContext";
+import type { Overlay } from "../../types/overlay";
 import { OverlayEditModal } from "./OverlayEditModal";
 
 export default function OverlayManagerPanel() {

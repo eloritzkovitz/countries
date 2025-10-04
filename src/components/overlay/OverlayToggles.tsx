@@ -1,6 +1,6 @@
-import { LoadingSpinner } from "./common/LoadingSpinner";
-import { ErrorMessage } from "./common/ErrorMessage";
-import { useOverlayContext } from "../context/OverlayContext";
+import { LoadingSpinner } from "../common/LoadingSpinner";
+import { ErrorMessage } from "../common/ErrorMessage";
+import { useOverlayContext } from "../../context/OverlayContext";
 
 export function OverlayToggles() {
   const { overlays, toggleOverlayVisibility, loading, error } = useOverlayContext();

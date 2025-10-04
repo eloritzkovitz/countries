@@ -1,4 +1,4 @@
-import type { FilterOption } from "../types/filters";
+import type { FilterOption } from "../../types/filters";
 
 type FilterSelectProps = {
   label: string;

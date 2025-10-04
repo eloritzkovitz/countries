@@ -1,5 +1,5 @@
 import { CountryFlag } from "./CountryFlag";
-import type { Country } from "../types/country";
+import type { Country } from "../../types/country";
 
 type CountryListProps = {
   countries: Country[];

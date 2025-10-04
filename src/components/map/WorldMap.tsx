@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
-import { BaseMapLayer } from "./BaseMapLayer";
-import { OverlayLayer } from "./OverlayLayer";
-import { LoadingSpinner } from "./common/LoadingSpinner";
-import { ErrorMessage } from "./common/ErrorMessage";
-import { useOverlayContext } from "../context/OverlayContext";
-import { useContainerDimensions } from "../hooks/useContainerDimensions";
+import { BaseMapLayer } from "../BaseMapLayer";
+import { OverlayLayer } from "../OverlayLayer";
+import { LoadingSpinner } from "../common/LoadingSpinner";
+import { ErrorMessage } from "../common/ErrorMessage";
+import { useOverlayContext } from "../../context/OverlayContext";
+import { useContainerDimensions } from "../../hooks/useContainerDimensions";
 
 const geoUrl = import.meta.env.VITE_MAP_GEO_URL || "/data/countries.geojson";
 

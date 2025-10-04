@@ -1,11 +1,11 @@
 import { FaUndo } from "react-icons/fa";
-import { FilterSelect } from "./FilterSelect";
-import { LoadingSpinner} from "./common/LoadingSpinner";
-import { ErrorMessage } from "./common/ErrorMessage";
-import { filtersConfig } from "../config/filtersConfig";
-import { useCountryData } from "../context/CountryDataContext";
-import type { Overlay } from "../types/overlay";
-import { getSubregionsForRegion } from "../utils/countryFilters";
+import { FilterSelect } from "../common/FilterSelect";
+import { LoadingSpinner} from "../common/LoadingSpinner";
+import { ErrorMessage } from "../common/ErrorMessage";
+import { filtersConfig } from "../../config/filtersConfig";
+import { useCountryData } from "../../context/CountryDataContext";
+import type { Overlay } from "../../types/overlay";
+import { getSubregionsForRegion } from "../../utils/countryFilters";
 
 type CountryFiltersPanelProps = {
   allRegions: string[];

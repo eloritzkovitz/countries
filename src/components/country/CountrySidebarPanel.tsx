@@ -3,12 +3,12 @@ import { FaFilter } from "react-icons/fa";
 import { CountryDetailsModal } from "./CountryDetailsModal";
 import { CountryFiltersPanel } from "./CountryFiltersPanel";
 import { CountryList } from "./CountryList";
-import { LoadingSpinner } from "./common/LoadingSpinner";
-import { ErrorMessage } from "./common/ErrorMessage";
-import { useCountryData } from "../context/CountryDataContext";
-import { useOverlayContext } from "../context/OverlayContext";
-import type { Country } from "../types/country";
-import { filterCountries } from "../utils/countryFilters";
+import { LoadingSpinner } from "../common/LoadingSpinner";
+import { ErrorMessage } from "../common/ErrorMessage";
+import { useCountryData } from "../../context/CountryDataContext";
+import { useOverlayContext } from "../../context/OverlayContext";
+import type { Country } from "../../types/country";
+import { filterCountries } from "../../utils/countryFilters";
 
 const PANEL_WIDTH = 400;
 
