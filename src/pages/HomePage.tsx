@@ -2,44 +2,21 @@ import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#f5f6fa",
-      }}
-    >
-      <h1>Countries</h1>
-      <div style={{ display: "flex", gap: "2rem", marginTop: "2rem" }}>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <h1 className="text-3xl font-bold mb-8">Countries</h1>
+      <div className="flex gap-8 mt-8">
         <Link
           to="/country-map"
-          style={{
-            padding: "1rem 2rem",
-            background: "#0078d4",
-            color: "#fff",
-            borderRadius: 8,
-            textDecoration: "none",
-            fontSize: "1.2rem",
-          }}
+          className="px-8 py-4 bg-blue-600 text-white rounded-lg text-xl font-semibold no-underline hover:bg-blue-700 transition-colors"
         >
           View Countries
         </Link>
         <Link
           to="/flag-guess"
-          style={{
-            padding: "1rem 2rem",
-            background: "#0078d4",
-            color: "#fff",
-            borderRadius: 8,
-            textDecoration: "none",
-            fontSize: "1.2rem",
-          }}
+          className="px-8 py-4 bg-blue-600 text-white rounded-lg text-xl font-semibold no-underline hover:bg-blue-700 transition-colors"
         >
           Guess the Flag
-        </Link>        
+        </Link>
       </div>
     </div>
   );

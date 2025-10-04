@@ -44,7 +44,10 @@ export function WorldMap({
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <div ref={containerRef} style={{ width: "100%", height: "100%" }}>
+    <div
+      ref={containerRef}
+      className="relative w-full h-full bg-white overflow-hidden rounded-lg shadow"
+    >
       <ComposableMap
         projection="geoEqualEarth"
         projectionConfig={{
@@ -52,7 +55,6 @@ export function WorldMap({
         }}
         width={dimensions.width}
         height={dimensions.height}
-        style={{ width: "100%", height: "100%" }}
       >
         <ZoomableGroup zoom={zoom} center={center} onMoveEnd={handleMoveEnd}>
           {/* Base map */}

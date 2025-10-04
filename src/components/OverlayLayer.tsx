@@ -23,31 +23,33 @@ export function OverlayLayer({
   );
 
   return (
-    <Geographies geography={geographyUrl}>
-      {({ geographies }: { geographies: any[] }) =>
-        geographies.map((geo) => {
-          const isoA2 = getCountryIsoCode(geo.properties);
-          const overlay = isoA2 && overlayMap[isoA2];
-          if (!overlay) return null;
-          return (
-            <Geography
-              key={geo.rsmKey + suffix}
-              geography={geo}
-              fill={overlay.color || defaultColor}
-              stroke="#fff"
-              strokeWidth={0.25}
-              pointerEvents="none"
-              style={{
-                default: { outline: "none", ...(overlay.style || {}) },
-                hover: { outline: "none", ...(overlay.style || {}) },
-                pressed: { outline: "none", ...(overlay.style || {}) },
-              }}
-            >
-              {overlay.tooltip && <title>{overlay.tooltip}</title>}
-            </Geography>
-          );
-        })
-      }
-    </Geographies>
+    <g className="pointer-events-none">
+      <Geographies geography={geographyUrl}>
+        {({ geographies }: { geographies: any[] }) =>
+          geographies.map((geo) => {
+            const isoA2 = getCountryIsoCode(geo.properties);
+            const overlay = isoA2 && overlayMap[isoA2];
+            if (!overlay) return null;
+            return (
+              <Geography
+                key={geo.rsmKey + suffix}
+                geography={geo}
+                fill={overlay.color || defaultColor}
+                stroke="#fff"
+                strokeWidth={0.25}
+                pointerEvents="none"
+                style={{
+                  default: { outline: "none", ...(overlay.style || {}) },
+                  hover: { outline: "none", ...(overlay.style || {}) },
+                  pressed: { outline: "none", ...(overlay.style || {}) },
+                }}
+              >
+                {overlay.tooltip && <title>{overlay.tooltip}</title>}
+              </Geography>
+            );
+          })
+        }
+      </Geographies>
+    </g>
   );
 }

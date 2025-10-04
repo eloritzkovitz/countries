@@ -71,29 +71,14 @@ export function CountrySidebarPanel({
 
   return (
     <div
-      style={{
-        position: "fixed",
-        top: 0,
-        right: 0,
-        height: "100vh",
-        display: "flex",
-        flexDirection: "row",
-        zIndex: 40,
-      }}
+      className="fixed top-0 right-0 h-screen flex flex-row z-40"
     >
-      {/* Filters panel slides in from the right, sits to the left of country list */}
+      {/* Filters panel */}
       <div
-        style={{
-          position: "relative",
-          width: filtersPanelOpen ? PANEL_WIDTH : 0,
-          height: "100vh",
-          background: "#fff",
-          boxShadow: filtersPanelOpen ? "0 2px 12px rgba(0,0,0,0.07)" : "none",
-          transition: "width 0.3s cubic-bezier(.4,0,.2,1)",
-          zIndex: 100,
-          display: "flex",
-          flexDirection: "column",
-        }}
+        className={`relative h-screen bg-white transition-all duration-300 flex flex-col shadow-lg border-l border-gray-200 ${
+          filtersPanelOpen ? "w-[400px]" : "w-0"
+        }`}
+        style={{ zIndex: 100, minWidth: filtersPanelOpen ? PANEL_WIDTH : 0 }}
       >
         {filtersPanelOpen && (
           <CountryFiltersPanel
@@ -110,63 +95,27 @@ export function CountrySidebarPanel({
           />
         )}
       </div>
-      {/* Country sidebar panel on the right */}
+      {/* Country sidebar panel */}
       <div
-        style={{
-          width: PANEL_WIDTH,
-          height: "100vh",
-          background: "#fff",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-          display: "flex",
-          flexDirection: "column",
-          zIndex: 40,
-        }}
+        className="h-screen bg-white shadow-lg flex flex-col border-l border-gray-200"
+        style={{ width: PANEL_WIDTH, minWidth: PANEL_WIDTH, zIndex: 40 }}
       >
         {/* Inner container for padding and header */}
-        <div style={{ padding: "2rem 1rem 0 1rem", flexShrink: 0 }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <h2
-              style={{ textAlign: "center", margin: 0, marginBottom: "1rem" }}
-            >
-              Country List
-            </h2>
+        <div className="px-4 pt-8 pb-0 flex-shrink-0">
+          <div className="flex justify-between items-center">
+            <h2 className="text-center m-0 mb-4 text-lg font-bold">Country List</h2>
           </div>
-          <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+          <div className="flex gap-4 mb-4">
             <input
               type="text"
               placeholder="Search countries..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{
-                flex: 1,
-                padding: "0.5rem",
-                borderRadius: 6,
-                border: "1px solid #ccc",
-                fontSize: "1rem",
-              }}
+              className="flex-1 px-3 py-2 rounded border border-gray-300 text-base"
             />
-            {/* Filters button toggles filters panel */}
             <button
               onClick={() => setFiltersPanelOpen((open) => !open)}
-              style={{
-                padding: "0.5rem 1rem",
-                borderRadius: "6px",
-                border: "none",
-                background: "#0078d4",
-                color: "#fff",
-                fontWeight: "bold",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                zIndex: 101,
-              }}
+              className="px-4 py-2 rounded bg-blue-600 text-white font-bold flex items-center gap-2 z-101 hover:bg-blue-700 transition-colors"
               aria-label={filtersPanelOpen ? "Hide Filters" : "Show Filters"}
               type="button"
             >
@@ -174,26 +123,12 @@ export function CountrySidebarPanel({
               Filters
             </button>
           </div>
-          <div
-            style={{
-              margin: "0.5rem 0 1rem 0",
-              fontWeight: "bold",
-              textAlign: "center",
-              flexShrink: 0,
-            }}
-          >
+          <div className="my-2 font-bold text-center flex-shrink-0">
             Showing {filteredCountries.length} countries from {countries.length}
           </div>
         </div>
         {/* Country list */}
-        <div
-          style={{
-            flex: 1,
-            minHeight: 0,
-            overflowY: "auto",
-            padding: "0 1rem 2rem 1rem",
-          }}
-        >
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-8">
           <CountryList
             countries={filteredCountries}
             selectedIsoCode={selectedIsoCode}
@@ -202,10 +137,10 @@ export function CountrySidebarPanel({
             onHover={onHover}
             onCountryInfo={handleCountryInfo}
           />
-          {/* Country details modal */}
           {modalCountry && (
             <CountryDetailsModal
               country={modalCountry}
+              isOpen={!!modalCountry}
               onClose={() => setModalCountry(null)}
             />
           )}

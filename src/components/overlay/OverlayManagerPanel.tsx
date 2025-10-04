@@ -40,26 +40,14 @@ export function OverlayManagerPanel({ isOpen, onClose }: OverlayManagerPanelProp
 
   return (
     <div>
-      <h2>Overlays</h2>
+      <h2 className="text-lg font-bold mb-4">Overlays</h2>
       <button
         onClick={() => {}}
-        style={{
-          marginBottom: 18,
-          background: "#0078d4",
-          color: "#fff",
-          border: "none",
-          borderRadius: 8,
-          padding: "8px 16px",
-          fontWeight: "bold",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          cursor: "pointer",
-        }}
+        className="mb-5 bg-blue-600 text-white border-none rounded-lg px-4 py-2 font-bold flex items-center gap-2 cursor-pointer hover:bg-blue-700 transition-colors"
       >
         <FaPlus /> Add Overlay
       </button>
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <ul className="list-none p-0">
         {overlays.map((overlay) => (
           <OverlayPanel key={overlay.id} overlay={overlay}>
             <OverlayPanelItem

@@ -9,18 +9,12 @@ type FilterSelectProps = {
 
 export function FilterSelect({ label, value, onChange, options }: FilterSelectProps) {
   return (
-    <div style={{ margin: "1rem 0" }}>
-      <label style={{ fontWeight: "bold" }}>{label}</label>
+    <div className="my-4">
+      <label className="font-bold block mb-2">{label}</label>
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        style={{
-          width: "100%",
-          padding: "0.5rem",
-          borderRadius: 6,
-          border: "1px solid #ccc",
-          marginTop: "0.5rem",
-        }}
+        className="w-full px-3 py-2 rounded border border-gray-300 mt-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>

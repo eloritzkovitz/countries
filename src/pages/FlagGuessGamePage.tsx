@@ -33,42 +33,16 @@ export default function FlagGuessGamePage() {
   if (error) return <ErrorMessage error={error} />;
   if (!currentCountry) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "1.2rem",
-        }}
-      >
+      <div className="min-h-screen flex items-center justify-center text-lg">
         <div>No country selected. Please try again or reload the page.</div>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 400,
-          width: "100%",
-          padding: "2rem",
-          borderRadius: 12,
-          background: "#fff",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.1)",
-          textAlign: "center",
-          fontFamily: "sans-serif",
-        }}
-      >
-        <h2>Guess the Country!</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="max-w-md w-full p-8 rounded-xl bg-white shadow-lg text-center font-sans">
+        <h2 className="mb-2 text-xl font-bold">Guess the Country!</h2>
         <CountryFlag
           isoCode={currentCountry.isoCode}
           size="96x72"
@@ -81,55 +55,31 @@ export default function FlagGuessGamePage() {
             placeholder="Enter country name"
             value={guess}
             onChange={(e) => setGuess(e.target.value)}
-            style={{
-              padding: "0.5rem 1rem",
-              fontSize: "1.1rem",
-              borderRadius: 6,
-              border: "1px solid #ccc",
-              width: "80%",
-              marginBottom: "1rem",
-            }}
+            className="px-4 py-2 text-lg rounded border border-gray-300 w-4/5 mb-4"
             disabled={result !== null}
           />
           <br />
           <button
             type="submit"
-            style={{
-              padding: "0.5rem 1.5rem",
-              fontSize: "1rem",
-              borderRadius: 6,
-              border: "none",
-              background: "#0078d4",
-              color: "#fff",
-              cursor: "pointer",
-            }}
+            className="px-6 py-2 text-base rounded bg-blue-600 text-white font-bold cursor-pointer hover:bg-blue-700 transition-colors"
             disabled={result !== null}
           >
             Guess
           </button>
         </form>
         {result !== null && (
-          <div style={{ margin: "1rem 0", fontSize: "1.2rem" }}>
+          <div className="my-4 text-lg">
             {result ? (
-              <span style={{ color: "green" }}>Correct! 🎉</span>
+              <span className="text-green-600">Correct! 🎉</span>
             ) : (
-              <span style={{ color: "red" }}>
+              <span className="text-red-600">
                 Wrong! It was <b>{currentCountry.name}</b>
               </span>
             )}
             <br />
             <button
               onClick={nextFlag}
-              style={{
-                marginTop: "1rem",
-                padding: "0.4rem 1.2rem",
-                fontSize: "1rem",
-                borderRadius: 6,
-                border: "none",
-                background: "#eee",
-                color: "#333",
-                cursor: "pointer",
-              }}
+              className="mt-4 px-5 py-2 text-base rounded bg-gray-200 text-gray-800 font-bold cursor-pointer hover:bg-gray-300 transition-colors"
             >
               Next Flag
             </button>

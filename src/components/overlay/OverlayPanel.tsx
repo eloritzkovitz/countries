@@ -7,16 +7,5 @@ type OverlayPanelProps = {
 };
 
 export function OverlayPanel({ children }: OverlayPanelProps) {
-  return (
-    <div
-      style={{
-        borderRadius: 8,
-        marginBottom: "1rem",
-        background: "#f5f6fa",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <div className="rounded-lg mb-4 bg-gray-50 shadow-sm">{children}</div>;
 }
