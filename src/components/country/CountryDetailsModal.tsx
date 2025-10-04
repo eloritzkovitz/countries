@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { CountryFlag } from "../CountryFlag";
+import { CountryFlag } from "./CountryFlag";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { useCountryData } from "../../context/CountryDataContext";

@@ -1,6 +1,6 @@
 import React from "react";
-import type { FlagSize } from "../types/flag";
-import { getFlagUrl } from "../utils/countryData";
+import type { FlagSize } from "../../types/flag";
+import { getFlagUrl } from "../../utils/countryData";
 
 type FlagImageProps = {
   isoCode: string;
