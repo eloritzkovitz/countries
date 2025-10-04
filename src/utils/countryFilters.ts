@@ -41,18 +41,11 @@ export function getSubregionsForRegion(
 }
 
 /**
- * Filters countries based on search, region, subregion, visited, and souvenirs criteria.
- * @param countries - Array of country objects.
- * @param params - Filtering parameters.
- * @param params.search - Search string for country name.
- * @param params.selectedRegion - Selected region filter.
- * @param params.selectedSubregion - Selected subregion filter.
- * @param params.visitedCountries - Array of visited country ISO codes.
- * @param params.souvenirCountries - Array of country ISO codes with souvenirs.
- * @param params.visitedFilter - Visited filter type.
- * @param params.souvenirsFilter - Souvenirs filter type.
- * @returns Sorted array of filtered country objects.
- */
+ * Filters countries based on search, region, subregion, and overlay criteria.
+ * @param countries - Array of country objects with name, region, subregion, and isoCode properties.
+ * @param filters - Object containing search, selectedRegion, selectedSubregion, and overlayCountries.
+ * @returns Filtered and sorted array of country objects.
+ */ 
 export function filterCountries(
   countries: any[],
   {
