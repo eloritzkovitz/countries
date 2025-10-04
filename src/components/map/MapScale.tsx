@@ -70,7 +70,7 @@ export function MapScale({
   return (
     <div
       id="map-scale-bar"
-      className="absolute left-[100px] bottom-[25px] z-20 bg-gray-100 bg-opacity-95 rounded-xl shadow-md px-5 py-3 text-blue-700 border-2 border-blue-600 select-none min-w-[240px] flex items-center gap-3"
+      className="bg-gray-100 bg-opacity-95 rounded-xl shadow-md px-5 py-3 text-blue-700 border-2 border-blue-600 select-none min-w-[240px] flex items-center gap-3"
     >
       {/* Zoom out button */}
       <button

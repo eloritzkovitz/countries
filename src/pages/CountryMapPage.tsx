@@ -44,16 +44,30 @@ export default function CountryMapPage() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Map and toolbar */}
       <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
-        <MapScale
-          scale={zoom}
-          minScale={1}
-          maxScale={10}
-          onScaleChange={setZoom}
-          onZoomIn={() => setZoom((z) => Math.min(z * 1.5, 16))}
-          onZoomOut={() => setZoom((z) => Math.max(z / 1.5, 1))}
-        />
+        {/* Map toolbar */}
+        <div className="absolute left-8 bottom-8 flex items-center gap-6 z-[101]">
+          {/* Overlay Manager Button */}
+          <button
+            onClick={() => setShowOverlayManager((v) => !v)}
+            className="bg-blue-600 text-white w-16 h-16 flex items-center justify-center shadow-lg cursor-pointer p-0 rounded-full border-none"
+            aria-label={
+              showOverlayManager
+                ? "Close Overlays Panel"
+                : "Open Overlays Panel"
+            }
+          >
+            <FaLayerGroup size={32} color="#fff" />
+          </button>
+          <MapScale
+            scale={zoom}
+            minScale={1}
+            maxScale={10}
+            onScaleChange={setZoom}
+            onZoomIn={() => setZoom((z) => Math.min(z * 1.5, 16))}
+            onZoomOut={() => setZoom((z) => Math.max(z / 1.5, 1))}
+          />
+        </div>
         <WorldMap
           zoom={zoom}
           center={center}
@@ -73,6 +87,7 @@ export default function CountryMapPage() {
           />
         )}
       </div>
+
       {/* Sidebar panel */}
       <CountrySidebarPanel
         selectedIsoCode={selectedIsoCode}
@@ -80,16 +95,6 @@ export default function CountryMapPage() {
         onSelect={setSelectedIsoCode}
         onHover={setHoveredIsoCode}
       />
-      {/* Overlay Manager Button */}
-      <button
-        onClick={() => setShowOverlayManager((v) => !v)}
-        className="fixed left-8 bottom-8 z-[100] bg-blue-600 text-white w-14 h-14 flex items-center justify-center shadow-lg cursor-pointer p-0 rounded-full border-none hover:bg-blue-700 transition-colors"
-        aria-label={
-          showOverlayManager ? "Close Overlays Panel" : "Open Overlays Panel"
-        }
-      >
-        <FaLayerGroup size={32} color="#fff" />
-      </button>
 
       {/* Overlay Manager Modal */}
       {showOverlayManager && (
