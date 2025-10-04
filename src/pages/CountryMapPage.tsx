@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { FaLayerGroup } from "react-icons/fa";
-import { CountryDetailsModal } from "../components/country/CountryDetailsModal";
-import { CountrySidebarPanel } from "../components/country/CountrySidebarPanel";
 import { ErrorMessage } from "../components/common/ErrorMessage";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { CountryDetailsModal } from "../components/country/CountryDetailsModal";
+import { CountrySidebarPanel } from "../components/country/CountrySidebarPanel";
 import { MapScale } from "../components/map/MapScale";
-import OverlayManagerPanel from "../components/overlay/OverlayManagerPanel";
 import { WorldMap } from "../components/map/WorldMap";
+import { OverlayManagerPanel } from "../components/overlay/OverlayManagerPanel";
 import { useCountryData } from "../context/CountryDataContext";
 import { useMapView } from "../hooks/useMapView";
 import type { Country } from "../types/country";
