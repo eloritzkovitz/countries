@@ -1,73 +1,74 @@
-# React + TypeScript + Vite
+# Countries Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fully-configurable country explorer built with React, Vite, and TypeScript.  
+All country, currency, travel, and overlay data sources are **generic, config-driven, and environment-configurable** loaded from JSON files.  
+Supports user-defined overlays, flexible filters, and easy data extension for any dataset.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Interactive world map with overlays (such as visited countries, etc.)
+- View detailed country information 
+- An interactive flag guessing game
+- Configurable filters (region, subregion, overlays)
+- All data sources loaded from JSON files via environment variables
+- Easily swap or edit data/configs without rebuilding
 
-## React Compiler
+## Data Sources
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+All main data sources are loaded from JSON files in the `public/data` folder.  
+You can change their location or swap datasets by editing the `.env` file.
 
-## Expanding the ESLint configuration
+| Data Type        | Default Path                | Env Variable                    |
+|------------------|----------------------------|---------------------------------|
+| Countries        | `/data/countries.json`      | `VITE_COUNTRY_DATA_URL`         |
+| Currencies       | `/data/currencies.json`     | `VITE_CURRENCY_DATA_URL`        |
+| Travel Data      | `/data/travelData.json`     | `VITE_TRAVEL_DATA_URL`          |
+| Overlays Config  | `/data/overlays.json`       | `VITE_OVERLAYS_CONFIG_URL`      |
+| Map GeoJSON      | `/data/countries.geojson`   | `VITE_MAP_GEO_URL`              |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Customizing Data & Overlays
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. **Edit JSON files in `public/data`**  
+   - Example: Add your own overlays in `overlays.json`
+   - Example: Update visited countries in `travelData.json`
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+2. **Update `.env` to point to your data files**  
+   - No code changes needed—just edit the paths.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+3. **Overlays are config-driven**  
+   - Each overlay in `overlays.json` can have its own color, tooltip, and country list key.
+
+## Getting Started
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Start the dev server**
+   ```bash
+   npm run dev
+   ```
+
+3. **Edit `.env` and `public/data/*.json` to customize your data**
+
+## Project Structure
+
+```
+src/
+  components/      # UI components
+  config/          # Filter and overlay configs
+  context/         # React context providers
+  hooks/           # Custom React hooks
+  pages/           # App pages
+  types/           # TypeScript types
+  utils/           # Utility functions
+public/
+  data/            # All JSON data sources
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Extending & Contributing
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Add new overlays by editing `public/data/overlays.json`
+- Add new filters by editing `src/config/filtersConfig.ts`
+- All data sources are generic—just swap JSON files and update `.env`
