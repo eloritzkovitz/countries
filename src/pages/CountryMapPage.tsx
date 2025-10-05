@@ -6,8 +6,10 @@ import { CountryDetailsModal } from "../components/country/CountryDetailsModal";
 import { CountrySidebarPanel } from "../components/country/CountrySidebarPanel";
 import { MapScale } from "../components/map/MapScale";
 import { WorldMap } from "../components/map/WorldMap";
+import { OverlayEditModal } from "../components/overlay/OverlayEditModal";
 import { OverlayManagerPanel } from "../components/overlay/OverlayManagerPanel";
 import { useCountryData } from "../context/CountryDataContext";
+import { useOverlayContext } from "../context/OverlayContext";
 import { useMapView } from "../hooks/useMapView";
 import type { Country } from "../types/country";
 
@@ -24,8 +26,18 @@ export default function CountryMapPage() {
   const [hoveredIsoCode, setHoveredIsoCode] = useState<string | null>(null);
   const [modalCountry, setModalCountry] = useState<Country | null>(null);
 
-  // Overlay Manager Modal state
+  // Overlay state
   const [showOverlayManager, setShowOverlayManager] = useState(false);
+  const {
+    editingOverlay,
+    isEditModalOpen,
+    isNewOverlay,
+    openAddOverlay,
+    openEditOverlay,
+    saveOverlay,
+    closeOverlayModal,
+    setEditingOverlay,
+  } = useOverlayContext();
 
   // Handler for map country click
   const handleCountryClick = (countryIsoCode: string | null) => {
@@ -36,7 +48,7 @@ export default function CountryMapPage() {
   // Handler for hover
   const handleCountryHover = (isoCode: string | null) => {
     setHoveredIsoCode(isoCode);
-  };
+  };  
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading countries..." />;
@@ -114,8 +126,22 @@ export default function CountryMapPage() {
           <OverlayManagerPanel
             isOpen={showOverlayManager}
             onClose={() => setShowOverlayManager(false)}
-          />
+            onEditOverlay={openEditOverlay}
+            onAddOverlay={openAddOverlay}
+          />{" "}
         </div>
+      )}
+
+      {/* Overlay Add/Edit Modal */}
+      {editingOverlay && (
+        <OverlayEditModal
+          overlay={editingOverlay}
+          isNew={isNewOverlay}          
+          onChange={setEditingOverlay}
+          onSave={saveOverlay}
+          onClose={closeOverlayModal}
+          isOpen={isEditModalOpen}
+        />
       )}
     </div>
   );

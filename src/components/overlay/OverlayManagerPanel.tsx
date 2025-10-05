@@ -8,15 +8,21 @@ import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Overlay } from "../../types/overlay";
 
 type OverlayManagerPanelProps = {
-  isOpen: boolean,
-  onClose: () => void,
+  isOpen: boolean;
+  onClose: () => void;
+  onEditOverlay: (overlay: Overlay) => void;
+  onAddOverlay: () => void;
 };
 
-export function OverlayManagerPanel({ isOpen, onClose }: OverlayManagerPanelProps) {
+export function OverlayManagerPanel({
+  isOpen,
+  onClose,
+  onEditOverlay,
+  onAddOverlay,
+}: OverlayManagerPanelProps) {
   const {
     overlays,
     toggleOverlayVisibility,
-    editOverlay,
     removeOverlay,
     loading,
     error,
@@ -25,16 +31,6 @@ export function OverlayManagerPanel({ isOpen, onClose }: OverlayManagerPanelProp
   // Close panel on Escape key
   useKeyHandler(() => onClose(), ["Escape"], isOpen);
 
-  // Handler for editing overlay (could open a modal, etc.)
-  function handleEditOverlay(overlay: Overlay) {
-    editOverlay(overlay);
-  }
-
-  // Handler for removing overlay
-  function handleRemoveOverlay(id: string) {
-    removeOverlay(id);
-  }
-
   if (loading) return <LoadingSpinner message="Loading overlays..." />;
   if (error) return <ErrorMessage error={error} />;
 
@@ -42,7 +38,7 @@ export function OverlayManagerPanel({ isOpen, onClose }: OverlayManagerPanelProp
     <div>
       <h2 className="text-lg font-bold mb-4">Overlays</h2>
       <button
-        onClick={() => {}}
+        onClick={onAddOverlay}
         className="mb-5 bg-blue-600 text-white border-none rounded-lg px-4 py-2 font-bold flex items-center gap-2 cursor-pointer hover:bg-blue-700 transition-colors"
       >
         <FaPlus /> Add Overlay
@@ -53,8 +49,8 @@ export function OverlayManagerPanel({ isOpen, onClose }: OverlayManagerPanelProp
             <OverlayPanelItem
               overlay={overlay}
               onToggleVisibility={toggleOverlayVisibility}
-              onEdit={handleEditOverlay}
-              onRemove={handleRemoveOverlay}
+              onEdit={onEditOverlay}
+              onRemove={removeOverlay}
             />
           </OverlayPanel>
         ))}
