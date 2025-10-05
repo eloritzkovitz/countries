@@ -44,6 +44,11 @@ export function CountryDetailsModal({
           ×
         </button>
         <h2 className="mt-0 mb-2 text-xl font-bold">{country.name}</h2>
+        {country.sovereigntyType && (
+          <div className="mb-2 text-base font-semibold text-gray-600">
+            {country.sovereigntyType}
+          </div>
+        )}
         <CountryFlag
           isoCode={country.isoCode}
           size="64x48"
@@ -72,12 +77,12 @@ export function CountryDetailsModal({
           <li>
             <strong>Languages:</strong> {getLanguagesDisplay(country.languages)}
           </li>
-          <li>
-            <strong>Sovereignty Type:</strong> {country.sovereigntyType}
-          </li>
         </ul>
         <a
-          href={`https://en.wikipedia.org/wiki/${country.name.replace(/ /g, "_")}`}
+          href={`https://en.wikipedia.org/wiki/${country.name.replace(
+            / /g,
+            "_"
+          )}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-600 underline font-bold inline-block mt-2"
