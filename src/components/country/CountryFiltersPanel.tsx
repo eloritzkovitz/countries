@@ -54,6 +54,7 @@ export function CountryFiltersPanel({
   function handleResetFilters() {
     setSelectedRegion("");
     setSelectedSubregion("");
+    setSelectedSovereignty("");
     setOverlaySelections(
       overlays.reduce((acc, overlay) => {
         acc[overlay.id] = "all";
