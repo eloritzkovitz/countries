@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { FaLayerGroup } from "react-icons/fa";
 import { ErrorMessage } from "../components/common/ErrorMessage";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { CountryDetailsModal } from "../components/country/CountryDetailsModal";
 import { CountrySidebarPanel } from "../components/country/CountrySidebarPanel";
-import { MapScale } from "../components/map/MapScale";
+import { MapToolbar } from "../components/map/MapToolbar";
 import { WorldMap } from "../components/map/WorldMap";
 import { OverlayEditModal } from "../components/overlay/OverlayEditModal";
 import { OverlayManagerPanel } from "../components/overlay/OverlayManagerPanel";
@@ -48,7 +47,7 @@ export default function CountryMapPage() {
   // Handler for hover
   const handleCountryHover = (isoCode: string | null) => {
     setHoveredIsoCode(isoCode);
-  };  
+  };
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading countries..." />;
@@ -56,30 +55,23 @@ export default function CountryMapPage() {
 
   return (
     <div className="flex h-screen bg-gray-100">
+      {/* Sidebar panel */}
+      <CountrySidebarPanel
+        selectedIsoCode={selectedIsoCode}
+        hoveredIsoCode={hoveredIsoCode}
+        onSelect={setSelectedIsoCode}
+        onHover={setHoveredIsoCode}
+      />
+
+      {/* Main map area */}
       <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
         {/* Map toolbar */}
-        <div className="absolute left-8 bottom-8 flex items-center gap-6 z-[101]">
-          {/* Overlay Manager Button */}
-          <button
-            onClick={() => setShowOverlayManager((v) => !v)}
-            className="bg-blue-600 text-white w-16 h-16 flex items-center justify-center shadow-lg cursor-pointer p-0 rounded-full border-none"
-            aria-label={
-              showOverlayManager
-                ? "Close Overlays Panel"
-                : "Open Overlays Panel"
-            }
-          >
-            <FaLayerGroup size={32} color="#fff" />
-          </button>
-          <MapScale
-            scale={zoom}
-            minScale={1}
-            maxScale={10}
-            onScaleChange={setZoom}
-            onZoomIn={() => setZoom((z) => Math.min(z * 1.5, 16))}
-            onZoomOut={() => setZoom((z) => Math.max(z / 1.5, 1))}
-          />
-        </div>
+        <MapToolbar
+          zoom={zoom}
+          setZoom={setZoom}
+          showOverlayManager={showOverlayManager}
+          setShowOverlayManager={setShowOverlayManager}
+        />
         <WorldMap
           zoom={zoom}
           center={center}
@@ -100,29 +92,14 @@ export default function CountryMapPage() {
         )}
       </div>
 
-      {/* Sidebar panel */}
-      <CountrySidebarPanel
-        selectedIsoCode={selectedIsoCode}
-        hoveredIsoCode={hoveredIsoCode}
-        onSelect={setSelectedIsoCode}
-        onHover={setHoveredIsoCode}
-      />
-
       {/* Overlay Manager Modal */}
       {showOverlayManager && (
         <div
-          className="fixed left-8 bottom-[100px] z-[101] min-w-[340px] max-w-[600px] max-h-[90vh] bg-white p-7 rounded-2xl shadow-2xl overflow-y-auto transition-opacity"
+          className="fixed right-8 bottom-[100px] z-[101] min-w-[340px] max-w-[600px] max-h-[90vh] bg-white p-7 rounded-2xl shadow-2xl overflow-y-auto transition-opacity"
           onClick={() => setShowOverlayManager(false)}
           aria-modal="true"
           role="dialog"
         >
-          <button
-            onClick={() => setShowOverlayManager(false)}
-            className="absolute top-4 right-4 bg-none border-none text-2xl text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
-            aria-label="Close Overlay Manager"
-          >
-            ×
-          </button>
           <OverlayManagerPanel
             isOpen={showOverlayManager}
             onClose={() => setShowOverlayManager(false)}
@@ -136,7 +113,7 @@ export default function CountryMapPage() {
       {editingOverlay && (
         <OverlayEditModal
           overlay={editingOverlay}
-          isNew={isNewOverlay}          
+          isNew={isNewOverlay}
           onChange={setEditingOverlay}
           onSave={saveOverlay}
           onClose={closeOverlayModal}

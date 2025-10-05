@@ -6,11 +6,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -19,6 +15,28 @@
 
 body {
   overflow: hidden;
+}
+
+.dark body { 
+  color: #f7fafc;
+  scrollbar-color: #4a5568 #2b3342;
+  scrollbar-width: thin;
+}
+
+.bg-gray-100 {
+  background-color: #f7fafc;
+}
+
+.dark .bg-gray-100 {
+  background-color: #4a5568;
+}
+
+.dark .bg-white {
+  background-color: #2d3748;
+}
+
+.dark .text-gray-700 {
+  color: #e5e7eb;
 }
 
 h1 {
@@ -43,6 +61,22 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: none !important;
+}
+
+/* Custom scrollbar styles */
+body::-webkit-scrollbar {
+  width: 8px;
+  background: #f7fafc;
+}
+body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+.dark body::-webkit-scrollbar {
+  background: #2d3748;
+}
+.dark body::-webkit-scrollbar-thumb {
+  background: #4a5568;
 }
 
 @media (prefers-color-scheme: light) {

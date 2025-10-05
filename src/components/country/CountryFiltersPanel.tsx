@@ -1,9 +1,11 @@
 import { FaTimes, FaUndo } from "react-icons/fa";
+import { ActionButton } from "../common/ActionButton";
 import { FilterSelect } from "../common/FilterSelect";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { filtersConfig } from "../../config/filtersConfig";
 import { useCountryData } from "../../context/CountryDataContext";
+import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Overlay } from "../../types/overlay";
 import {
   getSubregionsForRegion,
@@ -63,22 +65,35 @@ export function CountryFiltersPanel({
     );
   }
 
+  // Close panel on Escape key press
+  useKeyHandler(() => onHide(), ["Escape"]);
+
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading filters..." />;
   if (error) return <ErrorMessage error={error} />;
 
   return (
     <div className="relative w-full p-8 pt-8 pb-6 box-border">
-      {/* Close button */}
-      <button
-        type="button"
-        onClick={onHide}
-        className="absolute top-4 right-4 bg-none border-none text-2xl text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
-        aria-label="Close filters panel"
-      >
-        <FaTimes />
-      </button>
-      <h2 className="mt-0 mb-6 text-lg font-bold">Filters</h2>
+      {/* Header with title, reset button, and close button */}
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="mt-0 text-lg font-bold">Filters</h2>
+        <div className="flex items-center gap-2">
+          <ActionButton
+            onClick={handleResetFilters}
+            ariaLabel="Reset all filters"
+            title="Reset filters"
+          >
+            <FaUndo />
+          </ActionButton>
+          <ActionButton
+            onClick={onHide}
+            ariaLabel="Close filters panel"
+            title="Close"
+          >
+            <FaTimes />
+          </ActionButton>
+        </div>
+      </div>
       {/* Render region and subregion filters from config */}
       {filtersConfig
         .filter((f) => f.key !== "overlay")
@@ -123,15 +138,6 @@ export function CountryFiltersPanel({
           />
         );
       })}
-      {/* Reset Filters Button */}
-      <button
-        type="button"
-        onClick={handleResetFilters}
-        className="mt-6 py-2 px-6 rounded border-none bg-gray-200 text-gray-700 font-bold cursor-pointer w-full flex items-center justify-center gap-2 hover:bg-gray-300 transition-colors"
-      >
-        <FaUndo />
-        Reset Filters
-      </button>
     </div>
   );
 }
