@@ -19,17 +19,18 @@ export function MapScale({
   onZoomOut,
 }: MapScaleProps) {
   return (
-    <div className="flex items-center select-none">
+    <div className="flex flex-col items-center select-none">
       <button
-        onClick={onZoomOut}
-        className="bg-blue-600 text-white rounded-lg w-8 h-8 flex items-center justify-center text-2xl shadow-lg cursor-pointer hover:bg-blue-700 transition-colors"
-        aria-label="Zoom out"
-        title="Zoom out"
+        onClick={onZoomIn}
+        className="bg-blue-600 text-white rounded-lg w-8 h-8 flex items-center justify-center text-2xl shadow-lg cursor-pointer hover:bg-blue-700 transition-colors mb-2"
+        aria-label="Zoom in"
+        title="Zoom in"
       >
-        −
+        +
       </button>
-      <div className="w-40 px-2">
+      <div className="h-40 px-2 flex items-center">
         <Slider
+          vertical
           min={minScale}
           max={maxScale}
           step={0.1}
@@ -38,26 +39,26 @@ export function MapScale({
             onScaleChange(Array.isArray(value) ? value[0] : value)
           }
           styles={{
-            track: { backgroundColor: "#2563eb", height: 8 },
+            track: { backgroundColor: "#2563eb", width: 8 },
             handle: {
               borderColor: "#2563eb",
               height: 24,
               width: 24,
-              marginTop: -8,
+              marginLeft: -8,
               backgroundColor: "#fff",
               boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
             },
-            rail: { backgroundColor: "#dbeafe", height: 8 },
+            rail: { backgroundColor: "#dbeafe", width: 8 },
           }}
         />
       </div>
       <button
-        onClick={onZoomIn}
-        className="bg-blue-600 text-white rounded-lg w-8 h-8 flex items-center justify-center text-2xl shadow-lg cursor-pointer hover:bg-blue-700 transition-colors"
-        aria-label="Zoom in"
-        title="Zoom in"
+        onClick={onZoomOut}
+        className="bg-blue-600 text-white rounded-lg w-8 h-8 flex items-center justify-center text-2xl shadow-lg cursor-pointer hover:bg-blue-700 transition-colors mt-2"
+        aria-label="Zoom out"
+        title="Zoom out"
       >
-        +
+        −
       </button>
     </div>
   );

@@ -25,11 +25,14 @@ export function CountrySidebarPanel({
   onHover: (iso: string | null) => void;
   onCountryInfo?: (country: Country) => void;
 }) {
-  const { countries, allRegions, allSubregions, loading, error } = useCountryData();
+  const { countries, allRegions, allSubregions, loading, error } =
+    useCountryData();
   const { overlays } = useOverlayContext();
 
   // Individual overlay filter selections: { [overlayId]: "all" | "only" | "exclude" }
-  const [overlaySelections, setOverlaySelections] = useState<Record<string, string>>({});
+  const [overlaySelections, setOverlaySelections] = useState<
+    Record<string, string>
+  >({});
 
   // UI state
   const [modalCountry, setModalCountry] = useState<Country | null>(null);
@@ -40,14 +43,18 @@ export function CountrySidebarPanel({
   const [selectedSovereignty, setSelectedSovereignty] = useState<string>("");
 
   // Apply overlay filters to get filtered isoCodes
-  let filteredIsoCodes = countries.map(c => c.isoCode);
+  let filteredIsoCodes = countries.map((c) => c.isoCode);
 
-  overlays.forEach(overlay => {
+  overlays.forEach((overlay) => {
     const selection = overlaySelections[overlay.id] || "all";
     if (selection === "only") {
-      filteredIsoCodes = filteredIsoCodes.filter(iso => overlay.countries.includes(iso));
+      filteredIsoCodes = filteredIsoCodes.filter((iso) =>
+        overlay.countries.includes(iso)
+      );
     } else if (selection === "exclude") {
-      filteredIsoCodes = filteredIsoCodes.filter(iso => !overlay.countries.includes(iso));
+      filteredIsoCodes = filteredIsoCodes.filter(
+        (iso) => !overlay.countries.includes(iso)
+      );
     }
     // "all" does not filter
   });
@@ -72,33 +79,7 @@ export function CountrySidebarPanel({
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <div
-      className="fixed top-0 right-0 h-screen flex flex-row z-40"
-    >
-      {/* Filters panel */}
-      <div
-        className={`relative h-screen bg-white transition-all duration-300 flex flex-col shadow-lg border-l border-gray-200 ${
-          filtersPanelOpen ? "w-[400px]" : "w-0"
-        }`}
-        style={{ zIndex: 100, minWidth: filtersPanelOpen ? PANEL_WIDTH : 0 }}
-      >
-        {filtersPanelOpen && (
-          <CountryFiltersPanel
-            allRegions={allRegions}
-            allSubregions={allSubregions}
-            selectedRegion={selectedRegion}
-            setSelectedRegion={setSelectedRegion}
-            selectedSubregion={selectedSubregion}
-            setSelectedSubregion={setSelectedSubregion}
-            selectedSovereignty={selectedSovereignty}
-            setSelectedSovereignty={setSelectedSovereignty}            
-            overlays={overlays}
-            overlaySelections={overlaySelections}
-            setOverlaySelections={setOverlaySelections}
-            onHide={() => setFiltersPanelOpen(false)}            
-          />
-        )}
-      </div>
+    <div className="fixed top-0 left-0 h-screen flex flex-row z-40">
       {/* Country sidebar panel */}
       <div
         className="h-screen bg-white shadow-lg flex flex-col border-l border-gray-200"
@@ -107,7 +88,9 @@ export function CountrySidebarPanel({
         {/* Inner container for padding and header */}
         <div className="px-4 pt-8 pb-0 flex-shrink-0">
           <div className="flex justify-between items-center">
-            <h2 className="text-center m-0 mb-4 text-lg font-bold">Country List</h2>
+            <h2 className="text-center m-0 mb-4 text-lg font-bold">
+              Country List
+            </h2>
           </div>
           <div className="flex gap-4 mb-4">
             <input
@@ -150,6 +133,31 @@ export function CountrySidebarPanel({
           )}
         </div>
       </div>
+
+      {/* Filters panel */}
+      <div
+        className={`relative h-screen bg-white transition-all duration-300 flex flex-col shadow-lg border-l border-gray-200 ${
+          filtersPanelOpen ? "w-[400px]" : "w-0"
+        }`}
+        style={{ zIndex: 100, minWidth: filtersPanelOpen ? PANEL_WIDTH : 0 }}
+      >
+        {filtersPanelOpen && (
+          <CountryFiltersPanel
+            allRegions={allRegions}
+            allSubregions={allSubregions}
+            selectedRegion={selectedRegion}
+            setSelectedRegion={setSelectedRegion}
+            selectedSubregion={selectedSubregion}
+            setSelectedSubregion={setSelectedSubregion}
+            selectedSovereignty={selectedSovereignty}
+            setSelectedSovereignty={setSelectedSovereignty}
+            overlays={overlays}
+            overlaySelections={overlaySelections}
+            setOverlaySelections={setOverlaySelections}
+            onHide={() => setFiltersPanelOpen(false)}
+          />
+        )}
+      </div>      
     </div>
   );
 }
