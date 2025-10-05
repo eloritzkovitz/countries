@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getAllRegions, getAllSubregions } from "../utils/countryFilters";
+import { getAllRegions, getAllSubregions, getAllSovereigntyTypes } from "../utils/countryFilters";
 
 type CountryDataContextType = {
   countries: any[];
   currencies: Record<string, string>;
   allRegions: string[];
-  allSubregions: string[];  
+  allSubregions: string[];
+  allSovereigntyTypes: string[];
+
   loading: boolean;
   error: string | null;
 };
@@ -14,7 +16,8 @@ export const CountryDataContext = createContext<CountryDataContextType>({
   countries: [],
   currencies: {},
   allRegions: [],
-  allSubregions: [],  
+  allSubregions: [], 
+  allSovereigntyTypes: [], 
   loading: true,
   error: null,
 });
@@ -36,6 +39,7 @@ export function CountryDataProvider({
   const [error, setError] = useState<string | null>(null);
   const [allRegions, setAllRegions] = useState<string[]>([]);
   const [allSubregions, setAllSubregions] = useState<string[]>([]);  
+  const [allSovereigntyTypes, setAllSovereigntyTypes] = useState<string[]>([]);
 
   // Dynamically import country data to optimize initial load time
   useEffect(() => {
@@ -58,6 +62,7 @@ export function CountryDataProvider({
           setCountries(countryData);
           setAllRegions(getAllRegions(countryData));
           setAllSubregions(getAllSubregions(countryData));
+          setAllSovereigntyTypes(getAllSovereigntyTypes(countryData));
           setCurrencies(currencyData);
           setLoading(false);
         }
@@ -76,7 +81,7 @@ export function CountryDataProvider({
 
   return (
     <CountryDataContext.Provider
-      value={{ countries, currencies, allRegions, allSubregions, loading, error }}
+      value={{ countries, currencies, allRegions, allSubregions, allSovereigntyTypes, loading, error }}
     >
       {children}
     </CountryDataContext.Provider>

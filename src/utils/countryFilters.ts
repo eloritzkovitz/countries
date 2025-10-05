@@ -1,3 +1,5 @@
+import type { SovereigntyType } from "../types/country";
+
 /**
  * Returns all unique regions from the countries list, excluding undefined values.
  * @param countries - Array of country objects with optional region property.
@@ -41,22 +43,41 @@ export function getSubregionsForRegion(
 }
 
 /**
+ * Returns all unique sovereignty types from the countries list.
+ * @param countries - Array of country objects with sovereigntyType property.
+ * @returns Sorted array of unique sovereignty type strings.
+ */
+export function getAllSovereigntyTypes(
+  countries: { sovereigntyType?: SovereigntyType }[]
+): SovereigntyType[] {
+  return Array.from(
+    new Set(
+      countries
+        .map((c) => c.sovereigntyType)
+        .filter((t): t is SovereigntyType => !!t)
+    )
+  ).sort((a, b) => a.localeCompare(b));
+}
+
+/**
  * Filters countries based on search, region, subregion, and overlay criteria.
  * @param countries - Array of country objects with name, region, subregion, and isoCode properties.
  * @param filters - Object containing search, selectedRegion, selectedSubregion, and overlayCountries.
  * @returns Filtered and sorted array of country objects.
- */ 
+ */
 export function filterCountries(
   countries: any[],
   {
     search,
     selectedRegion,
     selectedSubregion,
+    selectedSovereignty,
     overlayCountries,
   }: {
     search: string;
     selectedRegion: string;
     selectedSubregion: string;
+    selectedSovereignty: string;
     overlayCountries: string[];
   }
 ) {
@@ -71,13 +92,21 @@ export function filterCountries(
       const matchesSubregion = selectedSubregion
         ? country.subregion === selectedSubregion
         : true;
-
-      // If overlayCountries is set, only include countries in overlays
       const matchesOverlay =
         !overlayCountries.length || overlayCountries.includes(country.isoCode);
 
+      // Add sovereignty filter
+      const matchesSovereignty =
+        selectedSovereignty && selectedSovereignty !== ""
+          ? country.sovereigntyType === selectedSovereignty
+          : true;
+
       return (
-        matchesSearch && matchesRegion && matchesSubregion && matchesOverlay
+        matchesSearch &&
+        matchesRegion &&
+        matchesSubregion &&
+        matchesOverlay &&
+        matchesSovereignty
       );
     })
     .sort((a, b) => a.name.localeCompare(b.name));

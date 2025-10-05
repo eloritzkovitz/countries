@@ -72,6 +72,9 @@ export function CountryDetailsModal({
           <li>
             <strong>Languages:</strong> {getLanguagesDisplay(country.languages)}
           </li>
+          <li>
+            <strong>Sovereignty Type:</strong> {country.sovereigntyType}
+          </li>
         </ul>
         <a
           href={`https://en.wikipedia.org/wiki/${country.name.replace(/ /g, "_")}`}

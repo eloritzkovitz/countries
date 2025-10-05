@@ -1,11 +1,14 @@
 import { FaTimes, FaUndo } from "react-icons/fa";
 import { FilterSelect } from "../common/FilterSelect";
-import { LoadingSpinner} from "../common/LoadingSpinner";
+import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { filtersConfig } from "../../config/filtersConfig";
 import { useCountryData } from "../../context/CountryDataContext";
 import type { Overlay } from "../../types/overlay";
-import { getSubregionsForRegion } from "../../utils/countryFilters";
+import {
+  getSubregionsForRegion,
+  getAllSovereigntyTypes,
+} from "../../utils/countryFilters";
 
 type CountryFiltersPanelProps = {
   allRegions: string[];
@@ -14,6 +17,8 @@ type CountryFiltersPanelProps = {
   setSelectedRegion: (region: string) => void;
   selectedSubregion: string;
   setSelectedSubregion: (subregion: string) => void;
+  selectedSovereignty: string;
+  setSelectedSovereignty: (type: string) => void;
   overlays: Overlay[];
   overlaySelections: Record<string, string>;
   setOverlaySelections: React.Dispatch<
@@ -29,6 +34,8 @@ export function CountryFiltersPanel({
   setSelectedRegion,
   selectedSubregion,
   setSelectedSubregion,
+  selectedSovereignty,
+  setSelectedSovereignty,
   overlays,
   overlaySelections,
   setOverlaySelections,
@@ -40,6 +47,8 @@ export function CountryFiltersPanel({
     selectedRegion && selectedRegion !== ""
       ? getSubregionsForRegion(countries, selectedRegion)
       : allSubregions;
+
+  const sovereigntyOptions = getAllSovereigntyTypes(countries);
 
   // Reset filters handler
   function handleResetFilters() {
@@ -71,46 +80,43 @@ export function CountryFiltersPanel({
       <h2 className="mt-0 mb-6 text-lg font-bold">Filters</h2>
       {/* Render region and subregion filters from config */}
       {filtersConfig
-        .filter(f => f.key !== "overlay")
-        .map(filter => (
-          <FilterSelect
-            key={filter.key}
-            label={filter.label}
-            value={filter.getValue({
-              selectedRegion,
-              selectedSubregion,
-            })}
-            onChange={val =>
-              filter.setValue(
-                {
-                  setSelectedRegion,
-                  setSelectedSubregion,
-                },
-                val
-              )
-            }
-            options={
-              filter.key === "region"
-                ? filter.getOptions(allRegions)
-                : filter.getOptions(subregionOptions)
-            }
-          />
-        ))}
+        .filter((f) => f.key !== "overlay")
+        .map((filter) => {
+          let value, setValue, options;
+          if (filter.key === "region") {
+            value = selectedRegion;
+            setValue = setSelectedRegion;
+            options = filter.getOptions(allRegions);
+          } else if (filter.key === "subregion") {
+            value = selectedSubregion;
+            setValue = setSelectedSubregion;
+            options = filter.getOptions(subregionOptions);
+          } else if (filter.key === "sovereignty") {
+            value = selectedSovereignty;
+            setValue = setSelectedSovereignty;
+            options = filter.getOptions(sovereigntyOptions);
+          }
+          return setValue ? (
+            <FilterSelect
+              key={filter.key}
+              label={filter.label}
+              value={value ?? ""}
+              onChange={setValue}
+              options={options ?? []}
+            />
+          ) : null;
+        })}
       {/* Render overlay filters from config */}
-      {overlays.map(overlay => {
-        const overlayFilter = filtersConfig.find(f => f.key === "overlay");
+      {overlays.map((overlay) => {
+        const overlayFilter = filtersConfig.find((f) => f.key === "overlay");
         if (!overlayFilter) return null;
         return (
           <FilterSelect
             key={overlay.id}
             label={overlayFilter.label(overlay)}
             value={overlayFilter.getValue({ overlaySelections }, overlay)}
-            onChange={val =>
-              overlayFilter.setValue(
-                { setOverlaySelections },
-                val,
-                overlay
-              )
+            onChange={(val) =>
+              overlayFilter.setValue({ setOverlaySelections }, val, overlay)
             }
             options={overlayFilter.getOptions()}
           />

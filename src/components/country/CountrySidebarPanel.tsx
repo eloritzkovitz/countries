@@ -37,6 +37,7 @@ export function CountrySidebarPanel({
   const [search, setSearch] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [selectedSubregion, setSelectedSubregion] = useState<string>("");
+  const [selectedSovereignty, setSelectedSovereignty] = useState<string>("");
 
   // Apply overlay filters to get filtered isoCodes
   let filteredIsoCodes = countries.map(c => c.isoCode);
@@ -56,6 +57,7 @@ export function CountrySidebarPanel({
     search,
     selectedRegion,
     selectedSubregion,
+    selectedSovereignty: selectedSovereignty,
     overlayCountries: filteredIsoCodes,
   });
 
@@ -88,10 +90,12 @@ export function CountrySidebarPanel({
             setSelectedRegion={setSelectedRegion}
             selectedSubregion={selectedSubregion}
             setSelectedSubregion={setSelectedSubregion}
+            selectedSovereignty={selectedSovereignty}
+            setSelectedSovereignty={setSelectedSovereignty}            
             overlays={overlays}
             overlaySelections={overlaySelections}
             setOverlaySelections={setOverlaySelections}
-            onHide={() => setFiltersPanelOpen(false)}
+            onHide={() => setFiltersPanelOpen(false)}            
           />
         )}
       </div>

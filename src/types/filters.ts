@@ -1,3 +1,4 @@
+import type { SovereigntyType } from "./country";
 import type { Overlay } from "./overlay";
 
 // Filter option type
@@ -23,6 +24,14 @@ export type FilterConfig =
       getOptions: (
         subregionOptions: string[]
       ) => { value: string; label: string }[];
+      getValue: (props: any) => string;
+      setValue: (props: any, val: string) => void;
+    }
+  | {
+      key: "sovereignty";
+      label: string;
+      type: "select";
+      getOptions: (sovereigntyOptions: SovereigntyType[]) => FilterOption[];
       getValue: (props: any) => string;
       setValue: (props: any, val: string) => void;
     }

@@ -1,5 +1,13 @@
+import type { SovereigntyType } from "../types/country";
 import type { FilterConfig } from "../types/filters";
 import type { Overlay } from "../types/overlay";
+
+const SOVEREIGNTY_ORDER: SovereigntyType[] = [
+  "Sovereign",
+  "Dependency",
+  "Partially Recognized",
+  "Disputed",
+];
 
 export const filtersConfig: FilterConfig[] = [
   {
@@ -25,15 +33,33 @@ export const filtersConfig: FilterConfig[] = [
     setValue: (props, val) => props.setSelectedSubregion(val),
   },
   {
+    key: "sovereignty",
+    label: "Sovereignty",
+    type: "select",
+    getOptions: (sovereigntyOptions: SovereigntyType[]) => [
+      { value: "", label: "All" },
+      ...SOVEREIGNTY_ORDER
+        .filter((type) => sovereigntyOptions.includes(type))
+        .map((type) => ({
+          value: type,
+          label: type.charAt(0).toUpperCase() + type.slice(1),
+        })),
+    ],
+    getValue: (props) => props.selectedSovereignty,
+    setValue: (props, val) => props.setSelectedSovereignty(val),
+  },
+  {
     key: "overlay",
-    label: (overlay: Overlay) => `${overlay.name} (${overlay.countries.length})`,
+    label: (overlay: Overlay) =>
+      `${overlay.name} (${overlay.countries.length})`,
     type: "select",
     getOptions: () => [
       { value: "all", label: "All" },
       { value: "only", label: "Include only" },
       { value: "exclude", label: "Exclude" },
     ],
-    getValue: (props, overlay: Overlay) => props.overlaySelections[overlay.id] || "all",
+    getValue: (props, overlay: Overlay) =>
+      props.overlaySelections[overlay.id] || "all",
     setValue: (props, val, overlay: Overlay) =>
       props.setOverlaySelections((sel: Record<string, string>) => ({
         ...sel,
