@@ -69,16 +69,30 @@ export function CountryFiltersPanel({
 
   return (
     <div className="relative w-full p-8 pt-8 pb-6 box-border">
-      {/* Close button */}
-      <button
-        type="button"
-        onClick={onHide}
-        className="absolute top-4 right-4 bg-none border-none text-2xl text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
-        aria-label="Close filters panel"
-      >
-        <FaTimes />
-      </button>
-      <h2 className="mt-0 mb-6 text-lg font-bold">Filters</h2>
+      {/* Header with title, reset button, and close button */}
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="mt-0 text-lg font-bold">Filters</h2>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleResetFilters}
+            className="py-1 px-2 rounded border-none bg-gray-200 text-gray-700 font-bold cursor-pointer flex items-center gap-2 hover:bg-gray-300 transition-colors"
+            aria-label="Reset Filters"
+            title="Reset Filters"
+          >
+            <FaUndo />
+          </button>
+          <button
+            type="button"
+            onClick={onHide}
+            className="py-1 px-2 rounded border-none bg-gray-200 text-blue-600 font-bold cursor-pointer flex items-center gap-2 hover:bg-gray-300 transition-colors text-2xl"
+            aria-label="Close filters panel"
+            title="Close"
+          >
+            <FaTimes />
+          </button>
+        </div>
+      </div>
       {/* Render region and subregion filters from config */}
       {filtersConfig
         .filter((f) => f.key !== "overlay")
@@ -123,15 +137,6 @@ export function CountryFiltersPanel({
           />
         );
       })}
-      {/* Reset Filters Button */}
-      <button
-        type="button"
-        onClick={handleResetFilters}
-        className="mt-6 py-2 px-6 rounded border-none bg-gray-200 text-gray-700 font-bold cursor-pointer w-full flex items-center justify-center gap-2 hover:bg-gray-300 transition-colors"
-      >
-        <FaUndo />
-        Reset Filters
-      </button>
     </div>
   );
 }
