@@ -38,7 +38,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isNewOverlay, setIsNewOverlay] = useState(false);
 
-  // Load overlays from localStorage or fetch from files
+  // Load overlays from localStorage or fetch from files  
   useEffect(() => {
     const saved = localStorage.getItem("overlays");
     if (saved) {
@@ -48,26 +48,14 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
     }
     const overlaysConfigUrl =
       import.meta.env.VITE_OVERLAYS_CONFIG_URL || "/data/overlays.json";
-    const userDataUrl =
-      import.meta.env.VITE_USER_DATA_URL || "/data/userData.json";
 
-    Promise.all([
-      fetch(overlaysConfigUrl).then((res) => {
+    fetch(overlaysConfigUrl)
+      .then((res) => {
         if (!res.ok) throw new Error("Failed to load overlays config");
         return res.json();
-      }),
-      fetch(userDataUrl).then((res) => {
-        if (!res.ok) throw new Error("Failed to load user data");
-        return res.json();
-      }),
-    ])
-      .then(([overlaysConfig, userData]) => {
-        setOverlays(
-          overlaysConfig.map((cfg: { dataKey: string | number }) => ({
-            ...cfg,
-            countries: userData[cfg.dataKey] || [],
-          }))
-        );
+      })
+      .then((overlaysConfig) => {
+        setOverlays(overlaysConfig);
         setLoading(false);
       })
       .catch((err) => {

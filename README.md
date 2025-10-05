@@ -12,6 +12,7 @@ Supports user-defined overlays, flexible filters, and easy data extension for an
 - Configurable filters (region, subregion, overlays)
 - All data sources loaded from JSON files via environment variables
 - Easily swap or edit data/configs without rebuilding
+- **Import and export overlays directly from the UI for backup, sharing, or migration**
 
 ## Data Sources
 
@@ -23,20 +24,33 @@ You can change their location or swap datasets by editing the `.env` file.
 | Map GeoJSON      | `/data/countries.geojson`   | `VITE_MAP_GEO_URL`              |
 | Countries        | `/data/countries.json`      | `VITE_COUNTRY_DATA_URL`         |
 | Currencies       | `/data/currencies.json`     | `VITE_CURRENCY_DATA_URL`        |
-| Overlays Config  | `/data/overlays.json`       | `VITE_OVERLAYS_CONFIG_URL`      |
-| User Data        | `/data/userData.json`       | `VITE_USER_DATA_URL`            |
+| Overlays         | `/data/overlays.json`       | `VITE_OVERLAYS_CONFIG_URL`      |
+
+> **Overlay Example:**
+> ```json
+> {
+>   "id": "visited",
+>   "name": "Visited",
+>   "color": "rgba(76, 175, 80, 0.5)",
+>   "tooltip": "Visited",
+>   "visible": true,
+>   "countries": ["IL"]
+> }
+> ```
 
 ## Customizing Data & Overlays
 
 1. **Edit JSON files in `public/data`**  
-   - Example: Add your own overlays in `overlays.json`
-   - Example: Update visited countries in `userData.json`
+   - Example: Add your own overlays or update country lists in `overlays.json`
 
 2. **Update `.env` to point to your data files**  
    - No code changes needed—just edit the paths.
 
 3. **Overlays are config-driven**  
-   - Each overlay in `overlays.json` can have its own color, tooltip, and country list key.
+   - Each overlay in `overlays.json` can have its own color, tooltip, and country list.
+
+4. **Import/Export overlays via the UI**  
+   - Use the overlay manager panel to backup, restore, or share overlays as JSON files.
 
 ## Getting Started
 
@@ -69,6 +83,7 @@ public/
 
 ## Extending & Contributing
 
-- Add new overlays by editing `public/data/overlays.json`
+- Add or edit overlays and country lists in `public/data/overlays.json`
 - Add new filters by editing `src/config/filtersConfig.ts`
 - All data sources are generic—just swap JSON files and update `.env`
+- Use the overlay manager panel to import/export overlays for backup or sharing
