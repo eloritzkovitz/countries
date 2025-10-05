@@ -15,7 +15,7 @@ export function OverlayPanelItem({
   onRemove,
 }: OverlayPanelItemProps) {
   return (
-    <li className="mb-4 flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+    <li className="mb-4 flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2">
       <span
         className="inline-block w-[22px] h-[22px] rounded-md border-2 border-gray-300 mr-1"
         style={{ background: overlay.color }}

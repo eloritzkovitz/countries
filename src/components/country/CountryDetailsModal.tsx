@@ -51,7 +51,7 @@ export function CountryDetailsModal({
           </ActionButton>
         </div>
         {country.sovereigntyType && (
-          <div className="mb-6 text-base font-semibold text-gray-600">
+          <div className="mb-6 text-base font-semibold text-gray-600 dark:text-gray-300">
             {country.sovereigntyType}
           </div>
         )}

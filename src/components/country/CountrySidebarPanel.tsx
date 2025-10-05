@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaFilter } from "react-icons/fa";
+import { FaFilter, FaMoon, FaSun } from "react-icons/fa";
 import { CountryDetailsModal } from "./CountryDetailsModal";
 import { CountryFiltersPanel } from "./CountryFiltersPanel";
 import { CountryList } from "./CountryList";
@@ -7,8 +7,10 @@ import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { useCountryData } from "../../context/CountryDataContext";
 import { useOverlayContext } from "../../context/OverlayContext";
+import { useTheme } from "../../hooks/useTheme";
 import type { Country } from "../../types/country";
 import { filterCountries } from "../../utils/countryFilters";
+import { ActionButton } from "../common/ActionButton";
 
 const PANEL_WIDTH = 400;
 
@@ -41,6 +43,7 @@ export function CountrySidebarPanel({
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [selectedSubregion, setSelectedSubregion] = useState<string>("");
   const [selectedSovereignty, setSelectedSovereignty] = useState<string>("");
+  const { theme, toggleTheme } = useTheme();
 
   // Apply overlay filters to get filtered isoCodes
   let filteredIsoCodes = countries.map((c) => c.isoCode);
@@ -82,15 +85,22 @@ export function CountrySidebarPanel({
     <div className="fixed top-0 left-0 h-screen flex flex-row z-40">
       {/* Country sidebar panel */}
       <div
-        className="h-screen bg-white shadow-lg flex flex-col border-l border-gray-200"
+        className="h-screen bg-white shadow-lg flex flex-col"
         style={{ width: PANEL_WIDTH, minWidth: PANEL_WIDTH, zIndex: 40 }}
       >
         {/* Inner container for padding and header */}
         <div className="px-4 pt-8 pb-0 flex-shrink-0">
-          <div className="flex justify-between items-center">
-            <h2 className="text-center m-0 mb-4 text-lg font-bold">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-center m-0 text-lg font-bold flex-1">
               Country List
             </h2>
+            <ActionButton
+              onClick={toggleTheme}
+              ariaLabel="Toggle theme"
+              title="Toggle theme"            
+              className="ml-2"
+              icon={theme === "dark" ? <FaSun /> : <FaMoon />}
+            ></ActionButton>
           </div>
           <div className="flex gap-4 mb-4">
             <input
@@ -98,7 +108,7 @@ export function CountrySidebarPanel({
               placeholder="Search countries..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 px-3 py-2 rounded border border-gray-300 text-base"
+              className="flex-1 px-3 py-2 bg-gray-100 rounded border border-none text-base"
             />
             <button
               onClick={() => setFiltersPanelOpen((open) => !open)}
@@ -136,7 +146,7 @@ export function CountrySidebarPanel({
 
       {/* Filters panel */}
       <div
-        className={`relative h-screen bg-white transition-all duration-300 flex flex-col shadow-lg border-l border-gray-200 ${
+        className={`relative h-screen bg-white transition-all duration-300 flex flex-col shadow-lg ${
           filtersPanelOpen ? "w-[400px]" : "w-0"
         }`}
         style={{ zIndex: 100, minWidth: filtersPanelOpen ? PANEL_WIDTH : 0 }}
@@ -157,7 +167,7 @@ export function CountrySidebarPanel({
             onHide={() => setFiltersPanelOpen(false)}
           />
         )}
-      </div>      
+      </div>
     </div>
   );
 }

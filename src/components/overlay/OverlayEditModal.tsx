@@ -5,6 +5,7 @@ import { FaPlus, FaEdit, FaPalette, FaTimes } from "react-icons/fa";
 import { ActionButton } from "../common/ActionButton";
 import { useCountryData } from "../../context/CountryDataContext";
 import { useKeyHandler } from "../../hooks/useKeyHandler";
+import { useTheme } from "../../hooks/useTheme";
 import type { Overlay } from "../../types/overlay";
 
 type OverlayEditModalProps = {
@@ -25,7 +26,8 @@ export function OverlayEditModal({
   isOpen,
 }: OverlayEditModalProps) {
   const { countries } = useCountryData();
-  
+  const { theme } = useTheme();
+
   // Don't render if not open
   if (!isOpen) return null;
 
@@ -36,7 +38,7 @@ export function OverlayEditModal({
   const countryOptions = countries.map((country) => ({
     value: country.isoCode,
     label: country.name,
-  }));  
+  }));
 
   return ReactDOM.createPortal(
     <div
@@ -48,7 +50,7 @@ export function OverlayEditModal({
       <div
         className="bg-white rounded-xl shadow-2xl p-8 min-w-[400px] max-w-[600px] max-h-[90vh] overflow-y-auto relative"
         onClick={(e) => e.stopPropagation()}
-      >        
+      >
         {/* Header row with title and close button aligned */}
         <div className="flex items-center justify-between mb-6">
           <h3 className="flex items-center gap-2 text-lg font-bold m-0">
@@ -69,7 +71,7 @@ export function OverlayEditModal({
             type="text"
             value={overlay.name}
             onChange={(e) => onChange({ ...overlay, name: e.target.value })}
-            className="ml-2 px-2 py-1 rounded border border-gray-300 flex-1"
+            className="ml-2 px-2 py-1 bg-gray-100 rounded border border-none flex-1"
           />
         </label>
         <label className="flex items-center gap-2 mb-4">
@@ -79,6 +81,21 @@ export function OverlayEditModal({
               color={overlay.color}
               onChangeComplete={(color) =>
                 onChange({ ...overlay, color: color.hex })
+              }
+              styles={
+                theme === "dark"
+                  ? {
+                      default: {
+                        picker: {
+                          background: "#4a5568",
+                          color: "#eee",
+                        },
+                        saturation: { borderRadius: "4px" },
+                        hue: { borderRadius: "4px" },
+                        Alpha: { borderRadius: "4px" },
+                      },
+                    }
+                  : {}
               }
             />
           </div>
@@ -98,6 +115,49 @@ export function OverlayEditModal({
                   countries: selected.map((opt) => opt.value),
                 })
               }
+              classNamePrefix="country-select"
+              className="!border-none dark:bg-gray-800 dark:text-gray-100"
+              theme={(selectTheme) => ({
+                ...selectTheme,
+                colors: {
+                  ...selectTheme.colors,
+                  neutral0: theme === "dark" ? "#4a5568" : "#fff",
+                  neutral80: theme === "dark" ? "#f3f4f6" : "#222",
+                  primary25: theme === "dark" ? "#374151" : "#e0e7ff",
+                  primary: "#2563eb",
+                  multiValue: theme === "dark" ? "#1e293b" : "#e0e7ff",
+                  multiValueLabel: theme === "dark" ? "#fff" : "#222",
+                  multiValueRemove: theme === "dark" ? "#1e293b" : "#2563eb",
+                },
+              })}
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  border: "none",
+                  boxShadow: "none",
+                  backgroundColor: theme === "dark" ? "#4a5568" : "#fff",
+                }),
+                multiValue: (base) => ({
+                  ...base,
+                  backgroundColor: theme === "dark" ? "#1e293b" : "#e0e7ff",
+                  borderRadius: "6px",
+                }),
+                multiValueLabel: (base) => ({
+                  ...base,
+                  color: theme === "dark" ? "#fff" : "#222",
+                  fontWeight: 500,
+                }),
+                multiValueRemove: (base) => ({
+                  ...base,
+                  backgroundColor: theme === "dark" ? "#1e293b" : "#e0e7ff",
+                  color: theme === "dark" ? "#fff" : "#222",
+                  borderRadius: "6px",
+                  ":hover": {
+                    backgroundColor: theme === "dark" ? "#334155" : "#1e40af",
+                    color: "#fff",
+                  },
+                }),
+              }}
             />
           </div>
         </label>
@@ -107,7 +167,7 @@ export function OverlayEditModal({
             type="text"
             value={overlay.tooltip || ""}
             onChange={(e) => onChange({ ...overlay, tooltip: e.target.value })}
-            className="ml-2 px-2 py-1 rounded border border-gray-300 flex-1"
+            className="ml-2 px-2 py-1 bg-gray-100 rounded border border-none flex-1"
           />
         </label>
         <div className="flex gap-3 mt-6">
@@ -118,7 +178,7 @@ export function OverlayEditModal({
             {isNew ? <FaPlus /> : <FaEdit />} Save
           </button>
           <button
-            className="bg-gray-200 text-gray-700 rounded px-4 py-2 font-bold flex items-center gap-2 hover:bg-gray-300 transition-colors"
+            className="bg-gray-200 text-gray-700 rounded px-4 py-2 font-bold flex items-center gap-2 hover:bg-gray-300 transition-colors dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
             onClick={onClose}
           >
             Cancel

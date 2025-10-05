@@ -1,5 +1,6 @@
 import { Geographies, Geography } from "react-simple-maps";
 import { getCountryIsoCode } from "../utils/countryData";
+import { useMapStrokeColor, getGeographyStyle } from "../utils/mapStyles";
 
 type BaseMapLayerProps = {
   geographyUrl: string;
@@ -16,51 +17,40 @@ export function BaseMapLayer({
   selectedIsoCode,
   hoveredIsoCode,
 }: BaseMapLayerProps) {
+  const strokeColor = useMapStrokeColor();
+
   return (
     <Geographies geography={geographyUrl}>
       {({ geographies }: { geographies: any[] }) =>
         geographies.map((geo) => {
-          // Extract ISO code from properties
           const isoCode = getCountryIsoCode(geo.properties);
           const isSelected =
-            isoCode &&
-            selectedIsoCode &&
-            isoCode === selectedIsoCode.toUpperCase();
+            !!isoCode &&
+            !!selectedIsoCode &&
+            isoCode === selectedIsoCode.toUpperCase()
+              ? true
+              : undefined;
           const isHovered =
-            isoCode &&
-            hoveredIsoCode &&
+            !!isoCode &&
+            !!hoveredIsoCode &&
             isoCode === hoveredIsoCode.toUpperCase();
 
           return (
             <Geography
               key={isoCode || geo.rsmKey}
               geography={geo}
-              onMouseEnter={() => onCountryHover && onCountryHover(isoCode ?? null)}
+              onMouseEnter={() =>
+                onCountryHover && onCountryHover(isoCode ?? null)
+              }
               onMouseLeave={() => onCountryHover && onCountryHover(null)}
-              onClick={() => onCountryClick && isoCode && onCountryClick(isoCode)}
-              style={{
-                default: {
-                  fill: isHovered
-                    ? "#0078d4"
-                    : isSelected
-                    ? "#005fa3"
-                    : "#b5bfca",
-                  stroke: "#fff",
-                  strokeWidth: 0.25,
-                  outline: "none",
-                  cursor: "pointer",
-                },
-                hover: {
-                  fill: "#0078d4",
-                  outline: "none",
-                  cursor: "pointer",
-                },
-                pressed: {
-                  fill: "#005fa3",
-                  outline: "none",
-                  cursor: "pointer",
-                },
-              }}
+              onClick={() =>
+                onCountryClick && isoCode && onCountryClick(isoCode)
+              }
+              style={getGeographyStyle({
+                isHovered,
+                isSelected,
+                strokeColor,
+              })}
             >
               <title>{geo.properties.NAME || geo.properties.name}</title>
             </Geography>
