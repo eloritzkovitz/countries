@@ -100,13 +100,6 @@ export default function CountryMapPage() {
           aria-modal="true"
           role="dialog"
         >
-          <button
-            onClick={() => setShowOverlayManager(false)}
-            className="absolute top-4 right-4 bg-none border-none text-2xl text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
-            aria-label="Close Overlay Manager"
-          >
-            ×
-          </button>
           <OverlayManagerPanel
             isOpen={showOverlayManager}
             onClose={() => setShowOverlayManager(false)}

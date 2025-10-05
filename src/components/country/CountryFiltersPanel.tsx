@@ -1,9 +1,11 @@
 import { FaTimes, FaUndo } from "react-icons/fa";
+import { ActionButton } from "../common/ActionButton";
 import { FilterSelect } from "../common/FilterSelect";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { filtersConfig } from "../../config/filtersConfig";
 import { useCountryData } from "../../context/CountryDataContext";
+import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Overlay } from "../../types/overlay";
 import {
   getSubregionsForRegion,
@@ -63,6 +65,9 @@ export function CountryFiltersPanel({
     );
   }
 
+  // Close panel on Escape key press
+  useKeyHandler(() => onHide(), ["Escape"]);
+
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading filters..." />;
   if (error) return <ErrorMessage error={error} />;
@@ -73,24 +78,20 @@ export function CountryFiltersPanel({
       <div className="flex items-center justify-between mb-6">
         <h2 className="mt-0 text-lg font-bold">Filters</h2>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
+          <ActionButton
             onClick={handleResetFilters}
-            className="py-1 px-2 rounded border-none bg-gray-200 text-gray-700 font-bold cursor-pointer flex items-center gap-2 hover:bg-gray-300 transition-colors"
-            aria-label="Reset Filters"
-            title="Reset Filters"
+            ariaLabel="Reset all filters"
+            title="Reset filters"
           >
             <FaUndo />
-          </button>
-          <button
-            type="button"
+          </ActionButton>
+          <ActionButton
             onClick={onHide}
-            className="py-1 px-2 rounded border-none bg-gray-200 text-blue-600 font-bold cursor-pointer flex items-center gap-2 hover:bg-gray-300 transition-colors text-2xl"
-            aria-label="Close filters panel"
+            ariaLabel="Close filters panel"
             title="Close"
           >
             <FaTimes />
-          </button>
+          </ActionButton>
         </div>
       </div>
       {/* Render region and subregion filters from config */}

@@ -1,7 +1,8 @@
 import ReactDOM from "react-dom";
 import { SketchPicker } from "react-color";
 import Select from "react-select";
-import { FaPlus, FaEdit, FaPalette } from "react-icons/fa";
+import { FaPlus, FaEdit, FaPalette, FaTimes } from "react-icons/fa";
+import { ActionButton } from "../common/ActionButton";
 import { useCountryData } from "../../context/CountryDataContext";
 import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Overlay } from "../../types/overlay";
@@ -47,18 +48,21 @@ export function OverlayEditModal({
       <div
         className="bg-white rounded-xl shadow-2xl p-8 min-w-[400px] max-w-[600px] max-h-[90vh] overflow-y-auto relative"
         onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 bg-none border-none text-2xl text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
-          aria-label="Close Overlay Modal"
-        >
-          ×
-        </button>
-        <h3 className="flex items-center gap-2 mb-6 text-lg font-bold">
-          {isNew ? <FaPlus /> : <FaEdit />}{" "}
-          {isNew ? "Add Overlay" : "Edit Overlay"}
-        </h3>
+      >        
+        {/* Header row with title and close button aligned */}
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="flex items-center gap-2 text-lg font-bold m-0">
+            {isNew ? <FaPlus /> : <FaEdit />}{" "}
+            {isNew ? "Add Overlay" : "Edit Overlay"}
+          </h3>
+          <ActionButton
+            onClick={onClose}
+            ariaLabel="Close Overlay Modal"
+            title="Close"
+            className=""
+            icon={<FaTimes />}
+          />
+        </div>
         <label className="flex items-center gap-2 mb-4">
           Name:
           <input

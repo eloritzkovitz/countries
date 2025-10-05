@@ -1,5 +1,7 @@
 import ReactDOM from "react-dom";
+import { FaTimes } from "react-icons/fa";
 import { CountryFlag } from "./CountryFlag";
+import { ActionButton } from "../common/ActionButton";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { useCountryData } from "../../context/CountryDataContext";
@@ -36,16 +38,20 @@ export function CountryDetailsModal({
         className="bg-white p-8 rounded-xl min-w-[80] max-w-[100vw] w-[350px] relative shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-2xl text-blue-600 hover:text-blue-800 transition-colors"
-          aria-label="Close"
-        >
-          ×
-        </button>
-        <h2 className="mt-0 mb-2 text-xl font-bold">{country.name}</h2>
+        {/* Header row with close button on the right */}
+        <div className="flex items-center justify-between">
+          <h2 className="mt-0 mb-0 text-xl font-bold">{country.name}</h2>
+          <ActionButton
+            onClick={onClose}
+            ariaLabel="Close country details"
+            title="Close"
+            className="ml-2"
+          >
+            <FaTimes />
+          </ActionButton>
+        </div>
         {country.sovereigntyType && (
-          <div className="mb-2 text-base font-semibold text-gray-600">
+          <div className="mb-6 text-base font-semibold text-gray-600">
             {country.sovereigntyType}
           </div>
         )}
