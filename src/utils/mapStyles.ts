@@ -53,12 +53,14 @@ export function getGeographyStyle({
     hover: {
       fill,
       stroke: strokeColor,
+      strokeWidth: 0.25,
       outline: "none",
       cursor: "pointer",
     },
     pressed: {
       fill,
       stroke: strokeColor,
+      strokeWidth: 0.25,
       outline: "none",
       cursor: "pointer",
     },

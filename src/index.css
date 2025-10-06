@@ -23,12 +23,20 @@ body {
   scrollbar-width: thin;
 }
 
-.bg-gray-100 {
+.bg-gray-100, .bg-map {
   background-color: #f7fafc;
 }
 
-.dark .bg-gray-100 {
+.bg-gray-100:hover {
+  background-color: #e2e8f0;
+}
+
+.dark .bg-gray-100, .dark .bg-map {
   background-color: #4a5568;
+}
+
+.dark .bg-gray-100:hover {
+  background-color: #445164;
 }
 
 .dark .bg-white {

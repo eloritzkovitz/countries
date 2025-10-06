@@ -23,7 +23,7 @@ export function ActionButton({
     <button
       type="button"
       onClick={onClick}
-      className={`py-1 px-2 rounded border-none font-bold cursor-pointer flex items-center gap-2 hover:bg-gray-300 transition-colors ${colorClass} ${className}`}
+      className={`py-1 px-2 rounded border-none font-bold cursor-pointer flex items-center gap-2 transition-colors ${colorClass} ${className}`}
       aria-label={ariaLabel}
       title={title}
     >

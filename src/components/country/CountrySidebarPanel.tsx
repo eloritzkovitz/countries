@@ -39,15 +39,15 @@ export function CountrySidebarPanel({
     Record<string, string>
   >({});
 
-  // UI state  
+  // UI state
   const { theme, toggleTheme } = useTheme();
   const [filtersPanelOpen, setFiltersPanelOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [search, setSearch] = useState("");  
+  const [search, setSearch] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [selectedSubregion, setSelectedSubregion] = useState<string>("");
   const [selectedSovereignty, setSelectedSovereignty] = useState<string>("");
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);  
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
 
   // Apply overlay filters to get filtered isoCodes
   let filteredIsoCodes = getFilteredIsoCodes(
@@ -70,7 +70,7 @@ export function CountrySidebarPanel({
     setSelectedCountry(country);
     if (onCountryInfo) onCountryInfo(country);
   };
-  
+
   // Hide filters panel when sidebar is closed
   const handleHideSidebar = () => {
     setSidebarOpen(false);
@@ -79,7 +79,7 @@ export function CountrySidebarPanel({
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading countries..." />;
-  if (error) return <ErrorMessage error={error} />;  
+  if (error) return <ErrorMessage error={error} />;
 
   return (
     <div className="fixed top-0 left-0 h-screen flex flex-row z-40">
@@ -123,7 +123,7 @@ export function CountrySidebarPanel({
           <div className="my-2 font-bold text-center flex-shrink-0">
             Showing {filteredCountries.length} countries from {countries.length}
           </div>
-          
+
           {/* Country list */}
           <CountryList
             countries={filteredCountries}
@@ -133,7 +133,7 @@ export function CountrySidebarPanel({
             onHover={onHover}
             onCountryInfo={handleCountryInfo}
           />
-          
+
           {/* Country details modal */}
           {selectedCountry && (
             <CountryDetailsModal
@@ -144,13 +144,14 @@ export function CountrySidebarPanel({
           )}
         </Panel>
       ) : (
-        <button
-          className="fixed top-4 left-4 bg-blue-600 text-white rounded-full p-2 shadow z-50"
+        <ActionButton
           onClick={() => setSidebarOpen(true)}
-          aria-label="Show sidebar"
-        >
-          <FaBars />
-        </button>
+          ariaLabel="Show sidebar"
+          title="Show sidebar"
+          colorClass="bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800"
+          className="absolute left-4 top-4 w-12 h-12 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
+          icon={<FaBars size={24} />}
+        />
       )}
 
       {/* Filters panel */}

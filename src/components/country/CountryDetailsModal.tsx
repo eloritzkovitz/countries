@@ -43,7 +43,7 @@ export function CountryDetailsModal({
         />
       </PanelHeader>
       {country.sovereigntyType && (
-        <div className="mb-6 text-base font-semibold bg-gray-100 p-2 text-gray-600 dark:text-gray-300">
+        <div className="mb-6 text-base font-semibold bg-blue-300 text-gray-600 p-2 dark:bg-blue-800 dark:text-gray-300">
           {country.sovereigntyType}
         </div>
       )}
