@@ -23,6 +23,18 @@ export function getRandomCountry(countries: Country[]) {
 }
 
 /**
+ * Converts an array of countries into options suitable for a select input.
+ * @param countries - Array of country objects.
+ * @returns An array of objects with `value` and `label` properties.
+ */
+export function getCountryOptions(countries: Country[]) {
+  return countries.map((country) => ({
+    value: country.isoCode,
+    label: country.name,
+  }));
+}
+
+/**
  * Gets the URL of a country's flag based on its ISO code.
  * @param isoCode - The ISO code of the country.
  * @param size - The size of the flag image.

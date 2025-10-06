@@ -1,4 +1,5 @@
-import type { SovereigntyType } from "../types/country";
+import type { Country, SovereigntyType } from "../types/country";
+import type { Overlay } from "../types/overlay";
 
 /**
  * Returns all unique regions from the countries list, excluding undefined values.
@@ -110,4 +111,35 @@ export function filterCountries(
       );
     })
     .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Filters ISO codes based on overlay selections.
+ * @param countries 
+ * @param overlays 
+ * @param overlaySelections 
+ * @returns 
+ */
+export function getFilteredIsoCodes(
+  countries: Country[],
+  overlays: Overlay[],
+  overlaySelections: Record<string, string>
+) {
+  let filteredIsoCodes = countries.map((c) => c.isoCode);
+
+  overlays.forEach((overlay) => {
+    const selection = overlaySelections[overlay.id] || "all";
+    if (selection === "only") {
+      filteredIsoCodes = filteredIsoCodes.filter((iso) =>
+        overlay.countries.includes(iso)
+      );
+    } else if (selection === "exclude") {
+      filteredIsoCodes = filteredIsoCodes.filter(
+        (iso) => !overlay.countries.includes(iso)
+      );
+    }
+    // "all" does not filter
+  });
+
+  return filteredIsoCodes;
 }

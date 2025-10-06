@@ -11,8 +11,10 @@ import {
   getSubregionsForRegion,
   getAllSovereigntyTypes,
 } from "../../utils/countryFilters";
+import { Panel } from "../common/Panel";
 
 type CountryFiltersPanelProps = {
+  show: boolean;
   allRegions: string[];
   allSubregions: string[];
   selectedRegion: string;
@@ -30,6 +32,7 @@ type CountryFiltersPanelProps = {
 };
 
 export function CountryFiltersPanel({
+  show,
   allRegions,
   allSubregions,
   selectedRegion,
@@ -45,11 +48,13 @@ export function CountryFiltersPanel({
 }: CountryFiltersPanelProps) {
   const { countries, loading, error } = useCountryData();
 
+  // Dynamic subregion options based on selected region
   const subregionOptions =
     selectedRegion && selectedRegion !== ""
       ? getSubregionsForRegion(countries, selectedRegion)
       : allSubregions;
 
+  // All sovereignty types from country data
   const sovereigntyOptions = getAllSovereigntyTypes(countries);
 
   // Reset filters handler
@@ -73,11 +78,12 @@ export function CountryFiltersPanel({
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <div className="relative w-full p-8 pt-8 pb-6 box-border">
-      {/* Header with title, reset button, and close button */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="mt-0 text-lg font-bold">Filters</h2>
-        <div className="flex items-center gap-2">
+   <Panel
+      title="Filters"
+      width={400}
+      show={show}
+      headerActions={
+        <>
           <ActionButton
             onClick={handleResetFilters}
             ariaLabel="Reset all filters"
@@ -92,8 +98,9 @@ export function CountryFiltersPanel({
           >
             <FaTimes />
           </ActionButton>
-        </div>
-      </div>
+        </>
+      }
+    >
       {/* Render region and subregion filters from config */}
       {filtersConfig
         .filter((f) => f.key !== "overlay")
@@ -138,6 +145,6 @@ export function CountryFiltersPanel({
           />
         );
       })}
-    </div>
+    </Panel>
   );
 }
