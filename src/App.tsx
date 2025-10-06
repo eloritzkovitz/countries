@@ -14,8 +14,8 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/flag-guess" element={<FlagGuessGamePage />} />
-              <Route path="/country-map" element={<CountryMapPage />} />
+              <Route path="/game" element={<FlagGuessGamePage />} />
+              <Route path="/map" element={<CountryMapPage />} />
             </Routes>
           </BrowserRouter>
         </OverlayProvider>
