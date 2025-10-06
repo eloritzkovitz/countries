@@ -94,19 +94,12 @@ export default function CountryMapPage() {
 
       {/* Overlay Manager Modal */}
       {showOverlayManager && (
-        <div
-          className="fixed right-8 bottom-[100px] z-[101] min-w-[340px] max-w-[600px] max-h-[90vh] bg-white p-7 rounded-2xl shadow-2xl overflow-y-auto transition-opacity"
-          onClick={() => setShowOverlayManager(false)}
-          aria-modal="true"
-          role="dialog"
-        >
-          <OverlayManagerPanel
-            isOpen={showOverlayManager}
-            onClose={() => setShowOverlayManager(false)}
-            onEditOverlay={openEditOverlay}
-            onAddOverlay={openAddOverlay}
-          />{" "}
-        </div>
+        <OverlayManagerPanel
+          isOpen={showOverlayManager}
+          onClose={() => setShowOverlayManager(false)}
+          onEditOverlay={openEditOverlay}
+          onAddOverlay={openAddOverlay}
+        />
       )}
 
       {/* Overlay Add/Edit Modal */}

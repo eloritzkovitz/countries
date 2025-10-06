@@ -31,7 +31,7 @@ export function MapScale({
     <div className="flex flex-col items-center select-none">
       <button
         onClick={onZoomIn}
-        className="bg-blue-600 text-white rounded-lg w-8 h-8 flex items-center justify-center text-2xl shadow-lg cursor-pointer hover:bg-blue-700 transition-colors mb-2 dark:bg-gray-800 dark:hover:bg-gray-700"
+        className="bg-blue-800 text-white rounded-lg w-8 h-8 flex items-center justify-center text-2xl shadow-lg cursor-pointer hover:bg-blue-900 transition-colors mb-2 dark:bg-gray-800 dark:hover:bg-gray-700"
         aria-label="Zoom in"
         title="Zoom in"
       >
@@ -63,7 +63,7 @@ export function MapScale({
       </div>
       <button
         onClick={onZoomOut}
-        className="bg-blue-600 text-white rounded-lg w-8 h-8 flex items-center justify-center text-2xl shadow-lg cursor-pointer hover:bg-blue-700 transition-colors mt-2 dark:bg-gray-800 dark:hover:bg-gray-700"
+        className="bg-blue-800 text-white rounded-lg w-8 h-8 flex items-center justify-center text-2xl shadow-lg cursor-pointer hover:bg-blue-900 transition-colors mt-2 dark:bg-gray-800 dark:hover:bg-gray-700"
         aria-label="Zoom out"
         title="Zoom out"
       >
