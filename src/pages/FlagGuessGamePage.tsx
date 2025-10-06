@@ -8,10 +8,16 @@ import { ResultMessage } from "../components/game/ResultMessage";
 import { Scoreboard } from "../components/game/Scoreboard";
 import { useCountryData } from "../context/CountryDataContext";
 import type { Country } from "../types/country";
-import { getRandomCountry } from "../utils/countryData";
+import {
+  getRandomCountry,
+  getCountriesWithOwnFlag,
+} from "../utils/countryData";
 
 export default function FlagGuessGamePage() {
   const { countries, loading, error } = useCountryData();
+  // Only use countries whose flag matches their own ISO code
+  const flagCountries = getCountriesWithOwnFlag(countries);
+
   const [currentCountry, setCurrentCountry] = useState<Country | null>(null);
   const [guess, setGuess] = useState("");
   const [result, setResult] = useState<null | boolean>(null);
@@ -19,12 +25,24 @@ export default function FlagGuessGamePage() {
   const [streak, setStreak] = useState(0);
   const [feedback, setFeedback] = useState<string>("");
 
-  // Set the initial country when countries are loaded
+  // Set the initial country when flagCountries are loaded
   useEffect(() => {
-    if (!loading && countries.length && !currentCountry) {
-      setCurrentCountry(getRandomCountry(countries));
+    if (!loading && flagCountries.length && currentCountry === null) {
+      setCurrentCountry(getRandomCountry(flagCountries));
     }
-  }, [loading, countries, currentCountry]);
+  }, [loading, flagCountries, currentCountry]);
+
+  // Utility to get a different random country than the current one
+  const getNextRandomCountry = () => {
+    if (flagCountries.length <= 1 || !currentCountry) {
+      return getRandomCountry(flagCountries);
+    }
+    let nextCountry: Country | null = null;
+    do {
+      nextCountry = getRandomCountry(flagCountries);
+    } while (nextCountry && nextCountry.isoCode === currentCountry.isoCode);
+    return nextCountry;
+  };
 
   // Handle the guess submission
   const handleGuess = (e: React.FormEvent) => {
@@ -48,7 +66,7 @@ export default function FlagGuessGamePage() {
 
   // Proceed to the next flag
   const nextFlag = () => {
-    setCurrentCountry(countries.length ? getRandomCountry(countries) : null);
+    setCurrentCountry(getNextRandomCountry());
     setGuess("");
     setResult(null);
     setFeedback("");
@@ -56,7 +74,7 @@ export default function FlagGuessGamePage() {
 
   // Skip current flag
   const skipFlag = () => {
-    setCurrentCountry(countries.length ? getRandomCountry(countries) : null);
+    setCurrentCountry(getNextRandomCountry());
     setGuess("");
     setResult(null);
     setFeedback("");
@@ -66,12 +84,16 @@ export default function FlagGuessGamePage() {
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading countries..." />;
   if (error) return <ErrorMessage error={error} />;
-  if (!currentCountry) {
+  if (!flagCountries.length) {
     return (
       <div className="min-h-screen flex items-center justify-center text-lg">
-        <div>No country selected. Please try again or reload the page.</div>
+        <div>No countries with their own flag found.</div>
       </div>
     );
+  }
+  if (!currentCountry) {
+    // Wait for useEffect to set currentCountry
+    return null;
   }
 
   return (
@@ -98,9 +120,7 @@ export default function FlagGuessGamePage() {
           skipFlag={skipFlag}
           disabled={result !== null}
         />
-        {feedback && (
-          <div className="text-red-500 mt-2">{feedback}</div>
-        )}
+        {feedback && <div className="text-red-500 mt-2">{feedback}</div>}
         <ResultMessage
           result={result}
           currentCountry={currentCountry}
