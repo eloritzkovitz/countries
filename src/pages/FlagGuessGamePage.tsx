@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ActionButton } from "../components/common/ActionButton";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorMessage } from "../components/common/ErrorMessage";
 import { CountryFlag } from "../components/country/CountryFlag";
+import { GuessForm } from "../components/game/GuessForm";
+import { ResultMessage } from "../components/game/ResultMessage";
+import { Scoreboard } from "../components/game/Scoreboard";
 import { useCountryData } from "../context/CountryDataContext";
 import type { Country } from "../types/country";
 import { getRandomCountry } from "../utils/countryData";
@@ -74,86 +76,36 @@ export default function FlagGuessGamePage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-map">
-      
-      {/* Score and Streak Display */}
-      <h1 className="mb-20 text-2xl font-bold text-blue-800 text-center">Guess the Country!</h1>
-      <div className="flex justify-between items-center w-full max-w-md mb-6 px-2">
-        <div className="bg-white rounded-lg shadow px-4 py-2 flex-1 flex justify-center items-center gap-8 text-2xl font-semibold text-gray-700">
-          <span>
-            Score: <b>{score}</b>
-          </span>
-          <span>
-            Streak: <b>{streak}</b>
-          </span>
-        </div>
-      </div>
+      <h1 className="mb-20 text-2xl font-bold text-blue-800 text-center">
+        Guess the Country!
+      </h1>
 
-      {/* Country Flag Display */}
-      <div className="max-w-md w-full p-8 rounded-xl bg-white shadow-lg text-center font-sans">        
+      {/* Scoreboard */}
+      <Scoreboard score={score} streak={streak} />
+
+      {/* Main Content */}
+      <div className="max-w-md w-full p-8 rounded-xl bg-white shadow-lg text-center font-sans">
         <CountryFlag
           isoCode={currentCountry.isoCode}
           size="96x72"
           alt={currentCountry.name}
           style={{ width: "5rem", height: "auto", margin: "1rem 0" }}
         />
-        <div className="flex justify-between mb-4 text-sm text-gray-600">
-          <span>
-            Score: <b>{score}</b>
-          </span>
-          <span>
-            Streak: <b>{streak}</b>
-          </span>
-        </div>
-        <form onSubmit={handleGuess}>
-          <input
-            type="text"
-            placeholder="Enter country name"
-            value={guess}
-            onChange={(e) => setGuess(e.target.value)}
-            className="px-4 py-2 text-lg rounded border border-gray-300 w-4/5 mb-4"
-            disabled={result !== null}
-          />
-          <div className="flex justify-center gap-4 mb-2">
-            <ActionButton            
-              type="submit"
-              colorClass="bg-blue-600 text-white hover:bg-blue-700"
-              className="px-6 py-2 text-base rounded font-bold"
-              disabled={result !== null}
-            >
-              Guess
-            </ActionButton>
-            <ActionButton
-              type="button"
-              onClick={skipFlag}
-              colorClass="bg-gray-200 text-gray-800 hover:bg-gray-300"
-              className="px-6 py-2 text-base rounded font-bold"
-              disabled={result !== null}
-            >
-              Skip
-            </ActionButton>
-          </div>
-        </form>
-        {feedback && <div className="text-red-500 mt-2">{feedback}</div>}
-        {result !== null && (
-          <div className="my-4 text-lg">
-            {result ? (
-              <span className="text-green-600">Correct! 🎉</span>
-            ) : (
-              <span className="text-red-600">
-                Wrong! It was <b>{currentCountry.name}</b>
-              </span>
-            )}
-            <div className="flex justify-center gap-4 mb-2 mt-4">
-              <ActionButton
-                onClick={nextFlag}
-                colorClass="bg-blue-600 text-white hover:bg-blue-700"
-                className="px-6 py-2 text-base rounded font-bold"
-              >
-                Next Flag
-              </ActionButton>
-            </div>
-          </div>
+        <GuessForm
+          guess={guess}
+          setGuess={setGuess}
+          handleGuess={handleGuess}
+          skipFlag={skipFlag}
+          disabled={result !== null}
+        />
+        {feedback && (
+          <div className="text-red-500 mt-2">{feedback}</div>
         )}
+        <ResultMessage
+          result={result}
+          currentCountry={currentCountry}
+          nextFlag={nextFlag}
+        />
         <div className="mt-8">
           <Link
             to="/"
