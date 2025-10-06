@@ -6,7 +6,7 @@ import { FormField } from "../common/FormField";
 import { Modal } from "../common/Modal";
 import { PanelHeader } from "../common/PanelHeader";
 import { useCountryData } from "../../context/CountryDataContext";
-import { useTheme } from "../../hooks/useTheme";
+import { useTheme } from "../../context/ThemeContext";
 import type { Overlay } from "../../types/overlay";
 import { getCountryOptions } from "../../utils/countryData";
 import { getSelectStyles } from "../../utils/selectStyles";

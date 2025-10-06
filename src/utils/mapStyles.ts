@@ -1,4 +1,4 @@
-import { useTheme } from "../hooks/useTheme";
+import { useTheme } from "../context/ThemeContext";
 
 // Color constants for map elements
 export const MAP_FILL_COLORS = {
