@@ -19,7 +19,7 @@ export function ActionButton({
   className = "",
   icon,
   children,
-  colorClass = "bg-gray-100 text-blue-800 hover:bg-gray-200 hover:text-blue-900 dark:text-gray-200",
+  colorClass = "action-button bg-gray-100 text-blue-800 hover:bg-gray-200 hover:text-blue-900 dark:text-gray-200 dark:hover:text-gray-300",
   type = "button",
   disabled = false,
 }: ActionButtonProps) {

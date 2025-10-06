@@ -46,7 +46,7 @@ export function WorldMap({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full bg-map overflow-hidden rounded-lg shadow"
+      className="relative w-full h-full bg-gray-100 overflow-hidden rounded-lg shadow"
     >
       <ComposableMap
         projection="geoEqualEarth"

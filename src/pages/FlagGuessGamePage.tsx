@@ -97,7 +97,7 @@ export default function FlagGuessGamePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-map">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <h1 className="mb-20 text-2xl font-bold text-blue-800 text-center">
         Guess the Country!
       </h1>

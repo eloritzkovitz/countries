@@ -23,20 +23,12 @@ body {
   scrollbar-width: thin;
 }
 
-.bg-gray-100, .bg-map {
+.bg-gray-100 {
   background-color: #f7fafc;
 }
 
-.bg-gray-100:hover {
-  background-color: #e2e8f0;
-}
-
-.dark .bg-gray-100, .dark .bg-map {
+.dark .bg-gray-100 {
   background-color: #4a5568;
-}
-
-.dark .bg-gray-100:hover {
-  background-color: #445164;
 }
 
 .dark .bg-white {
@@ -45,6 +37,33 @@ body {
 
 .dark .text-gray-700 {
   color: #e5e7eb;
+}
+
+/* Action button */
+
+.action-button:hover {
+  background-color: #e2e8f0;
+}
+
+.dark .action-button:hover {
+  background-color: #445164;
+}
+
+/* Filter select */
+.filter-select:hover {
+  background-color: #e2e8f0;
+}
+
+.filter-select:focus {
+  background-color: #f7fafc;
+}
+
+.dark .filter-select:hover {
+  background-color: #445164;
+}
+
+.dark .filter-select:focus {
+  background-color: #4a5568;
 }
 
 h1 {
