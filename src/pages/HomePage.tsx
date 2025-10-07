@@ -1,15 +1,10 @@
 import { Link } from "react-router-dom";
+import { Branding } from "../components/common/Branding";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
-      <img
-        src="/icons/icon.svg"
-        alt="App Icon"
-        className="w-32 h-32 mb-4"
-        width={128}
-        height={128}
-      />      
+      <Branding size={128} />
       <h1 className="text-4xl font-extrabold mb-4 text-blue-700">Welcome to Countries Explorer</h1>
       <p className="text-lg text-gray-700 max-w-xl text-center mb-10">
         Explore countries on an interactive world map, manage your own overlays, and test your geography knowledge with our flag guessing game!

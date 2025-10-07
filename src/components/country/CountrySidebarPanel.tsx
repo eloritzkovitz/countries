@@ -4,6 +4,7 @@ import { CountryDetailsModal } from "./CountryDetailsModal";
 import { CountryFiltersPanel } from "./CountryFiltersPanel";
 import { CountryList } from "./CountryList";
 import { ActionButton } from "../common/ActionButton";
+import { Branding } from "../common/Branding";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { Panel } from "../common/Panel";
@@ -16,6 +17,7 @@ import {
   filterCountries,
   getFilteredIsoCodes,
 } from "../../utils/countryFilters";
+
 
 export function CountrySidebarPanel({
   selectedIsoCode,
@@ -86,16 +88,7 @@ export function CountrySidebarPanel({
       {/* Sidebar open/close logic */}
       {sidebarOpen ? (
         <Panel
-          title={
-            <span className="flex items-center gap-2">
-              <img
-                src={theme === "dark" ? "/icons/icon-dark.svg" : "/icons/icon.svg"}
-                alt="App Icon"
-                className="inline-block w-12 h-12"
-              />
-              <span className="font-bold text-lg">Countries</span>
-            </span>
-          }
+          title={<Branding title="Countries" />}
           show={sidebarOpen}
           headerActions={
             <>
