@@ -59,6 +59,7 @@ export function WorldMap({
         projection={DEFAULT_MAP_PROJECTION}
         projectionConfig={{
           scale: Math.min(dimensions.width, dimensions.height) / DEFAULT_MAP_SCALE_DIVISOR,
+          center: [0, 0],
         }}
         width={dimensions.width}
         height={dimensions.height}
@@ -68,11 +69,7 @@ export function WorldMap({
           center={center}
           minZoom={DEFAULT_MAP_MIN_ZOOM}
           maxZoom={DEFAULT_MAP_MAX_ZOOM}
-          onMoveEnd={handleMoveEnd}
-          translateExtent={[
-            [0, 0],
-            [dimensions.width, dimensions.height],
-          ]}
+          onMoveEnd={zoom > 1 ? handleMoveEnd : undefined}         
         >
           {/* Base map */}
           <BaseMapLayer
