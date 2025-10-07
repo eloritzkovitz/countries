@@ -1,5 +1,6 @@
 import { FaLayerGroup } from "react-icons/fa";
 import { MapScale } from "./MapScale";
+import { ActionButton } from "../common/ActionButton";
 
 export function MapToolbar({
   zoom,
@@ -13,7 +14,19 @@ export function MapToolbar({
   setShowOverlayManager: (v: boolean) => void;
 }) {
   return (
-    <div className="absolute right-8 bottom-8 flex flex-col items-center gap-4 z-[101]">
+    <div className="absolute right-8 bottom-8 flex flex-row items-end gap-8 z-[101]">
+      <ActionButton
+        onClick={() => setShowOverlayManager(!showOverlayManager)}
+        ariaLabel={
+          showOverlayManager ? "Close Overlays Panel" : "Open Overlays Panel"
+        }
+        title={
+          showOverlayManager ? "Close Overlays Panel" : "Open Overlays Panel"
+        }
+        colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
+        className="w-16 h-16 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
+        icon={<FaLayerGroup size={32} />}
+      />
       <MapScale
         scale={zoom}
         minScale={1}
@@ -22,22 +35,6 @@ export function MapToolbar({
         onZoomIn={() => setZoom(Math.min(zoom * 1.5, 16))}
         onZoomOut={() => setZoom(Math.max(zoom / 1.5, 1))}
       />
-      <button
-        onClick={() => setShowOverlayManager(!showOverlayManager)}
-        className="bg-blue-600 text-white w-16 h-16 flex items-center justify-center shadow-lg cursor-pointer p-0 rounded-full border-none"
-        aria-label={
-          showOverlayManager
-            ? "Close Overlays Panel"
-            : "Open Overlays Panel"
-        }
-        title={
-          showOverlayManager
-            ? "Close Overlays Panel"
-            : "Open Overlays Panel"
-        }
-      >
-        <FaLayerGroup size={32} color="#fff" />
-      </button>
     </div>
   );
 }

@@ -1,26 +1,13 @@
 import React from "react";
-import type { FlagSize } from "../../types/flag";
+import type { Flag } from "../../types/flag";
 import { getFlagUrl } from "../../utils/countryData";
 
-type FlagImageProps = {
-  isoCode: string;
-  size?: FlagSize;
-  alt?: string;
-  style?: React.CSSProperties;
-};
-
-export function CountryFlag({
-  isoCode,
-  size = "32x24",
-  alt,
-  style,
-}: FlagImageProps) {
-  if (!isoCode) return null;
-  const [width, height] = size.split("x").map(Number);
+export function CountryFlag({ flag, alt, style }: { flag: Flag; alt?: string; style?: React.CSSProperties }) {
+  const [width, height] = flag.size.split("x").map(Number);
   return (
     <img
-      src={getFlagUrl(isoCode, size)}
-      alt={alt || `${isoCode} flag`}
+      src={getFlagUrl(flag.isoCode, flag.size, flag.source, flag.style)}
+      alt={alt || `${flag.isoCode} flag`}
       width={width}
       height={height}
       className="inline-block rounded"

@@ -3,9 +3,10 @@ import { ActionButton } from "../common/ActionButton";
 import { FilterSelect } from "../common/FilterSelect";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
+import { Panel } from "../common/Panel";
+import { DEFAULT_PANEL_WIDTH } from "../../config/constants";
 import { filtersConfig } from "../../config/filtersConfig";
 import { useCountryData } from "../../context/CountryDataContext";
-import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Overlay } from "../../types/overlay";
 import {
   getSubregionsForRegion,
@@ -13,6 +14,7 @@ import {
 } from "../../utils/countryFilters";
 
 type CountryFiltersPanelProps = {
+  show: boolean;
   allRegions: string[];
   allSubregions: string[];
   selectedRegion: string;
@@ -30,6 +32,7 @@ type CountryFiltersPanelProps = {
 };
 
 export function CountryFiltersPanel({
+  show,
   allRegions,
   allSubregions,
   selectedRegion,
@@ -45,12 +48,20 @@ export function CountryFiltersPanel({
 }: CountryFiltersPanelProps) {
   const { countries, loading, error } = useCountryData();
 
+  // Dynamic subregion options based on selected region
   const subregionOptions =
     selectedRegion && selectedRegion !== ""
       ? getSubregionsForRegion(countries, selectedRegion)
       : allSubregions;
 
+  // All sovereignty types from country data
   const sovereigntyOptions = getAllSovereigntyTypes(countries);
+
+  // Reset subregion when region changes
+  const handleRegionChange = (region: string) => {
+    setSelectedRegion(region);
+    setSelectedSubregion("");
+  };
 
   // Reset filters handler
   function handleResetFilters() {
@@ -65,19 +76,18 @@ export function CountryFiltersPanel({
     );
   }
 
-  // Close panel on Escape key press
-  useKeyHandler(() => onHide(), ["Escape"]);
-
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading filters..." />;
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <div className="relative w-full p-8 pt-8 pb-6 box-border">
-      {/* Header with title, reset button, and close button */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="mt-0 text-lg font-bold">Filters</h2>
-        <div className="flex items-center gap-2">
+    <Panel
+      title="Filters"
+      width={DEFAULT_PANEL_WIDTH}
+      show={show}
+      onHide={onHide}
+      headerActions={
+        <>
           <ActionButton
             onClick={handleResetFilters}
             ariaLabel="Reset all filters"
@@ -92,16 +102,17 @@ export function CountryFiltersPanel({
           >
             <FaTimes />
           </ActionButton>
-        </div>
-      </div>
-      {/* Render region and subregion filters from config */}
+        </>
+      }
+    >
+      {/* Filter configuration */}
       {filtersConfig
         .filter((f) => f.key !== "overlay")
         .map((filter) => {
           let value, setValue, options;
           if (filter.key === "region") {
             value = selectedRegion;
-            setValue = setSelectedRegion;
+            setValue = handleRegionChange;
             options = filter.getOptions(allRegions);
           } else if (filter.key === "subregion") {
             value = selectedSubregion;
@@ -122,6 +133,7 @@ export function CountryFiltersPanel({
             />
           ) : null;
         })}
+
       {/* Render overlay filters from config */}
       {overlays.map((overlay) => {
         const overlayFilter = filtersConfig.find((f) => f.key === "overlay");
@@ -138,6 +150,6 @@ export function CountryFiltersPanel({
           />
         );
       })}
-    </div>
+    </Panel>
   );
 }

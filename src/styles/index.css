@@ -39,6 +39,33 @@ body {
   color: #e5e7eb;
 }
 
+/* Action button */
+
+.action-button:hover {
+  background-color: #e2e8f0;
+}
+
+.dark .action-button:hover {
+  background-color: #445164;
+}
+
+/* Filter select */
+.filter-select:hover {
+  background-color: #e2e8f0;
+}
+
+.filter-select:focus {
+  background-color: #f7fafc;
+}
+
+.dark .filter-select:hover {
+  background-color: #445164;
+}
+
+.dark .filter-select:focus {
+  background-color: #4a5568;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;

@@ -33,7 +33,14 @@ export function CountryList({
               ${isHighlighted ? "bg-blue-50 dark:bg-blue-900 font-bold" : ""}
             `}
           >
-            <CountryFlag isoCode={country.isoCode} />
+            <CountryFlag
+              flag={{
+                isoCode: country.isoCode,
+                source: "flagcdn",
+                style: "flat",
+                size: "32x24",
+              }}
+            />
             <span>{country.name}</span>
           </li>
         );

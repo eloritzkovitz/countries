@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { FaFilter, FaMoon, FaSun } from "react-icons/fa";
+import { FaFilter, FaMoon, FaSun, FaTimes, FaBars } from "react-icons/fa";
 import { CountryDetailsModal } from "./CountryDetailsModal";
 import { CountryFiltersPanel } from "./CountryFiltersPanel";
 import { CountryList } from "./CountryList";
+import { ActionButton } from "../common/ActionButton";
+import { Branding } from "../common/Branding";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
+import { Panel } from "../common/Panel";
+import { SearchInput } from "../common/SearchInput";
 import { useCountryData } from "../../context/CountryDataContext";
 import { useOverlayContext } from "../../context/OverlayContext";
-import { useTheme } from "../../hooks/useTheme";
+import { useTheme } from "../../context/ThemeContext";
 import type { Country } from "../../types/country";
-import { filterCountries } from "../../utils/countryFilters";
-import { ActionButton } from "../common/ActionButton";
+import {
+  filterCountries,
+  getFilteredIsoCodes,
+} from "../../utils/countryFilters";
 
-const PANEL_WIDTH = 400;
 
 export function CountrySidebarPanel({
   selectedIsoCode,
@@ -37,30 +42,21 @@ export function CountrySidebarPanel({
   >({});
 
   // UI state
-  const [modalCountry, setModalCountry] = useState<Country | null>(null);
+  const { theme, toggleTheme } = useTheme();
   const [filtersPanelOpen, setFiltersPanelOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [selectedSubregion, setSelectedSubregion] = useState<string>("");
   const [selectedSovereignty, setSelectedSovereignty] = useState<string>("");
-  const { theme, toggleTheme } = useTheme();
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
 
   // Apply overlay filters to get filtered isoCodes
-  let filteredIsoCodes = countries.map((c) => c.isoCode);
-
-  overlays.forEach((overlay) => {
-    const selection = overlaySelections[overlay.id] || "all";
-    if (selection === "only") {
-      filteredIsoCodes = filteredIsoCodes.filter((iso) =>
-        overlay.countries.includes(iso)
-      );
-    } else if (selection === "exclude") {
-      filteredIsoCodes = filteredIsoCodes.filter(
-        (iso) => !overlay.countries.includes(iso)
-      );
-    }
-    // "all" does not filter
-  });
+  let filteredIsoCodes = getFilteredIsoCodes(
+    countries,
+    overlays,
+    overlaySelections
+  );
 
   // Filtering countries based on current filters and search
   const filteredCountries = filterCountries(countries, {
@@ -73,8 +69,14 @@ export function CountrySidebarPanel({
 
   // Handler for showing modal
   const handleCountryInfo = (country: Country) => {
-    setModalCountry(country);
+    setSelectedCountry(country);
     if (onCountryInfo) onCountryInfo(country);
+  };
+
+  // Hide filters panel when sidebar is closed
+  const handleHideSidebar = () => {
+    setSidebarOpen(false);
+    setFiltersPanelOpen(false);
   };
 
   // Show loading or error states
@@ -83,49 +85,48 @@ export function CountrySidebarPanel({
 
   return (
     <div className="fixed top-0 left-0 h-screen flex flex-row z-40">
-      {/* Country sidebar panel */}
-      <div
-        className="h-screen bg-white shadow-lg flex flex-col"
-        style={{ width: PANEL_WIDTH, minWidth: PANEL_WIDTH, zIndex: 40 }}
-      >
-        {/* Inner container for padding and header */}
-        <div className="px-4 pt-8 pb-0 flex-shrink-0">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-center m-0 text-lg font-bold flex-1">
-              Country List
-            </h2>
-            <ActionButton
-              onClick={toggleTheme}
-              ariaLabel="Toggle theme"
-              title="Toggle theme"            
-              className="ml-2"
-              icon={theme === "dark" ? <FaSun /> : <FaMoon />}
-            ></ActionButton>
-          </div>
-          <div className="flex gap-4 mb-4">
-            <input
-              type="text"
-              placeholder="Search countries..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 px-3 py-2 bg-gray-100 rounded border border-none text-base"
-            />
-            <button
-              onClick={() => setFiltersPanelOpen((open) => !open)}
-              className="px-4 py-2 rounded bg-blue-600 text-white font-bold flex items-center gap-2 z-101 hover:bg-blue-700 transition-colors"
-              aria-label={filtersPanelOpen ? "Hide Filters" : "Show Filters"}
-              type="button"
-            >
-              <FaFilter />
-              Filters
-            </button>
-          </div>
+      {/* Sidebar open/close logic */}
+      {sidebarOpen ? (
+        <Panel
+          title={<Branding title="Countries" />}
+          show={sidebarOpen}
+          headerActions={
+            <>
+              <ActionButton
+                onClick={() => setFiltersPanelOpen((open) => !open)}
+                ariaLabel={filtersPanelOpen ? "Hide Filters" : "Show Filters"}
+                title="Filters"
+                className="ml-2"
+                icon={<FaFilter />}
+              />
+              <ActionButton
+                onClick={toggleTheme}
+                ariaLabel="Toggle theme"
+                title="Toggle theme"
+                className="ml-2"
+                icon={theme === "dark" ? <FaSun /> : <FaMoon />}
+              />
+              <ActionButton
+                onClick={handleHideSidebar}
+                ariaLabel="Hide sidebar"
+                title="Hide sidebar"
+                className="ml-2"
+                icon={<FaTimes />}
+              />
+            </>
+          }
+        >
+          <SearchInput
+            value={search}
+            onChange={setSearch}
+            placeholder="Search countries..."
+            className="flex-1"
+          />
           <div className="my-2 font-bold text-center flex-shrink-0">
             Showing {filteredCountries.length} countries from {countries.length}
           </div>
-        </div>
-        {/* Country list */}
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-8">
+
+          {/* Country list */}
           <CountryList
             countries={filteredCountries}
             selectedIsoCode={selectedIsoCode}
@@ -134,40 +135,45 @@ export function CountrySidebarPanel({
             onHover={onHover}
             onCountryInfo={handleCountryInfo}
           />
-          {modalCountry && (
+
+          {/* Country details modal */}
+          {selectedCountry && (
             <CountryDetailsModal
-              country={modalCountry}
-              isOpen={!!modalCountry}
-              onClose={() => setModalCountry(null)}
+              country={selectedCountry}
+              isOpen={!!selectedCountry}
+              onClose={() => setSelectedCountry(null)}
             />
           )}
-        </div>
-      </div>
+        </Panel>
+      ) : (
+        <ActionButton
+          onClick={() => setSidebarOpen(true)}
+          ariaLabel="Show sidebar"
+          title="Show sidebar"
+          colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
+          className="absolute left-4 top-4 w-12 h-12 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
+          icon={<FaBars size={24} />}
+        />
+      )}
 
       {/* Filters panel */}
-      <div
-        className={`relative h-screen bg-white transition-all duration-300 flex flex-col shadow-lg ${
-          filtersPanelOpen ? "w-[400px]" : "w-0"
-        }`}
-        style={{ zIndex: 100, minWidth: filtersPanelOpen ? PANEL_WIDTH : 0 }}
-      >
-        {filtersPanelOpen && (
-          <CountryFiltersPanel
-            allRegions={allRegions}
-            allSubregions={allSubregions}
-            selectedRegion={selectedRegion}
-            setSelectedRegion={setSelectedRegion}
-            selectedSubregion={selectedSubregion}
-            setSelectedSubregion={setSelectedSubregion}
-            selectedSovereignty={selectedSovereignty}
-            setSelectedSovereignty={setSelectedSovereignty}
-            overlays={overlays}
-            overlaySelections={overlaySelections}
-            setOverlaySelections={setOverlaySelections}
-            onHide={() => setFiltersPanelOpen(false)}
-          />
-        )}
-      </div>
+      {sidebarOpen && filtersPanelOpen && (
+        <CountryFiltersPanel
+          show={filtersPanelOpen}
+          allRegions={allRegions}
+          allSubregions={allSubregions}
+          selectedRegion={selectedRegion}
+          setSelectedRegion={setSelectedRegion}
+          selectedSubregion={selectedSubregion}
+          setSelectedSubregion={setSelectedSubregion}
+          selectedSovereignty={selectedSovereignty}
+          setSelectedSovereignty={setSelectedSovereignty}
+          overlays={overlays}
+          overlaySelections={overlaySelections}
+          setOverlaySelections={setOverlaySelections}
+          onHide={() => setFiltersPanelOpen(false)}
+        />
+      )}
     </div>
   );
 }

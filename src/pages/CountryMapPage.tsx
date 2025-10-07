@@ -92,25 +92,8 @@ export default function CountryMapPage() {
         )}
       </div>
 
-      {/* Overlay Manager Modal */}
-      {showOverlayManager && (
-        <div
-          className="fixed right-8 bottom-[100px] z-[101] min-w-[340px] max-w-[600px] max-h-[90vh] bg-white p-7 rounded-2xl shadow-2xl overflow-y-auto transition-opacity"
-          onClick={() => setShowOverlayManager(false)}
-          aria-modal="true"
-          role="dialog"
-        >
-          <OverlayManagerPanel
-            isOpen={showOverlayManager}
-            onClose={() => setShowOverlayManager(false)}
-            onEditOverlay={openEditOverlay}
-            onAddOverlay={openAddOverlay}
-          />{" "}
-        </div>
-      )}
-
-      {/* Overlay Add/Edit Modal */}
-      {editingOverlay && (
+      {/* Overlay Modals */}
+      {editingOverlay && isEditModalOpen ? (
         <OverlayEditModal
           overlay={editingOverlay}
           isNew={isNewOverlay}
@@ -119,7 +102,14 @@ export default function CountryMapPage() {
           onClose={closeOverlayModal}
           isOpen={isEditModalOpen}
         />
-      )}
+      ) : showOverlayManager ? (
+        <OverlayManagerPanel
+          isOpen={showOverlayManager}
+          onClose={() => setShowOverlayManager(false)}
+          onEditOverlay={openEditOverlay}
+          onAddOverlay={openAddOverlay}
+        />
+      ) : null}
     </div>
   );
 }

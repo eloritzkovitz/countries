@@ -1,4 +1,4 @@
-import { useTheme } from "../hooks/useTheme";
+import { useTheme } from "../context/ThemeContext";
 
 // Color constants for map elements
 export const MAP_FILL_COLORS = {
@@ -53,12 +53,14 @@ export function getGeographyStyle({
     hover: {
       fill,
       stroke: strokeColor,
+      strokeWidth: 0.25,
       outline: "none",
       cursor: "pointer",
     },
     pressed: {
       fill,
       stroke: strokeColor,
+      strokeWidth: 0.25,
       outline: "none",
       cursor: "pointer",
     },

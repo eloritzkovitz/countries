@@ -4,10 +4,17 @@ import { BaseMapLayer } from "../BaseMapLayer";
 import { OverlayLayer } from "../OverlayLayer";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
+import {
+  DEFAULT_MAP_GEO_URL,
+  DEFAULT_MAP_PROJECTION,
+  DEFAULT_MAP_SCALE_DIVISOR,
+  DEFAULT_MAP_MIN_ZOOM,
+  DEFAULT_MAP_MAX_ZOOM,
+  DEFAULT_MAP_BG_COLOR,
+} from "../../config/constants";
 import { useOverlayContext } from "../../context/OverlayContext";
 import { useContainerDimensions } from "../../hooks/useContainerDimensions";
 
-const geoUrl = import.meta.env.VITE_MAP_GEO_URL || "/data/countries.geojson";
 
 type WorldMapProps = {
   zoom: number;
@@ -46,20 +53,27 @@ export function WorldMap({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full bg-gray-100 overflow-hidden rounded-lg shadow"
+      className={`fixed inset-0 w-full h-[100dvh] ${DEFAULT_MAP_BG_COLOR} overflow-hidden`}
     >
       <ComposableMap
-        projection="geoEqualEarth"
+        projection={DEFAULT_MAP_PROJECTION}
         projectionConfig={{
-          scale: Math.min(dimensions.width, dimensions.height) / 2.8,
+          scale: Math.min(dimensions.width, dimensions.height) / DEFAULT_MAP_SCALE_DIVISOR,
+          center: [0, 0],
         }}
         width={dimensions.width}
         height={dimensions.height}
       >
-        <ZoomableGroup zoom={zoom} center={center} onMoveEnd={handleMoveEnd}>
+        <ZoomableGroup
+          zoom={zoom}
+          center={center}
+          minZoom={DEFAULT_MAP_MIN_ZOOM}
+          maxZoom={DEFAULT_MAP_MAX_ZOOM}
+          onMoveEnd={zoom > 1 ? handleMoveEnd : undefined}         
+        >
           {/* Base map */}
           <BaseMapLayer
-            geographyUrl={geoUrl}
+            geographyUrl={DEFAULT_MAP_GEO_URL}
             onCountryClick={onCountryClick}
             onCountryHover={onCountryHover}
             selectedIsoCode={selectedIsoCode}
@@ -71,7 +85,7 @@ export function WorldMap({
             .map((overlay) => (
               <OverlayLayer
                 key={overlay.id}
-                geographyUrl={geoUrl}
+                geographyUrl={DEFAULT_MAP_GEO_URL}
                 overlayItems={overlay.countries.map((isoCode) => ({
                   isoCode,
                   color: overlay.color,
