@@ -56,6 +56,12 @@ export function CountryFiltersPanel({
   // All sovereignty types from country data
   const sovereigntyOptions = getAllSovereigntyTypes(countries);
 
+  // Reset subregion when region changes
+  const handleRegionChange = (region: string) => {
+    setSelectedRegion(region);
+    setSelectedSubregion("");
+  };
+
   // Reset filters handler
   function handleResetFilters() {
     setSelectedRegion("");
@@ -98,14 +104,14 @@ export function CountryFiltersPanel({
         </>
       }
     >
-      {/* Render region and subregion filters from config */}
+      {/* Filter configuration */}
       {filtersConfig
         .filter((f) => f.key !== "overlay")
         .map((filter) => {
           let value, setValue, options;
           if (filter.key === "region") {
             value = selectedRegion;
-            setValue = setSelectedRegion;
+            setValue = handleRegionChange;
             options = filter.getOptions(allRegions);
           } else if (filter.key === "subregion") {
             value = selectedSubregion;
