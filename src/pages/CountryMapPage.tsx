@@ -92,18 +92,8 @@ export default function CountryMapPage() {
         )}
       </div>
 
-      {/* Overlay Manager Modal */}
-      {showOverlayManager && (
-        <OverlayManagerPanel
-          isOpen={showOverlayManager}
-          onClose={() => setShowOverlayManager(false)}
-          onEditOverlay={openEditOverlay}
-          onAddOverlay={openAddOverlay}
-        />
-      )}
-
-      {/* Overlay Add/Edit Modal */}
-      {editingOverlay && (
+      {/* Overlay Modals */}
+      {editingOverlay && isEditModalOpen ? (
         <OverlayEditModal
           overlay={editingOverlay}
           isNew={isNewOverlay}
@@ -112,7 +102,14 @@ export default function CountryMapPage() {
           onClose={closeOverlayModal}
           isOpen={isEditModalOpen}
         />
-      )}
+      ) : showOverlayManager ? (
+        <OverlayManagerPanel
+          isOpen={showOverlayManager}
+          onClose={() => setShowOverlayManager(false)}
+          onEditOverlay={openEditOverlay}
+          onAddOverlay={openAddOverlay}
+        />
+      ) : null}
     </div>
   );
 }
