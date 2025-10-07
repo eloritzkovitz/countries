@@ -86,7 +86,16 @@ export function CountrySidebarPanel({
       {/* Sidebar open/close logic */}
       {sidebarOpen ? (
         <Panel
-          title="Country List"
+          title={
+            <span className="flex items-center gap-2">
+              <img
+                src={theme === "dark" ? "/icons/icon-dark.svg" : "/icons/icon.svg"}
+                alt="App Icon"
+                className="inline-block w-12 h-12"
+              />
+              <span className="font-bold text-lg">Countries</span>
+            </span>
+          }
           show={sidebarOpen}
           headerActions={
             <>
