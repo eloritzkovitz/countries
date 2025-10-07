@@ -108,8 +108,12 @@ export default function FlagGuessGamePage() {
       {/* Main Content */}
       <div className="max-w-md w-full p-8 rounded-xl bg-white shadow-lg text-center font-sans">
         <CountryFlag
-          isoCode={currentCountry.isoCode}
-          size="96x72"
+          flag={{
+            isoCode: currentCountry.isoCode,
+            source: "flagcdn",
+            style: "flat",
+            size: "96x72",
+          }}          
           alt={currentCountry.name}
           style={{ width: "5rem", height: "auto", margin: "1rem 0" }}
         />

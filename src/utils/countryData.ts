@@ -1,5 +1,5 @@
 import type { Country } from "../types/country";
-import type { FlagSize } from "../types/flag";
+import type { FlagSource, FlagStyle, FlagSize } from "../types/flag";
 
 /**
  * Extracts the ISO country code from various possible property names.
@@ -54,14 +54,32 @@ export function getCountryOptions(countries: Country[]) {
 }
 
 /**
- * Gets the URL of a country's flag based on its ISO code.
+ * Gets the URL of a country's flag based on its ISO code, source, style, and size.
  * @param isoCode - The ISO code of the country.
  * @param size - The size of the flag image.
+ * @param source - The flag provider ("flagcdn" or "flagsapi").
+ * @param style - The style of the flag ("flat" or "shiny").
  * @returns The URL of the country's flag image.
  */
-export function getFlagUrl(isoCode: string, size: FlagSize = "32x24") {
+export function getFlagUrl(
+  isoCode: string,
+  size: FlagSize = "32x24",
+  source: FlagSource = "flagcdn",
+  style: FlagStyle = "flat"
+): string {
   if (!isoCode) return "";
-  return `https://flagcdn.com/${size}/${isoCode.toLowerCase()}.png`;
+
+  const normalizedIso = isoCode.toUpperCase();
+
+  switch (source) {
+    case "flagsapi":
+      // FlagsAPI: https://flagsapi.com/:country_code/:style/:size.png
+      return `https://flagsapi.com/${normalizedIso}/${style}/${size.split("x")[0]}.png`;
+    case "flagcdn":
+    default:
+      // FlagCDN: https://flagcdn.com/:size/:country_code.png
+      return `https://flagcdn.com/${size}/${normalizedIso.toLowerCase()}.png`;
+  }
 }
 
 /**

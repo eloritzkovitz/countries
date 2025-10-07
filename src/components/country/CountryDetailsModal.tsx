@@ -48,10 +48,14 @@ export function CountryDetailsModal({
         </div>
       )}
       <CountryFlag
-        isoCode={country.isoCode}
-        size="64x48"
+        flag={{
+          isoCode: country.isoCode,
+          source: "flagcdn",
+          style: "flat",
+          size: "64x48",
+        }}
         alt={`${country.name} flag`}
-        style={{ marginBottom: 16 }}
+        style={{marginBottom: '16px'}}
       />
       <ul className="list-none p-0 mb-4 text-gray-700">
         <li>
