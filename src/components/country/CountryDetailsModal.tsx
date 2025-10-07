@@ -1,5 +1,6 @@
 import { FaTimes } from "react-icons/fa";
 import { CountryFlag } from "./CountryFlag";
+import { SovereigntyBadge } from "./SovereigntyBadge";
 import { ActionButton } from "../common/ActionButton";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
@@ -42,11 +43,7 @@ export function CountryDetailsModal({
           icon={<FaTimes />}
         />
       </PanelHeader>
-      {country.sovereigntyType && (
-        <div className="mb-6 text-base text-center font-semibold bg-blue-300 text-gray-600 rounded-full p-2 dark:bg-gray-600 dark:text-gray-300">
-          {country.sovereigntyType}
-        </div>
-      )}
+      <SovereigntyBadge type={country.sovereigntyType} />
       <CountryFlag
         flag={{
           isoCode: country.isoCode,
