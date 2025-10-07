@@ -1,4 +1,5 @@
 import { FaEye, FaEyeSlash, FaEdit, FaTrash } from "react-icons/fa";
+import { ActionButton } from "../common/ActionButton";
 import type { Overlay } from "../../types/overlay";
 
 type OverlayPanelItemProps = {
@@ -22,32 +23,30 @@ export function OverlayPanelItem({
         title={overlay.name}
       />
       <strong className="flex-1">{overlay.name}</strong>
-      <button
+      <ActionButton
         onClick={() => onToggleVisibility(overlay.id)}
-        className={`mx-1 text-lg transition-colors ${
-          overlay.visible ? "text-blue-600" : "text-gray-400"
-        }`}
+        ariaLabel={overlay.visible ? "Hide overlay" : "Show overlay"}
         title={overlay.visible ? "Hide overlay" : "Show overlay"}
-        aria-label={overlay.visible ? "Hide overlay" : "Show overlay"}
-      >
-        {overlay.visible ? <FaEye /> : <FaEyeSlash />}
-      </button>
-      <button
-        className="mx-1 text-blue-600 text-lg hover:text-blue-800 transition-colors"
+        colorClass={overlay.visible ? "text-blue-600" : "text-gray-400"}
+        className="mx-1 text-lg"
+        icon={overlay.visible ? <FaEye /> : <FaEyeSlash />}
+      />
+      <ActionButton
         onClick={() => onEdit(overlay)}
+        ariaLabel="Edit overlay"
         title="Edit overlay"
-        aria-label="Edit overlay"
-      >
-        <FaEdit />
-      </button>
-      <button
-        className="mx-1 text-red-600 text-lg hover:text-red-800 transition-colors"
+        colorClass="text-blue-600 hover:text-blue-800"
+        className="mx-1 text-lg"
+        icon={<FaEdit />}
+      />
+      <ActionButton
         onClick={() => onRemove(overlay.id)}
+        ariaLabel="Remove overlay"
         title="Remove overlay"
-        aria-label="Remove overlay"
-      >
-        <FaTrash />
-      </button>
+        colorClass="text-red-600 hover:text-red-800"
+        className="mx-1 text-lg"
+        icon={<FaTrash />}
+      />
     </li>
   );
 }

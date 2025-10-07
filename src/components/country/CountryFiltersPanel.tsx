@@ -3,15 +3,14 @@ import { ActionButton } from "../common/ActionButton";
 import { FilterSelect } from "../common/FilterSelect";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
+import { Panel } from "../common/Panel";
 import { filtersConfig } from "../../config/filtersConfig";
 import { useCountryData } from "../../context/CountryDataContext";
-import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Overlay } from "../../types/overlay";
 import {
   getSubregionsForRegion,
   getAllSovereigntyTypes,
 } from "../../utils/countryFilters";
-import { Panel } from "../common/Panel";
 
 type CountryFiltersPanelProps = {
   show: boolean;
@@ -70,18 +69,16 @@ export function CountryFiltersPanel({
     );
   }
 
-  // Close panel on Escape key press
-  useKeyHandler(() => onHide(), ["Escape"]);
-
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading filters..." />;
   if (error) return <ErrorMessage error={error} />;
 
   return (
-   <Panel
+    <Panel
       title="Filters"
       width={400}
       show={show}
+      onHide={onHide}
       headerActions={
         <>
           <ActionButton
@@ -129,6 +126,7 @@ export function CountryFiltersPanel({
             />
           ) : null;
         })}
+
       {/* Render overlay filters from config */}
       {overlays.map((overlay) => {
         const overlayFilter = filtersConfig.find((f) => f.key === "overlay");
