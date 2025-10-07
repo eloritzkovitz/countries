@@ -13,7 +13,7 @@ export type FilterConfig =
       key: "region";
       label: string;
       type: "select";
-      getOptions: (allRegions: string[]) => { value: string; label: string }[];
+      getOptions: (allRegions: string[]) => FilterOption[];
       getValue: (props: any) => string;
       setValue: (props: any, val: string) => void;
     }
@@ -21,9 +21,7 @@ export type FilterConfig =
       key: "subregion";
       label: string;
       type: "select";
-      getOptions: (
-        subregionOptions: string[]
-      ) => { value: string; label: string }[];
+      getOptions: (subregionOptions: string[]) => FilterOption[];
       getValue: (props: any) => string;
       setValue: (props: any, val: string) => void;
     }
@@ -39,7 +37,7 @@ export type FilterConfig =
       key: "overlay";
       label: (overlay: Overlay) => string;
       type: "select";
-      getOptions: () => { value: string; label: string }[];
+      getOptions: () => FilterOption[];
       getValue: (props: any, overlay: Overlay) => string;
       setValue: (props: any, val: string, overlay: Overlay) => void;
     };

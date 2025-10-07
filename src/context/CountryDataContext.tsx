@@ -1,16 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getAllRegions, getAllSubregions, getAllSovereigntyTypes } from "../utils/countryFilters";
-
-type CountryDataContextType = {
-  countries: any[];
-  currencies: Record<string, string>;
-  allRegions: string[];
-  allSubregions: string[];
-  allSovereigntyTypes: string[];
-
-  loading: boolean;
-  error: string | null;
-};
+import type { CountryDataContextType } from "../types/country";
 
 export const CountryDataContext = createContext<CountryDataContextType>({
   countries: [],

@@ -1,5 +1,5 @@
 import type { SovereigntyType } from "../types/country";
-import type { FilterConfig } from "../types/filters";
+import type { FilterConfig, FilterOption } from "../types/filters";
 import type { Overlay } from "../types/overlay";
 
 const SOVEREIGNTY_ORDER: SovereigntyType[] = [
@@ -9,14 +9,20 @@ const SOVEREIGNTY_ORDER: SovereigntyType[] = [
   "Disputed",
 ];
 
+const allOption: FilterOption = { value: "", label: "All" };
+
+function mapOptions(options: string[]): FilterOption[] {
+  return options.map((r) => ({ value: r, label: r }));
+}
+
 export const filtersConfig: FilterConfig[] = [
   {
     key: "region",
     label: "Continent/Region",
     type: "select",
     getOptions: (allRegions: string[]) => [
-      { value: "", label: "All" },
-      ...allRegions.map((r) => ({ value: r, label: r })),
+      allOption,
+      ...mapOptions(allRegions),
     ],
     getValue: (props) => props.selectedRegion,
     setValue: (props, val) => props.setSelectedRegion(val),
@@ -26,8 +32,8 @@ export const filtersConfig: FilterConfig[] = [
     label: "Subregion",
     type: "select",
     getOptions: (subregionOptions: string[]) => [
-      { value: "", label: "All" },
-      ...subregionOptions.map((r) => ({ value: r, label: r })),
+      allOption,
+      ...mapOptions(subregionOptions),
     ],
     getValue: (props) => props.selectedSubregion,
     setValue: (props, val) => props.setSelectedSubregion(val),
@@ -37,13 +43,13 @@ export const filtersConfig: FilterConfig[] = [
     label: "Sovereignty",
     type: "select",
     getOptions: (sovereigntyOptions: SovereigntyType[]) => [
-      { value: "", label: "All" },
-      ...SOVEREIGNTY_ORDER
-        .filter((type) => sovereigntyOptions.includes(type))
-        .map((type) => ({
-          value: type,
-          label: type.charAt(0).toUpperCase() + type.slice(1),
-        })),
+      allOption,
+      ...SOVEREIGNTY_ORDER.filter((type) =>
+        sovereigntyOptions.includes(type)
+      ).map((type) => ({
+        value: type,
+        label: type.charAt(0).toUpperCase() + type.slice(1),
+      })),
     ],
     getValue: (props) => props.selectedSovereignty,
     setValue: (props, val) => props.setSelectedSovereignty(val),
