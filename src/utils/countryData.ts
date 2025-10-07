@@ -1,3 +1,4 @@
+import { EXCLUDED_ISO_CODES } from "../config/constants";
 import type { Country } from "../types/country";
 import type { FlagSource, FlagStyle, FlagSize } from "../types/flag";
 
@@ -13,22 +14,13 @@ export function getCountryIsoCode(properties: any): string | undefined {
   );
 }
 
-// List of country codes that do not have their own flags
-const excludedDependencies = [
-  "BV", // Bouvet Island
-  "HM", // Heard Island and McDonald Islands
-  "MF", // Saint Martin
-  "SJ", // Svalbard and Jan Mayen
-  "UM", // United States Minor Outlying Islands
-];
-
 /**
  * Returns countries whose flag matches their own ISO code and is not empty.
  * If you add a flagIsoCode property for borrowed flags, this will skip those.
  */
 export function getCountriesWithOwnFlag(countries: Country[]): Country[] {
   return countries.filter(
-    (country) => country.flag && !excludedDependencies.includes(country.isoCode)
+    (country) => country.flag && !EXCLUDED_ISO_CODES.includes(country.isoCode)
   );
 }
 

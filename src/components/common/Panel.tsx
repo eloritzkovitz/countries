@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { PanelHeader } from "./PanelHeader";
+import { DEFAULT_PANEL_WIDTH } from "../../config/constants";
 import { useKeyHandler } from "../../hooks/useKeyHandler";
 
 type PanelProps = {
@@ -16,7 +17,7 @@ type PanelProps = {
 export function Panel({
   title,
   children,
-  width = 400,
+  width = DEFAULT_PANEL_WIDTH,
   show = true,
   onHide,
   headerActions,

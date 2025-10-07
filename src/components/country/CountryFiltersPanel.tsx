@@ -4,6 +4,7 @@ import { FilterSelect } from "../common/FilterSelect";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { Panel } from "../common/Panel";
+import { DEFAULT_PANEL_WIDTH } from "../../config/constants";
 import { filtersConfig } from "../../config/filtersConfig";
 import { useCountryData } from "../../context/CountryDataContext";
 import type { Overlay } from "../../types/overlay";
@@ -82,7 +83,7 @@ export function CountryFiltersPanel({
   return (
     <Panel
       title="Filters"
-      width={400}
+      width={DEFAULT_PANEL_WIDTH}
       show={show}
       onHide={onHide}
       headerActions={
