@@ -1,4 +1,5 @@
 import { ActionButton } from "../common/ActionButton";
+import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Country } from "../../types/country";
 
 export function ResultMessage({
@@ -10,6 +11,14 @@ export function ResultMessage({
   currentCountry: Country;
   nextFlag: () => void;
 }) {
+  useKeyHandler(
+    () => {
+      if (result !== null) nextFlag();
+    },
+    ["Enter"],
+    result !== null
+  );
+
   if (result === null) return null;
   return (
     <div className="my-4 text-lg">

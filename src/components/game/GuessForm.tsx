@@ -20,7 +20,7 @@ export function GuessForm({
         placeholder="Enter country name"
         value={guess}
         onChange={(e) => setGuess(e.target.value)}
-        className="px-4 py-2 text-lg rounded border border-gray-300 w-4/5 mb-4"
+        className="px-4 py-2 text-lg bg-gray-100 rounded border border-none focus:outline-none focus:ring-none w-4/5 mb-4"
         disabled={disabled}
       />
       <div className="flex justify-center gap-4 mb-2">
