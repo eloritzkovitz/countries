@@ -37,7 +37,7 @@ export function Branding({ title, size = 48 }: { title?: string; size?: number }
         <rect fill={fgColor} x=".87" y="3.88" width="15" height="11" rx="5.5" ry="5.5"/>
       </svg>
       {title ? (
-        <span className="font-bold text-lg">{title}</span>
+        <span className="font-bold text-lg dark:text-gray-200">{title}</span>
       ) : null}
     </Link>
   );
