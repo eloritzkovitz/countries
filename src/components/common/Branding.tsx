@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 
 export function Branding({ title, size = 48 }: { title?: string; size?: number }) {
@@ -16,7 +17,11 @@ export function Branding({ title, size = 48 }: { title?: string; size?: number }
   const fgColor = theme === "dark" ? darkFg : lightFg;
 
   return (
-    <span className="flex items-center gap-2">
+    <Link
+      to="/"
+      aria-label={title ? `Go to home page (${title})` : "Go to home page"}
+      className="flex items-center gap-2 focus:outline-none focus:ring-none"
+    >
       <svg
         width={size}
         height={size}
@@ -34,6 +39,6 @@ export function Branding({ title, size = 48 }: { title?: string; size?: number }
       {title ? (
         <span className="font-bold text-lg">{title}</span>
       ) : null}
-    </span>
+    </Link>
   );
 }

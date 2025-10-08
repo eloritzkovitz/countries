@@ -18,6 +18,7 @@ export function GuessForm({
       <input
         type="text"
         placeholder="Enter country name"
+        aria-label="Country name"
         value={guess}
         onChange={(e) => setGuess(e.target.value)}
         className="px-4 py-2 text-lg bg-gray-100 rounded border border-none focus:outline-none focus:ring-none w-4/5 mb-4"
@@ -26,18 +27,20 @@ export function GuessForm({
       <div className="flex justify-center gap-4 mb-2">
         <ActionButton
           type="submit"
+          aria-label="Submit guess"
           colorClass="bg-blue-600 text-white hover:bg-blue-700"
           className="px-6 py-2 text-base rounded font-bold"
-          disabled={disabled}
+          disabled={disabled}          
         >
           Guess
         </ActionButton>
         <ActionButton
           type="button"
+          aria-label="Skip flag"
           onClick={skipFlag}
           colorClass="bg-gray-200 text-gray-800 hover:bg-gray-300"
           className="px-6 py-2 text-base rounded font-bold"
-          disabled={disabled}
+          disabled={disabled}          
         >
           Skip
         </ActionButton>
