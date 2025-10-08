@@ -11,6 +11,7 @@ export function ResultMessage({
   currentCountry: Country;
   nextFlag: () => void;
 }) {
+  // Handle "Enter" key to go to the next flag if result is not null
   useKeyHandler(
     () => {
       if (result !== null) nextFlag();
@@ -19,7 +20,9 @@ export function ResultMessage({
     result !== null
   );
 
+  // Don't render anything if result is null
   if (result === null) return null;
+  
   return (
     <div className="my-4 text-lg">
       {result ? (
@@ -34,6 +37,7 @@ export function ResultMessage({
           onClick={nextFlag}
           colorClass="bg-blue-600 text-white hover:bg-blue-700"
           className="px-6 py-2 text-base rounded font-bold"
+          aria-label="Next Flag"
         >
           Next Flag
         </ActionButton>

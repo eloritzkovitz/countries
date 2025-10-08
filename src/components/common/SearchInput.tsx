@@ -18,7 +18,8 @@ export function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`px-3 py-2 bg-gray-100 rounded border border-none text-base focus:outline-none focus:ring-none ${className}`}
+        aria-label={placeholder || "Search"}
+        className={`filter-select px-3 py-2 bg-gray-100 rounded border border-none text-base focus:outline-none focus:ring-none ${className}`}
       />
     </div>
   );

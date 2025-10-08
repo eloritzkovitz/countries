@@ -13,57 +13,67 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+  color: theme('colors.blue.800');
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+.dark a {
+  color: theme('colors.blue.400');
+}
+
 body {
   overflow: hidden;
 }
 
 .dark body { 
-  color: #f7fafc;
+  color: theme('colors.gray.200');
   scrollbar-color: #4a5568 #2b3342;
   scrollbar-width: thin;
 }
 
 .bg-gray-100 {
-  background-color: #f7fafc;
+  background-color: theme('colors.gray.100');
 }
 
 .dark .bg-gray-100 {
-  background-color: #4a5568;
+  background-color: theme('colors.gray.600');
 }
 
 .dark .bg-white {
-  background-color: #2d3748;
+  background-color: theme('colors.gray.700');
 }
 
 .dark .text-gray-700 {
-  color: #e5e7eb;
+  color: theme('colors.gray.300');
 }
 
 /* Action button */
 
 .action-button:hover {
-  background-color: #e2e8f0;
+  background-color: theme('colors.gray.200');
 }
 
 .dark .action-button:hover {
-  background-color: #445164;
+  background-color: theme('colors.gray.600');
 }
 
 /* Filter select */
 .filter-select:hover {
-  background-color: #e2e8f0;
+  background-color: theme('colors.gray.200');
 }
 
 .filter-select:focus {
-  background-color: #f7fafc;
+  background-color: theme('colors.gray.200');
 }
 
 .dark .filter-select:hover {
-  background-color: #445164;
+  background-color: theme('colors.gray.500');
 }
 
 .dark .filter-select:focus {
-  background-color: #4a5568;
+  background-color: theme('colors.gray.500');
 }
 
 h1 {
@@ -93,17 +103,35 @@ button:focus-visible {
 /* Custom scrollbar styles */
 body::-webkit-scrollbar {
   width: 8px;
-  background: #f7fafc;
+  background: theme('colors.gray.200');
 }
 body::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: theme('colors.gray.400');
   border-radius: 8px;
 }
 .dark body::-webkit-scrollbar {
-  background: #2d3748;
+  background: theme('colors.gray.800');
 }
 .dark body::-webkit-scrollbar-thumb {
-  background: #4a5568;
+  background: theme('colors.gray.600');
+}
+
+/* Custom scrollbar for filter-select */
+.filter-select::-webkit-scrollbar {
+  width: 8px;
+  background: theme('colors.gray.100');
+}
+.filter-select::-webkit-scrollbar-thumb {
+  background: theme('colors.gray.300');
+  border-radius: 8px;
+}
+
+/* Dark theme for filter-select */
+.dark .filter-select::-webkit-scrollbar {
+  background: theme('colors.gray.700');
+}
+.dark .filter-select::-webkit-scrollbar-thumb {
+  background: theme('colors.gray.600');
 }
 
 @media (prefers-color-scheme: light) {
