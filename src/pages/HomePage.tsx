@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
       <Branding size={128} />
-      <h1 className="text-4xl font-extrabold mb-4 text-blue-700 dark:text-blue-300">
+      <h1 className="text-4xl font-extrabold mb-4 text-blue-800 dark:text-gray-100">
         Welcome to Countries Explorer
       </h1>
       <p className="text-lg text-gray-700 dark:text-gray-300 max-w-xl text-center mb-10">
@@ -30,7 +30,7 @@ export default function HomePage() {
           linkText="Play Game"
         />
       </div>
-      <footer className="mt-12 text-gray-400 dark:text-gray-500 text-sm text-center">
+      <footer className="mt-12 text-gray-400 dark:text-gray-300 text-sm text-center">
         &copy; {new Date().getFullYear()} Countries Explorer &mdash; All rights
         reserved.
       </footer>
