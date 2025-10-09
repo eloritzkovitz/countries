@@ -18,7 +18,6 @@ import {
   getFilteredIsoCodes,
 } from "../../utils/countryFilters";
 
-
 export function CountrySidebarPanel({
   selectedIsoCode,
   hoveredIsoCode,
@@ -116,14 +115,20 @@ export function CountrySidebarPanel({
             </>
           }
         >
-          <SearchInput
-            value={search}
-            onChange={setSearch}
-            placeholder="Search countries..."
-            className="flex-1"
-          />
-          <div className="my-2 font-bold text-center flex-shrink-0">
-            Showing {filteredCountries.length} countries from {countries.length}
+          {/* Search input and count */}
+          <div className="sticky top-0 z-10 bg-white dark:bg-gray-800">
+            <SearchInput
+              value={search}
+              onChange={setSearch}
+              placeholder="Search countries..."
+              className="flex-1"
+            />
+            <div className="my-2 font-bold text-center flex-shrink-0">
+              Showing {filteredCountries.length} countries from{" "}
+              {countries.length}
+            </div>
+            {/* Separator */}
+            <div className="border-b border-gray-200 dark:border-gray-600" />
           </div>
 
           {/* Country list */}

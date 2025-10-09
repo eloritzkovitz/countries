@@ -30,7 +30,7 @@ export function CountryList({
             onMouseEnter={() => onHover(country.isoCode)}
             onMouseLeave={() => onHover(null)}
             className={`px-4 py-2 my-1 rounded cursor-pointer flex items-center gap-3 transition
-              ${isHighlighted ? "bg-blue-50 dark:bg-blue-900 font-bold" : ""}
+              ${isHighlighted ? "bg-blue-50 dark:bg-gray-500 font-bold" : ""}
             `}
           >
             <CountryFlag
