@@ -20,11 +20,21 @@ All main data sources are loaded from JSON files in the `public/data` folder.
 You can change their location or swap datasets by editing the `.env` file.
 
 | Data Type        | Default Path                | Env Variable                    |
-|------------------|----------------------------|----------------------------------|
+|------------------|---------------------------- |---------------------------------|
 | Map GeoJSON      | `/data/countries.geojson`   | `VITE_MAP_GEO_URL`              |
 | Countries        | `/data/countries.json`      | `VITE_COUNTRY_DATA_URL`         |
 | Currencies       | `/data/currencies.json`     | `VITE_CURRENCY_DATA_URL`        |
 | Overlays         | `/data/overlays.json`       | `VITE_OVERLAYS_CONFIG_URL`      |
+
+**Sources:**
+- Country boundaries: [datasets/geo-countries](https://github.com/datasets/geo-countries)
+- Country data: [REST Countries](https://restcountries.com/)
+- Currency data: [Open Exchange Rates](https://openexchangerates.org/api/currencies.json)
+
+## Customizing Data & Overlays
+
+1. **Edit JSON files in `public/data`**  
+   - Example: Add your own overlays or update country lists in `overlays.json`:
 
 > **Overlay Example:**
 > ```json
@@ -37,11 +47,6 @@ You can change their location or swap datasets by editing the `.env` file.
 >   "countries": ["IL"]
 > }
 > ```
-
-## Customizing Data & Overlays
-
-1. **Edit JSON files in `public/data`**  
-   - Example: Add your own overlays or update country lists in `overlays.json`
 
 2. **Update `.env` to point to your data files**  
    - No code changes needed—just edit the paths.
