@@ -1,11 +1,5 @@
 import { useTheme } from "../context/ThemeContext";
-
-// Color constants for map elements
-export const MAP_FILL_COLORS = {
-  default: "#b5bfca",
-  hovered: "#0078d4",
-  selected: "#005fa3",
-};
+import { BASE_GEOGRAPHY_STYLE, MAP_FILL_COLORS } from "../config/constants";
 
 /**
  * Get the stroke color for map elements based on the current theme.
@@ -44,25 +38,19 @@ export function getGeographyStyle({
 
   return {
     default: {
+      ...BASE_GEOGRAPHY_STYLE,
       fill,
       stroke: strokeColor,
-      strokeWidth: 0.25,
-      outline: "none",
-      cursor: "pointer",
     },
     hover: {
+      ...BASE_GEOGRAPHY_STYLE,
       fill,
       stroke: strokeColor,
-      strokeWidth: 0.25,
-      outline: "none",
-      cursor: "pointer",
     },
     pressed: {
+      ...BASE_GEOGRAPHY_STYLE,
       fill,
       stroke: strokeColor,
-      strokeWidth: 0.25,
-      outline: "none",
-      cursor: "pointer",
     },
   };
 }
