@@ -2,6 +2,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { ActionButton } from "../common/ActionButton";
+import { DEFAULT_MAP_MAX_ZOOM, DEFAULT_MAP_MIN_ZOOM } from "../../config/constants";
 import { useTheme } from "../../context/ThemeContext";
 
 type MapScaleProps = {
@@ -15,8 +16,8 @@ type MapScaleProps = {
 
 export function MapScale({
   scale,
-  minScale = 1,
-  maxScale = 10,
+  minScale = DEFAULT_MAP_MIN_ZOOM,
+  maxScale = DEFAULT_MAP_MAX_ZOOM,
   onScaleChange,
   onZoomIn,
   onZoomOut,
@@ -44,7 +45,7 @@ export function MapScale({
           vertical
           min={minScale}
           max={maxScale}
-          step={0.1}
+          step={1}
           value={scale}
           onChange={(value) =>
             onScaleChange(Array.isArray(value) ? value[0] : value)
@@ -59,7 +60,7 @@ export function MapScale({
               backgroundColor: handleBg,
               boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
             },
-            rail: { backgroundColor: railColor, width: 8 },
+            rail: { backgroundColor: railColor, width: 8 },            
           }}
         />
       </div>

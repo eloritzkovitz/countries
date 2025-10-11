@@ -15,7 +15,6 @@ import {
 import { useOverlayContext } from "../../context/OverlayContext";
 import { useContainerDimensions } from "../../hooks/useContainerDimensions";
 
-
 type WorldMapProps = {
   zoom: number;
   center: [number, number];
@@ -69,7 +68,7 @@ export function WorldMap({
           center={center}
           minZoom={DEFAULT_MAP_MIN_ZOOM}
           maxZoom={DEFAULT_MAP_MAX_ZOOM}
-          onMoveEnd={zoom > 1 ? handleMoveEnd : undefined}         
+          onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}         
         >
           {/* Base map */}
           <BaseMapLayer

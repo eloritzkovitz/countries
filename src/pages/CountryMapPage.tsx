@@ -15,10 +15,7 @@ import type { Country } from "../types/country";
 export default function CountryMapPage() {
   // Map state
   const { countries, loading, error } = useCountryData();
-  const { zoom, setZoom, center, setCenter, handleMoveEnd } = useMapView(
-    1,
-    [0, 20]
-  );
+  const { zoom, setZoom, center, setCenter, handleMoveEnd } = useMapView();  
 
   // Selection state
   const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);

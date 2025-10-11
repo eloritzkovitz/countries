@@ -1,6 +1,7 @@
 import { FaLayerGroup } from "react-icons/fa";
 import { MapScale } from "./MapScale";
 import { ActionButton } from "../common/ActionButton";
+import { DEFAULT_MAP_MAX_ZOOM, DEFAULT_MAP_MIN_ZOOM } from "../../config/constants";
 
 export function MapToolbar({
   zoom,
@@ -29,11 +30,11 @@ export function MapToolbar({
       />
       <MapScale
         scale={zoom}
-        minScale={1}
-        maxScale={10}
+        minScale={DEFAULT_MAP_MIN_ZOOM}
+        maxScale={DEFAULT_MAP_MAX_ZOOM}
         onScaleChange={setZoom}
-        onZoomIn={() => setZoom(Math.min(zoom * 1.5, 16))}
-        onZoomOut={() => setZoom(Math.max(zoom / 1.5, 1))}
+        onZoomIn={() => setZoom(Math.min(zoom + 1, DEFAULT_MAP_MAX_ZOOM))}
+        onZoomOut={() => setZoom(Math.max(zoom - 1, DEFAULT_MAP_MIN_ZOOM))}
       />
     </div>
   );
