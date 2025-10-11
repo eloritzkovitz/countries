@@ -94,22 +94,19 @@ export function CountrySidebarPanel({
               <ActionButton
                 onClick={() => setFiltersPanelOpen((open) => !open)}
                 ariaLabel={filtersPanelOpen ? "Hide Filters" : "Show Filters"}
-                title="Filters"
-                className="ml-2"
+                title="Filters"                
                 icon={<FaFilter />}
               />
               <ActionButton
                 onClick={toggleTheme}
                 ariaLabel="Toggle theme"
-                title="Toggle theme"
-                className="ml-2"
+                title="Toggle theme"               
                 icon={theme === "dark" ? <FaSun /> : <FaMoon />}
               />
               <ActionButton
                 onClick={handleHideSidebar}
                 ariaLabel="Hide sidebar"
-                title="Hide sidebar"
-                className="ml-2"
+                title="Hide sidebar"                
                 icon={<FaTimes />}
               />
             </>
