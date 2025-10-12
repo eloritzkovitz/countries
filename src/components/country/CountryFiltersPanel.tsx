@@ -1,4 +1,4 @@
-import { FaTimes, FaUndo } from "react-icons/fa";
+import { FaFilter, FaTimes, FaUndo } from "react-icons/fa";
 import { ActionButton } from "../common/ActionButton";
 import { FilterSelect } from "../common/FilterSelect";
 import { LoadingSpinner } from "../common/LoadingSpinner";
@@ -82,7 +82,12 @@ export function CountryFiltersPanel({
 
   return (
     <Panel
-      title="Filters"
+      title={
+        <>
+          <FaFilter />
+          Filters
+        </>
+      }
       width={DEFAULT_PANEL_WIDTH}
       show={show}
       onHide={onHide}

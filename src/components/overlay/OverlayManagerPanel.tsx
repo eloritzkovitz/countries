@@ -1,5 +1,11 @@
 import { useRef } from "react";
-import { FaPlus, FaUpload, FaDownload, FaTimes } from "react-icons/fa";
+import {
+  FaLayerGroup,
+  FaPlus,
+  FaFileImport,
+  FaFileExport,
+  FaTimes,
+} from "react-icons/fa";
 import { OverlayPanel } from "./OverlayPanel";
 import { OverlayPanelItem } from "./OverlayPanelItem";
 import { ActionButton } from "../common/ActionButton";
@@ -51,13 +57,19 @@ export function OverlayManagerPanel({
       containerClassName="right-24 bottom-[100px]"
       className="min-w-[340px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-8 overflow-y-auto"
     >
-      <PanelHeader title="Overlays">
+      <PanelHeader
+        title={
+          <>
+            <FaLayerGroup />
+            Overlays
+          </>
+        }
+      >
         {/* Action buttons */}
         <ActionButton
           onClick={onAddOverlay}
           ariaLabel="Add Overlay"
           title="Add Overlay"
-          colorClass="bg-blue-600 text-white hover:bg-blue-700"
         >
           <FaPlus />
         </ActionButton>
@@ -65,9 +77,8 @@ export function OverlayManagerPanel({
           onClick={() => fileInputRef.current?.click()}
           ariaLabel="Import Overlays"
           title="Import Overlays"
-          colorClass="bg-yellow-500 text-white hover:bg-yellow-600"
         >
-          <FaUpload />
+          <FaFileImport />
         </ActionButton>
         <input
           type="file"
@@ -80,9 +91,8 @@ export function OverlayManagerPanel({
           onClick={exportOverlaysToFile}
           ariaLabel="Export Overlays"
           title="Export Overlays"
-          colorClass="bg-green-600 text-white hover:bg-green-700"
         >
-          <FaDownload />
+          <FaFileExport />
         </ActionButton>
         <ActionButton
           onClick={onClose}

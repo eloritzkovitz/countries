@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ErrorMessage } from "../components/common/ErrorMessage";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { CountryDetailsModal } from "../components/country/CountryDetailsModal";
@@ -11,11 +11,13 @@ import { useCountryData } from "../context/CountryDataContext";
 import { useOverlayContext } from "../context/OverlayContext";
 import { useMapView } from "../hooks/useMapView";
 import type { Country } from "../types/country";
+import { exportSvg } from "../utils/fileUtils";
 
 export default function CountryMapPage() {
   // Map state
   const { countries, loading, error } = useCountryData();
-  const { zoom, setZoom, center, setCenter, handleMoveEnd } = useMapView();  
+  const { zoom, setZoom, center, setCenter, handleMoveEnd } = useMapView();
+  const svgRef = useRef<SVGSVGElement>(null);
 
   // Selection state
   const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);
@@ -45,10 +47,17 @@ export default function CountryMapPage() {
   const handleCountryHover = (isoCode: string | null) => {
     setHoveredIsoCode(isoCode);
   };
+  
+  // Export the current map view as an SVG file
+  const handleExportSvg = () => {
+    if (svgRef.current) {
+      exportSvg(svgRef.current, "countries-map.svg");
+    }
+  };
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading countries..." />;
-  if (error) return <ErrorMessage error={error} />;
+  if (error) return <ErrorMessage error={error} />;  
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -68,6 +77,7 @@ export default function CountryMapPage() {
           setZoom={setZoom}
           showOverlayManager={showOverlayManager}
           setShowOverlayManager={setShowOverlayManager}
+          onExportSVG={handleExportSvg} 
         />
         <WorldMap
           zoom={zoom}
@@ -79,6 +89,7 @@ export default function CountryMapPage() {
           onCountryHover={handleCountryHover}
           selectedIsoCode={selectedIsoCode}
           hoveredIsoCode={hoveredIsoCode}
+          svgRef={svgRef}
         />
         {modalCountry && (
           <CountryDetailsModal

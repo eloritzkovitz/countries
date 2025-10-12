@@ -28,6 +28,7 @@ type WorldMapProps = {
   onCountryHover: (isoCode: string | null) => void;
   selectedIsoCode: string | null;
   hoveredIsoCode: string | null;
+  svgRef: React.RefObject<SVGSVGElement | null>;
 };
 
 export function WorldMap({
@@ -38,8 +39,9 @@ export function WorldMap({
   onCountryHover,
   selectedIsoCode,
   hoveredIsoCode,
+  svgRef,
 }: WorldMapProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);  
   const dimensions = useContainerDimensions(containerRef);
 
   // Get overlays and toggles from context
@@ -47,55 +49,69 @@ export function WorldMap({
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading overlays..." />;
-  if (error) return <ErrorMessage error={error} />;
+  if (error) return <ErrorMessage error={error} />;  
 
   return (
     <div
       ref={containerRef}
       className={`fixed inset-0 w-full h-[100dvh] ${DEFAULT_MAP_BG_COLOR} overflow-hidden`}
     >
-      <ComposableMap
-        projection={DEFAULT_MAP_PROJECTION}
-        projectionConfig={{
-          scale: Math.min(dimensions.width, dimensions.height) / DEFAULT_MAP_SCALE_DIVISOR,
-          center: [0, 0],
-        }}
+      <svg
+        ref={svgRef}
         width={dimensions.width}
         height={dimensions.height}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+        }}
       >
-        <ZoomableGroup
-          zoom={zoom}
-          center={center}
-          minZoom={DEFAULT_MAP_MIN_ZOOM}
-          maxZoom={DEFAULT_MAP_MAX_ZOOM}
-          onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}         
+        <ComposableMap
+          projection={DEFAULT_MAP_PROJECTION}
+          projectionConfig={{
+            scale:
+              Math.min(dimensions.width, dimensions.height) /
+              DEFAULT_MAP_SCALE_DIVISOR,
+            center: [0, 0],
+          }}
+          width={dimensions.width}
+          height={dimensions.height}
         >
-          {/* Base map */}
-          <BaseMapLayer
-            geographyUrl={DEFAULT_MAP_GEO_URL}
-            onCountryClick={onCountryClick}
-            onCountryHover={onCountryHover}
-            selectedIsoCode={selectedIsoCode}
-            hoveredIsoCode={hoveredIsoCode}
-          />
-          {/* Overlay layers */}
-          {overlays
-            .filter((o) => o.visible)
-            .map((overlay) => (
-              <OverlayLayer
-                key={overlay.id}
-                geographyUrl={DEFAULT_MAP_GEO_URL}
-                overlayItems={overlay.countries.map((isoCode) => ({
-                  isoCode,
-                  color: overlay.color,
-                  tooltip: overlay.tooltip || overlay.name,
-                }))}
-                defaultColor={overlay.color}
-                suffix={`-overlay-${overlay.id}`}
-              />
-            ))}
-        </ZoomableGroup>
-      </ComposableMap>
+          <ZoomableGroup
+            zoom={zoom}
+            center={center}
+            minZoom={DEFAULT_MAP_MIN_ZOOM}
+            maxZoom={DEFAULT_MAP_MAX_ZOOM}
+            onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
+          >
+            {/* Base map */}
+            <BaseMapLayer
+              geographyUrl={DEFAULT_MAP_GEO_URL}
+              onCountryClick={onCountryClick}
+              onCountryHover={onCountryHover}
+              selectedIsoCode={selectedIsoCode}
+              hoveredIsoCode={hoveredIsoCode}
+            />
+            {/* Overlay layers */}
+            {overlays
+              .filter((o) => o.visible)
+              .map((overlay) => (
+                <OverlayLayer
+                  key={overlay.id}
+                  geographyUrl={DEFAULT_MAP_GEO_URL}
+                  overlayItems={overlay.countries.map((isoCode) => ({
+                    isoCode,
+                    color: overlay.color,
+                    tooltip: overlay.tooltip || overlay.name,
+                  }))}
+                  defaultColor={overlay.color}
+                  suffix={`-overlay-${overlay.id}`}
+                />
+              ))}
+          </ZoomableGroup>
+        </ComposableMap>
+      </svg>
     </div>
   );
 }

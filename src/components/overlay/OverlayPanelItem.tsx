@@ -27,7 +27,7 @@ export function OverlayPanelItem({
         onClick={() => onToggleVisibility(overlay.id)}
         ariaLabel={overlay.visible ? "Hide overlay" : "Show overlay"}
         title={overlay.visible ? "Hide overlay" : "Show overlay"}
-        colorClass={overlay.visible ? "text-blue-600" : "text-gray-400"}
+        colorClass={overlay.visible ? "text-blue-500" : "text-gray-400"}
         className="mx-1 text-lg"
         icon={overlay.visible ? <FaEye /> : <FaEyeSlash />}
       />
