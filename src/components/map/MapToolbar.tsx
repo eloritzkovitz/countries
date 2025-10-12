@@ -5,7 +5,7 @@ import {
   FaSun,
   FaMoon,
   FaChevronLeft,
-  FaChevronRight,  
+  FaChevronRight,
 } from "react-icons/fa";
 import { ZoomControls } from "./ZoomControls";
 import { ActionButton } from "../common/ActionButton";
@@ -103,7 +103,7 @@ export function MapToolbar({
           title={visible ? "Hide toolbar" : "Show toolbar"}
           colorClass="bg-gray-300 dark:bg-gray-800"
           className={`w-10 h-10 flex items-center justify-center rounded-full shadow transition-opacity duration-300 absolute right-0 top-0 ${
-            !visible ? "opacity-0 group-hover:opacity-100" : ""
+            !visible ? "opacity-70" : ""
           }`}
           icon={visible ? <FaChevronRight /> : <FaChevronLeft />}
         />

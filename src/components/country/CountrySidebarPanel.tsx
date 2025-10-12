@@ -39,7 +39,7 @@ export function CountrySidebarPanel({
     Record<string, string>
   >({});
 
-  // UI state  
+  // UI state
   const [filtersPanelOpen, setFiltersPanelOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [search, setSearch] = useState("");
@@ -94,7 +94,7 @@ export function CountrySidebarPanel({
                 ariaLabel={filtersPanelOpen ? "Hide Filters" : "Show Filters"}
                 title="Filters"
                 icon={<FaFilter />}
-              />              
+              />
               <ActionButton
                 onClick={handleHideSidebar}
                 ariaLabel="Hide sidebar"
@@ -145,7 +145,7 @@ export function CountrySidebarPanel({
           ariaLabel="Show sidebar"
           title="Show sidebar"
           colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
-          className="absolute left-4 top-4 w-12 h-12 flex items-center justify-center shadow-lg p-0 rounded-full border-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute left-4 top-4 w-12 h-12 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
           icon={<FaBars size={24} />}
         />
       )}

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { BaseMapLayer } from "../BaseMapLayer";
 import { OverlayLayer } from "../OverlayLayer";
@@ -14,6 +14,7 @@ import {
 } from "../../config/constants";
 import { useOverlayContext } from "../../context/OverlayContext";
 import { useContainerDimensions } from "../../hooks/useContainerDimensions";
+import { exportSvg } from "../../utils/fileUtils";
 
 type WorldMapProps = {
   zoom: number;
@@ -28,28 +29,39 @@ type WorldMapProps = {
   onCountryHover: (isoCode: string | null) => void;
   selectedIsoCode: string | null;
   hoveredIsoCode: string | null;
-  svgRef: React.RefObject<SVGSVGElement | null>;
 };
 
-export function WorldMap({
-  zoom,
-  center,
-  handleMoveEnd,
-  onCountryClick,
-  onCountryHover,
-  selectedIsoCode,
-  hoveredIsoCode,
-  svgRef,
-}: WorldMapProps) {
-  const containerRef = useRef<HTMLDivElement>(null);  
+export const WorldMap = forwardRef(function WorldMap(
+  {
+    zoom,
+    center,
+    handleMoveEnd,
+    onCountryClick,
+    onCountryHover,
+    selectedIsoCode,
+    hoveredIsoCode,
+  }: WorldMapProps,
+  ref
+) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const dimensions = useContainerDimensions(containerRef);
+
+  // Expose exportSvg method to parent via ref
+  useImperativeHandle(ref, () => ({
+    exportSvg: () => {
+      if (svgRef.current) {
+        exportSvg(svgRef.current, "countries-map.svg");
+      }
+    },
+  }));
 
   // Get overlays and toggles from context
   const { overlays, loading, error } = useOverlayContext();
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading overlays..." />;
-  if (error) return <ErrorMessage error={error} />;  
+  if (error) return <ErrorMessage error={error} />;
 
   return (
     <div
@@ -114,4 +126,4 @@ export function WorldMap({
       </svg>
     </div>
   );
-}
+});
