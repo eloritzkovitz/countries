@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ErrorMessage } from "../components/common/ErrorMessage";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { CountryDetailsModal } from "../components/country/CountryDetailsModal";
@@ -17,18 +17,51 @@ import type { Country } from "../types/country";
 export default function CountryMapPage() {
   // UI state
   const { uiVisible, setUiVisible } = useUI();
+  const [mapReady, setMapReady] = useState(false);
 
   // Map state
-  const { countries, loading, error } = useCountryData();
+  const { countries, loading: countriesLoading, error } = useCountryData();
+  const { loading: overlaysLoading } = useOverlayContext();
+  const isLoading = countriesLoading || overlaysLoading || !mapReady;
   const { zoom, setZoom, center, setCenter, handleMoveEnd } = useMapView();
   const worldMapRef = useRef<{ exportSvg: () => void }>(null);
 
   // Selection state
   const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);
   const [hoveredIsoCode, setHoveredIsoCode] = useState<string | null>(null);
-  const [modalCountry, setModalCountry] = useState<Country | null>(null);
+  const [modalCountry, setModalCountry] = useState<Country | null>(null);  
 
-  // Overlay state
+  // Handler when the map is fully ready
+  const handleMapReady = useCallback(() => {
+    setTimeout(() => setMapReady(true), 150);
+  }, []);
+
+  // Keyboard shortcut to toggle UI visibility (Ctrl+Shift+H)
+  useKeyHandler(() => setUiVisible((v) => !v), ["h", "H"], true, {
+    ctrl: true,
+    shift: true,
+  });
+
+  // Handler for map country click
+  const handleCountryClick = useCallback(
+    (countryIsoCode: string | null) => {
+      const country = countries.find((c) => c.isoCode === countryIsoCode);
+      if (country) setModalCountry(country);
+    },
+    [countries]
+  );
+
+  // Handler for hover
+  const handleCountryHover = (isoCode: string | null) => {
+    setHoveredIsoCode(isoCode);
+  };
+
+  // Handler to export SVG
+  const handleExportSvg = () => {
+    worldMapRef.current?.exportSvg();
+  };
+
+  // Overlay state/handlers
   const [showOverlayManager, setShowOverlayManager] = useState(false);
   const {
     editingOverlay,
@@ -41,34 +74,13 @@ export default function CountryMapPage() {
     setEditingOverlay,
   } = useOverlayContext();
 
-  // Keyboard shortcut to toggle UI visibility (Ctrl+Shift+H)
-  useKeyHandler(() => setUiVisible((v) => !v), ["h", "H"], true, {
-    ctrl: true,
-    shift: true,
-  });
-
-  // Handler for map country click
-  const handleCountryClick = (countryIsoCode: string | null) => {
-    const country = countries.find((c) => c.isoCode === countryIsoCode);
-    if (country) setModalCountry(country);
-  };
-
-  // Handler for hover
-  const handleCountryHover = (isoCode: string | null) => {
-    setHoveredIsoCode(isoCode);
-  };
-
-  // Handler to export SVG
-  const handleExportSvg = () => {
-    worldMapRef.current?.exportSvg();
-  };
-
-  // Show loading or error states
-  if (loading) return <LoadingSpinner message="Loading countries..." />;
-  if (error) return <ErrorMessage error={error} />;
+  // Show error state
+  if (error) {
+    return <ErrorMessage error={error} />;
+  }
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 relative">
       {/* Sidebar Panel */}
       {uiVisible && (
         <CountrySidebarPanel
@@ -79,8 +91,8 @@ export default function CountryMapPage() {
         />
       )}
 
+      {/* Main Map Area */}
       <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
-        {/* World Map */}
         <WorldMap
           ref={worldMapRef}
           zoom={zoom}
@@ -92,9 +104,10 @@ export default function CountryMapPage() {
           onCountryHover={handleCountryHover}
           selectedIsoCode={selectedIsoCode}
           hoveredIsoCode={hoveredIsoCode}
+          onReady={() => handleMapReady()}
         />
 
-        {/* Toolbar & Modals */}
+        {/* Toolbar & UI Overlays */}
         {uiVisible && (
           <>
             <MapToolbar
@@ -133,6 +146,13 @@ export default function CountryMapPage() {
           </>
         )}
       </div>
+
+      {/* Spinner */}
+      {isLoading && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-gray-100 bg-opacity-80">
+          <LoadingSpinner message="Loading data..." />
+        </div>
+      )}
     </div>
   );
 }

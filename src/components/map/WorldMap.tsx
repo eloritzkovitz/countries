@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { BaseMapLayer } from "../BaseMapLayer";
 import { OverlayLayer } from "../OverlayLayer";
@@ -29,6 +29,7 @@ type WorldMapProps = {
   onCountryHover: (isoCode: string | null) => void;
   selectedIsoCode: string | null;
   hoveredIsoCode: string | null;
+  onReady?: () => void;
 };
 
 export const WorldMap = forwardRef(function WorldMap(
@@ -40,6 +41,7 @@ export const WorldMap = forwardRef(function WorldMap(
     onCountryHover,
     selectedIsoCode,
     hoveredIsoCode,
+    onReady,
   }: WorldMapProps,
   ref
 ) {
@@ -59,71 +61,78 @@ export const WorldMap = forwardRef(function WorldMap(
   // Get overlays and toggles from context
   const { overlays, loading, error } = useOverlayContext();
 
-  // Show loading or error states
-  if (loading) return <LoadingSpinner message="Loading overlays..." />;
-  if (error) return <ErrorMessage error={error} />;
+  // Signal when map is ready (overlays loaded and dimensions set)
+  useEffect(() => {
+    if (!loading && dimensions.width && dimensions.height) {
+      onReady?.();
+    }
+  }, [loading, dimensions.width, dimensions.height, onReady]);
 
   return (
     <div
       ref={containerRef}
       className={`fixed inset-0 w-full h-[100dvh] ${DEFAULT_MAP_BG_COLOR} overflow-hidden`}
     >
-      <svg
-        ref={svgRef}
-        width={dimensions.width}
-        height={dimensions.height}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <ComposableMap
-          projection={DEFAULT_MAP_PROJECTION}
-          projectionConfig={{
-            scale:
-              Math.min(dimensions.width, dimensions.height) /
-              DEFAULT_MAP_SCALE_DIVISOR,
-            center: [0, 0],
-          }}
+      {loading && <LoadingSpinner message="Loading overlays..." />}
+      {error && <ErrorMessage error={error} />}
+      {!loading && !error && (
+        <svg
+          ref={svgRef}
           width={dimensions.width}
           height={dimensions.height}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+          }}
         >
-          <ZoomableGroup
-            zoom={zoom}
-            center={center}
-            minZoom={DEFAULT_MAP_MIN_ZOOM}
-            maxZoom={DEFAULT_MAP_MAX_ZOOM}
-            onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
+          <ComposableMap
+            projection={DEFAULT_MAP_PROJECTION}
+            projectionConfig={{
+              scale:
+                Math.min(dimensions.width, dimensions.height) /
+                DEFAULT_MAP_SCALE_DIVISOR,
+              center: [0, 0],
+            }}
+            width={dimensions.width}
+            height={dimensions.height}
           >
-            {/* Base map */}
-            <BaseMapLayer
-              geographyUrl={DEFAULT_MAP_GEO_URL}
-              onCountryClick={onCountryClick}
-              onCountryHover={onCountryHover}
-              selectedIsoCode={selectedIsoCode}
-              hoveredIsoCode={hoveredIsoCode}
-            />
-            {/* Overlay layers */}
-            {overlays
-              .filter((o) => o.visible)
-              .map((overlay) => (
-                <OverlayLayer
-                  key={overlay.id}
-                  geographyUrl={DEFAULT_MAP_GEO_URL}
-                  overlayItems={overlay.countries.map((isoCode) => ({
-                    isoCode,
-                    color: overlay.color,
-                    tooltip: overlay.tooltip || overlay.name,
-                  }))}
-                  defaultColor={overlay.color}
-                  suffix={`-overlay-${overlay.id}`}
-                />
-              ))}
-          </ZoomableGroup>
-        </ComposableMap>
-      </svg>
+            <ZoomableGroup
+              zoom={zoom}
+              center={center}
+              minZoom={DEFAULT_MAP_MIN_ZOOM}
+              maxZoom={DEFAULT_MAP_MAX_ZOOM}
+              onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
+            >
+              {/* Base map */}
+              <BaseMapLayer
+                geographyUrl={DEFAULT_MAP_GEO_URL}
+                onCountryClick={onCountryClick}
+                onCountryHover={onCountryHover}
+                selectedIsoCode={selectedIsoCode}
+                hoveredIsoCode={hoveredIsoCode}
+              />
+              {/* Overlay layers */}
+              {overlays
+                .filter((o) => o.visible)
+                .map((overlay) => (
+                  <OverlayLayer
+                    key={overlay.id}
+                    geographyUrl={DEFAULT_MAP_GEO_URL}
+                    overlayItems={overlay.countries.map((isoCode) => ({
+                      isoCode,
+                      color: overlay.color,
+                      tooltip: overlay.tooltip || overlay.name,
+                    }))}
+                    defaultColor={overlay.color}
+                    suffix={`-overlay-${overlay.id}`}
+                  />
+                ))}
+            </ZoomableGroup>
+          </ComposableMap>
+        </svg>
+      )}
     </div>
   );
 });
