@@ -7,11 +7,11 @@ type SovereigntyBadgeProps = {
 // Define colors for different sovereignty types
 const sovereigntyColors: Record<SovereigntyType, string> = {
   Sovereign: "bg-blue-300 text-gray-700 dark:bg-blue-700 dark:text-gray-100",
-  Dependency: "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-100",
+  Dependency: "bg-gray-300 text-gray-700 dark:bg-gray-500 dark:text-gray-100",
   "Partially Recognized": "bg-yellow-300 text-gray-700 dark:bg-yellow-700 dark:text-gray-100",
   Unrecognized: "bg-red-300 text-gray-700 dark:bg-red-700 dark:text-gray-100",
   Disputed: "bg-red-300 text-gray-700 dark:bg-red-700 dark:text-gray-100",  
-  Unknown: "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-100",
+  Unknown: "bg-gray-300 text-gray-700 dark:bg-gray-500 dark:text-gray-100",
 };
 
 export function SovereigntyBadge({ type }: SovereigntyBadgeProps) {

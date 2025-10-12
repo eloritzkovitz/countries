@@ -43,13 +43,10 @@ export default function CountryMapPage() {
   });
 
   // Handler for map country click
-  const handleCountryClick = useCallback(
-    (countryIsoCode: string | null) => {
-      const country = countries.find((c) => c.isoCode === countryIsoCode);
-      if (country) setModalCountry(country);
-    },
-    [countries]
-  );
+  function handleCountryClick(countryIsoCode: string | null) {
+    const country = countries.find((c) => c.isoCode === countryIsoCode);
+    if (country) setModalCountry(country);
+  }
 
   // Handler for hover
   const handleCountryHover = (isoCode: string | null) => {

@@ -39,7 +39,7 @@ export function MapToolbar({
             : "opacity-0 pointer-events-none"
         } mb-2`}
         style={{
-          transform: visible ? "translateY(0)" : "translateY(40px)",
+          transform: visible ? "translateY(0)" : "translateY(40px)",          
           transition: "transform 0.3s, opacity 0.3s",
         }}
       >
@@ -57,7 +57,7 @@ export function MapToolbar({
           style={{
             transform: visible ? "translateX(0)" : "translateX(40px)",
             transition: "transform 0.3s, opacity 0.3s",
-            height: "40px",
+            height: "42px",
             alignItems: "center",
           }}
         >
@@ -73,16 +73,16 @@ export function MapToolbar({
                 ? "Close Overlays Panel"
                 : "Open Overlays Panel"
             }
-            colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
-            className="w-10 h-10 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
+            colorClass="text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300"
+            className="w-10 h-10 flex items-center justify-center p-0 rounded-full"
             icon={<FaLayerGroup />}
           />
           <ActionButton
             onClick={onExportSVG}
             ariaLabel="Export SVG"
             title="Export SVG"
-            colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
-            className="w-10 h-10 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
+            colorClass="text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300"
+            className="w-10 h-10 flex items-center justify-center p-0 rounded-full"
             icon={<FaDownload />}
           />
           <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
@@ -90,8 +90,8 @@ export function MapToolbar({
             onClick={toggleTheme}
             ariaLabel="Toggle theme"
             title="Toggle theme"
-            colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
-            className="w-10 h-10 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
+            colorClass="text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300"
+            className="w-10 h-10 flex items-center justify-center p-0 rounded-full"
             icon={theme === "dark" ? <FaSun /> : <FaMoon />}
           />
           {children}
@@ -101,7 +101,7 @@ export function MapToolbar({
           onClick={() => setVisible((v) => !v)}
           ariaLabel={visible ? "Hide toolbar" : "Show toolbar"}
           title={visible ? "Hide toolbar" : "Show toolbar"}
-          colorClass="bg-gray-300 dark:bg-gray-800"
+          colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100"
           className={`w-10 h-10 flex items-center justify-center rounded-full shadow transition-opacity duration-300 absolute right-0 top-0 ${
             !visible ? "opacity-70" : ""
           }`}
