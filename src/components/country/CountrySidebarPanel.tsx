@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaFilter, FaMoon, FaSun, FaTimes, FaBars } from "react-icons/fa";
+import { FaFilter, FaTimes, FaBars } from "react-icons/fa";
 import { CountryDetailsModal } from "./CountryDetailsModal";
 import { CountryFiltersPanel } from "./CountryFiltersPanel";
 import { CountryList } from "./CountryList";
@@ -11,7 +11,6 @@ import { Panel } from "../common/Panel";
 import { SearchInput } from "../common/SearchInput";
 import { useCountryData } from "../../context/CountryDataContext";
 import { useOverlayContext } from "../../context/OverlayContext";
-import { useTheme } from "../../context/ThemeContext";
 import type { Country } from "../../types/country";
 import {
   filterCountries,
@@ -40,8 +39,7 @@ export function CountrySidebarPanel({
     Record<string, string>
   >({});
 
-  // UI state
-  const { theme, toggleTheme } = useTheme();
+  // UI state  
   const [filtersPanelOpen, setFiltersPanelOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [search, setSearch] = useState("");
@@ -96,13 +94,7 @@ export function CountrySidebarPanel({
                 ariaLabel={filtersPanelOpen ? "Hide Filters" : "Show Filters"}
                 title="Filters"
                 icon={<FaFilter />}
-              />
-              <ActionButton
-                onClick={toggleTheme}
-                ariaLabel="Toggle theme"
-                title="Toggle theme"
-                icon={theme === "dark" ? <FaSun /> : <FaMoon />}
-              />
+              />              
               <ActionButton
                 onClick={handleHideSidebar}
                 ariaLabel="Hide sidebar"

@@ -2,11 +2,14 @@ import { useState } from "react";
 import {
   FaLayerGroup,
   FaDownload,
+  FaSun,
+  FaMoon,
   FaChevronLeft,
-  FaChevronRight,
+  FaChevronRight,  
 } from "react-icons/fa";
-import { ActionButton } from "../common/ActionButton";
 import { ZoomControls } from "./ZoomControls";
+import { ActionButton } from "../common/ActionButton";
+import { useTheme } from "../../context/ThemeContext";
 
 export function MapToolbar({
   zoom,
@@ -24,6 +27,7 @@ export function MapToolbar({
   children?: React.ReactNode;
 }) {
   const [visible, setVisible] = useState(true);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="absolute right-8 bottom-8 z-[101] flex flex-col items-end group">
@@ -80,6 +84,15 @@ export function MapToolbar({
             colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
             className="w-10 h-10 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
             icon={<FaDownload />}
+          />
+          <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
+          <ActionButton
+            onClick={toggleTheme}
+            ariaLabel="Toggle theme"
+            title="Toggle theme"
+            colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
+            className="w-10 h-10 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
+            icon={theme === "dark" ? <FaSun /> : <FaMoon />}
           />
           {children}
         </div>
