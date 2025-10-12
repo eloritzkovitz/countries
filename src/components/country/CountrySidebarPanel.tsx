@@ -83,7 +83,7 @@ export function CountrySidebarPanel({
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <div className="fixed top-0 left-0 h-screen flex flex-row z-40">
+    <div className="fixed top-0 left-0 h-screen flex flex-row z-40 group">
       {/* Sidebar open/close logic */}
       {sidebarOpen ? (
         <Panel
@@ -94,19 +94,19 @@ export function CountrySidebarPanel({
               <ActionButton
                 onClick={() => setFiltersPanelOpen((open) => !open)}
                 ariaLabel={filtersPanelOpen ? "Hide Filters" : "Show Filters"}
-                title="Filters"                
+                title="Filters"
                 icon={<FaFilter />}
               />
               <ActionButton
                 onClick={toggleTheme}
                 ariaLabel="Toggle theme"
-                title="Toggle theme"               
+                title="Toggle theme"
                 icon={theme === "dark" ? <FaSun /> : <FaMoon />}
               />
               <ActionButton
                 onClick={handleHideSidebar}
                 ariaLabel="Hide sidebar"
-                title="Hide sidebar"                
+                title="Hide sidebar"
                 icon={<FaTimes />}
               />
             </>
@@ -153,7 +153,7 @@ export function CountrySidebarPanel({
           ariaLabel="Show sidebar"
           title="Show sidebar"
           colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
-          className="absolute left-4 top-4 w-12 h-12 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
+          className="absolute left-4 top-4 w-12 h-12 flex items-center justify-center shadow-lg p-0 rounded-full border-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           icon={<FaBars size={24} />}
         />
       )}

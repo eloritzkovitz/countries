@@ -12,7 +12,6 @@
   "dependencies": {
     "@tailwindcss/vite": "4.1.14",
     "@types/react-router-dom": "5.3.3",
-    "rc-slider": "11.1.9",
     "react": "19.2.0",
     "react-color": "2.19.3",
     "react-dom": "19.2.0",
