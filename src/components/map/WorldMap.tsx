@@ -1,11 +1,9 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
+import { MapStatus } from "./MapStatus";
 import { BaseMapLayer } from "../BaseMapLayer";
 import { OverlayLayer } from "../OverlayLayer";
-import { LoadingSpinner } from "../common/LoadingSpinner";
-import { ErrorMessage } from "../common/ErrorMessage";
 import {
-  DEFAULT_MAP_GEO_URL,
   DEFAULT_MAP_PROJECTION,
   DEFAULT_MAP_SCALE_DIVISOR,
   DEFAULT_MAP_MIN_ZOOM,
@@ -14,7 +12,9 @@ import {
 } from "../../config/constants";
 import { useOverlayContext } from "../../context/OverlayContext";
 import { useContainerDimensions } from "../../hooks/useContainerDimensions";
-import { exportSvg } from "../../utils/fileUtils";
+import { useGeoData } from "../../hooks/useGeoData";
+import { getOverlayItems } from "../../utils/mapUtils";
+import { MapSvgContainer } from "./MapSvgContainer";
 
 type WorldMapProps = {
   zoom: number;
@@ -46,93 +46,109 @@ export const WorldMap = forwardRef(function WorldMap(
   ref
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
   const dimensions = useContainerDimensions(containerRef);
 
-  // Expose exportSvg method to parent via ref
-  useImperativeHandle(ref, () => ({
-    exportSvg: () => {
-      if (svgRef.current) {
-        exportSvg(svgRef.current, "countries-map.svg");
-      }
-    },
-  }));
+  // Load geographical data
+  const { geoData, geoError, loading: geoLoading } = useGeoData();
 
-  // Get overlays and toggles from context
-  const { overlays, loading, error } = useOverlayContext();
+  // Load overlays data
+  const {
+    overlays,
+    loading: overlaysLoading,
+    error: overlaysError,
+  } = useOverlayContext();
 
-  // Signal when map is ready (overlays loaded and dimensions set)
+  // Call onReady when everything is loaded and ready
   useEffect(() => {
-    if (!loading && dimensions.width && dimensions.height) {
+    if (
+      !geoLoading &&
+      !overlaysLoading &&
+      dimensions.width &&
+      dimensions.height &&
+      geoData
+    ) {
       onReady?.();
     }
-  }, [loading, dimensions.width, dimensions.height, onReady]);
+  }, [
+    geoLoading,
+    overlaysLoading,
+    dimensions.width,
+    dimensions.height,
+    geoData,
+    onReady,
+  ]);
+
+  // Show spinner until overlays, dimensions, and geoData are ready
+  const isLoading =
+    geoLoading ||
+    overlaysLoading ||
+    !dimensions.width ||
+    !dimensions.height ||
+    !geoData;
+  const errorMsg = overlaysError || geoError;
+
+  if (isLoading || errorMsg) {
+    return (
+      <MapStatus
+        loading={isLoading}
+        error={errorMsg}
+        containerRef={containerRef}
+      />
+    );
+  }
 
   return (
     <div
       ref={containerRef}
       className={`fixed inset-0 w-full h-[100dvh] ${DEFAULT_MAP_BG_COLOR} overflow-hidden`}
     >
-      {loading && <LoadingSpinner message="Loading overlays..." />}
-      {error && <ErrorMessage error={error} />}
-      {!loading && !error && (
-        <svg
-          ref={svgRef}
+      {/* SVG map container */}
+      <MapSvgContainer
+        ref={ref} // <-- just forward the ref!
+        width={dimensions.width}
+        height={dimensions.height}
+      >
+        <ComposableMap
+          projection={DEFAULT_MAP_PROJECTION}
+          projectionConfig={{
+            scale:
+              Math.min(dimensions.width, dimensions.height) /
+              DEFAULT_MAP_SCALE_DIVISOR,
+            center: [0, 0],
+          }}
           width={dimensions.width}
           height={dimensions.height}
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-          }}
         >
-          <ComposableMap
-            projection={DEFAULT_MAP_PROJECTION}
-            projectionConfig={{
-              scale:
-                Math.min(dimensions.width, dimensions.height) /
-                DEFAULT_MAP_SCALE_DIVISOR,
-              center: [0, 0],
-            }}
-            width={dimensions.width}
-            height={dimensions.height}
+          <ZoomableGroup
+            zoom={zoom}
+            center={center}
+            minZoom={DEFAULT_MAP_MIN_ZOOM}
+            maxZoom={DEFAULT_MAP_MAX_ZOOM}
+            onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
           >
-            <ZoomableGroup
-              zoom={zoom}
-              center={center}
-              minZoom={DEFAULT_MAP_MIN_ZOOM}
-              maxZoom={DEFAULT_MAP_MAX_ZOOM}
-              onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
-            >
-              {/* Base map */}
-              <BaseMapLayer
-                geographyUrl={DEFAULT_MAP_GEO_URL}
-                onCountryClick={onCountryClick}
-                onCountryHover={onCountryHover}
-                selectedIsoCode={selectedIsoCode}
-                hoveredIsoCode={hoveredIsoCode}
-              />
-              {/* Overlay layers */}
-              {overlays
-                .filter((o) => o.visible)
-                .map((overlay) => (
-                  <OverlayLayer
-                    key={overlay.id}
-                    geographyUrl={DEFAULT_MAP_GEO_URL}
-                    overlayItems={overlay.countries.map((isoCode) => ({
-                      isoCode,
-                      color: overlay.color,
-                      tooltip: overlay.tooltip || overlay.name,
-                    }))}
-                    defaultColor={overlay.color}
-                    suffix={`-overlay-${overlay.id}`}
-                  />
-                ))}
-            </ZoomableGroup>
-          </ComposableMap>
-        </svg>
-      )}
+            {/* Base map */}
+            <BaseMapLayer
+              geographyData={geoData}
+              onCountryClick={onCountryClick}
+              onCountryHover={onCountryHover}
+              selectedIsoCode={selectedIsoCode}
+              hoveredIsoCode={hoveredIsoCode}
+            />
+            {/* Overlay layers */}
+            {overlays
+              .filter((o) => o.visible)
+              .map((overlay) => (
+                <OverlayLayer
+                  key={overlay.id}
+                  geographyData={geoData}
+                  overlayItems={getOverlayItems(overlay)}
+                  defaultColor={overlay.color}
+                  suffix={`-overlay-${overlay.id}`}
+                />
+              ))}
+          </ZoomableGroup>
+        </ComposableMap>
+      </MapSvgContainer>
     </div>
   );
 });

@@ -1,17 +1,17 @@
 import { Geography, Geographies } from "react-simple-maps";
 import type { OverlayItem } from "../types/overlay";
 import { getCountryIsoCode } from "../utils/countryData";
-import { useMapStrokeColor, getGeographyStyle } from "../utils/mapStyles";
+import { useMapStrokeColor, getGeographyStyle } from "../utils/mapUtils";
 
 type OverlayLayerProps = {
-  geographyUrl: string;
+  geographyData: string;
   overlayItems?: OverlayItem[];
   defaultColor?: string;
   suffix?: string;
 };
 
 export function OverlayLayer({
-  geographyUrl,
+  geographyData,
   overlayItems,
   defaultColor = "#6a6e72",
   suffix = "",
@@ -27,7 +27,7 @@ export function OverlayLayer({
 
   return (
     <g className="pointer-events-none">
-      <Geographies geography={geographyUrl}>
+      <Geographies geography={geographyData}>
         {({ geographies }: { geographies: any[] }) =>
           geographies.map((geo) => {
             const isoA2 = getCountryIsoCode(geo.properties);

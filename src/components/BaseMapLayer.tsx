@@ -1,9 +1,9 @@
 import { Geographies, Geography } from "react-simple-maps";
 import { getCountryIsoCode } from "../utils/countryData";
-import { useMapStrokeColor, getGeographyStyle } from "../utils/mapStyles";
+import { useMapStrokeColor, getGeographyStyle } from "../utils/mapUtils";
 
 type BaseMapLayerProps = {
-  geographyUrl: string;
+  geographyData: string;
   onCountryClick?: (countryIsoCode: string) => void;
   onCountryHover?: (isoCode: string | null) => void;
   selectedIsoCode?: string | null;
@@ -11,7 +11,7 @@ type BaseMapLayerProps = {
 };
 
 export function BaseMapLayer({
-  geographyUrl,
+  geographyData,
   onCountryClick,
   onCountryHover,
   selectedIsoCode,
@@ -20,7 +20,7 @@ export function BaseMapLayer({
   const strokeColor = useMapStrokeColor();
 
   return (
-    <Geographies geography={geographyUrl}>
+    <Geographies geography={geographyData}>
       {({ geographies }: { geographies: any[] }) =>
         geographies.map((geo) => {
           const isoCode = getCountryIsoCode(geo.properties);

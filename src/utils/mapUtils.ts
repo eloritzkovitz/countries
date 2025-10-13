@@ -54,3 +54,16 @@ export function getGeographyStyle({
     },
   };
 }
+
+/**
+ * Gets overlay items from an overlay definition.
+ * @param overlay 
+ * @returns Array of overlay items with isoCode, color, and tooltip.
+ */
+export function getOverlayItems(overlay: { countries: any[]; color: any; tooltip?: any; name: any; }) {
+  return overlay.countries.map((isoCode) => ({
+    isoCode,
+    color: overlay.color,
+    tooltip: overlay.tooltip || overlay.name,
+  }));
+}
