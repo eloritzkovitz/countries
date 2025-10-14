@@ -12,12 +12,14 @@ import { useOverlayContext } from "../context/OverlayContext";
 import { useUI } from "../context/UIContext";
 import { useKeyHandler } from "../hooks/useKeyHandler";
 import { useMapView } from "../hooks/useMapView";
+import { useUiHint } from "../hooks/useUiHint";
 import type { Country } from "../types/country";
 
 export default function CountryMapPage() {
   // UI state
   const { uiVisible, setUiVisible } = useUI();
   const [mapReady, setMapReady] = useState(false);
+  const uiHint = useUiHint("Press U to hide/show the UI", 4000);
 
   // Map state
   const { countries, loading: countriesLoading, error } = useCountryData();
@@ -29,18 +31,15 @@ export default function CountryMapPage() {
   // Selection state
   const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);
   const [hoveredIsoCode, setHoveredIsoCode] = useState<string | null>(null);
-  const [modalCountry, setModalCountry] = useState<Country | null>(null);  
+  const [modalCountry, setModalCountry] = useState<Country | null>(null);
 
   // Handler when the map is fully ready
   const handleMapReady = useCallback(() => {
     setTimeout(() => setMapReady(true), 150);
   }, []);
 
-  // Keyboard shortcut to toggle UI visibility (Ctrl+Shift+H)
-  useKeyHandler(() => setUiVisible((v) => !v), ["h", "H"], true, {
-    ctrl: true,
-    shift: true,
-  });
+  // Keyboard shortcut to toggle UI visibility (U key)
+  useKeyHandler(() => setUiVisible((v) => !v), ["u", "U"]);
 
   // Handler for map country click
   function handleCountryClick(countryIsoCode: string | null) {
@@ -77,79 +76,82 @@ export default function CountryMapPage() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100 relative">
-      {/* Sidebar Panel */}
-      {uiVisible && (
-        <CountrySidebarPanel
-          selectedIsoCode={selectedIsoCode}
-          hoveredIsoCode={hoveredIsoCode}
-          onSelect={setSelectedIsoCode}
-          onHover={setHoveredIsoCode}
-        />
-      )}
-
-      {/* Main Map Area */}
-      <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
-        <WorldMap
-          ref={worldMapRef}
-          zoom={zoom}
-          center={center}
-          setZoom={setZoom}
-          setCenter={setCenter}
-          handleMoveEnd={handleMoveEnd}
-          onCountryClick={handleCountryClick}
-          onCountryHover={handleCountryHover}
-          selectedIsoCode={selectedIsoCode}
-          hoveredIsoCode={hoveredIsoCode}
-          onReady={() => handleMapReady()}
-        />
-
-        {/* Toolbar & UI Overlays */}
+    <>
+      {uiHint}
+      <div className="flex h-screen bg-gray-100 relative">
+        {/* Sidebar Panel */}
         {uiVisible && (
-          <>
-            <MapToolbar
-              zoom={zoom}
-              setZoom={setZoom}
-              showOverlayManager={showOverlayManager}
-              setShowOverlayManager={setShowOverlayManager}
-              onExportSVG={handleExportSvg}
-            />
+          <CountrySidebarPanel
+            selectedIsoCode={selectedIsoCode}
+            hoveredIsoCode={hoveredIsoCode}
+            onSelect={setSelectedIsoCode}
+            onHover={setHoveredIsoCode}
+          />
+        )}
 
-            {modalCountry && (
-              <CountryDetailsModal
-                country={modalCountry}
-                isOpen={!!modalCountry}
-                onClose={() => setModalCountry(null)}
-              />
-            )}
+        {/* Main Map Area */}
+        <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
+          <WorldMap
+            ref={worldMapRef}
+            zoom={zoom}
+            center={center}
+            setZoom={setZoom}
+            setCenter={setCenter}
+            handleMoveEnd={handleMoveEnd}
+            onCountryClick={handleCountryClick}
+            onCountryHover={handleCountryHover}
+            selectedIsoCode={selectedIsoCode}
+            hoveredIsoCode={hoveredIsoCode}
+            onReady={() => handleMapReady()}
+          />
 
-            {editingOverlay && isEditModalOpen ? (
-              <OverlayEditModal
-                overlay={editingOverlay}
-                isNew={isNewOverlay}
-                onChange={setEditingOverlay}
-                onSave={saveOverlay}
-                onClose={closeOverlayModal}
-                isOpen={isEditModalOpen}
+          {/* Toolbar & UI Overlays */}
+          {uiVisible && (
+            <>
+              <MapToolbar
+                zoom={zoom}
+                setZoom={setZoom}
+                showOverlayManager={showOverlayManager}
+                setShowOverlayManager={setShowOverlayManager}
+                onExportSVG={handleExportSvg}
               />
-            ) : showOverlayManager ? (
-              <OverlayManagerPanel
-                isOpen={showOverlayManager}
-                onClose={() => setShowOverlayManager(false)}
-                onEditOverlay={openEditOverlay}
-                onAddOverlay={openAddOverlay}
-              />
-            ) : null}
-          </>
+
+              {modalCountry && (
+                <CountryDetailsModal
+                  country={modalCountry}
+                  isOpen={!!modalCountry}
+                  onClose={() => setModalCountry(null)}
+                />
+              )}
+
+              {editingOverlay && isEditModalOpen ? (
+                <OverlayEditModal
+                  overlay={editingOverlay}
+                  isNew={isNewOverlay}
+                  onChange={setEditingOverlay}
+                  onSave={saveOverlay}
+                  onClose={closeOverlayModal}
+                  isOpen={isEditModalOpen}
+                />
+              ) : showOverlayManager ? (
+                <OverlayManagerPanel
+                  isOpen={showOverlayManager}
+                  onClose={() => setShowOverlayManager(false)}
+                  onEditOverlay={openEditOverlay}
+                  onAddOverlay={openAddOverlay}
+                />
+              ) : null}
+            </>
+          )}
+        </div>
+
+        {/* Spinner */}
+        {isLoading && (
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-gray-100 bg-opacity-80">
+            <LoadingSpinner message="Loading data..." />
+          </div>
         )}
       </div>
-
-      {/* Spinner */}
-      {isLoading && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-gray-100 bg-opacity-80">
-          <LoadingSpinner message="Loading data..." />
-        </div>
-      )}
-    </div>
+    </>
   );
 }
