@@ -105,7 +105,7 @@ export const WorldMap = forwardRef(function WorldMap(
     >
       {/* SVG map container */}
       <MapSvgContainer
-        ref={ref} // <-- just forward the ref!
+        ref={ref}
         width={dimensions.width}
         height={dimensions.height}
       >
@@ -131,7 +131,7 @@ export const WorldMap = forwardRef(function WorldMap(
             <BaseMapLayer
               geographyData={geoData}
               onCountryClick={onCountryClick}
-              onCountryHover={onCountryHover}
+              onCountryHover={onCountryHover}              
             />
             {/* Overlay layers */}
             {overlays
@@ -146,13 +146,11 @@ export const WorldMap = forwardRef(function WorldMap(
                 />
               ))}
             {/* Highlight Layer */}
-            {(selectedIsoCode || hoveredIsoCode) && (
-              <HighlightLayer
-                geographyData={geoData}
-                selectedIsoCode={selectedIsoCode}
-                hoveredIsoCode={hoveredIsoCode}
-              />
-            )}
+            <HighlightLayer
+              geographyData={geoData}
+              selectedIsoCode={selectedIsoCode}
+              hoveredIsoCode={hoveredIsoCode}
+            />
           </ZoomableGroup>
         </ComposableMap>
       </MapSvgContainer>
