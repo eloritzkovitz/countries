@@ -1,21 +1,17 @@
 import { Geographies, Geography } from "react-simple-maps";
-import { getCountryIsoCode } from "../utils/countryData";
-import { useMapStrokeColor, getGeographyStyle } from "../utils/mapUtils";
+import { getCountryIsoCode } from "../../../utils/countryData";
+import { useMapStrokeColor, getGeographyStyle } from "../../../utils/mapUtils";
 
 type BaseMapLayerProps = {
   geographyData: string;
   onCountryClick?: (countryIsoCode: string) => void;
   onCountryHover?: (isoCode: string | null) => void;
-  selectedIsoCode?: string | null;
-  hoveredIsoCode?: string | null;
 };
 
 export function BaseMapLayer({
   geographyData,
   onCountryClick,
   onCountryHover,
-  selectedIsoCode,
-  hoveredIsoCode,
 }: BaseMapLayerProps) {
   const strokeColor = useMapStrokeColor();
 
@@ -24,16 +20,6 @@ export function BaseMapLayer({
       {({ geographies }: { geographies: any[] }) =>
         geographies.map((geo) => {
           const isoCode = getCountryIsoCode(geo.properties);
-          const isSelected =
-            !!isoCode &&
-            !!selectedIsoCode &&
-            isoCode === selectedIsoCode.toUpperCase()
-              ? true
-              : undefined;
-          const isHovered =
-            !!isoCode &&
-            !!hoveredIsoCode &&
-            isoCode === hoveredIsoCode.toUpperCase();
 
           return (
             <Geography
@@ -47,8 +33,6 @@ export function BaseMapLayer({
                 onCountryClick && isoCode && onCountryClick(isoCode)
               }
               style={getGeographyStyle({
-                isHovered,
-                isSelected,
                 strokeColor,
               })}
             >

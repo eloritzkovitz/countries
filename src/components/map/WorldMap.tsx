@@ -1,8 +1,10 @@
 import { forwardRef, useEffect, useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { MapStatus } from "./MapStatus";
-import { BaseMapLayer } from "../BaseMapLayer";
-import { OverlayLayer } from "../OverlayLayer";
+import { MapSvgContainer } from "./MapSvgContainer";
+import { BaseMapLayer } from "./layers/BaseMapLayer";
+import { HighlightLayer } from "./layers/HighlightLayer";
+import { OverlayLayer } from "./layers/OverlayLayer";
 import {
   DEFAULT_MAP_PROJECTION,
   DEFAULT_MAP_SCALE_DIVISOR,
@@ -14,7 +16,6 @@ import { useOverlayContext } from "../../context/OverlayContext";
 import { useContainerDimensions } from "../../hooks/useContainerDimensions";
 import { useGeoData } from "../../hooks/useGeoData";
 import { getOverlayItems } from "../../utils/mapUtils";
-import { MapSvgContainer } from "./MapSvgContainer";
 
 type WorldMapProps = {
   zoom: number;
@@ -130,9 +131,7 @@ export const WorldMap = forwardRef(function WorldMap(
             <BaseMapLayer
               geographyData={geoData}
               onCountryClick={onCountryClick}
-              onCountryHover={onCountryHover}
-              selectedIsoCode={selectedIsoCode}
-              hoveredIsoCode={hoveredIsoCode}
+              onCountryHover={onCountryHover}              
             />
             {/* Overlay layers */}
             {overlays
@@ -146,6 +145,12 @@ export const WorldMap = forwardRef(function WorldMap(
                   suffix={`-overlay-${overlay.id}`}
                 />
               ))}
+            {/* Highlight Layer */}
+            <HighlightLayer
+              geographyData={geoData}
+              selectedIsoCode={selectedIsoCode}
+              hoveredIsoCode={hoveredIsoCode}
+            />
           </ZoomableGroup>
         </ComposableMap>
       </MapSvgContainer>
