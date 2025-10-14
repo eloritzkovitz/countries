@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FaFilter, FaTimes, FaBars } from "react-icons/fa";
-import { CountryDetailsModal } from "./CountryDetailsModal";
 import { CountryFiltersPanel } from "./CountryFiltersPanel";
 import { CountryList } from "./CountryList";
 import { ActionButton } from "../common/ActionButton";
@@ -46,7 +45,6 @@ export function CountrySidebarPanel({
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [selectedSubregion, setSelectedSubregion] = useState<string>("");
   const [selectedSovereignty, setSelectedSovereignty] = useState<string>("");
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
 
   // Apply overlay filters to get filtered isoCodes
   let filteredIsoCodes = getFilteredIsoCodes(
@@ -66,7 +64,6 @@ export function CountrySidebarPanel({
 
   // Handler for showing modal
   const handleCountryInfo = (country: Country) => {
-    setSelectedCountry(country);
     if (onCountryInfo) onCountryInfo(country);
   };
 
@@ -129,15 +126,6 @@ export function CountrySidebarPanel({
             onHover={onHover}
             onCountryInfo={handleCountryInfo}
           />
-
-          {/* Country details modal */}
-          {selectedCountry && (
-            <CountryDetailsModal
-              country={selectedCountry}
-              isOpen={!!selectedCountry}
-              onClose={() => setSelectedCountry(null)}
-            />
-          )}
         </Panel>
       ) : (
         <ActionButton

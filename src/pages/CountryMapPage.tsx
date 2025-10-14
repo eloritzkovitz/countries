@@ -14,6 +14,7 @@ import { useKeyHandler } from "../hooks/useKeyHandler";
 import { useMapView } from "../hooks/useMapView";
 import { useUiHint } from "../hooks/useUiHint";
 import type { Country } from "../types/country";
+import { useGeoData } from "../hooks/useGeoData";
 
 export default function CountryMapPage() {
   // UI state
@@ -21,43 +22,22 @@ export default function CountryMapPage() {
   const [mapReady, setMapReady] = useState(false);
   const uiHint = useUiHint("Press U to hide/show the UI", 4000);
 
-  // Map state
+  // Data state
   const { countries, loading: countriesLoading, error } = useCountryData();
   const { loading: overlaysLoading } = useOverlayContext();
-  const isLoading = countriesLoading || overlaysLoading || !mapReady;
-  const { zoom, setZoom, center, setCenter, handleMoveEnd } = useMapView();
+  const { geoData } = useGeoData();
+  
+  // Map state
+  const { zoom, setZoom, center, setCenter, handleMoveEnd, centerOnCountry } =
+    useMapView();
   const worldMapRef = useRef<{ exportSvg: () => void }>(null);
-
+  
   // Selection state
   const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);
   const [hoveredIsoCode, setHoveredIsoCode] = useState<string | null>(null);
   const [modalCountry, setModalCountry] = useState<Country | null>(null);
-
-  // Handler when the map is fully ready
-  const handleMapReady = useCallback(() => {
-    setTimeout(() => setMapReady(true), 150);
-  }, []);
-
-  // Keyboard shortcut to toggle UI visibility (U key)
-  useKeyHandler(() => setUiVisible((v) => !v), ["u", "U"]);
-
-  // Handler for map country click
-  function handleCountryClick(countryIsoCode: string | null) {
-    const country = countries.find((c) => c.isoCode === countryIsoCode);
-    if (country) setModalCountry(country);
-  }
-
-  // Handler for hover
-  const handleCountryHover = (isoCode: string | null) => {
-    setHoveredIsoCode(isoCode);
-  };
-
-  // Handler to export SVG
-  const handleExportSvg = () => {
-    worldMapRef.current?.exportSvg();
-  };
-
-  // Overlay state/handlers
+  
+  // Overlay state
   const [showOverlayManager, setShowOverlayManager] = useState(false);
   const {
     editingOverlay,
@@ -69,6 +49,40 @@ export default function CountryMapPage() {
     closeOverlayModal,
     setEditingOverlay,
   } = useOverlayContext();
+  
+  // Derived state
+  const isLoading = countriesLoading || overlaysLoading || !mapReady;   
+  
+  // Keyboard shortcut to toggle UI visibility (U key)
+  useKeyHandler(() => setUiVisible((v) => !v), ["u", "U"]);
+
+  // Map ready handler with slight delay
+  const handleMapReady = useCallback(() => {
+    setTimeout(() => setMapReady(true), 150);
+  }, []);
+  
+  // Country click handler
+  function handleCountryClick(countryIsoCode: string | null) {
+    const country = countries.find((c) => c.isoCode === countryIsoCode);
+    if (country) setModalCountry(country);
+  }
+
+  // Country hover handler
+  const handleCountryHover = (isoCode: string | null) => {
+    setHoveredIsoCode(isoCode);
+  };
+
+  // Center map on a country
+  function handleCenterMapOnCountry(isoCode: string) {
+    if (geoData) {
+      centerOnCountry(geoData, isoCode);
+    }
+  }
+
+  // Export SVG
+  const handleExportSvg = () => {
+    worldMapRef.current?.exportSvg();
+  };  
 
   // Show error state
   if (error) {
@@ -86,6 +100,7 @@ export default function CountryMapPage() {
             hoveredIsoCode={hoveredIsoCode}
             onSelect={setSelectedIsoCode}
             onHover={setHoveredIsoCode}
+            onCountryInfo={setModalCountry}
           />
         )}
 
@@ -120,6 +135,9 @@ export default function CountryMapPage() {
                 <CountryDetailsModal
                   country={modalCountry}
                   isOpen={!!modalCountry}
+                  onCenterMap={() =>
+                    handleCenterMapOnCountry(modalCountry.isoCode)
+                  }
                   onClose={() => setModalCountry(null)}
                 />
               )}

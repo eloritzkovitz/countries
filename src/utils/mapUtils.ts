@@ -1,3 +1,4 @@
+import { geoCentroid, geoBounds } from "d3-geo";
 import { useTheme } from "../context/ThemeContext";
 import { BASE_GEOGRAPHY_STYLE, MAP_FILL_COLORS } from "../config/constants";
 
@@ -57,13 +58,46 @@ export function getGeographyStyle({
 
 /**
  * Gets overlay items from an overlay definition.
- * @param overlay 
+ * @param overlay
  * @returns Array of overlay items with isoCode, color, and tooltip.
  */
-export function getOverlayItems(overlay: { countries: any[]; color: any; tooltip?: any; name: any; }) {
+export function getOverlayItems(overlay: {
+  countries: any[];
+  color: any;
+  tooltip?: any;
+  name: any;
+}) {
   return overlay.countries.map((isoCode) => ({
     isoCode,
     color: overlay.color,
     tooltip: overlay.tooltip || overlay.name,
   }));
+}
+
+/** Get the center coordinates and appropriate zoom level for a given country ISO code.
+ * @param geoData - The GeoJSON data containing country geometries.
+ * @param isoCode - The ISO code of the country to center on.
+ * @returns An object with center coordinates and zoom level, or null if not found.
+ */
+export function getCountryCenterAndZoom(
+  geoData: { features: any[] },
+  isoCode: any
+) {
+  const country = geoData.features.find(
+    (feature) =>
+      feature.properties["ISO3166-1-Alpha-2"] === isoCode ||
+      feature.properties["ISO3166-1-Alpha-3"] === isoCode
+  );
+  if (!country) return null;
+
+  const centroid = geoCentroid(country);
+  const bounds = geoBounds(country);
+  const [[minLng, minLat], [maxLng, maxLat]] = bounds;
+  const latDiff = Math.abs(maxLat - minLat);
+  const lngDiff = Math.abs(maxLng - minLng);
+  const maxDiff = Math.max(latDiff, lngDiff);
+
+  const zoom = Math.max(6, 18 - maxDiff * 40);
+
+  return { center: centroid, zoom };
 }

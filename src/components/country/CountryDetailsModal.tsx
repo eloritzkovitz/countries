@@ -1,4 +1,4 @@
-import { FaTimes } from "react-icons/fa";
+import { FaCrosshairs, FaTimes } from "react-icons/fa";
 import { CountryFlag } from "./CountryFlag";
 import { SovereigntyBadge } from "./SovereigntyBadge";
 import { ActionButton } from "../common/ActionButton";
@@ -12,14 +12,16 @@ import { getLanguagesDisplay } from "../../utils/countryData";
 
 type CountryDetailsModalProps = {
   country: Country;
-  onClose: () => void;
   isOpen: boolean;
+  onCenterMap?: () => void;
+  onClose: () => void;    
 };
 
 export function CountryDetailsModal({
   country,
-  onClose,
   isOpen,
+  onCenterMap,
+  onClose,    
 }: CountryDetailsModalProps) {
   const { currencies, loading, error } = useCountryData();
 
@@ -35,11 +37,18 @@ export function CountryDetailsModal({
       className="bg-white rounded-xl p-8 min-w-[340px] max-w-[100vw] w-[350px] shadow-lg"
     >
       <PanelHeader title={country.name}>
+        {onCenterMap && (
+          <ActionButton
+            onClick={onCenterMap}
+            ariaLabel="Center map on country"
+            title="Center map"            
+            icon={<FaCrosshairs />}
+          />
+        )}
         <ActionButton
           onClick={onClose}
           ariaLabel="Close country details"
-          title="Close"
-          className="ml-2"
+          title="Close"          
           icon={<FaTimes />}
         />
       </PanelHeader>
