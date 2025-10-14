@@ -51,7 +51,7 @@ export function ZoomControls({
         onContinuousStop={() => stopContinuousZoom("in")}
         ariaLabel="Zoom in"
         title="Zoom in"
-        colorClass="bg-blue-800 text-white hover:bg-blue-900 dark:bg-gray-800 dark:hover:bg-gray-700"
+        colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-100"
         className="w-10 h-10 flex items-center justify-center text-2xl cursor-pointer rounded-t-lg"
         icon={<FaPlus />}
       />
@@ -61,7 +61,7 @@ export function ZoomControls({
         onContinuousStop={() => stopContinuousZoom("out")}
         ariaLabel="Zoom out"
         title="Zoom out"
-        colorClass="bg-blue-800 text-white hover:bg-blue-900 dark:bg-gray-800 dark:hover:bg-gray-700"
+        colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-100"
         className="w-10 h-10 flex items-center justify-center text-2xl cursor-pointer rounded-b-lg"
         icon={<FaMinus />}
       />

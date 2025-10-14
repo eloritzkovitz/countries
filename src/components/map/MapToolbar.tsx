@@ -101,7 +101,7 @@ export function MapToolbar({
           onClick={() => setVisible((v) => !v)}
           ariaLabel={visible ? "Hide toolbar" : "Show toolbar"}
           title={visible ? "Hide toolbar" : "Show toolbar"}
-          colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100"
+          colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-100"
           className={`w-10 h-10 flex items-center justify-center rounded-full shadow transition-opacity duration-300 absolute right-0 top-0 ${
             !visible ? "opacity-70" : ""
           }`}
