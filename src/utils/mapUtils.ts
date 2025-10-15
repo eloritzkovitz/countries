@@ -1,14 +1,14 @@
 import { geoCentroid, geoBounds } from "d3-geo";
-import { useTheme } from "../context/ThemeContext";
+import { useMapUI } from "../context/MapUIContext";
 import { BASE_GEOGRAPHY_STYLE, MAP_FILL_COLORS } from "../config/constants";
 
 /**
- * Get the stroke color for map elements based on the current theme.
- * @returns The stroke color for map elements based on the current theme.
+ * Get the stroke color for map elements based on the settings in MapUIContext.
+ * @returns The stroke color for map elements based on the settings in MapUIContext.
  */
 export function useMapStrokeColor() {
-  const { theme } = useTheme();
-  return theme === "dark" ? "#222" : "#fff";
+  const { borderColor } = useMapUI();
+  return borderColor || "none";
 }
 
 /**
@@ -72,6 +72,15 @@ export function getOverlayItems(overlay: {
     color: overlay.color,
     tooltip: overlay.tooltip || overlay.name,
   }));
+}
+
+/**
+ * Gets the centroid of a GeoJSON feature.
+ * @param feature - The GeoJSON feature.
+ * @returns = The [longitude, latitude] coordinates of the centroid.
+ */
+export function getFeatureCentroid(feature: any): [number, number] {
+  return geoCentroid(feature);
 }
 
 /** Get the center coordinates and appropriate zoom level for a given country ISO code.

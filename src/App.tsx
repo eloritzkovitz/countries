@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CountryDataProvider } from "./context/CountryDataContext";
+import { MapUIProvider } from "./context/MapUIContext";
 import { OverlayProvider } from "./context/OverlayContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { UIProvider } from "./context/UIContext";
@@ -10,19 +11,26 @@ import CountryMapPage from "./pages/CountryMapPage";
 function App() {
   return (
     <ThemeProvider>
-      <UIProvider>
-        <CountryDataProvider>
-          <OverlayProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/game" element={<FlagGuessGamePage />} />
-                <Route path="/map" element={<CountryMapPage />} />
-              </Routes>
-            </BrowserRouter>
-          </OverlayProvider>
-        </CountryDataProvider>
-      </UIProvider>
+      <CountryDataProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/game" element={<FlagGuessGamePage />} />
+            <Route
+              path="/map"
+              element={
+                <UIProvider>
+                  <OverlayProvider>
+                    <MapUIProvider>
+                      <CountryMapPage />
+                    </MapUIProvider>
+                  </OverlayProvider>
+                </UIProvider>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </CountryDataProvider>
     </ThemeProvider>
   );
 }

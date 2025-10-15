@@ -15,6 +15,7 @@ import { useMapView } from "../hooks/useMapView";
 import { useUiHint } from "../hooks/useUiHint";
 import type { Country } from "../types/country";
 import { useGeoData } from "../hooks/useGeoData";
+import { SettingsPanel } from "../components/settings/SettingsPanel";
 
 export default function CountryMapPage() {
   // UI state
@@ -26,17 +27,17 @@ export default function CountryMapPage() {
   const { countries, loading: countriesLoading, error } = useCountryData();
   const { loading: overlaysLoading } = useOverlayContext();
   const { geoData } = useGeoData();
-  
+
   // Map state
   const { zoom, setZoom, center, setCenter, handleMoveEnd, centerOnCountry } =
     useMapView();
   const worldMapRef = useRef<{ exportSvg: () => void }>(null);
-  
+
   // Selection state
   const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);
   const [hoveredIsoCode, setHoveredIsoCode] = useState<string | null>(null);
   const [modalCountry, setModalCountry] = useState<Country | null>(null);
-  
+
   // Overlay state
   const [showOverlayManager, setShowOverlayManager] = useState(false);
   const {
@@ -49,10 +50,13 @@ export default function CountryMapPage() {
     closeOverlayModal,
     setEditingOverlay,
   } = useOverlayContext();
-  
+
   // Derived state
-  const isLoading = countriesLoading || overlaysLoading || !mapReady;   
-  
+  const isLoading = countriesLoading || overlaysLoading || !mapReady;
+
+  // Settings panel state
+  const [showSettingsPanel, setShowSettingsPanel] = useState(false);  
+
   // Keyboard shortcut to toggle UI visibility (U key)
   useKeyHandler(() => setUiVisible((v) => !v), ["u", "U"]);
 
@@ -60,7 +64,7 @@ export default function CountryMapPage() {
   const handleMapReady = useCallback(() => {
     setTimeout(() => setMapReady(true), 150);
   }, []);
-  
+
   // Country click handler
   function handleCountryClick(countryIsoCode: string | null) {
     const country = countries.find((c) => c.isoCode === countryIsoCode);
@@ -82,7 +86,7 @@ export default function CountryMapPage() {
   // Export SVG
   const handleExportSvg = () => {
     worldMapRef.current?.exportSvg();
-  };  
+  };
 
   // Show error state
   if (error) {
@@ -129,6 +133,7 @@ export default function CountryMapPage() {
                 showOverlayManager={showOverlayManager}
                 setShowOverlayManager={setShowOverlayManager}
                 onExportSVG={handleExportSvg}
+                onShowSettingsPanel={() => setShowSettingsPanel(true)}
               />
 
               {modalCountry && (
@@ -159,6 +164,14 @@ export default function CountryMapPage() {
                   onAddOverlay={openAddOverlay}
                 />
               ) : null}
+
+              {/* Settings Panel */}
+              {showSettingsPanel && (
+                <SettingsPanel
+                  show={showSettingsPanel}
+                  onHide={() => setShowSettingsPanel(false)}
+                />
+              )}
             </>
           )}
         </div>

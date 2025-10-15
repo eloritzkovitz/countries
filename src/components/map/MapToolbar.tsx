@@ -1,15 +1,13 @@
 import { useState } from "react";
 import {
   FaLayerGroup,
-  FaDownload,
-  FaSun,
-  FaMoon,
+  FaDownload,  
   FaChevronLeft,
   FaChevronRight,
+  FaCog,
 } from "react-icons/fa";
 import { ZoomControls } from "./ZoomControls";
 import { ActionButton } from "../common/ActionButton";
-import { useTheme } from "../../context/ThemeContext";
 
 export function MapToolbar({
   zoom,
@@ -17,6 +15,7 @@ export function MapToolbar({
   showOverlayManager,
   setShowOverlayManager,
   onExportSVG,
+  onShowSettingsPanel,
   children,
 }: {
   zoom: number;
@@ -24,10 +23,10 @@ export function MapToolbar({
   showOverlayManager: boolean;
   setShowOverlayManager: (v: boolean) => void;
   onExportSVG: () => void;
+  onShowSettingsPanel: () => void;
   children?: React.ReactNode;
 }) {
-  const [visible, setVisible] = useState(true);
-  const { theme, toggleTheme } = useTheme();
+  const [visible, setVisible] = useState(true);  
 
   return (
     <div className="absolute right-8 bottom-8 z-[101] flex flex-col items-end group">
@@ -87,12 +86,12 @@ export function MapToolbar({
           />
           <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
           <ActionButton
-            onClick={toggleTheme}
-            ariaLabel="Toggle theme"
-            title="Toggle theme"
+            onClick={onShowSettingsPanel}
+            ariaLabel="Open settings panel"
+            title="Settings"
             colorClass="text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300"
             className="w-10 h-10 flex items-center justify-center p-0 rounded-full"
-            icon={theme === "dark" ? <FaSun /> : <FaMoon />}
+            icon={<FaCog />}
           />
           {children}
         </div>

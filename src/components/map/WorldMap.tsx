@@ -12,6 +12,7 @@ import {
   DEFAULT_MAP_MAX_ZOOM,
   DEFAULT_MAP_BG_COLOR,
 } from "../../config/constants";
+import { useMapUI } from "../../context/MapUIContext";
 import { useOverlayContext } from "../../context/OverlayContext";
 import { useContainerDimensions } from "../../hooks/useContainerDimensions";
 import { useGeoData } from "../../hooks/useGeoData";
@@ -48,6 +49,7 @@ export const WorldMap = forwardRef(function WorldMap(
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
+  const { projection } = useMapUI();
 
   // Load geographical data
   const { geoData, geoError, loading: geoLoading } = useGeoData();
@@ -110,7 +112,7 @@ export const WorldMap = forwardRef(function WorldMap(
         height={dimensions.height}
       >
         <ComposableMap
-          projection={DEFAULT_MAP_PROJECTION}
+          projection={projection || DEFAULT_MAP_PROJECTION}
           projectionConfig={{
             scale:
               Math.min(dimensions.width, dimensions.height) /
@@ -131,7 +133,7 @@ export const WorldMap = forwardRef(function WorldMap(
             <BaseMapLayer
               geographyData={geoData}
               onCountryClick={onCountryClick}
-              onCountryHover={onCountryHover}              
+              onCountryHover={onCountryHover}
             />
             {/* Overlay layers */}
             {overlays
@@ -150,7 +152,7 @@ export const WorldMap = forwardRef(function WorldMap(
               geographyData={geoData}
               selectedIsoCode={selectedIsoCode}
               hoveredIsoCode={hoveredIsoCode}
-            />
+            />            
           </ZoomableGroup>
         </ComposableMap>
       </MapSvgContainer>

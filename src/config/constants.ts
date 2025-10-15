@@ -9,23 +9,34 @@ export const DEFAULT_MAP_MIN_ZOOM = 1;
 export const DEFAULT_MAP_MAX_ZOOM = 20;
 export const DEFAULT_MAP_BG_COLOR = "bg-gray-100";
 
+// Map options
+export const MAP_PROJECTION_OPTIONS = [
+  { value: "geoNaturalEarth1", label: "Natural Earth" },
+  { value: "geoEqualEarth", label: "Equal Earth" },
+  { value: "geoMercator", label: "Mercator" },
+];
+
+export const MAP_STROKE_COLOR_OPTIONS = [
+  { value: "#222", label: "Dark" },
+  { value: "#fff", label: "Light" },
+  { value: "#0078d4", label: "Blue" },
+  { value: "#b5bfca", label: "Gray" },
+];
+
 // Map Styles
 export const MAP_FILL_COLORS = {
   default: "#b5bfca",
   hovered: "#0078d4",
   selected: "#005fa3",
 };
-export const MAP_STROKE_COLORS = {
-  light: "#fff",
-  dark: "#222",
-};
+export const DEFAULT_MAP_STROKE_COLOR = "#222";
 export const DEFAULT_MAP_STROKE_WIDTH = 0.1;
 export const MAP_CURSOR = "pointer";
 export const MAP_OUTLINE = "none";
 
 export const BASE_GEOGRAPHY_STYLE = {
   fill: MAP_FILL_COLORS.default,
-  stroke: MAP_STROKE_COLORS.light,
+  stroke: DEFAULT_MAP_STROKE_COLOR,
   strokeWidth: DEFAULT_MAP_STROKE_WIDTH,  
   outline: MAP_OUTLINE,
   cursor: MAP_CURSOR,
