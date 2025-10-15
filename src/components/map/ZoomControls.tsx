@@ -1,4 +1,4 @@
-import { FaPlus, FaMinus } from "react-icons/fa";
+import { FaPlus, FaMinus, FaCrosshairs } from "react-icons/fa";
 import { useRef } from "react";
 import { DEFAULT_MAP_SETTINGS } from "../../config/constants";
 import { ZoomButton } from "./ZoomButton";
@@ -43,7 +43,9 @@ export function ZoomControls({
   return (
     <div className="flex flex-col items-center shadow-lg">
       <ZoomButton
-        onClick={() => setZoom(Math.min(zoom + 1, DEFAULT_MAP_SETTINGS.maxZoom))}
+        onClick={() =>
+          setZoom(Math.min(zoom + 1, DEFAULT_MAP_SETTINGS.maxZoom))
+        }
         onContinuousStart={() => startContinuousZoom("in")}
         onContinuousStop={() => stopContinuousZoom("in")}
         ariaLabel="Zoom in"
@@ -53,7 +55,9 @@ export function ZoomControls({
         icon={<FaPlus />}
       />
       <ZoomButton
-        onClick={() => setZoom(Math.max(zoom - 1, DEFAULT_MAP_SETTINGS.minZoom))}
+        onClick={() =>
+          setZoom(Math.max(zoom - 1, DEFAULT_MAP_SETTINGS.minZoom))
+        }
         onContinuousStart={() => startContinuousZoom("out")}
         onContinuousStop={() => stopContinuousZoom("out")}
         ariaLabel="Zoom out"
@@ -61,6 +65,14 @@ export function ZoomControls({
         colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-100"
         className="w-10 h-10 flex items-center justify-center text-2xl cursor-pointer rounded-b-lg"
         icon={<FaMinus />}
+      />
+      <ZoomButton
+        onClick={() => setZoom(DEFAULT_MAP_SETTINGS.minZoom)}
+        ariaLabel="Reset zoom"
+        title="Reset zoom"
+        colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-100"
+        className="w-10 h-10 flex items-center justify-center text-2xl cursor-pointer rounded-b-lg"
+        icon={<FaCrosshairs />}
       />
     </div>
   );
