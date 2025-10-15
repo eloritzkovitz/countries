@@ -1,57 +1,29 @@
 import { geoCentroid, geoBounds } from "d3-geo";
 import { useMapUI } from "../context/MapUIContext";
-import { BASE_GEOGRAPHY_STYLE, MAP_FILL_COLORS } from "../config/constants";
+import { MAP_STYLE_CONFIG } from "../config/constants";
 
-/**
- * Get the stroke color for map elements based on the settings in MapUIContext.
- * @returns The stroke color for map elements based on the settings in MapUIContext.
+/** Hook to get geography styles based on current map UI settings.
+ * @returns An object with default, hover, and pressed styles for geographies.
  */
-export function useMapStrokeColor() {
-  const { borderColor } = useMapUI();
-  return borderColor || "none";
-}
-
-/**
- * Get the style for a geography element based on its state.
- * @param isHovered - Whether the element is hovered.
- * @param isSelected - Whether the element is selected.
- * @param strokeColor - The stroke color for the element.
- * @returns The style for the geography element.
- */
-export function getGeographyStyle({
-  isHovered,
-  isSelected,
-  strokeColor,
-  fillColor,
-}: {
-  isHovered?: boolean;
-  isSelected?: boolean;
-  strokeColor: string;
-  fillColor?: string;
-}) {
-  const fill =
-    fillColor ??
-    (isHovered
-      ? MAP_FILL_COLORS.hovered
-      : isSelected
-      ? MAP_FILL_COLORS.selected
-      : MAP_FILL_COLORS.default);
-
+export function useMapGeographyStyle() {
+  const { borderColor, borderWidth } = useMapUI();
   return {
     default: {
-      ...BASE_GEOGRAPHY_STYLE,
-      fill,
-      stroke: strokeColor,
+      ...MAP_STYLE_CONFIG.default,
+      stroke: borderColor,
+      strokeWidth: borderWidth,
     },
     hover: {
-      ...BASE_GEOGRAPHY_STYLE,
-      fill,
-      stroke: strokeColor,
+      ...MAP_STYLE_CONFIG.default,
+      ...MAP_STYLE_CONFIG.hovered,
+      stroke: borderColor,
+      strokeWidth: borderWidth,
     },
     pressed: {
-      ...BASE_GEOGRAPHY_STYLE,
-      fill,
-      stroke: strokeColor,
+      ...MAP_STYLE_CONFIG.default,
+      ...MAP_STYLE_CONFIG.selected,
+      stroke: borderColor,
+      strokeWidth: borderWidth,
     },
   };
 }

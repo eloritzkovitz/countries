@@ -1,7 +1,7 @@
 import React from "react";
 import { FaLayerGroup } from "react-icons/fa";
 import { CollapsibleHeader } from "../common/CollapsibleHeader";
-import { FilterSelect } from "../common/FilterSelect";
+import { SelectInput } from "../common/SelectInput";
 import type { Overlay } from "../../types/overlay";
 import { overlayFilterConfig } from "../../config/filtersConfig";
 
@@ -32,7 +32,7 @@ export function OverlayFilters({
       />
       {expanded &&
         overlays.map((overlay) => (
-          <FilterSelect
+          <SelectInput
             key={overlay.id}
             label={
               typeof overlayFilterConfig.label === "function"
@@ -43,7 +43,7 @@ export function OverlayFilters({
             onChange={(val) =>
               overlayFilterConfig.setValue(
                 { setOverlaySelections },
-                val,
+                String(val),
                 overlay
               )
             }

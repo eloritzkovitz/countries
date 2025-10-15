@@ -1,16 +1,27 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
-import { DEFAULT_MAP_STROKE_COLOR, DEFAULT_MAP_PROJECTION } from "../config/constants";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
+import {  
+  DEFAULT_MAP_PROJECTION,
+  MAP_STYLE_CONFIG, 
+} from "../config/constants";
 
 type MapUIContextType = {
   projection: string;
   setProjection: (v: string) => void;
   borderColor: string;
-  setBorderColor: (v: string) => void;  
+  setBorderColor: (v: string) => void;
+  borderWidth: number;
+  setBorderWidth: (v: number) => void;
 };
 
 const MapUIContext = createContext<MapUIContextType | undefined>(undefined);
 
-export function MapUIProvider({ children }: { children: ReactNode }) {  
+export function MapUIProvider({ children }: { children: ReactNode }) {
   // Projection state with localStorage persistence
   const [projection, setProjectionState] = useState<string>(() => {
     return localStorage.getItem("projection") || DEFAULT_MAP_PROJECTION;
@@ -23,8 +34,16 @@ export function MapUIProvider({ children }: { children: ReactNode }) {
   const setProjection = (v: string) => setProjectionState(v);
 
   // Border color state
-  const [borderColor, setBorderColorState] = useState<string>(DEFAULT_MAP_STROKE_COLOR);
-  const setBorderColor = (v: string) => setBorderColorState(v); 
+  const [borderColor, setBorderColorState] = useState<string>(
+    MAP_STYLE_CONFIG.default.stroke
+  );
+  const setBorderColor = (v: string) => setBorderColorState(v);
+
+  // Border width state
+  const [borderWidth, setBorderWidthState] = useState<number>(
+    MAP_STYLE_CONFIG.default.strokeWidth
+  );
+  const setBorderWidth = (v: number) => setBorderWidthState(v);
 
   return (
     <MapUIContext.Provider
@@ -32,7 +51,9 @@ export function MapUIProvider({ children }: { children: ReactNode }) {
         projection,
         setProjection,
         borderColor,
-        setBorderColor,        
+        setBorderColor,
+        borderWidth,
+        setBorderWidth,
       }}
     >
       {children}

@@ -59,20 +59,20 @@ body {
   background-color: theme('colors.gray.600');
 }
 
-/* Filter select */
-.filter-select:hover {
+/* Select input */
+.select-input:hover {
   background-color: theme('colors.gray.200');
 }
 
-.filter-select:focus {
+.select-input:focus {
   background-color: theme('colors.gray.200');
 }
 
-.dark .filter-select:hover {
+.dark .select-input:hover {
   background-color: theme('colors.gray.500');
 }
 
-.dark .filter-select:focus {
+.dark .select-input:focus {
   background-color: theme('colors.gray.500');
 }
 

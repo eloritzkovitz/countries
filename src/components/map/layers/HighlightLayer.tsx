@@ -1,6 +1,6 @@
 import { Geographies, Geography } from "react-simple-maps";
 import { getCountryIsoCode } from "../../../utils/countryData";
-import { useMapStrokeColor, getGeographyStyle } from "../../../utils/mapUtils";
+import { useMapGeographyStyle } from "../../../utils/mapUtils";
 
 type HighlightLayerProps = {
   geographyData: string;
@@ -13,7 +13,7 @@ export function HighlightLayer({
   selectedIsoCode,
   hoveredIsoCode,
 }: HighlightLayerProps) {
-  const strokeColor = useMapStrokeColor();
+  const geographyStyle = useMapGeographyStyle();
 
   // Only highlight selected or hovered countries
   const highlightIsoCodes = [
@@ -40,15 +40,16 @@ export function HighlightLayer({
               !!hoveredIsoCode &&
               isoCode === hoveredIsoCode?.toUpperCase();
 
+            // Choose the correct style variant
+            let style = geographyStyle.default;
+            if (isSelected) style = geographyStyle.pressed;
+            else if (isHovered) style = geographyStyle.hover;
+
             return (
               <Geography
                 key={isoCode || geo.rsmKey}
                 geography={geo}
-                style={getGeographyStyle({
-                  isHovered,
-                  isSelected,
-                  strokeColor,
-                })}
+                style={{ default: style, hover: style, pressed: style }}
                 pointerEvents="none"
               >
                 <title>{geo.properties.NAME || geo.properties.name}</title>

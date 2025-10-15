@@ -4,7 +4,7 @@ export type FilterKey = "region" | "subregion" | "sovereignty" | "overlay";
 // Filter option type
 export type FilterOption = {
   label: string;
-  value: string;
+  value: string | number;
 };
 
 // Filter config type

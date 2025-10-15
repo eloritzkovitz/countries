@@ -1,6 +1,6 @@
 import { FaShapes } from "react-icons/fa";
 import { CollapsibleHeader } from "../common/CollapsibleHeader";
-import { FilterSelect } from "../common/FilterSelect";
+import { SelectInput } from "../common/SelectInput";
 import type { FilterConfig } from "../../types/filters";
 
 type CoreFiltersProps = {
@@ -57,7 +57,7 @@ export function CoreFilters({
             options = filter.getOptions(sovereigntyOptions);
           }
           return setValue ? (
-            <FilterSelect
+            <SelectInput
               key={filter.key}
               label={
                 typeof filter.label === "function"
@@ -65,7 +65,7 @@ export function CoreFilters({
                   : filter.label
               }
               value={value ?? ""}
-              onChange={setValue}
+              onChange={(val) => setValue(String(val))}
               options={options ?? []}
             />
           ) : null;
