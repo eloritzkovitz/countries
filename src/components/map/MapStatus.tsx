@@ -1,7 +1,7 @@
 import React from "react";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
-import { DEFAULT_MAP_BG_COLOR } from "../../config/constants";
+import { DEFAULT_MAP_SETTINGS } from "../../config/constants";
 
 type MapStatusProps = {
   loading: boolean;
@@ -14,7 +14,7 @@ export function MapStatus({ loading, error, containerRef }: MapStatusProps) {
     return (
       <div
         ref={containerRef}
-        className={`fixed inset-0 w-full h-[100dvh] ${DEFAULT_MAP_BG_COLOR} overflow-hidden`}
+        className={`fixed inset-0 w-full h-[100dvh] ${DEFAULT_MAP_SETTINGS.bgColor} overflow-hidden`}
       >
         <LoadingSpinner message="Loading map..." />
       </div>

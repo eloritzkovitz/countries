@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { DEFAULT_MAP_MIN_ZOOM } from "../config/constants";
+import { DEFAULT_MAP_SETTINGS } from "../config/constants";
 import { getCountryCenterAndZoom } from "../utils/mapUtils";
 
 export function useMapView(
-  initialZoom = DEFAULT_MAP_MIN_ZOOM,
+  initialZoom = DEFAULT_MAP_SETTINGS.minZoom,
   initialCenter: [number, number] = [0, 0]
 ) {
   const [zoom, setZoom] = useState(initialZoom);

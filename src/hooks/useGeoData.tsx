@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DEFAULT_MAP_GEO_URL } from "../config/constants";
+import { DEFAULT_MAP_SETTINGS } from "../config/constants";
 
 export function useGeoData() {
   const [geoData, setGeoData] = useState<any | null>(null);
@@ -7,7 +7,7 @@ export function useGeoData() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(DEFAULT_MAP_GEO_URL)
+    fetch(DEFAULT_MAP_SETTINGS.geoUrl)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load map data");
         return res.json();

@@ -2,18 +2,14 @@ import React from "react";
 import { FaGlobe } from "react-icons/fa";
 import { CollapsibleHeader } from "../common/CollapsibleHeader";
 import { SelectInput } from "../common/SelectInput";
-import {
-  MAP_PROJECTION_OPTIONS,
-  MAP_STROKE_COLOR_OPTIONS,
-  MAP_STROKE_WIDTH_OPTIONS,
-} from "../../config/constants";
+import { MAP_OPTIONS } from "../../config/constants";
 import { useMapUI } from "../../context/MapUIContext";
 
 export function MapSettingsGroup() {
   const [showMapSettings, setShowMapSettings] = React.useState(true);
   const {
     projection,
-    setProjection,    
+    setProjection,
     borderColor,
     setBorderColor,
     borderWidth,
@@ -24,7 +20,7 @@ export function MapSettingsGroup() {
     <>
       <CollapsibleHeader
         icon={<FaGlobe style={{ marginRight: 6 }} />}
-        label="Map Settings"
+        label="Map"
         expanded={showMapSettings}
         onToggle={() => setShowMapSettings((v) => !v)}
       />
@@ -33,20 +29,20 @@ export function MapSettingsGroup() {
           <SelectInput
             label="Map Projection"
             value={projection}
-            onChange={v => setProjection(String(v))}
-            options={MAP_PROJECTION_OPTIONS}
+            onChange={(v) => setProjection(String(v))}
+            options={MAP_OPTIONS.projection}
           />
           <SelectInput
             label="Border Color"
             value={borderColor}
-            onChange={v => setBorderColor(String(v))}
-            options={MAP_STROKE_COLOR_OPTIONS}
-          />          
+            onChange={(v) => setBorderColor(String(v))}
+            options={MAP_OPTIONS.strokeColor}
+          />
           <SelectInput
             label="Border Width"
             value={borderWidth}
-            onChange={v => setBorderWidth(Number(v))}
-            options={MAP_STROKE_WIDTH_OPTIONS}
+            onChange={(v) => setBorderWidth(Number(v))}
+            options={MAP_OPTIONS.strokeWidth}
           />
         </div>
       )}

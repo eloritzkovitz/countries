@@ -1,9 +1,6 @@
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { useRef } from "react";
-import {
-  DEFAULT_MAP_MAX_ZOOM,
-  DEFAULT_MAP_MIN_ZOOM,
-} from "../../config/constants";
+import { DEFAULT_MAP_SETTINGS } from "../../config/constants";
 import { ZoomButton } from "./ZoomButton";
 
 export function ZoomControls({
@@ -22,8 +19,8 @@ export function ZoomControls({
     const interval = setInterval(() => {
       setZoom((prev) =>
         Math.max(
-          DEFAULT_MAP_MIN_ZOOM,
-          Math.min(prev + step, DEFAULT_MAP_MAX_ZOOM)
+          DEFAULT_MAP_SETTINGS.minZoom,
+          Math.min(prev + step, DEFAULT_MAP_SETTINGS.maxZoom)
         )
       );
     }, 100);
@@ -46,7 +43,7 @@ export function ZoomControls({
   return (
     <div className="flex flex-col items-center shadow-lg">
       <ZoomButton
-        onClick={() => setZoom(Math.min(zoom + 1, DEFAULT_MAP_MAX_ZOOM))}
+        onClick={() => setZoom(Math.min(zoom + 1, DEFAULT_MAP_SETTINGS.maxZoom))}
         onContinuousStart={() => startContinuousZoom("in")}
         onContinuousStop={() => stopContinuousZoom("in")}
         ariaLabel="Zoom in"
@@ -56,7 +53,7 @@ export function ZoomControls({
         icon={<FaPlus />}
       />
       <ZoomButton
-        onClick={() => setZoom(Math.max(zoom - 1, DEFAULT_MAP_MIN_ZOOM))}
+        onClick={() => setZoom(Math.max(zoom - 1, DEFAULT_MAP_SETTINGS.minZoom))}
         onContinuousStart={() => startContinuousZoom("out")}
         onContinuousStop={() => stopContinuousZoom("out")}
         ariaLabel="Zoom out"

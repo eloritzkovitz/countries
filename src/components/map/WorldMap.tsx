@@ -5,13 +5,7 @@ import { MapSvgContainer } from "./MapSvgContainer";
 import { BaseMapLayer } from "./layers/BaseMapLayer";
 import { HighlightLayer } from "./layers/HighlightLayer";
 import { OverlayLayer } from "./layers/OverlayLayer";
-import {
-  DEFAULT_MAP_PROJECTION,
-  DEFAULT_MAP_SCALE_DIVISOR,
-  DEFAULT_MAP_MIN_ZOOM,
-  DEFAULT_MAP_MAX_ZOOM,
-  DEFAULT_MAP_BG_COLOR,
-} from "../../config/constants";
+import { DEFAULT_MAP_SETTINGS } from "../../config/constants";
 import { useMapUI } from "../../context/MapUIContext";
 import { useOverlayContext } from "../../context/OverlayContext";
 import { useContainerDimensions } from "../../hooks/useContainerDimensions";
@@ -103,7 +97,7 @@ export const WorldMap = forwardRef(function WorldMap(
   return (
     <div
       ref={containerRef}
-      className={`fixed inset-0 w-full h-[100dvh] ${DEFAULT_MAP_BG_COLOR} overflow-hidden`}
+      className={`fixed inset-0 w-full h-[100dvh] ${DEFAULT_MAP_SETTINGS.bgColor} overflow-hidden`}
     >
       {/* SVG map container */}
       <MapSvgContainer
@@ -112,11 +106,11 @@ export const WorldMap = forwardRef(function WorldMap(
         height={dimensions.height}
       >
         <ComposableMap
-          projection={projection || DEFAULT_MAP_PROJECTION}
+          projection={projection || DEFAULT_MAP_SETTINGS.projection}
           projectionConfig={{
             scale:
               Math.min(dimensions.width, dimensions.height) /
-              DEFAULT_MAP_SCALE_DIVISOR,
+              DEFAULT_MAP_SETTINGS.scaleDivisor,
             center: [0, 0],
           }}
           width={dimensions.width}
@@ -125,8 +119,8 @@ export const WorldMap = forwardRef(function WorldMap(
           <ZoomableGroup
             zoom={zoom}
             center={center}
-            minZoom={DEFAULT_MAP_MIN_ZOOM}
-            maxZoom={DEFAULT_MAP_MAX_ZOOM}
+            minZoom={DEFAULT_MAP_SETTINGS.minZoom}
+            maxZoom={DEFAULT_MAP_SETTINGS.maxZoom}
             onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
           >
             {/* Base map */}
@@ -152,7 +146,7 @@ export const WorldMap = forwardRef(function WorldMap(
               geographyData={geoData}
               selectedIsoCode={selectedIsoCode}
               hoveredIsoCode={hoveredIsoCode}
-            />            
+            />
           </ZoomableGroup>
         </ComposableMap>
       </MapSvgContainer>
