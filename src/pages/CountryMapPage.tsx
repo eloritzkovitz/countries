@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { ErrorMessage } from "../components/common/ErrorMessage";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { CountryDetailsModal } from "../components/country/CountryDetailsModal";
-import { CountrySidebarPanel } from "../components/country/CountrySidebarPanel";
+import { CountriesPanel } from "../components/country/CountriesPanel";
 import { MapToolbar } from "../components/map/MapToolbar";
 import { WorldMap } from "../components/map/WorldMap";
 import { OverlayEditModal } from "../components/overlay/OverlayEditModal";
@@ -95,7 +95,7 @@ export default function CountryMapPage() {
       <div className="flex h-screen bg-gray-100 relative">
         {/* Sidebar Panel */}
         {uiVisible && (
-          <CountrySidebarPanel
+          <CountriesPanel
             selectedIsoCode={selectedIsoCode}
             hoveredIsoCode={hoveredIsoCode}
             onSelect={setSelectedIsoCode}

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FaFilter, FaTimes, FaBars } from "react-icons/fa";
-import { CountryFiltersPanel } from "./CountryFiltersPanel";
 import { CountryList } from "./CountryList";
 import { ActionButton } from "../common/ActionButton";
 import { Branding } from "../common/Branding";
@@ -8,15 +7,17 @@ import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { Panel } from "../common/Panel";
 import { SearchInput } from "../common/SearchInput";
+import { Separator } from "../common/Separator";
 import { useCountryData } from "../../context/CountryDataContext";
 import { useOverlayContext } from "../../context/OverlayContext";
+import { CountryFiltersPanel } from "../filters/CountryFiltersPanel";
 import type { Country } from "../../types/country";
 import {
   filterCountries,
   getFilteredIsoCodes,
 } from "../../utils/countryFilters";
 
-export function CountrySidebarPanel({
+export function CountriesPanel({
   selectedIsoCode,
   hoveredIsoCode,
   onSelect,
@@ -39,8 +40,8 @@ export function CountrySidebarPanel({
   >({});
 
   // UI state
-  const [filtersPanelOpen, setFiltersPanelOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [countriesPanelOpen, setCountriesPanelOpen] = useState(true);
+  const [filtersPanelOpen, setFiltersPanelOpen] = useState(false);  
   const [search, setSearch] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [selectedSubregion, setSelectedSubregion] = useState<string>("");
@@ -67,9 +68,9 @@ export function CountrySidebarPanel({
     if (onCountryInfo) onCountryInfo(country);
   };
 
-  // Hide filters panel when sidebar is closed
-  const handleHideSidebar = () => {
-    setSidebarOpen(false);
+  // Hide filters panel when countries panel is closed
+  const handleHideCountriesPanel = () => {
+    setCountriesPanelOpen(false);
     setFiltersPanelOpen(false);
   };
 
@@ -80,10 +81,11 @@ export function CountrySidebarPanel({
   return (
     <div className="fixed top-0 left-0 h-screen flex flex-row z-40 group">
       {/* Sidebar open/close logic */}
-      {sidebarOpen ? (
+      {countriesPanelOpen ? (
         <Panel
           title={<Branding title="Countries" />}
-          show={sidebarOpen}
+          show={countriesPanelOpen}
+          showSeparator={false}
           headerActions={
             <>
               <ActionButton
@@ -93,9 +95,9 @@ export function CountrySidebarPanel({
                 icon={<FaFilter />}
               />
               <ActionButton
-                onClick={handleHideSidebar}
-                ariaLabel="Hide sidebar"
-                title="Hide sidebar"
+                onClick={handleHideCountriesPanel}
+                ariaLabel="Hide countries panel"
+                title="Hide"
                 icon={<FaTimes />}
               />
             </>
@@ -113,8 +115,7 @@ export function CountrySidebarPanel({
               Showing {filteredCountries.length} countries from{" "}
               {countries.length}
             </div>
-            {/* Separator */}
-            <div className="border-b border-gray-200 dark:border-gray-600" />
+            <Separator/>
           </div>
 
           {/* Country list */}
@@ -129,9 +130,9 @@ export function CountrySidebarPanel({
         </Panel>
       ) : (
         <ActionButton
-          onClick={() => setSidebarOpen(true)}
-          ariaLabel="Show sidebar"
-          title="Show sidebar"
+          onClick={() => setCountriesPanelOpen(true)}
+          ariaLabel="Show countries panel"
+          title="Show countries panel"
           colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
           className="absolute left-4 top-4 w-12 h-12 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
           icon={<FaBars size={24} />}
@@ -139,7 +140,7 @@ export function CountrySidebarPanel({
       )}
 
       {/* Filters panel */}
-      {sidebarOpen && filtersPanelOpen && (
+      {countriesPanelOpen && filtersPanelOpen && (
         <CountryFiltersPanel
           show={filtersPanelOpen}
           allRegions={allRegions}

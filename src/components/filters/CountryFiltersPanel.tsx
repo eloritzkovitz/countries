@@ -1,11 +1,14 @@
+import React from "react";
 import { FaFilter, FaTimes, FaUndo } from "react-icons/fa";
+import { CoreFilters } from "./CoreFilters";
+import { OverlayFilters } from "./OverlayFilters";
 import { ActionButton } from "../common/ActionButton";
-import { FilterSelect } from "../common/FilterSelect";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { Panel } from "../common/Panel";
+import { Separator } from "../common/Separator";
 import { DEFAULT_PANEL_WIDTH } from "../../config/constants";
-import { filtersConfig } from "../../config/filtersConfig";
+import { coreFiltersConfig } from "../../config/filtersConfig";
 import { useCountryData } from "../../context/CountryDataContext";
 import type { Overlay } from "../../types/overlay";
 import {
@@ -47,6 +50,10 @@ export function CountryFiltersPanel({
   onHide,
 }: CountryFiltersPanelProps) {
   const { countries, loading, error } = useCountryData();
+
+  // Collapsible state for filter groups
+  const [showCoreFilters, setShowCoreFilters] = React.useState(true);
+  const [showOverlayFilters, setShowOverlayFilters] = React.useState(true);
 
   // Dynamic subregion options based on selected region
   const subregionOptions =
@@ -110,51 +117,32 @@ export function CountryFiltersPanel({
         </>
       }
     >
-      {/* Filter configuration */}
-      {filtersConfig
-        .filter((f) => f.key !== "overlay")
-        .map((filter) => {
-          let value, setValue, options;
-          if (filter.key === "region") {
-            value = selectedRegion;
-            setValue = handleRegionChange;
-            options = filter.getOptions(allRegions);
-          } else if (filter.key === "subregion") {
-            value = selectedSubregion;
-            setValue = setSelectedSubregion;
-            options = filter.getOptions(subregionOptions);
-          } else if (filter.key === "sovereignty") {
-            value = selectedSovereignty;
-            setValue = setSelectedSovereignty;
-            options = filter.getOptions(sovereigntyOptions);
-          }
-          return setValue ? (
-            <FilterSelect
-              key={filter.key}
-              label={filter.label}
-              value={value ?? ""}
-              onChange={setValue}
-              options={options ?? []}
-            />
-          ) : null;
-        })}
+      {/* Core Filters Section */}
+      <CoreFilters
+        expanded={showCoreFilters}
+        onToggle={() => setShowCoreFilters((v) => !v)}
+        coreFiltersConfig={coreFiltersConfig}
+        selectedRegion={selectedRegion}
+        handleRegionChange={handleRegionChange}
+        selectedSubregion={selectedSubregion}
+        setSelectedSubregion={setSelectedSubregion}
+        selectedSovereignty={selectedSovereignty}
+        setSelectedSovereignty={setSelectedSovereignty}
+        allRegions={allRegions}
+        subregionOptions={subregionOptions}
+        sovereigntyOptions={sovereigntyOptions}
+      />
 
-      {/* Render overlay filters from config */}
-      {overlays.map((overlay) => {
-        const overlayFilter = filtersConfig.find((f) => f.key === "overlay");
-        if (!overlayFilter) return null;
-        return (
-          <FilterSelect
-            key={overlay.id}
-            label={overlayFilter.label(overlay)}
-            value={overlayFilter.getValue({ overlaySelections }, overlay)}
-            onChange={(val) =>
-              overlayFilter.setValue({ setOverlaySelections }, val, overlay)
-            }
-            options={overlayFilter.getOptions()}
-          />
-        );
-      })}
+      <Separator className="my-4" />
+
+      {/* Overlay Filters Section */}
+      <OverlayFilters
+        expanded={showOverlayFilters}
+        onToggle={() => setShowOverlayFilters((v) => !v)}
+        overlays={overlays}
+        overlaySelections={overlaySelections}
+        setOverlaySelections={setOverlaySelections}
+      />
     </Panel>
   );
 }
