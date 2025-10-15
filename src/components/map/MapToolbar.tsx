@@ -1,11 +1,12 @@
 import { useState } from "react";
 import {
   FaLayerGroup,
-  FaDownload,  
   FaChevronLeft,
   FaChevronRight,
-  FaCog,
+  FaDownload,
+  FaCog,  
 } from "react-icons/fa";
+import { MapExportMenu } from "./MapExportMenu";
 import { ZoomControls } from "./ZoomControls";
 import { ActionButton } from "../common/ActionButton";
 
@@ -14,19 +15,39 @@ export function MapToolbar({
   setZoom,
   showOverlayManager,
   setShowOverlayManager,
-  onExportSVG,
   onShowSettingsPanel,
+  svgRef,
   children,
 }: {
   zoom: number;
   setZoom: React.Dispatch<React.SetStateAction<number>>;
   showOverlayManager: boolean;
   setShowOverlayManager: (v: boolean) => void;
-  onExportSVG: () => void;
   onShowSettingsPanel: () => void;
+  svgRef: React.RefObject<SVGSVGElement | null>;
   children?: React.ReactNode;
 }) {
-  const [visible, setVisible] = useState(true);  
+  const [visible, setVisible] = useState(true);
+  const [showExportDialog, setShowExportDialog] = useState(false);
+
+  // When opening overlays, close export dialog
+  const handleOverlayClick = () => {
+    setShowOverlayManager(!showOverlayManager);
+    setShowExportDialog(false);
+  };
+
+  // When opening export, close overlays
+  const handleExportClick = () => {
+    setShowExportDialog((prev) => !prev);
+    setShowOverlayManager(false);
+  };
+
+  // When opening settings, close overlays and export
+  const handleSettingsClick = () => {
+    setShowOverlayManager(false);
+    setShowExportDialog(false);
+    onShowSettingsPanel();
+  };
 
   return (
     <div className="absolute right-8 bottom-8 z-[101] flex flex-col items-end group">
@@ -38,7 +59,7 @@ export function MapToolbar({
             : "opacity-0 pointer-events-none"
         } mb-2`}
         style={{
-          transform: visible ? "translateY(0)" : "translateY(40px)",          
+          transform: visible ? "translateY(0)" : "translateY(40px)",
           transition: "transform 0.3s, opacity 0.3s",
         }}
       >
@@ -61,7 +82,7 @@ export function MapToolbar({
           }}
         >
           <ActionButton
-            onClick={() => setShowOverlayManager(!showOverlayManager)}
+            onClick={handleOverlayClick}
             ariaLabel={
               showOverlayManager
                 ? "Close Overlays Panel"
@@ -77,16 +98,21 @@ export function MapToolbar({
             icon={<FaLayerGroup />}
           />
           <ActionButton
-            onClick={onExportSVG}
-            ariaLabel="Export SVG"
-            title="Export SVG"
+            onClick={handleExportClick}
+            ariaLabel="Export map"
+            title="Export"
             colorClass="text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300"
             className="w-10 h-10 flex items-center justify-center p-0 rounded-full"
             icon={<FaDownload />}
           />
+          <MapExportMenu
+            svgRef={svgRef}
+            showDialog={showExportDialog}
+            setShowDialog={setShowExportDialog}
+          />
           <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
           <ActionButton
-            onClick={onShowSettingsPanel}
+            onClick={handleSettingsClick}
             ariaLabel="Open settings panel"
             title="Settings"
             colorClass="text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300"

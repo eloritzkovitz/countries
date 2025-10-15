@@ -1,6 +1,6 @@
 import { geoCentroid, geoBounds } from "d3-geo";
-import { useMapUI } from "../context/MapUIContext";
 import { MAP_STYLE_CONFIG } from "../config/constants";
+import { useMapUI } from "../context/MapUIContext";
 
 /** Hook to get geography styles based on current map UI settings.
  * @returns An object with default, hover, and pressed styles for geographies.
@@ -30,7 +30,7 @@ export function useMapGeographyStyle() {
 
 /**
  * Gets overlay items from an overlay definition.
- * @param overlay
+ * @param overlay - The overlay definition containing countries, color, tooltip, and name.
  * @returns Array of overlay items with isoCode, color, and tooltip.
  */
 export function getOverlayItems(overlay: {

@@ -31,7 +31,7 @@ export default function CountryMapPage() {
   // Map state
   const { zoom, setZoom, center, setCenter, handleMoveEnd, centerOnCountry } =
     useMapView();
-  const worldMapRef = useRef<{ exportSvg: () => void }>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
 
   // Selection state
   const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);
@@ -55,7 +55,7 @@ export default function CountryMapPage() {
   const isLoading = countriesLoading || overlaysLoading || !mapReady;
 
   // Settings panel state
-  const [showSettingsPanel, setShowSettingsPanel] = useState(false);  
+  const [showSettingsPanel, setShowSettingsPanel] = useState(false);
 
   // Keyboard shortcut to toggle UI visibility (U key)
   useKeyHandler(() => setUiVisible((v) => !v), ["u", "U"]);
@@ -83,11 +83,6 @@ export default function CountryMapPage() {
     }
   }
 
-  // Export SVG
-  const handleExportSvg = () => {
-    worldMapRef.current?.exportSvg();
-  };
-
   // Show error state
   if (error) {
     return <ErrorMessage error={error} />;
@@ -111,7 +106,6 @@ export default function CountryMapPage() {
         {/* Main Map Area */}
         <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
           <WorldMap
-            ref={worldMapRef}
             zoom={zoom}
             center={center}
             setZoom={setZoom}
@@ -122,6 +116,7 @@ export default function CountryMapPage() {
             selectedIsoCode={selectedIsoCode}
             hoveredIsoCode={hoveredIsoCode}
             onReady={() => handleMapReady()}
+            svgRef={svgRef}
           />
 
           {/* Toolbar & UI Overlays */}
@@ -132,8 +127,8 @@ export default function CountryMapPage() {
                 setZoom={setZoom}
                 showOverlayManager={showOverlayManager}
                 setShowOverlayManager={setShowOverlayManager}
-                onExportSVG={handleExportSvg}
                 onShowSettingsPanel={() => setShowSettingsPanel(true)}
+                svgRef={svgRef}
               />
 
               {modalCountry && (

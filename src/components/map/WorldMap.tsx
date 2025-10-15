@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "./MapSvgContainer";
@@ -26,9 +26,10 @@ type WorldMapProps = {
   selectedIsoCode: string | null;
   hoveredIsoCode: string | null;
   onReady?: () => void;
+  svgRef?: React.Ref<SVGSVGElement>;
 };
 
-export const WorldMap = forwardRef(function WorldMap(
+export function WorldMap(
   {
     zoom,
     center,
@@ -38,8 +39,8 @@ export const WorldMap = forwardRef(function WorldMap(
     selectedIsoCode,
     hoveredIsoCode,
     onReady,
-  }: WorldMapProps,
-  ref
+    svgRef,
+  }: WorldMapProps,  
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
@@ -101,7 +102,7 @@ export const WorldMap = forwardRef(function WorldMap(
     >
       {/* SVG map container */}
       <MapSvgContainer
-        ref={ref}
+        ref={svgRef}
         width={dimensions.width}
         height={dimensions.height}
       >
@@ -152,4 +153,4 @@ export const WorldMap = forwardRef(function WorldMap(
       </MapSvgContainer>
     </div>
   );
-});
+};
