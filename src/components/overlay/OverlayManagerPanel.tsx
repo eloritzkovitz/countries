@@ -54,8 +54,8 @@ export function OverlayManagerPanel({
       isOpen={isOpen}
       onClose={onClose}
       position="custom"
-      containerClassName="right-24 bottom-[100px]"
-      className="min-w-[340px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-8 overflow-y-auto"
+      containerClassName="right-40 bottom-[80px]"
+      className="min-w-[340px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-4 overflow-y-auto"
     >
       <PanelHeader
         title={
