@@ -17,35 +17,48 @@ export const CountryList = React.memo(function CountryList({
   hoveredIsoCode,
   onSelect,
   onHover,
-  onCountryInfo
+  onCountryInfo,
 }: CountryListProps) {
   const highlightIsoCode = hoveredIsoCode || selectedIsoCode;
   return (
-    <ul className="list-none p-0 m-0 w-full">
-      {countries.map((country) => {
-        const isHighlighted = highlightIsoCode === country.isoCode;
-        return (
-          <li
-            key={country.isoCode}
-            onClick={() => onCountryInfo ? onCountryInfo(country) : onSelect(country.isoCode)}
-            onMouseEnter={() => onHover(country.isoCode)}
-            onMouseLeave={() => onHover(null)}
-            className={`px-4 py-2 my-1 rounded cursor-pointer flex items-center gap-3 transition
+    <div
+      className="overflow-y-auto max-h-[720px] w-full"
+      onMouseLeave={() => {
+        onHover(null);
+        onSelect(null);
+      }}
+    >
+      <ul className="list-none p-0 m-0 w-full">
+        {countries.map((country) => {
+          const isHighlighted = highlightIsoCode === country.isoCode;
+          return (
+            <li
+              key={country.isoCode}
+              id={country.isoCode}
+              onClick={() =>
+                onCountryInfo
+                  ? onCountryInfo(country)
+                  : onSelect(country.isoCode)
+              }
+              onMouseEnter={() => onHover(country.isoCode)}
+              onMouseLeave={() => onHover(null)}
+              className={`px-4 py-2 my-1 rounded cursor-pointer flex items-center gap-3 transition
               ${isHighlighted ? "bg-blue-50 dark:bg-gray-500 font-bold" : ""}
             `}
-          >
-            <CountryFlag
-              flag={{
-                isoCode: country.isoCode,
-                source: "flagcdn",
-                style: "flat",
-                size: "32x24",
-              }}
-            />
-            <span>{country.name}</span>
-          </li>
-        );
-      })}
-    </ul>
+            >
+              <CountryFlag
+                flag={{
+                  isoCode: country.isoCode,
+                  source: "flagcdn",
+                  style: "flat",
+                  size: "32x24",
+                }}
+              />
+              <span>{country.name}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 });

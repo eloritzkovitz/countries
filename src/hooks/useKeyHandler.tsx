@@ -1,13 +1,5 @@
 import { useEffect, useRef } from "react";
-
-type KeyHandler = (event: KeyboardEvent) => void;
-
-type ModifierKeys = {
-  ctrl?: boolean;
-  alt?: boolean;
-  shift?: boolean;
-  meta?: boolean;
-};
+import type { KeyHandler, ModifierKeys } from "../types/keyCommand";
 
 /**
  * Generic hook for handling keyboard events with optional modifier keys.
@@ -34,6 +26,15 @@ export function useKeyHandler(
     if (!enabled) return;
 
     function handleKeyDown(e: KeyboardEvent) {
+      // Ignore if focus is on input, textarea, or contenteditable
+      const tag = (document.activeElement?.tagName || "").toLowerCase();
+      const isInput =
+        tag === "input" ||
+        tag === "textarea" ||
+        (document.activeElement as HTMLElement)?.isContentEditable;
+
+      if (isInput) return;
+
       const keyMatch = keys.length === 0 || keys.includes(e.key);
       const modifiersMatch =
         (modifiers.ctrl === undefined || modifiers.ctrl === e.ctrlKey) &&
@@ -46,6 +47,7 @@ export function useKeyHandler(
       }
     }
 
+    // Attach the event listener
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [keys, enabled, modifiers]);

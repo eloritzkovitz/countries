@@ -9,11 +9,12 @@ type PanelProps = {
   children: ReactNode;
   show?: boolean;
   width?: number | string;
+  style?: React.CSSProperties;
+  className?: string;
   onHide?: () => void;
   headerActions?: ReactNode;
   showSeparator?: boolean;
-  className?: string;
-  style?: React.CSSProperties;
+  scrollable?: boolean;
 };
 
 export function Panel({
@@ -21,11 +22,12 @@ export function Panel({
   children,
   show = true,
   width = DEFAULT_PANEL_WIDTH,
+  style = {},
+  className = "",
   onHide,
   headerActions,
   showSeparator = true,
-  className = "",
-  style = {},
+  scrollable = true,
 }: PanelProps) {
   useKeyHandler(() => {
     if (show && onHide) {
@@ -59,7 +61,13 @@ export function Panel({
         <PanelHeader title={title}>{headerActions}</PanelHeader>
         {showSeparator && <Separator className="mt-4 my-4" />}
       </div>
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-8">{children}</div>
+      <div
+        className={`flex-1 min-h-0 px-4 pb-8${
+          scrollable ? " overflow-y-auto" : ""
+        }`}
+      >
+        {children}
+      </div>
     </div>
   );
 }

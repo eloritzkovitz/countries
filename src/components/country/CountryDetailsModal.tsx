@@ -7,6 +7,7 @@ import { ErrorMessage } from "../common/ErrorMessage";
 import { Modal } from "../common/Modal";
 import { PanelHeader } from "../common/PanelHeader";
 import { useCountryData } from "../../context/CountryDataContext";
+import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Country } from "../../types/country";
 import { getLanguagesDisplay } from "../../utils/countryData";
 
@@ -14,16 +15,26 @@ type CountryDetailsModalProps = {
   country: Country | null;
   isOpen: boolean;
   onCenterMap?: () => void;
-  onClose: () => void;    
+  onClose: () => void;
 };
 
 export function CountryDetailsModal({
   country,
   isOpen,
   onCenterMap,
-  onClose,    
+  onClose,
 }: CountryDetailsModalProps) {
   const { currencies, loading, error } = useCountryData();
+
+  // Center map handler
+  useKeyHandler(
+    (e) => {
+      e.preventDefault();
+      if (onCenterMap) onCenterMap();
+    },
+    ["c", "C"],
+    isOpen
+  );
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading..." />;
@@ -41,14 +52,14 @@ export function CountryDetailsModal({
           <ActionButton
             onClick={onCenterMap}
             ariaLabel="Center map on country"
-            title="Center map"            
+            title="Center map"
             icon={<FaCrosshairs />}
           />
         )}
         <ActionButton
           onClick={onClose}
           ariaLabel="Close country details"
-          title="Close"          
+          title="Close"
           icon={<FaTimes />}
         />
       </PanelHeader>
@@ -61,7 +72,7 @@ export function CountryDetailsModal({
           size: "64x48",
         }}
         alt={`${country.name} flag`}
-        style={{marginBottom: '16px'}}
+        style={{ marginBottom: "16px" }}
       />
       <ul className="list-none p-0 mb-4 text-gray-700">
         <li>

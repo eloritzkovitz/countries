@@ -1,7 +1,8 @@
 import { FaPlus, FaMinus, FaCrosshairs } from "react-icons/fa";
 import { useRef } from "react";
-import { DEFAULT_MAP_SETTINGS } from "../../config/constants";
 import { ZoomButton } from "./ZoomButton";
+import { DEFAULT_MAP_SETTINGS } from "../../config/constants";
+import { useKeyHandler } from "../../hooks/useKeyHandler";
 
 export function ZoomControls({
   zoom,
@@ -39,6 +40,27 @@ export function ZoomControls({
       zoomOutInterval.current = null;
     }
   };
+
+  // Zoom in
+  useKeyHandler(
+    () => setZoom(Math.min(zoom + 1, DEFAULT_MAP_SETTINGS.maxZoom)),
+    ["+", "="],
+    true
+  );
+
+  // Zoom out
+  useKeyHandler(
+    () => setZoom(Math.max(zoom - 1, DEFAULT_MAP_SETTINGS.minZoom)),
+    ["-"],
+    true
+  );
+
+  // Reset zoom
+  useKeyHandler(
+    () => setZoom(DEFAULT_MAP_SETTINGS.minZoom),
+    ["0"],
+    true
+  );
 
   return (
     <div className="flex flex-col items-center shadow-lg">

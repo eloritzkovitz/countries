@@ -15,6 +15,9 @@ type UIContextType = {
   showSettings: boolean;
   toggleSettings: () => void;
   closePanel: () => void;
+  showShortcuts: boolean;
+  openShortcuts: () => void;
+  closeShortcuts: () => void;
 };
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
@@ -28,12 +31,18 @@ export function UIProvider({ children }: { children: ReactNode }) {
     "filters" | "overlays" | "export" | "settings" | null
   >(null);
 
+  // Shortcuts modal state
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  const openShortcuts = () => setShowShortcuts(true);
+  const closeShortcuts = () => setShowShortcuts(false);
+
   // Derived states for individual panels
   const showFilters = openPanel === "filters";
   const showOverlays = openPanel === "overlays";
   const showExport = openPanel === "export";
   const showSettings = openPanel === "settings";
 
+  const toggleUiVisible = () => setUiVisible((prev) => !prev);
   const toggleFilters = () =>
     setOpenPanel((prev) => (prev === "filters" ? null : "filters"));
   const toggleOverlays = () =>
@@ -44,10 +53,30 @@ export function UIProvider({ children }: { children: ReactNode }) {
     setOpenPanel((prev) => (prev === "settings" ? null : "settings"));
   const closePanel = () => setOpenPanel(null);
 
-  // Toggle UI visibility with Shift+U
-  useKeyHandler(() => setUiVisible((prev) => !prev), ["u", "U"], true, {
-    shift: true,
-  });
+  // Toggle UI visibility with "U"
+  useKeyHandler(toggleUiVisible, ["u", "U"], true);  
+
+  // Toggle Filters panel with "F"
+  useKeyHandler(toggleFilters, ["f", "F"], true);
+
+  // Toggle Overlays panel with "O"
+  useKeyHandler(toggleOverlays, ["o", "O"], true);
+
+  // Toggle Export panel with "E"
+  useKeyHandler(toggleExport, ["e", "E"], true);
+
+  // Toggle Settings panel with "S"
+  useKeyHandler(toggleSettings, ["s", "S"], true);
+
+  // Open shortcut modal with "?"
+  useKeyHandler(
+    (e) => {
+      e.preventDefault();
+      openShortcuts();
+    },
+    ["?"],
+    true
+  );
 
   return (
     <UIContext.Provider
@@ -65,6 +94,9 @@ export function UIProvider({ children }: { children: ReactNode }) {
         showSettings,
         toggleSettings,
         closePanel,
+        showShortcuts,
+        openShortcuts,
+        closeShortcuts,
       }}
     >
       {children}

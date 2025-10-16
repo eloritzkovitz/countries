@@ -10,6 +10,7 @@ import { Separator } from "../common/Separator";
 import { DEFAULT_PANEL_WIDTH } from "../../config/constants";
 import { coreFiltersConfig } from "../../config/filtersConfig";
 import { useCountryData } from "../../context/CountryDataContext";
+import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Overlay } from "../../types/overlay";
 import {
   getSubregionsForRegion,
@@ -82,6 +83,16 @@ export function CountryFiltersPanel({
       }, {} as Record<string, string>)
     );
   }
+
+  // Key handler for resetting filters with "R" key
+  useKeyHandler(
+    (e) => {
+      e.preventDefault();
+      handleResetFilters();
+    },
+    ["r", "R"],
+    show
+  );
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading filters..." />;

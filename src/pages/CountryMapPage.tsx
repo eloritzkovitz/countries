@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { ErrorMessage } from "../components/common/ErrorMessage";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { ShortcutsModal } from "../components/common/ShortcutsModal";
 import { CountryDetailsModal } from "../components/country/CountryDetailsModal";
 import { CountriesPanel } from "../components/country/CountriesPanel";
 import { MapToolbar } from "../components/map/MapToolbar";
@@ -18,7 +19,7 @@ import { useGeoData } from "../hooks/useGeoData";
 export default function CountryMapPage() {
   // UI state
   const [mapReady, setMapReady] = useState(false);
-  const uiHint = useUiHint("Press Shift+U to hide/show the UI", 4000);
+  const uiHint = useUiHint("Press U to hide/show the UI", 4000);
 
   // Data state
   const { countries, loading: countriesLoading, error } = useCountryData();
@@ -86,7 +87,7 @@ export default function CountryMapPage() {
           hoveredIsoCode={hoveredIsoCode}
           onSelect={setSelectedIsoCode}
           onHover={setHoveredIsoCode}
-          onCountryInfo={setModalCountry}
+          onCountryInfo={setModalCountry}          
         />
 
         {/* Main Map Area */}
@@ -135,6 +136,8 @@ export default function CountryMapPage() {
 
           <SettingsPanel />
         </div>
+
+        <ShortcutsModal />
 
         {/* Spinner */}
         {isLoading && (

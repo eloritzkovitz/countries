@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useMemo } from "react";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
 import { ActionButton } from "../common/ActionButton";
 import { Branding } from "../common/Branding";
-import { LoadingSpinner } from "../common/LoadingSpinner";
 import { ErrorMessage } from "../common/ErrorMessage";
+import { LoadingSpinner } from "../common/LoadingSpinner";
 import { Panel } from "../common/Panel";
 import { SearchInput } from "../common/SearchInput";
 import { Separator } from "../common/Separator";
@@ -14,6 +14,7 @@ import { useCountryData } from "../../context/CountryDataContext";
 import { useOverlayContext } from "../../context/OverlayContext";
 import { useUI } from "../../context/UIContext";
 import { useCountryFilters } from "../../hooks/useCountryFilters";
+import { useCountryListNavigation } from "../../hooks/useCountryListNavigation";
 import type { Country } from "../../types/country";
 
 interface CountriesPanelProps {
@@ -41,7 +42,7 @@ export function CountriesPanel({
     showCountries,
     setShowCountries,
     showFilters,
-    toggleFilters,    
+    toggleFilters,
     closePanel,
   } = useUI();
 
@@ -62,16 +63,16 @@ export function CountriesPanel({
     overlaySelections,
   });
 
-  // Search input ref
-  const searchRef = useRef<HTMLInputElement | null>(null);
-
-  // Close panels when UI is hidden, focus search when opened
-  useEffect(() => {
-    if (!uiVisible) closePanel();
-    if (uiVisible && showCountries) {
-      setTimeout(() => searchRef.current?.focus(), 120);
-    }
-  }, [uiVisible, showCountries]);
+  // Keyboard navigation within country list
+  useCountryListNavigation({
+    filteredCountries,
+    selectedIsoCode,
+    hoveredIsoCode,
+    onSelect,
+    onHover,
+    onCountryInfo,
+    enabled: uiVisible && showCountries,
+  });
 
   // Handle country info action
   const handleCountryInfo = useCallback(
@@ -79,12 +80,7 @@ export function CountriesPanel({
       if (onCountryInfo) onCountryInfo(country);
     },
     [onCountryInfo]
-  );  
-
-  // Hide panel handler
-  const hidePanel = useCallback(() => {
-    closePanel();
-  }, [closePanel]);
+  );
 
   // Header action buttons
   const headerActions = useMemo(
@@ -97,14 +93,14 @@ export function CountriesPanel({
           icon={<FaFilter />}
         />
         <ActionButton
-          onClick={hidePanel}
+          onClick={closePanel}
           ariaLabel="Hide countries panel"
           title="Hide"
           icon={<FaTimes />}
         />
       </>
     ),
-    [showFilters, toggleFilters, hidePanel]
+    [showFilters, toggleFilters, closePanel]
   );
 
   // Show loading or error states
@@ -118,6 +114,7 @@ export function CountriesPanel({
         show={uiVisible && showCountries}
         showSeparator={false}
         headerActions={headerActions}
+        scrollable={false}
       >
         {/* Search input and count */}
         <div className="sticky top-0 z-10 bg-white dark:bg-gray-800">
@@ -142,6 +139,7 @@ export function CountriesPanel({
           onHover={onHover}
           onCountryInfo={handleCountryInfo}
         />
+        <Separator />
       </Panel>
 
       {/* Collapsed action button */}
