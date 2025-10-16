@@ -2,8 +2,7 @@
  * Usage:
  *   npx ts-node scripts/generate-keyboard-shortcuts-table.ts > docs/keyboard-shortcuts.md
  *
- * This script generates a Markdown table of keyboard shortcuts from your keyCommands config.
- * The output can be included in your documentation or README.
+ * This script generates a Markdown table of keyboard shortcuts from the keyCommands config.
  */
 
 import { keyCommands } from "../src/config/keyCommands.ts";

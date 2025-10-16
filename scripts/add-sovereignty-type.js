@@ -1,20 +1,21 @@
-const fs = require("fs");
-const path = require("path");
-
 /**
  * Script to automatically add or update the sovereigntyType property for each country in countries.json.
- * 
+ *
  * Usage:
  *   node addSovereigntyType.js [path/to/countries.json] [path/to/customSovereigntyMap.json]
- * 
+ *
  * - The first argument is the path to your countries.json file (optional).
  * - The second argument is the path to a custom sovereignty mapping JSON file (optional).
- * 
+ *
  * The sovereignty mapping should be an object where keys are sovereignty types and values are arrays of ISO codes.
  */
 
+const fs = require("fs");
+const path = require("path");
+
 // Path to your countries.json file
-const filePath = process.argv[2] || path.join(__dirname, "../public/data/countries.json");
+const filePath =
+  process.argv[2] || path.join(__dirname, "../public/data/countries.json");
 
 /**
  * Sovereignty mapping: key = sovereigntyType, value = array of ISO codes.
@@ -61,7 +62,7 @@ function getSovereigntyType(isoCode) {
  * @param {Array<Object>} countries - Array of country objects.
  * @returns {Array<Object>} - Updated array of country objects.
  */
-const updated = countries.map(country => ({
+const updated = countries.map((country) => ({
   ...country,
   sovereigntyType: getSovereigntyType(country.isoCode),
 }));
