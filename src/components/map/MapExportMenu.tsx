@@ -11,7 +11,7 @@ export function MapExportMenu({
   showDialog,
   setShowDialog,
 }: {
-  svgRef: React.RefObject<SVGSVGElement>;
+  svgRef: React.RefObject<SVGSVGElement | null>;
   showDialog: boolean;
   setShowDialog: (v: boolean) => void;
 }) {
