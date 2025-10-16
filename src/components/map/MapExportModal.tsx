@@ -1,20 +1,19 @@
 import { useState } from "react";
 import { FaDownload, FaTimes, FaFileCode, FaFileImage } from "react-icons/fa";
 import { ActionButton } from "../common/ActionButton";
-import { Separator } from "../common/Separator";
-import { exportSvg, exportSvgAsPng } from "../../utils/fileUtils";
 import { Modal } from "../common/Modal";
 import { PanelHeader } from "../common/PanelHeader";
+import { Separator } from "../common/Separator";
+import { useUI } from "../../context/UIContext";
+import { exportSvg, exportSvgAsPng } from "../../utils/fileUtils";
 
-export function MapExportMenu({
-  svgRef,
-  showDialog,
-  setShowDialog,
-}: {
+interface MapExportModalProps {
   svgRef: React.RefObject<SVGSVGElement | null>;
-  showDialog: boolean;
-  setShowDialog: (v: boolean) => void;
-}) {
+}
+
+export function MapExportModal({ svgRef }: MapExportModalProps) {
+  const { showExport, closePanel } = useUI();
+
   // Export options state
   const [svgInlineStyles, setSvgInlineStyles] = useState<boolean>(true);
   const [pngScale, setPngScale] = useState<number>(2);
@@ -23,23 +22,23 @@ export function MapExportMenu({
   const handleExportSvg = () => {
     if (!svgRef?.current) return;
     exportSvg(svgRef.current, "map.svg", svgInlineStyles);
-    setShowDialog(false);
+    closePanel();
   };
 
   // Export PNG handler
   const handleExportPng = (s = pngScale) => {
     if (!svgRef?.current) return;
     exportSvgAsPng(svgRef.current, `map@${s}x.png`, s);
-    setShowDialog(false);
+    closePanel();
   };
 
   // Don't render if not visible
-  if (!showDialog) return null;
+  if (!showExport) return null;
 
   return (
     <Modal
-      isOpen={showDialog}
-      onClose={() => setShowDialog(false)}
+      isOpen={showExport}
+      onClose={() => closePanel()}
       position="custom"
       containerClassName="right-30 bottom-[80px]"
       className="min-w-[220px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-4 overflow-y-auto"
@@ -53,9 +52,9 @@ export function MapExportMenu({
         }
       >
         <ActionButton
-          onClick={() => setShowDialog(false)}
+          onClick={() => closePanel()}
           ariaLabel="Close export menu"
-          title="Close"          
+          title="Close"
         >
           <FaTimes />
         </ActionButton>

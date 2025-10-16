@@ -11,7 +11,7 @@ import type { Country } from "../../types/country";
 import { getLanguagesDisplay } from "../../utils/countryData";
 
 type CountryDetailsModalProps = {
-  country: Country;
+  country: Country | null;
   isOpen: boolean;
   onCenterMap?: () => void;
   onClose: () => void;    

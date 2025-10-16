@@ -6,14 +6,14 @@ import { CountriesPanel } from "../components/country/CountriesPanel";
 import { MapToolbar } from "../components/map/MapToolbar";
 import { WorldMap } from "../components/map/WorldMap";
 import { OverlayEditModal } from "../components/overlay/OverlayEditModal";
-import { OverlayManagerPanel } from "../components/overlay/OverlayManagerPanel";
+import { OverlaysPanel } from "../components/overlay/OverlaysPanel";
+import { SettingsPanel } from "../components/settings/SettingsPanel";
 import { useCountryData } from "../context/CountryDataContext";
 import { useOverlayContext } from "../context/OverlayContext";
 import { useMapView } from "../hooks/useMapView";
 import { useUiHint } from "../hooks/useUiHint";
 import type { Country } from "../types/country";
 import { useGeoData } from "../hooks/useGeoData";
-import { SettingsPanel } from "../components/settings/SettingsPanel";
 
 export default function CountryMapPage() {
   // UI state
@@ -36,7 +36,6 @@ export default function CountryMapPage() {
   const [modalCountry, setModalCountry] = useState<Country | null>(null);
 
   // Overlay state
-  const [showOverlayManager, setShowOverlayManager] = useState(false);
   const {
     editingOverlay,
     isEditModalOpen,
@@ -50,9 +49,6 @@ export default function CountryMapPage() {
 
   // Derived state
   const isLoading = countriesLoading || overlaysLoading || !mapReady;
-
-  // Settings panel state
-  const [showSettingsPanel, setShowSettingsPanel] = useState(false);
 
   // Map ready handler with slight delay
   const handleMapReady = useCallback(() => {
@@ -110,50 +106,34 @@ export default function CountryMapPage() {
           />
 
           {/* Toolbar & UI Overlays */}
+          <MapToolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
 
-          <MapToolbar
-            zoom={zoom}
-            setZoom={setZoom}
-            showOverlayManager={showOverlayManager}
-            setShowOverlayManager={setShowOverlayManager}
-            onShowSettingsPanel={() => setShowSettingsPanel(true)}
-            svgRef={svgRef}
+          <CountryDetailsModal
+            country={modalCountry}
+            isOpen={!!modalCountry}
+            onCenterMap={() =>
+              modalCountry
+                ? handleCenterMapOnCountry(modalCountry.isoCode)
+                : undefined
+            }
+            onClose={() => setModalCountry(null)}
           />
 
-          {modalCountry && (
-            <CountryDetailsModal
-              country={modalCountry}
-              isOpen={!!modalCountry}
-              onCenterMap={() => handleCenterMapOnCountry(modalCountry.isoCode)}
-              onClose={() => setModalCountry(null)}
-            />
-          )}
+          <OverlayEditModal
+            overlay={editingOverlay}
+            isNew={isNewOverlay}
+            onChange={setEditingOverlay}
+            onSave={saveOverlay}
+            onClose={closeOverlayModal}
+            isOpen={isEditModalOpen}
+          />
 
-          {editingOverlay && isEditModalOpen ? (
-            <OverlayEditModal
-              overlay={editingOverlay}
-              isNew={isNewOverlay}
-              onChange={setEditingOverlay}
-              onSave={saveOverlay}
-              onClose={closeOverlayModal}
-              isOpen={isEditModalOpen}
-            />
-          ) : showOverlayManager ? (
-            <OverlayManagerPanel
-              isOpen={showOverlayManager}
-              onClose={() => setShowOverlayManager(false)}
-              onEditOverlay={openEditOverlay}
-              onAddOverlay={openAddOverlay}
-            />
-          ) : null}
+          <OverlaysPanel
+            onEditOverlay={openEditOverlay}
+            onAddOverlay={openAddOverlay}
+          />
 
-          {/* Settings Panel */}
-          {showSettingsPanel && (
-            <SettingsPanel
-              show={showSettingsPanel}
-              onHide={() => setShowSettingsPanel(false)}
-            />
-          )}
+          <SettingsPanel />
         </div>
 
         {/* Spinner */}

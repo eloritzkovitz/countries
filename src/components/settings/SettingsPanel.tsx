@@ -1,17 +1,15 @@
 import { FaCog, FaTimes } from "react-icons/fa";
+import { ThemeSettingsGroup } from "./ThemeSettingsGroup";
+import { MapSettingsGroup } from "./MapSettingsGroup";
 import { ActionButton } from "../common/ActionButton";
 import { Panel } from "../common/Panel";
 import { Separator } from "../common/Separator";
 import { DEFAULT_PANEL_WIDTH } from "../../config/constants";
-import { ThemeSettingsGroup } from "./ThemeSettingsGroup";
-import { MapSettingsGroup } from "./MapSettingsGroup";
+import { useUI } from "../../context/UIContext";
 
-type SettingsPanelProps = {
-  show: boolean;
-  onHide: () => void;
-};
+export function SettingsPanel() {
+  const { showSettings, closePanel } = useUI();
 
-export function SettingsPanel({ show, onHide }: SettingsPanelProps) {
   return (
     <Panel
       title={
@@ -20,12 +18,12 @@ export function SettingsPanel({ show, onHide }: SettingsPanelProps) {
           Settings
         </>
       }
-      show={show}
+      show={showSettings}
       width={DEFAULT_PANEL_WIDTH}
-      onHide={onHide}
+      onHide={closePanel}
       headerActions={
         <ActionButton
-          onClick={onHide}
+          onClick={closePanel}
           ariaLabel="Close settings panel"
           title="Close"
         >

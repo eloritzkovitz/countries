@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
@@ -34,15 +34,16 @@ export function CountriesPanel({
   // Context data state
   const { countries, allRegions, allSubregions, loading, error } =
     useCountryData();
-  const { overlays } = useOverlayContext();
-  const { uiVisible } = useUI();
-
-  // Panel state
-  const [countriesPanelOpen, setCountriesPanelOpen] = useState(true);
-  const [filtersPanelOpen, setFiltersPanelOpen] = useState(false);
-  const [overlaySelections, setOverlaySelections] = useState<
-    Record<string, string>
-  >({});
+  const { overlays, overlaySelections, setOverlaySelections } =
+    useOverlayContext();
+  const {
+    uiVisible,
+    showCountries,
+    setShowCountries,
+    showFilters,
+    toggleFilters,    
+    closePanel,
+  } = useUI();
 
   // Filter state
   const {
@@ -66,11 +67,11 @@ export function CountriesPanel({
 
   // Close panels when UI is hidden, focus search when opened
   useEffect(() => {
-    if (!uiVisible) setFiltersPanelOpen(false);
-    if (uiVisible && countriesPanelOpen) {
+    if (!uiVisible) closePanel();
+    if (uiVisible && showCountries) {
       setTimeout(() => searchRef.current?.focus(), 120);
     }
-  }, [uiVisible, countriesPanelOpen]);
+  }, [uiVisible, showCountries]);
 
   // Handle country info action
   const handleCountryInfo = useCallback(
@@ -78,14 +79,12 @@ export function CountriesPanel({
       if (onCountryInfo) onCountryInfo(country);
     },
     [onCountryInfo]
-  );
+  );  
 
-  // Panel toggle handlers
-  const toggleFilters = useCallback(() => setFiltersPanelOpen((v) => !v), []);
+  // Hide panel handler
   const hidePanel = useCallback(() => {
-    setCountriesPanelOpen(false);
-    setFiltersPanelOpen(false);
-  }, []);
+    closePanel();
+  }, [closePanel]);
 
   // Header action buttons
   const headerActions = useMemo(
@@ -93,7 +92,7 @@ export function CountriesPanel({
       <>
         <ActionButton
           onClick={toggleFilters}
-          ariaLabel={filtersPanelOpen ? "Hide Filters" : "Show Filters"}
+          ariaLabel={showFilters ? "Hide Filters" : "Show Filters"}
           title="Filters"
           icon={<FaFilter />}
         />
@@ -105,7 +104,7 @@ export function CountriesPanel({
         />
       </>
     ),
-    [filtersPanelOpen, toggleFilters, hidePanel]
+    [showFilters, toggleFilters, hidePanel]
   );
 
   // Show loading or error states
@@ -116,7 +115,7 @@ export function CountriesPanel({
     <div className="fixed top-0 left-0 h-screen z-40 group relative">
       <Panel
         title={<Branding title="Countries" />}
-        show={uiVisible && countriesPanelOpen}
+        show={uiVisible && showCountries}
         showSeparator={false}
         headerActions={headerActions}
       >
@@ -146,14 +145,14 @@ export function CountriesPanel({
       </Panel>
 
       {/* Collapsed action button */}
-      {uiVisible && !countriesPanelOpen && (
-        <CollapsedPanelButton onClick={() => setCountriesPanelOpen(true)} />
+      {uiVisible && !showCountries && (
+        <CollapsedPanelButton onClick={() => setShowCountries(true)} />
       )}
 
       {/* Filters panel */}
-      {countriesPanelOpen && filtersPanelOpen && (
+      {showCountries && showFilters && (
         <CountryFiltersPanel
-          show={filtersPanelOpen}
+          show={showFilters}
           allRegions={allRegions}
           allSubregions={allSubregions}
           selectedRegion={selectedRegion}
@@ -165,7 +164,7 @@ export function CountriesPanel({
           overlays={overlays}
           overlaySelections={overlaySelections}
           setOverlaySelections={setOverlaySelections}
-          onHide={() => setFiltersPanelOpen(false)}
+          onHide={closePanel}
         />
       )}
     </div>
