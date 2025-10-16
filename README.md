@@ -6,13 +6,29 @@ Supports user-defined overlays, flexible filters, and easy data extension for an
 
 ## Features
 
-- Interactive world map with overlays (such as visited countries, etc.)
-- View detailed country information 
-- An interactive flag guessing game
-- Configurable filters (region, subregion, overlays)
-- All data sources loaded from JSON files via environment variables
-- Easily swap or edit data/configs without rebuilding
-- **Import and export overlays directly from the UI for backup, sharing, or migration**
+- **Interactive map:** Explore a cuztomizable world map
+- **Country details:** View detailed country information
+- **Configurable filters:** Filter by region, subregion, sovereignty and overlays
+- **Config-driven data:** All sources loaded from JSON files via environment variables
+- **Overlay import/export:** Backup, share, or migrate overlays directly from the UI
+- **Export maps:** Export your maps as SVG or PNG images
+- **Accessible design:** All major actions and navigation are keyboard-friendly
+- **Modern UI:** Responsive design with Tailwind CSS and icons
+- **Flag guessing game:** Test your knowledge with an interactive flag quiz
+
+## Getting Started
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Start the dev server**
+   ```bash
+   npm run dev
+   ```
+
+3. **Edit `.env` and `public/data/*.json` to customize your data**
 
 ## Data Sources
 
@@ -34,19 +50,7 @@ You can change their location or swap datasets by editing the `.env` file.
 ## Customizing Data & Overlays
 
 1. **Edit JSON files in `public/data`**  
-   - Example: Add your own overlays or update country lists in `overlays.json`:
-
-> **Overlay Example:**
-> ```json
-> {
->   "id": "visited",
->   "name": "Visited",
->   "color": "rgba(76, 175, 80, 0.5)",
->   "tooltip": "Visited",
->   "visible": true,
->   "countries": ["IL"]
-> }
-> ```
+   - See [Overlay JSON Example](docs/overlay-example.html) for a full example.
 
 2. **Update `.env` to point to your data files**  
    - No code changes needed—just edit the paths.
@@ -57,36 +61,42 @@ You can change their location or swap datasets by editing the `.env` file.
 4. **Import/Export overlays via the UI**  
    - Use the overlay manager panel to backup, restore, or share overlays as JSON files.
 
-## Getting Started
+## Keyboard Shortcuts
 
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-2. **Start the dev server**
-   ```bash
-   npm run dev
-   ```
-
-3. **Edit `.env` and `public/data/*.json` to customize your data**
+See [Keyboard Shortcuts](docs/keyboard-shortcuts.md) for a full list of keyboard shortcuts.
 
 ## Project Structure
 
 ```
-src/
-  components/      # UI components
-  config/          # Filter and overlay configs
-  context/         # React context providers
-  hooks/           # Custom React hooks
-  pages/           # App pages
-  types/           # TypeScript types
-  utils/           # Utility functions
-public/
-  data/            # All JSON data sources
+countries/
+|
+├── public/              # Static assets (favicon, images, etc.) 
+|   ├── data             # All JSON data sources 
+|   └── images           # Images
+|
+├── scripts/             # Data-related scripts 
+|
+├── src/
+│   ├── components/      # Reusable UI and layout components
+|   │   ├── common
+|   │   ├── country
+|   │   ├── filters
+|   │   ├── game
+|   │   ├── map
+|   │   ├── overlay
+|   │   └── settings
+│   |  
+│   ├── config/          # Constants and configuration files
+│   ├── hooks/           # Custom React hooks
+│   ├── pages/           # Page components
+│   ├── styles/          # Global and component styles
+│   ├── types/           # Custom types
+│   ├── utils/           # Utilities
+│   ├── App.tsx          # Main app component
+│   └── main.tsx         # Entry point
 ```
 
-## Extending & Contributing
+## Tips & Customization
 
 - Add or edit overlays and country lists in `public/data/overlays.json`
 - Add new filters by editing `src/config/filtersConfig.ts`
