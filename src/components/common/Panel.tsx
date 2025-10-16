@@ -20,28 +20,40 @@ export function Panel({
   title,
   children,
   show = true,
-  width = DEFAULT_PANEL_WIDTH,  
+  width = DEFAULT_PANEL_WIDTH,
   onHide,
   headerActions,
   showSeparator = true,
   className = "",
-  style = {},  
+  style = {},
 }: PanelProps) {
-  
-  // Handle 'Escape' key to close the panel
   useKeyHandler(() => {
     if (show && onHide) {
       onHide();
     }
   }, ["Escape"]);
 
-  // Don't render the panel if 'show' is false
-  if (!show) return null;
-
   return (
     <div
-      className={`h-screen bg-white shadow-lg flex flex-col ${className}`}
-      style={{ width, minWidth: width, ...style, zIndex: 40 }}
+      role="complementary"
+      aria-hidden={!show}
+      tabIndex={-1}
+      className={`bg-white shadow-lg flex flex-col transition-all duration-300 ease-in-out ${
+        show
+          ? "translate-x-0 opacity-100 pointer-events-auto"
+          : "-translate-x-full opacity-0 pointer-events-none"
+      } ${className}`}
+      style={{
+        width,
+        minWidth: width,
+        height: "100vh",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 40,
+        willChange: "transform",
+        ...style,
+      }}
     >
       <div className="px-4 pt-8 pb-0 flex-shrink-0">
         <PanelHeader title={title}>{headerActions}</PanelHeader>

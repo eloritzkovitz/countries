@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
+import { useKeyHandler } from "../hooks/useKeyHandler";
 
 type UIContextType = {
   uiVisible: boolean;
@@ -9,6 +10,14 @@ const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: { children: ReactNode }) {
   const [uiVisible, setUiVisible] = useState(true);
+
+  // Toggle UI visibility with Shift+U
+  useKeyHandler(
+    () => setUiVisible((prev) => !prev),
+    ["u", "U"],
+    true,
+    { shift: true }
+  );
 
   return (
     <UIContext.Provider value={{ uiVisible, setUiVisible }}>

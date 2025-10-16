@@ -4,11 +4,12 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaDownload,
-  FaCog,  
+  FaCog,
 } from "react-icons/fa";
 import { MapExportMenu } from "./MapExportMenu";
 import { ZoomControls } from "./ZoomControls";
 import { ActionButton } from "../common/ActionButton";
+import { useUI } from "../../context/UIContext";
 
 export function MapToolbar({
   zoom,
@@ -27,6 +28,8 @@ export function MapToolbar({
   svgRef: React.RefObject<SVGSVGElement | null>;
   children?: React.ReactNode;
 }) {
+  const { uiVisible } = useUI();
+
   const [visible, setVisible] = useState(true);
   const [showExportDialog, setShowExportDialog] = useState(false);
 
@@ -50,7 +53,15 @@ export function MapToolbar({
   };
 
   return (
-    <div className="absolute right-8 bottom-8 z-[101] flex flex-col items-end group">
+    <div
+      className={`absolute right-8 bottom-8 z-[101] flex flex-col items-end group transition-transform duration-300 ease-in-out`}
+      style={{
+        transform: uiVisible ? "translateX(0)" : "translateX(400px)",
+        opacity: uiVisible ? 1 : 0,
+        pointerEvents: uiVisible ? "auto" : "none",
+        transition: "transform 0.3s, opacity 0.3s",
+      }}
+    >
       {/* Zoom controls: vertical slide */}
       <div
         className={`transition-all duration-300 ${

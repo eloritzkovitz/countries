@@ -116,6 +116,10 @@ export function CountryFiltersPanel({
           </ActionButton>
         </>
       }
+      style={{
+        left: DEFAULT_PANEL_WIDTH,
+        zIndex: 39,
+      }}
     >
       {/* Core Filters Section */}
       <CoreFilters

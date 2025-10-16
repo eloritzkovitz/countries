@@ -9,8 +9,6 @@ import { OverlayEditModal } from "../components/overlay/OverlayEditModal";
 import { OverlayManagerPanel } from "../components/overlay/OverlayManagerPanel";
 import { useCountryData } from "../context/CountryDataContext";
 import { useOverlayContext } from "../context/OverlayContext";
-import { useUI } from "../context/UIContext";
-import { useKeyHandler } from "../hooks/useKeyHandler";
 import { useMapView } from "../hooks/useMapView";
 import { useUiHint } from "../hooks/useUiHint";
 import type { Country } from "../types/country";
@@ -19,9 +17,8 @@ import { SettingsPanel } from "../components/settings/SettingsPanel";
 
 export default function CountryMapPage() {
   // UI state
-  const { uiVisible, setUiVisible } = useUI();
   const [mapReady, setMapReady] = useState(false);
-  const uiHint = useUiHint("Press U to hide/show the UI", 4000);
+  const uiHint = useUiHint("Press Shift+U to hide/show the UI", 4000);
 
   // Data state
   const { countries, loading: countriesLoading, error } = useCountryData();
@@ -57,9 +54,6 @@ export default function CountryMapPage() {
   // Settings panel state
   const [showSettingsPanel, setShowSettingsPanel] = useState(false);
 
-  // Keyboard shortcut to toggle UI visibility (U key)
-  useKeyHandler(() => setUiVisible((v) => !v), ["u", "U"]);
-
   // Map ready handler with slight delay
   const handleMapReady = useCallback(() => {
     setTimeout(() => setMapReady(true), 150);
@@ -84,24 +78,20 @@ export default function CountryMapPage() {
   }
 
   // Show error state
-  if (error) {
-    return <ErrorMessage error={error} />;
-  }
+  if (error) return <ErrorMessage error={error} />;
 
   return (
     <>
       {uiHint}
       <div className="flex h-screen bg-gray-100 relative">
         {/* Sidebar Panel */}
-        {uiVisible && (
-          <CountriesPanel
-            selectedIsoCode={selectedIsoCode}
-            hoveredIsoCode={hoveredIsoCode}
-            onSelect={setSelectedIsoCode}
-            onHover={setHoveredIsoCode}
-            onCountryInfo={setModalCountry}
-          />
-        )}
+        <CountriesPanel
+          selectedIsoCode={selectedIsoCode}
+          hoveredIsoCode={hoveredIsoCode}
+          onSelect={setSelectedIsoCode}
+          onHover={setHoveredIsoCode}
+          onCountryInfo={setModalCountry}
+        />
 
         {/* Main Map Area */}
         <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
@@ -120,54 +110,49 @@ export default function CountryMapPage() {
           />
 
           {/* Toolbar & UI Overlays */}
-          {uiVisible && (
-            <>
-              <MapToolbar
-                zoom={zoom}
-                setZoom={setZoom}
-                showOverlayManager={showOverlayManager}
-                setShowOverlayManager={setShowOverlayManager}
-                onShowSettingsPanel={() => setShowSettingsPanel(true)}
-                svgRef={svgRef}
-              />
 
-              {modalCountry && (
-                <CountryDetailsModal
-                  country={modalCountry}
-                  isOpen={!!modalCountry}
-                  onCenterMap={() =>
-                    handleCenterMapOnCountry(modalCountry.isoCode)
-                  }
-                  onClose={() => setModalCountry(null)}
-                />
-              )}
+          <MapToolbar
+            zoom={zoom}
+            setZoom={setZoom}
+            showOverlayManager={showOverlayManager}
+            setShowOverlayManager={setShowOverlayManager}
+            onShowSettingsPanel={() => setShowSettingsPanel(true)}
+            svgRef={svgRef}
+          />
 
-              {editingOverlay && isEditModalOpen ? (
-                <OverlayEditModal
-                  overlay={editingOverlay}
-                  isNew={isNewOverlay}
-                  onChange={setEditingOverlay}
-                  onSave={saveOverlay}
-                  onClose={closeOverlayModal}
-                  isOpen={isEditModalOpen}
-                />
-              ) : showOverlayManager ? (
-                <OverlayManagerPanel
-                  isOpen={showOverlayManager}
-                  onClose={() => setShowOverlayManager(false)}
-                  onEditOverlay={openEditOverlay}
-                  onAddOverlay={openAddOverlay}
-                />
-              ) : null}
+          {modalCountry && (
+            <CountryDetailsModal
+              country={modalCountry}
+              isOpen={!!modalCountry}
+              onCenterMap={() => handleCenterMapOnCountry(modalCountry.isoCode)}
+              onClose={() => setModalCountry(null)}
+            />
+          )}
 
-              {/* Settings Panel */}
-              {showSettingsPanel && (
-                <SettingsPanel
-                  show={showSettingsPanel}
-                  onHide={() => setShowSettingsPanel(false)}
-                />
-              )}
-            </>
+          {editingOverlay && isEditModalOpen ? (
+            <OverlayEditModal
+              overlay={editingOverlay}
+              isNew={isNewOverlay}
+              onChange={setEditingOverlay}
+              onSave={saveOverlay}
+              onClose={closeOverlayModal}
+              isOpen={isEditModalOpen}
+            />
+          ) : showOverlayManager ? (
+            <OverlayManagerPanel
+              isOpen={showOverlayManager}
+              onClose={() => setShowOverlayManager(false)}
+              onEditOverlay={openEditOverlay}
+              onAddOverlay={openAddOverlay}
+            />
+          ) : null}
+
+          {/* Settings Panel */}
+          {showSettingsPanel && (
+            <SettingsPanel
+              show={showSettingsPanel}
+              onHide={() => setShowSettingsPanel(false)}
+            />
           )}
         </div>
 
