@@ -1,5 +1,15 @@
 import type { Country, SovereigntyType } from "../types/country";
+import type { FilterConfig, FilterKey, FilterOption } from "../types/filters";
 import type { Overlay } from "../types/overlay";
+
+/**
+ * Maps an array of strings to FilterOption objects.
+ * @param options Array of string options
+ * @returns Array of FilterOption objects
+ */
+export function mapOptions(options: string[]): FilterOption[] {
+  return options.map((r) => ({ value: r, label: r }));
+}
 
 /**
  * Returns all unique regions from the countries list, excluding undefined values.
@@ -142,4 +152,29 @@ export function getFilteredIsoCodes(
   });
 
   return filteredIsoCodes;
+}
+
+/** Creates a select filter configuration.
+ * @param key - The key for the filter (region, subregion, sovereignty).
+ * @param label - The label for the filter.
+ * @param getOptions - Function to get options for the filter.
+ * @param getValue - Function to get the current value of the filter.
+ * @param setValue - Function to set the value of the filter.
+ * @returns A FilterConfig object for the select filter.
+ */
+export function createSelectFilter<T extends string>(
+  key: FilterKey,
+  label: string,
+  getOptions: (options: T[]) => FilterOption[],
+  getValue: (props: any) => string,
+  setValue: (props: any, val: string) => void
+): FilterConfig {
+  return {
+    key,
+    label,
+    type: "select",
+    getOptions,
+    getValue,
+    setValue,
+  } as FilterConfig;
 }

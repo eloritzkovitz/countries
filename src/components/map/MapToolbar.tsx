@@ -1,40 +1,111 @@
-import { FaLayerGroup } from "react-icons/fa";
-import { MapScale } from "./MapScale";
+import { useState } from "react";
+import {
+  FaLayerGroup,
+  FaChevronLeft,
+  FaChevronRight,
+  FaDownload,
+  FaCog,
+} from "react-icons/fa";
+import { MapExportModal } from "./MapExportModal";
+import { ZoomControls } from "./ZoomControls";
 import { ActionButton } from "../common/ActionButton";
+import { useUI } from "../../context/UIContext";
 
 export function MapToolbar({
   zoom,
   setZoom,
-  showOverlayManager,
-  setShowOverlayManager,
+  svgRef,
+  children,
 }: {
   zoom: number;
-  setZoom: (z: number) => void;
-  showOverlayManager: boolean;
-  setShowOverlayManager: (v: boolean) => void;
+  setZoom: React.Dispatch<React.SetStateAction<number>>;
+  svgRef: React.RefObject<SVGSVGElement | null>;
+  children?: React.ReactNode;
 }) {
+  // UI state
+  const { uiVisible, toggleOverlays, toggleExport, toggleSettings } = useUI();
+  const [visible, setVisible] = useState(true);
+
   return (
-    <div className="absolute right-8 bottom-8 flex flex-row items-end gap-8 z-[101]">
-      <ActionButton
-        onClick={() => setShowOverlayManager(!showOverlayManager)}
-        ariaLabel={
-          showOverlayManager ? "Close Overlays Panel" : "Open Overlays Panel"
-        }
-        title={
-          showOverlayManager ? "Close Overlays Panel" : "Open Overlays Panel"
-        }
-        colorClass="bg-blue-800 text-white hover:bg-blue-900 active:bg-blue-800 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600"
-        className="w-16 h-16 flex items-center justify-center shadow-lg p-0 rounded-full border-none"
-        icon={<FaLayerGroup size={32} />}
-      />
-      <MapScale
-        scale={zoom}
-        minScale={1}
-        maxScale={10}
-        onScaleChange={setZoom}
-        onZoomIn={() => setZoom(Math.min(zoom * 1.5, 16))}
-        onZoomOut={() => setZoom(Math.max(zoom / 1.5, 1))}
-      />
+    <div
+      className={`absolute right-8 bottom-8 z-[101] flex flex-col items-end group transition-transform duration-300 ease-in-out`}
+      style={{
+        transform: uiVisible ? "translateX(0)" : "translateX(400px)",
+        opacity: uiVisible ? 1 : 0,
+        pointerEvents: uiVisible ? "auto" : "none",
+        transition: "transform 0.3s, opacity 0.3s",
+      }}
+    >
+      {/* Zoom controls: vertical slide */}
+      <div
+        className={`transition-all duration-300 ${
+          visible
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        } mb-2`}
+        style={{
+          transform: visible ? "translateY(0)" : "translateY(40px)",
+          transition: "transform 0.3s, opacity 0.3s",
+        }}
+      >
+        <ZoomControls zoom={zoom} setZoom={setZoom} />
+      </div>
+      {/* Actions and toggle: aligned horizontally */}
+      <div className="relative flex items-center" style={{ height: "40px" }}>
+        {/* Actions: horizontal slide */}
+        <div
+          className={`absolute right-12 top-0 flex flex-row items-center bg-gray-200 dark:bg-gray-800 rounded-full shadow border border-gray-300 dark:border-gray-700 px-2 transition-all duration-300 ${
+            visible
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          }`}
+          style={{
+            transform: visible ? "translateX(0)" : "translateX(40px)",
+            transition: "transform 0.3s, opacity 0.3s",
+            height: "42px",
+            alignItems: "center",
+          }}
+        >
+          <ActionButton
+            onClick={toggleOverlays}
+            ariaLabel="Open Overlays Panel"
+            title="Open Overlays Panel"
+            colorClass="text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300"
+            className="w-10 h-10 flex items-center justify-center p-0 rounded-full"
+            icon={<FaLayerGroup />}
+          />
+          <ActionButton
+            onClick={toggleExport}
+            ariaLabel="Export map"
+            title="Export"
+            colorClass="text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300"
+            className="w-10 h-10 flex items-center justify-center p-0 rounded-full"
+            icon={<FaDownload />}
+          />
+          <MapExportModal svgRef={svgRef} />
+          <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
+          <ActionButton
+            onClick={toggleSettings}
+            ariaLabel="Open settings panel"
+            title="Settings"
+            colorClass="text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300"
+            className="w-10 h-10 flex items-center justify-center p-0 rounded-full"
+            icon={<FaCog />}
+          />
+          {children}
+        </div>
+        {/* Toggle button */}
+        <ActionButton
+          onClick={() => setVisible((v) => !v)}
+          ariaLabel={visible ? "Hide toolbar" : "Show toolbar"}
+          title={visible ? "Hide toolbar" : "Show toolbar"}
+          colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-100"
+          className={`w-10 h-10 flex items-center justify-center rounded-full shadow transition-opacity duration-300 absolute right-0 top-0 ${
+            !visible ? "opacity-70" : ""
+          }`}
+          icon={visible ? <FaChevronRight /> : <FaChevronLeft />}
+        />
+      </div>
     </div>
   );
 }

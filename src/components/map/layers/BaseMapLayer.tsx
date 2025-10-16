@@ -1,39 +1,25 @@
 import { Geographies, Geography } from "react-simple-maps";
-import { getCountryIsoCode } from "../utils/countryData";
-import { useMapStrokeColor, getGeographyStyle } from "../utils/mapStyles";
+import { getCountryIsoCode } from "../../../utils/countryData";
+import { useMapGeographyStyle } from "../../../utils/mapUtils";
 
 type BaseMapLayerProps = {
-  geographyUrl: string;
+  geographyData: string;
   onCountryClick?: (countryIsoCode: string) => void;
   onCountryHover?: (isoCode: string | null) => void;
-  selectedIsoCode?: string | null;
-  hoveredIsoCode?: string | null;
 };
 
 export function BaseMapLayer({
-  geographyUrl,
+  geographyData,
   onCountryClick,
   onCountryHover,
-  selectedIsoCode,
-  hoveredIsoCode,
 }: BaseMapLayerProps) {
-  const strokeColor = useMapStrokeColor();
+  const geographyStyle = useMapGeographyStyle();
 
   return (
-    <Geographies geography={geographyUrl}>
+    <Geographies geography={geographyData}>
       {({ geographies }: { geographies: any[] }) =>
         geographies.map((geo) => {
           const isoCode = getCountryIsoCode(geo.properties);
-          const isSelected =
-            !!isoCode &&
-            !!selectedIsoCode &&
-            isoCode === selectedIsoCode.toUpperCase()
-              ? true
-              : undefined;
-          const isHovered =
-            !!isoCode &&
-            !!hoveredIsoCode &&
-            isoCode === hoveredIsoCode.toUpperCase();
 
           return (
             <Geography
@@ -46,11 +32,7 @@ export function BaseMapLayer({
               onClick={() =>
                 onCountryClick && isoCode && onCountryClick(isoCode)
               }
-              style={getGeographyStyle({
-                isHovered,
-                isSelected,
-                strokeColor,
-              })}
+              style={geographyStyle}
             >
               <title>{geo.properties.NAME || geo.properties.name}</title>
             </Geography>

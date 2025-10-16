@@ -1,43 +1,18 @@
-import type { SovereigntyType } from "./country";
-import type { Overlay } from "./overlay";
+// Filter key type
+export type FilterKey = "region" | "subregion" | "sovereignty" | "overlay";
 
 // Filter option type
 export type FilterOption = {
   label: string;
-  value: string;
+  value: string | number;
 };
 
-// Filter configuration type
-export type FilterConfig =
-  | {
-      key: "region";
-      label: string;
-      type: "select";
-      getOptions: (allRegions: string[]) => FilterOption[];
-      getValue: (props: any) => string;
-      setValue: (props: any, val: string) => void;
-    }
-  | {
-      key: "subregion";
-      label: string;
-      type: "select";
-      getOptions: (subregionOptions: string[]) => FilterOption[];
-      getValue: (props: any) => string;
-      setValue: (props: any, val: string) => void;
-    }
-  | {
-      key: "sovereignty";
-      label: string;
-      type: "select";
-      getOptions: (sovereigntyOptions: SovereigntyType[]) => FilterOption[];
-      getValue: (props: any) => string;
-      setValue: (props: any, val: string) => void;
-    }
-  | {
-      key: "overlay";
-      label: (overlay: Overlay) => string;
-      type: "select";
-      getOptions: () => FilterOption[];
-      getValue: (props: any, overlay: Overlay) => string;
-      setValue: (props: any, val: string, overlay: Overlay) => void;
-    };
+// Filter config type
+export type FilterConfig<T = string, P = any> = {
+  key: FilterKey;
+  label: string | ((param: P) => string);
+  type: "select";
+  getOptions: (options?: T[]) => FilterOption[];
+  getValue: (props: any, param?: P) => string;
+  setValue: (props: any, val: string, param?: P) => void;
+};

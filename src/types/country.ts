@@ -22,14 +22,3 @@ export type SovereigntyType =
   | "Unrecognized"
   | "Disputed"
   | "Unknown";
-
-// Country data context type definition
-export type CountryDataContextType = {
-  countries: any[];
-  currencies: Record<string, string>;
-  allRegions: string[];
-  allSubregions: string[];
-  allSovereigntyTypes: string[];
-  loading: boolean;
-  error: string | null;
-};

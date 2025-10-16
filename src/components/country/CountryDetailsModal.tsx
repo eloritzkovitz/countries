@@ -1,4 +1,4 @@
-import { FaTimes } from "react-icons/fa";
+import { FaCrosshairs, FaTimes } from "react-icons/fa";
 import { CountryFlag } from "./CountryFlag";
 import { SovereigntyBadge } from "./SovereigntyBadge";
 import { ActionButton } from "../common/ActionButton";
@@ -7,21 +7,34 @@ import { ErrorMessage } from "../common/ErrorMessage";
 import { Modal } from "../common/Modal";
 import { PanelHeader } from "../common/PanelHeader";
 import { useCountryData } from "../../context/CountryDataContext";
+import { useKeyHandler } from "../../hooks/useKeyHandler";
 import type { Country } from "../../types/country";
 import { getLanguagesDisplay } from "../../utils/countryData";
 
 type CountryDetailsModalProps = {
-  country: Country;
-  onClose: () => void;
+  country: Country | null;
   isOpen: boolean;
+  onCenterMap?: () => void;
+  onClose: () => void;
 };
 
 export function CountryDetailsModal({
   country,
-  onClose,
   isOpen,
+  onCenterMap,
+  onClose,
 }: CountryDetailsModalProps) {
   const { currencies, loading, error } = useCountryData();
+
+  // Center map handler
+  useKeyHandler(
+    (e) => {
+      e.preventDefault();
+      if (onCenterMap) onCenterMap();
+    },
+    ["c", "C"],
+    isOpen
+  );
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading..." />;
@@ -35,11 +48,18 @@ export function CountryDetailsModal({
       className="bg-white rounded-xl p-8 min-w-[340px] max-w-[100vw] w-[350px] shadow-lg"
     >
       <PanelHeader title={country.name}>
+        {onCenterMap && (
+          <ActionButton
+            onClick={onCenterMap}
+            ariaLabel="Center map on country"
+            title="Center map"
+            icon={<FaCrosshairs />}
+          />
+        )}
         <ActionButton
           onClick={onClose}
           ariaLabel="Close country details"
           title="Close"
-          className="ml-2"
           icon={<FaTimes />}
         />
       </PanelHeader>
@@ -52,7 +72,7 @@ export function CountryDetailsModal({
           size: "64x48",
         }}
         alt={`${country.name} flag`}
-        style={{marginBottom: '16px'}}
+        style={{ marginBottom: "16px" }}
       />
       <ul className="list-none p-0 mb-4 text-gray-700">
         <li>

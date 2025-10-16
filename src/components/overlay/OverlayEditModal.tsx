@@ -12,7 +12,7 @@ import { getCountryOptions } from "../../utils/countryData";
 import { getSelectStyles } from "../../utils/selectStyles";
 
 type OverlayEditModalProps = {
-  overlay: Overlay;
+  overlay: Overlay | null;
   isNew: boolean;
   onChange: (overlay: Overlay) => void;
   onSave: () => void;
@@ -31,6 +31,9 @@ export function OverlayEditModal({
   const { countries } = useCountryData();
   const { theme } = useTheme();
   const countryOptions = getCountryOptions(countries);
+
+  // Don't render the modal if no overlay is being edited
+  if (!overlay) return null;
 
   return (
     <>

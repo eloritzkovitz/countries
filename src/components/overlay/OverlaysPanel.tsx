@@ -1,6 +1,11 @@
 import { useRef } from "react";
-import { FaPlus, FaUpload, FaDownload, FaTimes } from "react-icons/fa";
-import { OverlayPanel } from "./OverlayPanel";
+import {
+  FaLayerGroup,
+  FaPlus,
+  FaFileImport,
+  FaFileExport,
+  FaTimes,
+} from "react-icons/fa";
 import { OverlayPanelItem } from "./OverlayPanelItem";
 import { ActionButton } from "../common/ActionButton";
 import { LoadingSpinner } from "../common/LoadingSpinner";
@@ -8,25 +13,24 @@ import { ErrorMessage } from "../common/ErrorMessage";
 import { Modal } from "../common/Modal";
 import { PanelHeader } from "../common/PanelHeader";
 import { useOverlayContext } from "../../context/OverlayContext";
+import { useUI } from "../../context/UIContext";
 import type { Overlay } from "../../types/overlay";
 import {
   importOverlaysFromFile,
   exportOverlaysToFile,
 } from "../../utils/overlayFileUtils";
 
-type OverlayManagerPanelProps = {
-  isOpen: boolean;
-  onClose: () => void;
+type OverlaysPanelProps = {
   onEditOverlay: (overlay: Overlay) => void;
   onAddOverlay: () => void;
 };
 
-export function OverlayManagerPanel({
-  isOpen,
-  onClose,
+export function OverlaysPanel({
   onEditOverlay,
   onAddOverlay,
-}: OverlayManagerPanelProps) {
+}: OverlaysPanelProps) {
+  const { showOverlays, closePanel } = useUI();
+
   const {
     overlays,
     setOverlays,
@@ -45,19 +49,25 @@ export function OverlayManagerPanel({
 
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={showOverlays}
+      onClose={closePanel}
       position="custom"
-      containerClassName="right-24 bottom-[100px]"
-      className="min-w-[340px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-8 overflow-y-auto"
+      containerClassName="right-40 bottom-[80px]"
+      className="min-w-[340px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-4 overflow-y-auto"
     >
-      <PanelHeader title="Overlays">
+      <PanelHeader
+        title={
+          <>
+            <FaLayerGroup />
+            Overlays
+          </>
+        }
+      >
         {/* Action buttons */}
         <ActionButton
           onClick={onAddOverlay}
           ariaLabel="Add Overlay"
           title="Add Overlay"
-          colorClass="bg-blue-600 text-white hover:bg-blue-700"
         >
           <FaPlus />
         </ActionButton>
@@ -65,9 +75,8 @@ export function OverlayManagerPanel({
           onClick={() => fileInputRef.current?.click()}
           ariaLabel="Import Overlays"
           title="Import Overlays"
-          colorClass="bg-yellow-500 text-white hover:bg-yellow-600"
         >
-          <FaUpload />
+          <FaFileImport />
         </ActionButton>
         <input
           type="file"
@@ -80,12 +89,11 @@ export function OverlayManagerPanel({
           onClick={exportOverlaysToFile}
           ariaLabel="Export Overlays"
           title="Export Overlays"
-          colorClass="bg-green-600 text-white hover:bg-green-700"
         >
-          <FaDownload />
+          <FaFileExport />
         </ActionButton>
         <ActionButton
-          onClick={onClose}
+          onClick={closePanel}
           ariaLabel="Close Overlay Manager"
           title="Close"
         >
@@ -94,14 +102,17 @@ export function OverlayManagerPanel({
       </PanelHeader>
       <ul className="list-none p-0">
         {overlays.map((overlay) => (
-          <OverlayPanel key={overlay.id} overlay={overlay}>
+          <div
+            key={overlay.id}
+            className="rounded-lg mb-4 bg-gray-50 shadow-sm"
+          >
             <OverlayPanelItem
               overlay={overlay}
               onToggleVisibility={toggleOverlayVisibility}
               onEdit={onEditOverlay}
               onRemove={removeOverlay}
             />
-          </OverlayPanel>
+          </div>
         ))}
       </ul>
     </Modal>

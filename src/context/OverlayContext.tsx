@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import type { Overlay, OverlayContextType } from "../types/overlay";
+import type { Overlay } from "../types/overlay";
 import {
   addOverlay as addOverlayUtil,
   editOverlay as editOverlayUtil,
@@ -7,10 +7,35 @@ import {
   updateOverlayVisibility,
 } from "../utils/overlayUtils";
 
+export type OverlayContextType = {
+  overlays: Overlay[];
+  setOverlays: React.Dispatch<React.SetStateAction<Overlay[]>>;
+  overlaySelections: Record<string, string>;
+  setOverlaySelections: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  addOverlay: (overlay: Overlay) => void;
+  editOverlay: (overlay: Overlay) => void;
+  removeOverlay: (id: string) => void;
+  toggleOverlayVisibility: (id: string) => void;
+  loading: boolean;
+  error: string | null;
+  editingOverlay: Overlay | null;
+  isEditModalOpen: boolean;
+  isNewOverlay: boolean;
+  openAddOverlay: () => void;
+  openEditOverlay: (overlay: Overlay) => void;
+  saveOverlay: () => void;
+  closeOverlayModal: () => void;
+  setEditingOverlay: React.Dispatch<React.SetStateAction<Overlay | null>>;
+};
+
 const OverlayContext = createContext<OverlayContextType | undefined>(undefined);
 
 export function OverlayProvider({ children }: { children: React.ReactNode }) {
+  // Overlay state
   const [overlays, setOverlays] = useState<Overlay[]>([]);
+  const [overlaySelections, setOverlaySelections] = useState<Record<string, string>>({});
+
+  // Loading and error state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -118,6 +143,8 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
       value={{
         overlays,
         setOverlays,
+        overlaySelections,
+        setOverlaySelections,
         addOverlay,
         editOverlay,
         removeOverlay,

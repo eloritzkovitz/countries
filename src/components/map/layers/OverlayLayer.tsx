@@ -1,17 +1,17 @@
 import { Geography, Geographies } from "react-simple-maps";
-import type { OverlayItem } from "../types/overlay";
-import { getCountryIsoCode } from "../utils/countryData";
-import { useMapStrokeColor, getGeographyStyle } from "../utils/mapStyles";
+import type { OverlayItem } from "../../../types/overlay";
+import { getCountryIsoCode } from "../../../utils/countryData";
+import { useMapGeographyStyle } from "../../../utils/mapUtils";
 
 type OverlayLayerProps = {
-  geographyUrl: string;
+  geographyData: string;
   overlayItems?: OverlayItem[];
   defaultColor?: string;
   suffix?: string;
 };
 
 export function OverlayLayer({
-  geographyUrl,
+  geographyData,
   overlayItems,
   defaultColor = "#6a6e72",
   suffix = "",
@@ -20,26 +20,35 @@ export function OverlayLayer({
 
   // Build a lookup for fast access
   const overlayMap = Object.fromEntries(
-    overlayItems.map(item => [item.isoCode.toUpperCase(), item])
+    overlayItems.map((item) => [item.isoCode.toUpperCase(), item])
   );
 
-  const strokeColor = useMapStrokeColor();
+  const geographyStyle = useMapGeographyStyle();
 
   return (
     <g className="pointer-events-none">
-      <Geographies geography={geographyUrl}>
+      <Geographies geography={geographyData}>
         {({ geographies }: { geographies: any[] }) =>
           geographies.map((geo) => {
             const isoA2 = getCountryIsoCode(geo.properties);
             const overlay = isoA2 && overlayMap[isoA2];
             if (!overlay) return null;
-
-            // Use overlay color for all states
+            
             const fillColor = overlay.color || defaultColor;
-            const style = getGeographyStyle({
-              strokeColor,
-              fillColor,
-            });
+            const style = {
+              default: {
+                ...geographyStyle.default,
+                fill: fillColor,
+              },
+              hover: {
+                ...geographyStyle.hover,
+                fill: fillColor,
+              },
+              pressed: {
+                ...geographyStyle.pressed,
+                fill: fillColor,
+              },
+            };
 
             return (
               <Geography
