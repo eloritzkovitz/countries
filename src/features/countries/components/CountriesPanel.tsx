@@ -95,7 +95,7 @@ export function CountriesPanel({
           icon={<FaFilter />}
         />
         <ActionButton
-          onClick={closePanel}
+          onClick={() => setShowCountries(false)}
           ariaLabel="Hide countries panel"
           title="Hide"
           icon={<FaTimes />}
@@ -145,8 +145,8 @@ export function CountriesPanel({
       </Panel>
 
       {/* Collapsed action button */}
-      {uiVisible && !showCountries && (
-        <CollapsedPanelButton onClick={() => setShowCountries(true)} />
+      {uiVisible && (
+        <CollapsedPanelButton onClick={() => setShowCountries(true)} visible={!showCountries} />
       )}
 
       {/* Filters panel */}
