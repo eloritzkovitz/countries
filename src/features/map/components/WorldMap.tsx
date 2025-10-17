@@ -4,12 +4,10 @@ import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@context/MapUIContext";
 import { useOverlayContext } from "@context/OverlayContext";
 import { useGeoData } from "@hooks/useGeoData";
+import { CountriesLayer } from "./CountriesLayer";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
-import { BaseMapLayer } from "../layers/BaseMapLayer";
-import { HighlightLayer } from "../layers/HighlightLayer";
-import { OverlayLayer } from "../layers/OverlayLayer";
 import { getOverlayItems } from "../utils/mapUtils";
 
 type WorldMapProps = {
@@ -29,19 +27,17 @@ type WorldMapProps = {
   svgRef?: React.Ref<SVGSVGElement>;
 };
 
-export function WorldMap(
-  {
-    zoom,
-    center,
-    handleMoveEnd,
-    onCountryClick,
-    onCountryHover,
-    selectedIsoCode,
-    hoveredIsoCode,
-    onReady,
-    svgRef,
-  }: WorldMapProps,  
-) {
+export function WorldMap({
+  zoom,
+  center,
+  handleMoveEnd,
+  onCountryClick,
+  onCountryHover,
+  selectedIsoCode,
+  hoveredIsoCode,
+  onReady,
+  svgRef,
+}: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
   const { projection } = useMapUI();
@@ -123,34 +119,26 @@ export function WorldMap(
             minZoom={DEFAULT_MAP_SETTINGS.minZoom}
             maxZoom={DEFAULT_MAP_SETTINGS.maxZoom}
             onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
-          >
-            {/* Base map */}
-            <BaseMapLayer
-              geographyData={geoData}
-              onCountryClick={onCountryClick}
-              onCountryHover={onCountryHover}
-            />
-            {/* Overlay layers */}
+          >            
+            {/* Countries layers */}
             {overlays
               .filter((o) => o.visible)
               .map((overlay) => (
-                <OverlayLayer
+                <CountriesLayer
                   key={overlay.id}
                   geographyData={geoData}
                   overlayItems={getOverlayItems(overlay)}
                   defaultColor={overlay.color}
                   suffix={`-overlay-${overlay.id}`}
+                  selectedIsoCode={selectedIsoCode}
+                  hoveredIsoCode={hoveredIsoCode}
+                  onCountryClick={onCountryClick}
+                  onCountryHover={onCountryHover}
                 />
               ))}
-            {/* Highlight Layer */}
-            <HighlightLayer
-              geographyData={geoData}
-              selectedIsoCode={selectedIsoCode}
-              hoveredIsoCode={hoveredIsoCode}
-            />
           </ZoomableGroup>
         </ComposableMap>
       </MapSvgContainer>
     </div>
   );
-};
+}

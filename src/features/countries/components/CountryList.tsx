@@ -1,4 +1,3 @@
-import React from "react";
 import { CountryFlag } from "@components";
 import type { Country } from "@types";
 
@@ -11,7 +10,7 @@ type CountryListProps = {
   onCountryInfo?: (country: Country) => void;
 };
 
-export const CountryList = React.memo(function CountryList({
+export function CountryList({
   countries,
   selectedIsoCode,
   hoveredIsoCode,
@@ -61,4 +60,4 @@ export const CountryList = React.memo(function CountryList({
       </ul>
     </div>
   );
-});
+}
