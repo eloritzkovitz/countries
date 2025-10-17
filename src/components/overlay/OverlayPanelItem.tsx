@@ -27,24 +27,21 @@ export function OverlayPanelItem({
         onClick={() => onToggleVisibility(overlay.id)}
         ariaLabel={overlay.visible ? "Hide overlay" : "Show overlay"}
         title={overlay.visible ? "Hide overlay" : "Show overlay"}
-        colorClass={overlay.visible ? "text-blue-500" : "text-gray-400"}
-        className="mx-1 text-lg"
+        className={`mx-1 text-lg ${overlay.visible ? "text-blue-500" : "text-gray-400"}`}
         icon={overlay.visible ? <FaEye /> : <FaEyeSlash />}
       />
       <ActionButton
         onClick={() => onEdit(overlay)}
         ariaLabel="Edit overlay"
-        title="Edit overlay"
-        colorClass="text-blue-600 hover:text-blue-800"
-        className="mx-1 text-lg"
+        title="Edit overlay"      
+        className="mx-1 text-lg text-blue-600 hover:text-blue-800"
         icon={<FaEdit />}
       />
       <ActionButton
         onClick={() => onRemove(overlay.id)}
         ariaLabel="Remove overlay"
         title="Remove overlay"
-        colorClass="text-red-600 hover:text-red-800"
-        className="mx-1 text-lg"
+        className="mx-1 text-lg text-red-600 hover:text-red-800"
         icon={<FaTrash />}
       />
     </li>

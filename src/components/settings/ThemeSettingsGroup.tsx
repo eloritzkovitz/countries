@@ -1,6 +1,5 @@
 import React from "react";
 import { FaPalette, FaSun, FaMoon } from "react-icons/fa";
-import { ActionButton } from "../common/ActionButton";
 import { CollapsibleHeader } from "../common/CollapsibleHeader";
 import { useTheme } from "../../context/ThemeContext";
 
@@ -18,34 +17,41 @@ export function ThemeSettingsGroup() {
       />
       {showThemeSettings && (
         <div className="mb-4">
-          <label className="block mb-2 font-medium">Select Theme:</label>
-          <div className="flex gap-2">
-            <ActionButton
-              onClick={() => theme !== "light" && toggleTheme()}
-              ariaLabel="Switch to light theme"
-              title="Light"
-              icon={<FaSun />}
-              colorClass={
-                theme === "light"
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-              }
+          <div className="flex items-center gap-4 mb-2">
+            <label className="font-medium" htmlFor="theme-toggle">
+              Theme:
+            </label>
+            {/* Toggle Switch */}
+            <button
+              id="theme-toggle"
+              onClick={toggleTheme}
+              aria-label={`Switch to ${
+                theme === "light" ? "dark" : "light"
+              } theme`}
+              title={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+              className={`relative w-12 h-4 flex items-center bg-gray-300 dark:bg-gray-600 rounded-full transition-colors focus:outline-none`}
             >
-              Light
-            </ActionButton>
-            <ActionButton
-              onClick={() => theme !== "dark" && toggleTheme()}
-              ariaLabel="Switch to dark theme"
-              title="Dark"
-              icon={<FaMoon />}
-              colorClass={
-                theme === "dark"
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-              }
-            >
-              Dark
-            </ActionButton>
+              {/* Slider */}
+              <span
+                className={`absolute w-6 h-6 rounded-full transition-transform duration-300
+                  ${
+                    theme === "dark"
+                      ? "translate-x-6 bg-gray-800"
+                      : "translate-x-0 bg-gray-100"
+                  }
+                flex items-center justify-center shadow`}
+              >
+                {theme === "dark" ? (
+                  <FaMoon className="text-white" />
+                ) : (
+                  <FaSun className="text-gray-900" />
+                )}
+              </span>
+            </button>
+          </div>
+          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            Current theme:{" "}
+            <strong>{theme === "dark" ? "Dark" : "Light"}</strong>
           </div>
         </div>
       )}

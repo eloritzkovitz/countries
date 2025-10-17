@@ -14,66 +14,39 @@
 }
 
 a {
-  color: theme('colors.blue.800');
+  color: theme("colors.blue.800");
   text-decoration: none;
   transition: color 0.25s;
 }
 
 .dark a {
-  color: theme('colors.blue.400');
+  color: theme("colors.blue.400");
 }
 
 body {
   overflow: hidden;
 }
 
-.dark body { 
-  color: theme('colors.gray.200');
+.dark body {
+  color: theme("colors.gray.200");
   scrollbar-color: #4a5568 #2b3342;
   scrollbar-width: thin;
 }
 
 .bg-gray-100 {
-  background-color: theme('colors.gray.100');
+  background-color: theme("colors.gray.100");
 }
 
 .dark .bg-gray-100 {
-  background-color: theme('colors.gray.600');
+  background-color: theme("colors.gray.600");
 }
 
 .dark .bg-white {
-  background-color: theme('colors.gray.700');
+  background-color: theme("colors.gray.700");
 }
 
 .dark .text-gray-700 {
-  color: theme('colors.gray.300');
-}
-
-/* Action button */
-
-.action-button:hover {
-  background-color: theme('colors.gray.200');
-}
-
-.dark .action-button:hover {
-  background-color: theme('colors.gray.600');
-}
-
-/* Select input */
-.select-input:hover {
-  background-color: theme('colors.gray.200');
-}
-
-.select-input:focus {
-  background-color: theme('colors.gray.200');
-}
-
-.dark .select-input:hover {
-  background-color: theme('colors.gray.500');
-}
-
-.dark .select-input:focus {
-  background-color: theme('colors.gray.500');
+  color: theme("colors.gray.300");
 }
 
 h1 {
@@ -83,16 +56,16 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;  
+  border: 1px solid transparent;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;  
+  font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 
 button:hover {
-  border-color: none !important;  
+  border-color: none !important;
 }
 
 button:focus,
@@ -100,38 +73,108 @@ button:focus-visible {
   outline: none !important;
 }
 
+/* Action button */
+
+.action-btn {
+  @apply py-1 px-2 rounded border-none font-bold cursor-pointer flex items-center gap-2 transition-colors;
+}
+
+.action-btn {
+  background-color: theme("colors.gray.100");
+  color: theme("colors.blue.800");
+}
+
+.action-btn:hover {
+  background-color: theme("colors.gray.200");
+  color: theme("colors.blue.900");
+}
+
+.dark .action-btn {
+  background-color: theme("colors.gray.600");
+  color: theme("colors.gray.200");
+}
+
+.dark .action-btn:hover {
+  background-color: theme("colors.gray.500");
+  color: theme("colors.gray.300");
+}
+
+/* Toolbar button */
+
+.toolbar-btn {
+  @apply w-10 h-10 flex items-center justify-center p-0 bg-gray-200 dark:bg-gray-800 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300;
+}
+
+.toolbar-btn-action {
+  @apply rounded-t-lg hover:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100 border-none;
+}
+
+/* Select input */
+.select-input:hover {
+  background-color: theme("colors.gray.200");
+}
+
+.select-input:focus {
+  background-color: theme("colors.gray.200");
+}
+
+.dark .select-input:hover {
+  background-color: theme("colors.gray.500");
+}
+
+.dark .select-input:focus {
+  background-color: theme("colors.gray.500");
+}
+
+/* Export button */
+.export-btn {
+  @apply flex items-center gap-2 w-full justify-start px-3 py-2 whitespace-nowrap text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800;
+}
+
+.section-title {
+  @apply text-xs font-semibold mb-1 text-gray-600 dark:text-gray-300;
+}
+
+/* Scale button */
+.scale-btn {
+  @apply px-2 py-1 bg-transparent text-gray-700 dark:text-gray-200;
+}
+.scale-btn-active {
+  @apply bg-gray-200 dark:bg-gray-800;
+}
+
 /* Custom scrollbar styles */
 body::-webkit-scrollbar {
   width: 8px;
-  background: theme('colors.gray.200');
+  background: theme("colors.gray.200");
 }
 body::-webkit-scrollbar-thumb {
-  background: theme('colors.gray.400');
+  background: theme("colors.gray.400");
   border-radius: 8px;
 }
 .dark body::-webkit-scrollbar {
-  background: theme('colors.gray.800');
+  background: theme("colors.gray.800");
 }
 .dark body::-webkit-scrollbar-thumb {
-  background: theme('colors.gray.600');
+  background: theme("colors.gray.600");
 }
 
 /* Custom scrollbar for filter-select */
 .filter-select::-webkit-scrollbar {
   width: 8px;
-  background: theme('colors.gray.100');
+  background: theme("colors.gray.100");
 }
 .filter-select::-webkit-scrollbar-thumb {
-  background: theme('colors.gray.300');
+  background: theme("colors.gray.300");
   border-radius: 8px;
 }
 
 /* Dark theme for filter-select */
 .dark .filter-select::-webkit-scrollbar {
-  background: theme('colors.gray.700');
+  background: theme("colors.gray.700");
 }
 .dark .filter-select::-webkit-scrollbar-thumb {
-  background: theme('colors.gray.600');
+  background: theme("colors.gray.600");
 }
 
 @media (prefers-color-scheme: light) {
