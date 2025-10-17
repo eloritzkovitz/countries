@@ -9,9 +9,9 @@ import {
   SearchInput,
   Separator,
 } from "@components";
-import { useCountryData } from "@context/CountryDataContext";
-import { useOverlayContext } from "@context/OverlayContext";
-import { useUI } from "@context/UIContext";
+import { useCountryData } from "@contexts/CountryDataContext";
+import { useOverlayContext } from "@contexts/OverlayContext";
+import { useUI } from "@contexts/UIContext";
 import type { Country } from "@types";
 import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";

@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
-import { useMapUI } from "@context/MapUIContext";
-import { useOverlayContext } from "@context/OverlayContext";
+import { useMapUI } from "@contexts/MapUIContext";
+import { useOverlayContext } from "@contexts/OverlayContext";
 import { useGeoData } from "@hooks/useGeoData";
 import { CountriesLayer } from "./CountriesLayer";
 import { MapStatus } from "./MapStatus";

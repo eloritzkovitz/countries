@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import type { Overlay } from "../types/overlay";
+import type { Overlay } from "@types";
 import {
   addOverlay as addOverlayUtil,
   editOverlay as editOverlayUtil,

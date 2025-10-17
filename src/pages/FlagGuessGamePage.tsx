@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { CountryFlag, ErrorMessage, LoadingSpinner } from "@components";
 import { getRandomCountry, getCountriesWithOwnFlag } from "@features/countries";
 import { GuessForm, ResultMessage, Scoreboard } from "@features/game";
-import { useCountryData } from "@context/CountryDataContext";
+import { useCountryData } from "@contexts/CountryDataContext";
 import type { Country } from "../types/country";
 
 export default function FlagGuessGamePage() {

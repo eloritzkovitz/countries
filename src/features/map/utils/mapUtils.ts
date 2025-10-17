@@ -1,6 +1,6 @@
 import { geoCentroid, geoBounds } from "d3-geo";
 import { MAP_STYLE_CONFIG } from "@config/constants";
-import { useMapUI } from "@context/MapUIContext";
+import { useMapUI } from "@contexts/MapUIContext";
 
 /** Hook to get geography styles based on current map UI settings.
  * @returns An object with default, hover, and pressed styles for geographies.

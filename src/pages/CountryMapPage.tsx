@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { ErrorMessage, LoadingSpinner, ShortcutsModal} from "@components";
-import { useCountryData } from "@context/CountryDataContext";
-import { useOverlayContext } from "@context/OverlayContext";
+import { useCountryData } from "@contexts/CountryDataContext";
+import { useOverlayContext } from "@contexts/OverlayContext";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";

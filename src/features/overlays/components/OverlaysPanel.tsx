@@ -13,8 +13,8 @@ import {
   Modal,
   PanelHeader,
 } from "@components";
-import { useOverlayContext } from "@context/OverlayContext";
-import { useUI } from "@context/UIContext";
+import { useOverlayContext } from "@contexts/OverlayContext";
+import { useUI } from "@contexts/UIContext";
 import { useDragReorder } from "@hooks/useDragReorder";
 import type { Overlay } from "@types";
 import { OverlayPanelItem } from "./OverlayPanelItem";
