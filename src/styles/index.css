@@ -54,6 +54,8 @@ h1 {
   line-height: 1.1;
 }
 
+/* Button styles */
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -99,17 +101,8 @@ button:focus-visible {
   color: theme("colors.gray.300");
 }
 
-/* Toolbar button */
-
-.toolbar-btn {
-  @apply w-10 h-10 flex items-center justify-center p-0 bg-gray-200 dark:bg-gray-800 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-300;
-}
-
-.toolbar-btn-action {
-  @apply rounded-t-lg hover:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100 border-none;
-}
-
 /* Select input */
+
 .select-input:hover {
   background-color: theme("colors.gray.200");
 }
@@ -124,23 +117,6 @@ button:focus-visible {
 
 .dark .select-input:focus {
   background-color: theme("colors.gray.500");
-}
-
-/* Export button */
-.export-btn {
-  @apply flex items-center gap-2 w-full justify-start px-3 py-2 whitespace-nowrap text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800;
-}
-
-.section-title {
-  @apply text-xs font-semibold mb-1 text-gray-600 dark:text-gray-300;
-}
-
-/* Scale button */
-.scale-btn {
-  @apply px-2 py-1 bg-transparent text-gray-700 dark:text-gray-200;
-}
-.scale-btn-active {
-  @apply bg-gray-200 dark:bg-gray-800;
 }
 
 /* Custom scrollbar styles */
