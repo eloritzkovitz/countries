@@ -2,20 +2,20 @@ import { useCallback, useMemo } from "react";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
-import { ActionButton } from "../../../components/common/ActionButton";
-import { Branding } from "../../../components/common/Branding";
-import { ErrorMessage } from "../../../components/common/ErrorMessage";
-import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
-import { Panel } from "../../../components/common/Panel";
-import { SearchInput } from "../../../components/common/SearchInput";
-import { Separator } from "../../../components/common/Separator";
+import { ActionButton } from "@components";
+import { Branding } from "@components";
+import { ErrorMessage } from "@components";
+import { LoadingSpinner } from "@components";
+import { Panel } from "@components";
+import { SearchInput } from "@components";
+import { Separator } from "@components";
+import type { Country } from "@types";
 import { CountryFiltersPanel } from "../filters/CountryFiltersPanel";
 import { useCountryData } from "../../../context/CountryDataContext";
 import { useOverlayContext } from "../../../context/OverlayContext";
 import { useUI } from "../../../context/UIContext";
 import { useCountryFilters } from "../hooks/useCountryFilters";
 import { useCountryListNavigation } from "../hooks/useCountryListNavigation";
-import type { Country } from "../../../types/country";
 
 interface CountriesPanelProps {
   selectedIsoCode: string | null;

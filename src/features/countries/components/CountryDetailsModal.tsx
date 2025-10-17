@@ -1,15 +1,15 @@
 import { FaCrosshairs, FaTimes } from "react-icons/fa";
-import { CountryFlag } from "../../../components/ui/CountryFlag";
+import { CountryFlag } from "@components";
+import { ActionButton } from "@components";
+import { LoadingSpinner } from "@components";
+import { ErrorMessage } from "@components";
+import { Modal } from "@components";
+import { PanelHeader } from "@components";
 import { SovereigntyBadge } from "./SovereigntyBadge";
-import { ActionButton } from "../../../components/common/ActionButton";
-import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
-import { ErrorMessage } from "../../../components/common/ErrorMessage";
-import { Modal } from "../../../components/common/Modal";
-import { PanelHeader } from "../../../components/common/PanelHeader";
+import { getLanguagesDisplay } from "../utils/countryData";
 import { useCountryData } from "../../../context/CountryDataContext";
 import { useKeyHandler } from "../../../hooks/useKeyHandler";
 import type { Country } from "../../../types/country";
-import { getLanguagesDisplay } from "../utils/countryData";
 
 type CountryDetailsModalProps = {
   country: Country | null;

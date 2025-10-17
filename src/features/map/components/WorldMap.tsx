@@ -8,7 +8,7 @@ import { OverlayLayer } from "../layers/OverlayLayer";
 import { DEFAULT_MAP_SETTINGS } from "../../../config/constants";
 import { useMapUI } from "../../../context/MapUIContext";
 import { useOverlayContext } from "../../../context/OverlayContext";
-import { useContainerDimensions } from "../../../hooks/useContainerDimensions";
+import { useContainerDimensions } from "../hooks/useContainerDimensions";
 import { useGeoData } from "../../../hooks/useGeoData";
 import { getOverlayItems } from "../utils/mapUtils";
 
