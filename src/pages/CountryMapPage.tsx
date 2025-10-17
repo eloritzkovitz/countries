@@ -1,20 +1,15 @@
 import { useCallback, useRef, useState } from "react";
-import { ErrorMessage } from "../components/common/ErrorMessage";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
-import { ShortcutsModal } from "../components/common/ShortcutsModal";
-import { CountryDetailsModal } from "../features/countries/components/CountryDetailsModal";
-import { CountriesPanel } from "../features/countries/components/CountriesPanel";
-import { MapToolbar } from "../features/map/components/MapToolbar";
-import { WorldMap } from "../features/map/components/WorldMap";
-import { OverlayEditModal } from "../features/overlays/components/OverlayEditModal";
-import { OverlaysPanel } from "../features/overlays/components/OverlaysPanel";
-import { SettingsPanel } from "../features/settings/SettingsPanel";
-import { useCountryData } from "../context/CountryDataContext";
-import { useOverlayContext } from "../context/OverlayContext";
-import { useMapView } from "../features/map/hooks/useMapView";
-import { useUiHint } from "../hooks/useUiHint";
+import { ErrorMessage, LoadingSpinner, ShortcutsModal} from "@components";
+import { useCountryData } from "@context/CountryDataContext";
+import { useOverlayContext } from "@context/OverlayContext";
+import { useGeoData } from "@hooks/useGeoData";
+import { useUiHint } from "@hooks/useUiHint";
+import { CountryDetailsModal, CountriesPanel } from "@features/countries";
+import { MapToolbar, WorldMap } from "@features/map";
+import { useMapView } from "@features/map/hooks/useMapView";
+import { OverlayEditModal, OverlaysPanel } from "@features/overlays";
+import { SettingsPanel } from "@features/settings";
 import type { Country } from "../types/country";
-import { useGeoData } from "../hooks/useGeoData";
 
 export default function CountryMapPage() {
   // UI state

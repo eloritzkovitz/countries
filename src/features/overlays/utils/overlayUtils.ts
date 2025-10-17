@@ -1,4 +1,4 @@
-import type { Overlay } from "../../../types/overlay";
+import type { Overlay } from "@types";
 
 /**
  * Adds a new overlay to the overlays array.

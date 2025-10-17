@@ -4,9 +4,9 @@ import { FaPlus, FaEdit, FaTimes } from "react-icons/fa";
 import { ActionButton, FormField, Modal, PanelHeader } from "@components";
 import { useCountryData } from "@context/CountryDataContext";
 import { useTheme } from "@context/ThemeContext";
+import { getCountryOptions } from "@features/countries";
 import type { Overlay } from "@types";
 import { getSelectStyles } from "../utils/selectStyles";
-import { getCountryOptions } from "../../countries/utils/countryData";
 
 type OverlayEditModalProps = {
   overlay: Overlay | null;
