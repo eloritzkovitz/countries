@@ -1,4 +1,4 @@
-import { ActionButton } from "../../components/common/ActionButton";
+import { ActionButton } from "@components";
 
 export function GuessForm({
   guess,

@@ -1,7 +1,8 @@
 import React from "react";
 import { FaFilter, FaTimes, FaUndo } from "react-icons/fa";
 import { ActionButton, ErrorMessage, LoadingSpinner, Panel, Separator } from "@components";
-import { coreFiltersConfig, DEFAULT_PANEL_WIDTH } from "@config";
+import { DEFAULT_PANEL_WIDTH } from "@config/constants";
+import { coreFiltersConfig } from "@config/filtersConfig";
 import { useCountryData } from "@context";
 import { useKeyHandler } from "@hooks";
 import type { Overlay } from "@types";

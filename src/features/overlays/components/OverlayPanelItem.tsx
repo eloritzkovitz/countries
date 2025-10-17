@@ -1,6 +1,6 @@
 import { FaEye, FaEyeSlash, FaEdit, FaTrash } from "react-icons/fa";
-import { ActionButton } from "../../../components/common/ActionButton";
-import type { Overlay } from "../../../types/overlay";
+import { ActionButton } from "@components";
+import type { Overlay } from "@types";
 
 type OverlayPanelItemProps = {
   overlay: Overlay;

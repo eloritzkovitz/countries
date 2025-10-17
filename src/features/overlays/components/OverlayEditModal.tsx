@@ -1,15 +1,12 @@
 import { SketchPicker } from "react-color";
 import Select from "react-select";
 import { FaPlus, FaEdit, FaTimes } from "react-icons/fa";
-import { ActionButton } from "../../../components/common/ActionButton";
-import { FormField } from "../../../components/common/FormField";
-import { Modal } from "../../../components/common/Modal";
-import { PanelHeader } from "../../../components/common/PanelHeader";
-import { useCountryData } from "../../../context/CountryDataContext";
-import { useTheme } from "../../../context/ThemeContext";
-import type { Overlay } from "../../../types/overlay";
-import { getCountryOptions } from "../../countries/utils/countryData";
+import { ActionButton, FormField, Modal, PanelHeader } from "@components";
+import { useCountryData } from "@context/CountryDataContext";
+import { useTheme } from "@context/ThemeContext";
+import type { Overlay } from "@types";
 import { getSelectStyles } from "../utils/selectStyles";
+import { getCountryOptions } from "../../countries/utils/countryData";
 
 type OverlayEditModalProps = {
   overlay: Overlay | null;

@@ -1,6 +1,6 @@
 import { Geographies, Geography } from "react-simple-maps";
-import { getCountryIsoCode } from "../../countries/utils/countryData";
 import { useMapGeographyStyle } from "../utils/mapUtils";
+import { getCountryIsoCode } from "../../countries/utils/countryData";
 
 type BaseMapLayerProps = {
   geographyData: string;

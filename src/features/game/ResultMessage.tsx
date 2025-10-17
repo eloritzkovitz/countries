@@ -1,6 +1,6 @@
-import { ActionButton } from "../../components/common/ActionButton";
-import { useKeyHandler } from "../../hooks/useKeyHandler";
-import type { Country } from "../../types/country";
+import { ActionButton } from "@components";
+import { useKeyHandler } from "@hooks";
+import type { Country } from "@types";
 
 export function ResultMessage({
   result,

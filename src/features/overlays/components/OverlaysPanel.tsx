@@ -6,15 +6,11 @@ import {
   FaFileExport,
   FaTimes,
 } from "react-icons/fa";
+import { ActionButton, ErrorMessage, LoadingSpinner, Modal, PanelHeader } from "@components";
+import { useOverlayContext } from "@context/OverlayContext";
+import { useUI } from "@context/UIContext";
+import type { Overlay } from "@types";
 import { OverlayPanelItem } from "./OverlayPanelItem";
-import { ActionButton } from "../../../components/common/ActionButton";
-import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
-import { ErrorMessage } from "../../../components/common/ErrorMessage";
-import { Modal } from "../../../components/common/Modal";
-import { PanelHeader } from "../../../components/common/PanelHeader";
-import { useOverlayContext } from "../../../context/OverlayContext";
-import { useUI } from "../../../context/UIContext";
-import type { Overlay } from "../../../types/overlay";
 import {
   importOverlaysFromFile,
   exportOverlaysToFile,

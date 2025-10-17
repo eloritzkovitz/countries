@@ -1,7 +1,7 @@
 import React from "react";
 import { FaPalette, FaSun, FaMoon } from "react-icons/fa";
-import { CollapsibleHeader } from "../../components/common/CollapsibleHeader";
-import { useTheme } from "../../context/ThemeContext";
+import { CollapsibleHeader } from "@components";
+import { useTheme } from "@context/ThemeContext";
 
 export function ThemeSettingsGroup() {
   const [showThemeSettings, setShowThemeSettings] = React.useState(true);

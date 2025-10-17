@@ -1,8 +1,8 @@
 import { FaPlus, FaMinus, FaCrosshairs } from "react-icons/fa";
 import { useRef } from "react";
+import { DEFAULT_MAP_SETTINGS } from "@config/constants";
+import { useKeyHandler } from "@hooks/useKeyHandler";
 import { ZoomButton } from "./ZoomButton";
-import { DEFAULT_MAP_SETTINGS } from "../../../config/constants";
-import { useKeyHandler } from "../../../hooks/useKeyHandler";
 
 export function ZoomControls({
   zoom,

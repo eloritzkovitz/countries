@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { FaDownload, FaTimes, FaFileCode, FaFileImage } from "react-icons/fa";
+import { ActionButton, Modal, PanelHeader, Separator } from "@components";
+import { useUI } from "@context/UIContext";
 import { exportSvg, exportSvgAsPng } from "./mapExportUtils";
-import { ActionButton } from "../../../components/common/ActionButton";
-import { Modal } from "../../../components/common/Modal";
-import { PanelHeader } from "../../../components/common/PanelHeader";
-import { Separator } from "../../../components/common/Separator";
-import { useUI } from "../../../context/UIContext";
 
 interface MapExportModalProps {
   svgRef: React.RefObject<SVGSVGElement | null>;

@@ -1,7 +1,7 @@
 import { Geography, Geographies } from "react-simple-maps";
-import type { OverlayItem } from "../../../types/overlay";
-import { getCountryIsoCode } from "../../countries/utils/countryData";
+import type { OverlayItem } from "@types";
 import { useMapGeographyStyle } from "../utils/mapUtils";
+import { getCountryIsoCode } from "../../countries/utils/countryData";
 
 type OverlayLayerProps = {
   geographyData: string;

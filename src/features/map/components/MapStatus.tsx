@@ -1,7 +1,6 @@
 import React from "react";
-import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
-import { ErrorMessage } from "../../../components/common/ErrorMessage";
-import { DEFAULT_MAP_SETTINGS } from "../../../config/constants";
+import { ErrorMessage, LoadingSpinner } from "@components";
+import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 
 type MapStatusProps = {
   loading: boolean;

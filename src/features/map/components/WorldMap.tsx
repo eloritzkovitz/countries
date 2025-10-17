@@ -1,15 +1,15 @@
 import { useEffect, useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
+import { DEFAULT_MAP_SETTINGS } from "@config/constants";
+import { useMapUI } from "@context/MapUIContext";
+import { useOverlayContext } from "@context/OverlayContext";
+import { useGeoData } from "@hooks/useGeoData";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
+import { useContainerDimensions } from "../hooks/useContainerDimensions";
 import { BaseMapLayer } from "../layers/BaseMapLayer";
 import { HighlightLayer } from "../layers/HighlightLayer";
 import { OverlayLayer } from "../layers/OverlayLayer";
-import { DEFAULT_MAP_SETTINGS } from "../../../config/constants";
-import { useMapUI } from "../../../context/MapUIContext";
-import { useOverlayContext } from "../../../context/OverlayContext";
-import { useContainerDimensions } from "../hooks/useContainerDimensions";
-import { useGeoData } from "../../../hooks/useGeoData";
 import { getOverlayItems } from "../utils/mapUtils";
 
 type WorldMapProps = {
