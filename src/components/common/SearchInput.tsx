@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { FaSearch } from "react-icons/fa";
-import { useKeyHandler } from "../../hooks/useKeyHandler";
+import { useKeyHandler } from "@hooks/useKeyHandler";
 
 type SearchInputProps = {
   value: string;

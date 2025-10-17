@@ -1,5 +1,4 @@
-import { Branding } from "../components/common/Branding";
-import { HomeCard } from "../components/common/HomeCard";
+import { Branding, HomeCard } from "@components";
 
 export default function HomePage() {
   return (

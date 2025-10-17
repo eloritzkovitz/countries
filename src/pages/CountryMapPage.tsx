@@ -1,20 +1,15 @@
 import { useCallback, useRef, useState } from "react";
-import { ErrorMessage } from "../components/common/ErrorMessage";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
-import { ShortcutsModal } from "../components/common/ShortcutsModal";
-import { CountryDetailsModal } from "../components/country/CountryDetailsModal";
-import { CountriesPanel } from "../components/country/CountriesPanel";
-import { MapToolbar } from "../components/map/MapToolbar";
-import { WorldMap } from "../components/map/WorldMap";
-import { OverlayEditModal } from "../components/overlay/OverlayEditModal";
-import { OverlaysPanel } from "../components/overlay/OverlaysPanel";
-import { SettingsPanel } from "../components/settings/SettingsPanel";
-import { useCountryData } from "../context/CountryDataContext";
-import { useOverlayContext } from "../context/OverlayContext";
-import { useMapView } from "../hooks/useMapView";
-import { useUiHint } from "../hooks/useUiHint";
+import { ErrorMessage, LoadingSpinner, ShortcutsModal} from "@components";
+import { useCountryData } from "@context/CountryDataContext";
+import { useOverlayContext } from "@context/OverlayContext";
+import { useGeoData } from "@hooks/useGeoData";
+import { useUiHint } from "@hooks/useUiHint";
+import { CountryDetailsModal, CountriesPanel } from "@features/countries";
+import { Toolbar, WorldMap } from "@features/map";
+import { useMapView } from "@features/map/hooks/useMapView";
+import { OverlayEditModal, OverlaysPanel } from "@features/overlays";
+import { SettingsPanel } from "@features/settings";
 import type { Country } from "../types/country";
-import { useGeoData } from "../hooks/useGeoData";
 
 export default function CountryMapPage() {
   // UI state
@@ -107,7 +102,7 @@ export default function CountryMapPage() {
           />
 
           {/* Toolbar & UI Overlays */}
-          <MapToolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
+          <Toolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
 
           <CountryDetailsModal
             country={modalCountry}

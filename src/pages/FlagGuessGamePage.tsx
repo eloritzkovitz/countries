@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
-import { ErrorMessage } from "../components/common/ErrorMessage";
-import { CountryFlag } from "../components/country/CountryFlag";
-import { GuessForm } from "../components/game/GuessForm";
-import { ResultMessage } from "../components/game/ResultMessage";
-import { Scoreboard } from "../components/game/Scoreboard";
-import { useCountryData } from "../context/CountryDataContext";
+import { CountryFlag, ErrorMessage, LoadingSpinner } from "@components";
+import { getRandomCountry, getCountriesWithOwnFlag } from "@features/countries";
+import { GuessForm, ResultMessage, Scoreboard } from "@features/game";
+import { useCountryData } from "@context/CountryDataContext";
 import type { Country } from "../types/country";
-import {
-  getRandomCountry,
-  getCountriesWithOwnFlag,
-} from "../utils/countryData";
 
 export default function FlagGuessGamePage() {
   const { countries, loading, error } = useCountryData();
@@ -113,7 +106,7 @@ export default function FlagGuessGamePage() {
             source: "flagcdn",
             style: "flat",
             size: "96x72",
-          }}          
+          }}
           alt={currentCountry.name}
           style={{ width: "5rem", height: "auto", margin: "1rem 0" }}
         />
