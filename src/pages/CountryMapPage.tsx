@@ -5,7 +5,7 @@ import { useOverlayContext } from "@context/OverlayContext";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
-import { MapToolbar, WorldMap } from "@features/map";
+import { Toolbar, WorldMap } from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
 import { OverlayEditModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
@@ -102,7 +102,7 @@ export default function CountryMapPage() {
           />
 
           {/* Toolbar & UI Overlays */}
-          <MapToolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
+          <Toolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
 
           <CountryDetailsModal
             country={modalCountry}

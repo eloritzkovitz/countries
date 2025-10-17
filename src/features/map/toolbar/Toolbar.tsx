@@ -11,7 +11,7 @@ import { useUI } from "@context/UIContext";
 import { ZoomControls } from "./ZoomControls";
 import { MapExportModal } from "../export/MapExportModal";
 
-export function MapToolbar({
+export function Toolbar({
   zoom,
   setZoom,
   svgRef,
