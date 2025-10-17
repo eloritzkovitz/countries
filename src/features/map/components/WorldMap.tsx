@@ -70,7 +70,12 @@ export function WorldMap({
     dimensions.height,
     geoData,
     onReady,
-  ]);
+  ]); 
+  
+  // Merge all visible overlays into a single ordered array
+  const overlayItems = overlays
+    .filter((o) => o.visible)
+    .flatMap(getOverlayItems);
 
   // Show spinner until overlays, dimensions, and geoData are ready
   const isLoading =
@@ -121,21 +126,14 @@ export function WorldMap({
             onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
           >            
             {/* Countries layers */}
-            {overlays
-              .filter((o) => o.visible)
-              .map((overlay) => (
-                <CountriesLayer
-                  key={overlay.id}
-                  geographyData={geoData}
-                  overlayItems={getOverlayItems(overlay)}
-                  defaultColor={overlay.color}
-                  suffix={`-overlay-${overlay.id}`}
-                  selectedIsoCode={selectedIsoCode}
-                  hoveredIsoCode={hoveredIsoCode}
-                  onCountryClick={onCountryClick}
-                  onCountryHover={onCountryHover}
-                />
-              ))}
+            <CountriesLayer
+              geographyData={geoData}
+              overlayItems={overlayItems}
+              selectedIsoCode={selectedIsoCode}
+              hoveredIsoCode={hoveredIsoCode}
+              onCountryClick={onCountryClick}
+              onCountryHover={onCountryHover}
+            />
           </ZoomableGroup>
         </ComposableMap>
       </MapSvgContainer>

@@ -11,7 +11,6 @@ type MapCountriesLayerProps = {
   onCountryClick?: (countryIsoCode: string) => void;
   onCountryHover?: (isoCode: string | null) => void;
   defaultColor?: string;
-  suffix?: string;
 };
 
 export function CountriesLayer({
@@ -21,7 +20,6 @@ export function CountriesLayer({
   hoveredIsoCode,
   onCountryClick,
   onCountryHover,
-  suffix = "",
 }: MapCountriesLayerProps) {
   const geographyStyle = useMapGeographyStyle();
 
@@ -48,7 +46,7 @@ export function CountriesLayer({
 
           // Style: highlight takes precedence, then overlay, then base
           let style = geographyStyle.default;
-          let tooltip = geo.properties.NAME || geo.properties.name;
+          let tooltip = geo.properties.name;
 
           if (isSelected) {
             style = geographyStyle.pressed;
@@ -56,15 +54,11 @@ export function CountriesLayer({
             style = geographyStyle.hover;
           } else if (overlay && overlay.color) {
             style = { ...geographyStyle.default, fill: overlay.color };
-          }
-
-          if (overlay?.tooltip) {
-            tooltip = overlay.tooltip;
-          }
+          }          
 
           return (
             <Geography
-              key={geo.rsmKey + suffix}
+              key={geo.rsmKey}
               geography={geo}
               onMouseEnter={() =>
                 onCountryHover && onCountryHover(isoA2 ?? null)

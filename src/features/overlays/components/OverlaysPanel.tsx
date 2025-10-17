@@ -6,9 +6,16 @@ import {
   FaFileExport,
   FaTimes,
 } from "react-icons/fa";
-import { ActionButton, ErrorMessage, LoadingSpinner, Modal, PanelHeader } from "@components";
+import {
+  ActionButton,
+  ErrorMessage,
+  LoadingSpinner,
+  Modal,
+  PanelHeader,
+} from "@components";
 import { useOverlayContext } from "@context/OverlayContext";
 import { useUI } from "@context/UIContext";
+import { useDragReorder } from "@hooks/useDragReorder";
 import type { Overlay } from "@types";
 import { OverlayPanelItem } from "./OverlayPanelItem";
 import {
@@ -35,9 +42,13 @@ export function OverlaysPanel({
     loading,
     error,
   } = useOverlayContext();
+  
+  // Drag state
+  const { draggedIndex, handleDragStart, handleDragOver, handleDragEnd } =
+    useDragReorder(overlays, setOverlays);
 
   // File input reference for importing overlays
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);  
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading overlays..." />;
@@ -97,10 +108,16 @@ export function OverlaysPanel({
         </ActionButton>
       </PanelHeader>
       <ul className="list-none p-0">
-        {overlays.map((overlay) => (
+        {overlays.map((overlay, index) => (
           <div
             key={overlay.id}
-            className="rounded-lg mb-4 bg-gray-50 shadow-sm"
+            className={`rounded-lg mb-4 bg-gray-50 shadow-sm
+      ${draggedIndex === index ? "opacity-70 cursor-grabbing" : "cursor-grab"}
+    `}
+            draggable
+            onDragStart={() => handleDragStart(index)}
+            onDragOver={(e) => handleDragOver(e, index)}
+            onDragEnd={handleDragEnd}
           >
             <OverlayPanelItem
               overlay={overlay}
