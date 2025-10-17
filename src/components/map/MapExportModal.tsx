@@ -63,7 +63,7 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
       <div className="p-2">
         {/* SVG export section */}
         <div className="mb-3">
-          <div className="text-xs font-semibold mb-1 text-gray-600 dark:text-gray-300">
+          <div className="section-title">
             SVG
           </div>
           <label className="flex items-center gap-2 mb-2 text-sm">
@@ -94,7 +94,7 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
 
         {/* PNG export section */}
         <div>
-          <div className="text-xs font-semibold mb-1 text-gray-600 dark:text-gray-300">
+          <div className="section-title">
             PNG
           </div>
           <div className="mb-2">

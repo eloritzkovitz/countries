@@ -49,6 +49,30 @@ body {
   color: theme("colors.gray.300");
 }
 
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: none !important;
+}
+
+button:focus,
+button:focus-visible {
+  outline: none !important;
+}
+
 /* Action button */
 
 .action-btn {
@@ -107,36 +131,16 @@ body {
   @apply flex items-center gap-2 w-full justify-start px-3 py-2 whitespace-nowrap text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800;
 }
 
+.section-title {
+  @apply text-xs font-semibold mb-1 text-gray-600 dark:text-gray-300;
+}
+
 /* Scale button */
 .scale-btn {
   @apply px-2 py-1 bg-transparent text-gray-700 dark:text-gray-200;
 }
 .scale-btn-active {
   @apply bg-gray-200 dark:bg-gray-800;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: none !important;
-}
-
-button:focus,
-button:focus-visible {
-  outline: none !important;
 }
 
 /* Custom scrollbar styles */
