@@ -5,7 +5,7 @@ import {
   editOverlay as editOverlayUtil,
   removeOverlay as removeOverlayUtil,
   updateOverlayVisibility,
-} from "../utils/overlayUtils";
+} from "../features/overlays/utils/overlayUtils";
 
 export type OverlayContextType = {
   overlays: Overlay[];

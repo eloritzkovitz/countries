@@ -1,0 +1,44 @@
+import { Geographies, Geography } from "react-simple-maps";
+import { getCountryIsoCode } from "../../countries/utils/countryData";
+import { useMapGeographyStyle } from "../utils/mapUtils";
+
+type BaseMapLayerProps = {
+  geographyData: string;
+  onCountryClick?: (countryIsoCode: string) => void;
+  onCountryHover?: (isoCode: string | null) => void;
+};
+
+export function BaseMapLayer({
+  geographyData,
+  onCountryClick,
+  onCountryHover,
+}: BaseMapLayerProps) {
+  const geographyStyle = useMapGeographyStyle();
+
+  return (
+    <Geographies geography={geographyData}>
+      {({ geographies }: { geographies: any[] }) =>
+        geographies.map((geo) => {
+          const isoCode = getCountryIsoCode(geo.properties);
+
+          return (
+            <Geography
+              key={isoCode || geo.rsmKey}
+              geography={geo}
+              onMouseEnter={() =>
+                onCountryHover && onCountryHover(isoCode ?? null)
+              }
+              onMouseLeave={() => onCountryHover && onCountryHover(null)}
+              onClick={() =>
+                onCountryClick && isoCode && onCountryClick(isoCode)
+              }
+              style={geographyStyle}
+            >
+              <title>{geo.properties.NAME || geo.properties.name}</title>
+            </Geography>
+          );
+        })
+      }
+    </Geographies>
+  );
+}

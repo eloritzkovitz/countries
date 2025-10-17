@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorMessage } from "../components/common/ErrorMessage";
-import { CountryFlag } from "../components/country/CountryFlag";
-import { GuessForm } from "../components/game/GuessForm";
-import { ResultMessage } from "../components/game/ResultMessage";
-import { Scoreboard } from "../components/game/Scoreboard";
+import { CountryFlag } from "../components/ui/CountryFlag";
+import { GuessForm } from "../features/game/GuessForm";
+import { ResultMessage } from "../features/game/ResultMessage";
+import { Scoreboard } from "../features/game/Scoreboard";
 import { useCountryData } from "../context/CountryDataContext";
 import type { Country } from "../types/country";
 import {
   getRandomCountry,
   getCountriesWithOwnFlag,
-} from "../utils/countryData";
+} from "../features/countries/utils/countryData";
 
 export default function FlagGuessGamePage() {
   const { countries, loading, error } = useCountryData();
