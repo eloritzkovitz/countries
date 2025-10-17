@@ -140,14 +140,14 @@ export function OverlayEditModal({
         <div className="flex gap-3 mt-6">
           <ActionButton
             onClick={onSave}
-            colorClass="bg-blue-600 text-white hover:bg-blue-700"
+            className="bg-blue-600 text-white hover:bg-blue-700"
             icon={isNew ? <FaPlus /> : <FaEdit />}
           >
             Save
           </ActionButton>
           <ActionButton
             onClick={onClose}
-            colorClass="bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+            className="bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
           >
             Cancel
           </ActionButton>

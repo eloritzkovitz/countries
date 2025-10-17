@@ -80,10 +80,9 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
           <div>
             <ActionButton
               onClick={handleExportSvg}
-              className="w-full justify-start px-3 py-2 whitespace-nowrap"
+              className="export-btn"
               ariaLabel="Export as SVG"
               title="Export as SVG"
-              colorClass="text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
             >
               <FaFileCode className="mr-2" />
               Export as SVG
@@ -105,45 +104,33 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
             <div className="flex gap-2">
               <ActionButton
                 onClick={() => setPngScale(1)}
-                className={`px-2 py-1 ${
-                  pngScale === 1 ? "bg-gray-200 dark:bg-gray-800" : ""
-                }`}
+                className={`scale-btn ${pngScale === 1 ? "scale-btn-active" : ""}`}
                 ariaLabel="Scale 1x"
                 title="1x"
-                colorClass="bg-transparent text-gray-700 dark:text-gray-200"
               >
                 1x
               </ActionButton>
               <ActionButton
                 onClick={() => setPngScale(2)}
-                className={`px-2 py-1 ${
-                  pngScale === 2 ? "bg-gray-200 dark:bg-gray-800" : ""
-                }`}
+                className={`scale-btn ${pngScale === 2 ? "scale-btn-active" : ""}`}
                 ariaLabel="Scale 2x"
                 title="2x"
-                colorClass="bg-transparent text-gray-700 dark:text-gray-200"
               >
                 2x
               </ActionButton>
               <ActionButton
                 onClick={() => setPngScale(4)}
-                className={`px-2 py-1 ${
-                  pngScale === 4 ? "bg-gray-200 dark:bg-gray-800" : ""
-                }`}
+                className={`scale-btn ${pngScale === 4 ? "scale-btn-active" : ""}`}
                 ariaLabel="Scale 4x"
                 title="4x"
-                colorClass="bg-transparent text-gray-700 dark:text-gray-200"
               >
                 4x
               </ActionButton>
               <ActionButton
                 onClick={() => setPngScale(8)}
-                className={`px-2 py-1 ${
-                  pngScale === 8 ? "bg-gray-200 dark:bg-gray-800" : ""
-                }`}
+                className={`scale-btn ${pngScale === 8 ? "scale-btn-active" : ""}`}
                 ariaLabel="Scale 8x"
                 title="8x"
-                colorClass="bg-transparent text-gray-700 dark:text-gray-200"
               >
                 8x
               </ActionButton>
@@ -152,10 +139,9 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
 
           <ActionButton
             onClick={() => handleExportPng(pngScale)}
-            className="w-full justify-start px-3 py-2 whitespace-nowrap"
+            className="export-btn"
             ariaLabel={`Export as PNG ${pngScale}x`}
             title={`Export as PNG (${pngScale}x)`}
-            colorClass="text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
           >
             <FaFileImage className="mr-2" />
             Export as PNG

@@ -63,7 +63,7 @@ export function ZoomControls({
   );
 
   return (
-    <div className="flex flex-col items-center shadow-lg">
+    <div className="flex flex-col items-center space-y-0.5">
       <ZoomButton
         onClick={() =>
           setZoom(Math.min(zoom + 1, DEFAULT_MAP_SETTINGS.maxZoom))
@@ -72,8 +72,7 @@ export function ZoomControls({
         onContinuousStop={() => stopContinuousZoom("in")}
         ariaLabel="Zoom in"
         title="Zoom in"
-        colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-100"
-        className="w-10 h-10 flex items-center justify-center text-2xl cursor-pointer rounded-t-lg"
+        className="toolbar-btn toolbar-btn-action"
         icon={<FaPlus />}
       />
       <ZoomButton
@@ -84,16 +83,14 @@ export function ZoomControls({
         onContinuousStop={() => stopContinuousZoom("out")}
         ariaLabel="Zoom out"
         title="Zoom out"
-        colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-100"
-        className="w-10 h-10 flex items-center justify-center text-2xl cursor-pointer rounded-b-lg"
+        className="toolbar-btn toolbar-btn-action"
         icon={<FaMinus />}
       />
       <ZoomButton
         onClick={() => setZoom(DEFAULT_MAP_SETTINGS.minZoom)}
         ariaLabel="Reset zoom"
         title="Reset zoom"
-        colorClass="bg-gray-300 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-gray-100"
-        className="w-10 h-10 flex items-center justify-center text-2xl cursor-pointer rounded-b-lg"
+        className="toolbar-btn toolbar-btn-action"
         icon={<FaCrosshairs />}
       />
     </div>

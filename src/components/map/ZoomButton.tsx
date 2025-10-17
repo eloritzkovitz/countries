@@ -8,7 +8,6 @@ type ZoomButtonProps = {
   title?: string;
   className?: string;
   icon?: ReactNode;
-  colorClass?: string;
   disabled?: boolean;
 };
 
@@ -20,7 +19,6 @@ export function ZoomButton({
   title,
   className,
   icon,
-  colorClass,
   disabled,
 }: ZoomButtonProps) {
   return (
@@ -28,7 +26,7 @@ export function ZoomButton({
       type="button"
       aria-label={ariaLabel}
       title={title}
-      className={className + " " + (colorClass ?? "")}
+      className={className}
       disabled={disabled}
       onClick={onClick}
       onMouseDown={onContinuousStart}

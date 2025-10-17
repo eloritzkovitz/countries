@@ -35,8 +35,7 @@ export function ResultMessage({
       <div className="flex justify-center gap-4 mb-2 mt-4">
         <ActionButton
           onClick={nextFlag}
-          colorClass="bg-blue-600 text-white hover:bg-blue-700"
-          className="px-6 py-2 text-base rounded font-bold"
+          className="px-6 py-2 text-base rounded font-bold bg-blue-600 text-white hover:bg-blue-700"
           aria-label="Next Flag"
         >
           Next Flag
