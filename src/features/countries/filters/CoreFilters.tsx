@@ -1,7 +1,6 @@
 import { FaShapes } from "react-icons/fa";
-import { CollapsibleHeader } from "../../../components/common/CollapsibleHeader";
-import { SelectInput } from "../../../components/common/SelectInput";
-import type { FilterConfig } from "../../../types/filters";
+import { CollapsibleHeader, SelectInput } from "@components";
+import type { FilterConfig } from "@types";
 
 type CoreFiltersProps = {
   expanded: boolean;

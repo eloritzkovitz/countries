@@ -1,9 +1,8 @@
 import React from "react";
 import { FaLayerGroup } from "react-icons/fa";
-import { CollapsibleHeader } from "../../../components/common/CollapsibleHeader";
-import { SelectInput } from "../../../components/common/SelectInput";
-import type { Overlay } from "../../../types/overlay";
-import { overlayFilterConfig } from "../../../config/filtersConfig";
+import { CollapsibleHeader, SelectInput } from "@components";
+import { overlayFilterConfig } from "@config";
+import type { Overlay } from "@types";
 
 type OverlayFiltersProps = {
   expanded: boolean;

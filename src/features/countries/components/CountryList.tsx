@@ -1,6 +1,6 @@
 import React from "react";
-import { CountryFlag } from "../../../components/ui/CountryFlag";
-import type { Country } from "../../../types/country";
+import { CountryFlag } from "@components";
+import type { Country } from "@types";
 
 type CountryListProps = {
   countries: Country[];

@@ -1,6 +1,11 @@
-import type { Country, SovereigntyType } from "../../../types/country";
-import type { FilterConfig, FilterKey, FilterOption } from "../../../types/filters";
-import type { Overlay } from "../../../types/overlay";
+import type {
+  Country,
+  SovereigntyType,
+  FilterConfig,
+  FilterKey,
+  FilterOption,
+  Overlay,
+} from "@types";
 
 /**
  * Maps an array of strings to FilterOption objects.
@@ -125,10 +130,10 @@ export function filterCountries(
 
 /**
  * Filters ISO codes based on overlay selections.
- * @param countries 
- * @param overlays 
- * @param overlaySelections 
- * @returns 
+ * @param countries
+ * @param overlays
+ * @param overlaySelections
+ * @returns
  */
 export function getFilteredIsoCodes(
   countries: Country[],

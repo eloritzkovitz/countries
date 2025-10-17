@@ -1,5 +1,5 @@
-import { useKeyHandler } from "../../../hooks/useKeyHandler";
-import type { Country } from "../../../types/country";
+import { useKeyHandler } from "@hooks";
+import type { Country } from "@types";
 
 type UseCountryListNavigationProps = {
   filteredCountries: Country[];

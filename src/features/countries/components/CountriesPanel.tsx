@@ -1,19 +1,19 @@
 import { useCallback, useMemo } from "react";
 import { FaFilter, FaTimes } from "react-icons/fa";
+import {
+  ActionButton,
+  Branding,
+  ErrorMessage,
+  LoadingSpinner,
+  Panel,
+  SearchInput,
+  Separator,
+} from "@components";
+import { useCountryData, useOverlayContext, useUI } from "@context";
+import type { Country } from "@types";
 import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
-import { ActionButton } from "@components";
-import { Branding } from "@components";
-import { ErrorMessage } from "@components";
-import { LoadingSpinner } from "@components";
-import { Panel } from "@components";
-import { SearchInput } from "@components";
-import { Separator } from "@components";
-import type { Country } from "@types";
 import { CountryFiltersPanel } from "../filters/CountryFiltersPanel";
-import { useCountryData } from "../../../context/CountryDataContext";
-import { useOverlayContext } from "../../../context/OverlayContext";
-import { useUI } from "../../../context/UIContext";
 import { useCountryFilters } from "../hooks/useCountryFilters";
 import { useCountryListNavigation } from "../hooks/useCountryListNavigation";
 

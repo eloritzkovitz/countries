@@ -1,17 +1,12 @@
 import React from "react";
 import { FaFilter, FaTimes, FaUndo } from "react-icons/fa";
+import { ActionButton, ErrorMessage, LoadingSpinner, Panel, Separator } from "@components";
+import { coreFiltersConfig, DEFAULT_PANEL_WIDTH } from "@config";
+import { useCountryData } from "@context";
+import { useKeyHandler } from "@hooks";
+import type { Overlay } from "@types";
 import { CoreFilters } from "./CoreFilters";
 import { OverlayFilters } from "./OverlayFilters";
-import { ActionButton } from "../../../components/common/ActionButton";
-import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
-import { ErrorMessage } from "../../../components/common/ErrorMessage";
-import { Panel } from "../../../components/common/Panel";
-import { Separator } from "../../../components/common/Separator";
-import { DEFAULT_PANEL_WIDTH } from "../../../config/constants";
-import { coreFiltersConfig } from "../../../config/filtersConfig";
-import { useCountryData } from "../../../context/CountryDataContext";
-import { useKeyHandler } from "../../../hooks/useKeyHandler";
-import type { Overlay } from "../../../types/overlay";
 import {
   getSubregionsForRegion,
   getAllSovereigntyTypes,

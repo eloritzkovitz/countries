@@ -10,7 +10,9 @@
     "baseUrl": "src",
     "paths": {
       "@components": ["components/index.ts"],
-      "@components/*": ["components/*"],      
+      "@components/*": ["components/*"],  
+      "@config": ["config/index.ts"],
+      "@config/*": ["config/*"],         
       "@context": ["context/index.ts"],
       "@context/*": ["context/*"],
       "@features": ["features/index.ts"],

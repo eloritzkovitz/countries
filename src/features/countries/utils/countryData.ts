@@ -1,6 +1,5 @@
-import { EXCLUDED_ISO_CODES } from "../../../config/constants";
-import type { Country } from "../../../types/country";
-import type { FlagSource, FlagStyle, FlagSize } from "../../../types/flag";
+import { EXCLUDED_ISO_CODES } from "@config";
+import type { Country, FlagSource, FlagStyle, FlagSize } from "@types";
 
 /**
  * Extracts the ISO country code from various possible property names.

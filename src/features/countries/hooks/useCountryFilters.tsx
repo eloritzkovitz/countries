@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
-import { useDebounced } from "../../../hooks/useDebounced";
-import type { Country } from "../../../types/country";
-import type { Overlay } from "../../../types/overlay";
+import { useDebounced } from "@hooks";
+import type { Country, Overlay } from "@types";
 import { filterCountries, getFilteredIsoCodes } from "../utils/countryFilters";
 
 type OverlaySelections = Record<string, string>;

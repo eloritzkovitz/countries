@@ -1,4 +1,4 @@
-import type { SovereigntyType } from "../../../types/country";
+import type { SovereigntyType } from "@types";
 
 type SovereigntyBadgeProps = {
   type?: SovereigntyType;
