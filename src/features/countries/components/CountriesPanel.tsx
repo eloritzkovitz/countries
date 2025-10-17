@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import {
   ActionButton,
@@ -84,27 +84,6 @@ export function CountriesPanel({
     [onCountryInfo]
   );
 
-  // Header action buttons
-  const headerActions = useMemo(
-    () => (
-      <>
-        <ActionButton
-          onClick={toggleFilters}
-          ariaLabel={showFilters ? "Hide Filters" : "Show Filters"}
-          title="Filters"
-          icon={<FaFilter />}
-        />
-        <ActionButton
-          onClick={() => setShowCountries(false)}
-          ariaLabel="Hide countries panel"
-          title="Hide"
-          icon={<FaTimes />}
-        />
-      </>
-    ),
-    [showFilters, toggleFilters, closePanel]
-  );
-
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading countries..." />;
   if (error) return <ErrorMessage error={error} />;
@@ -115,8 +94,22 @@ export function CountriesPanel({
         title={<Branding title="Countries" />}
         show={uiVisible && showCountries}
         showSeparator={false}
-        headerActions={headerActions}
-        scrollable={false}
+        headerActions={
+          <>
+            <ActionButton
+              onClick={toggleFilters}
+              ariaLabel={showFilters ? "Hide Filters" : "Show Filters"}
+              title="Filters"
+              icon={<FaFilter />}
+            />
+            <ActionButton
+              onClick={() => setShowCountries(false)}
+              ariaLabel="Hide countries panel"
+              title="Hide"
+              icon={<FaTimes />}
+            />
+          </>
+        }
       >
         {/* Search input and count */}
         <div className="sticky top-0 z-10 bg-white dark:bg-gray-800">
@@ -146,7 +139,10 @@ export function CountriesPanel({
 
       {/* Collapsed action button */}
       {uiVisible && (
-        <CollapsedPanelButton onClick={() => setShowCountries(true)} visible={!showCountries} />
+        <CollapsedPanelButton
+          onClick={() => setShowCountries(true)}
+          visible={!showCountries}
+        />
       )}
 
       {/* Filters panel */}
