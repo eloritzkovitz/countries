@@ -1,11 +1,9 @@
-import { Modal } from "./Modal";
-import { FaTimes, FaArrowUp, FaArrowDown } from "react-icons/fa";
-import { ActionButton } from "./ActionButton";
-import { PanelHeader } from "./PanelHeader";
-import { categoryColumns, keyCommands } from "../../config/keyCommands";
-import { useUI } from "../../context/UIContext";
-import type { KeyCommand } from "../../types/keyCommand";
 import React from "react";
+import { FaTimes, FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { ActionButton, Modal, PanelHeader } from "@components";
+import { categoryColumns, keyCommands } from "@config/keyCommands";
+import { useUI } from "@context/UIContext";
+import type { KeyCommand } from "@types";
 
 // Helper to render arrow icons for arrow keys
 function renderKey(key: string) {

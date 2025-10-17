@@ -1,6 +1,6 @@
 import React from "react";
-import type { Flag } from "../../types/flag";
-import { getFlagUrl } from "../../features/countries/utils/countryData";
+import type { Flag } from "@types";
+import { getFlagUrl } from "@features/countries/utils/countryData";
 
 export function CountryFlag({ flag, alt, style }: { flag: Flag; alt?: string; style?: React.CSSProperties }) {
   const [width, height] = flag.size.split("x").map(Number);

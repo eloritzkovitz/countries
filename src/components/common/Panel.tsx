@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { PanelHeader } from "./PanelHeader";
-import { DEFAULT_PANEL_WIDTH } from "../../config/constants";
-import { useKeyHandler } from "../../hooks/useKeyHandler";
+import { DEFAULT_PANEL_WIDTH } from "@config/constants";
+import { useKeyHandler } from "@hooks/useKeyHandler";
 import { Separator } from "./Separator";
 
 type PanelProps = {

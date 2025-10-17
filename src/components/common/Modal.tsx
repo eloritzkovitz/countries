@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import ReactDOM from "react-dom";
-import { useKeyHandler } from "../../hooks/useKeyHandler";
+import { useKeyHandler } from "@hooks/useKeyHandler";
 
 type ModalProps = {
   isOpen: boolean;
