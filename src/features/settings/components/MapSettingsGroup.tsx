@@ -2,7 +2,7 @@ import React from "react";
 import { FaGlobe } from "react-icons/fa";
 import { CollapsibleHeader, SelectInput } from "@components";
 import { MAP_OPTIONS } from "@config/constants";
-import { useMapUI } from "@context/MapUIContext";
+import { useMapUI } from "@contexts/MapUIContext";
 
 export function MapSettingsGroup() {
   const [showMapSettings, setShowMapSettings] = React.useState(true);

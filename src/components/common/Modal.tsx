@@ -25,17 +25,17 @@ export function Modal({
 
   return ReactDOM.createPortal(
     <div
-      className={
-        position === "center"
-          ? "fixed inset-0 flex items-center justify-center z-[9999]"
-          : `fixed z-[9999] ${containerClassName}`
-      }
+      className="fixed inset-0 z-[9999]"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className={`relative ${className}`}
+        className={
+          position === "center"
+            ? `fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${className}`
+            : `fixed ${className} ${containerClassName}`
+        }
         onClick={(e) => e.stopPropagation()}
       >
         {children}

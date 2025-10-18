@@ -5,10 +5,7 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import {  
-  MAP_OPTIONS,
-  MAP_STYLE_CONFIG, 
-} from "../config/constants";
+import { MAP_OPTIONS, MAP_STYLE_CONFIG } from "@config/constants";
 
 type MapUIContextType = {
   projection: string;
@@ -24,7 +21,9 @@ const MapUIContext = createContext<MapUIContextType | undefined>(undefined);
 export function MapUIProvider({ children }: { children: ReactNode }) {
   // Projection state with localStorage persistence
   const [projection, setProjectionState] = useState<string>(() => {
-    return localStorage.getItem("projection") || MAP_OPTIONS.projection[0].value;
+    return (
+      localStorage.getItem("projection") || MAP_OPTIONS.projection[0].value
+    );
   });
 
   // Persist projection in localStorage

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getAllRegions, getAllSubregions, getAllSovereigntyTypes } from "../features/countries/utils/countryFilters";
+import { getAllRegions, getAllSubregions, getAllSovereigntyTypes } from "@features/countries/utils/countryFilters";
 
 export type CountryDataContextType = {
   countries: any[];

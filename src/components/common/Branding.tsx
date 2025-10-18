@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useTheme } from "@context/ThemeContext";
+import { useTheme } from "@contexts/ThemeContext";
 
 export function Branding({ title, size = 48 }: { title?: string; size?: number }) {
   const { theme } = useTheme();

@@ -7,7 +7,7 @@ import {
   Modal,
   PanelHeader,
 } from "@components";
-import { useCountryData } from "@context/CountryDataContext";
+import { useCountryData } from "@contexts/CountryDataContext";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Country } from "@types";
 import { SovereigntyBadge } from "./SovereigntyBadge";

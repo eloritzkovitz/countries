@@ -1,15 +1,13 @@
 import { useEffect, useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
-import { useMapUI } from "@context/MapUIContext";
-import { useOverlayContext } from "@context/OverlayContext";
+import { useMapUI } from "@contexts/MapUIContext";
+import { useOverlayContext } from "@contexts/OverlayContext";
 import { useGeoData } from "@hooks/useGeoData";
+import { CountriesLayer } from "./CountriesLayer";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
-import { BaseMapLayer } from "../layers/BaseMapLayer";
-import { HighlightLayer } from "../layers/HighlightLayer";
-import { OverlayLayer } from "../layers/OverlayLayer";
 import { getOverlayItems } from "../utils/mapUtils";
 
 type WorldMapProps = {
@@ -29,19 +27,17 @@ type WorldMapProps = {
   svgRef?: React.Ref<SVGSVGElement>;
 };
 
-export function WorldMap(
-  {
-    zoom,
-    center,
-    handleMoveEnd,
-    onCountryClick,
-    onCountryHover,
-    selectedIsoCode,
-    hoveredIsoCode,
-    onReady,
-    svgRef,
-  }: WorldMapProps,  
-) {
+export function WorldMap({
+  zoom,
+  center,
+  handleMoveEnd,
+  onCountryClick,
+  onCountryHover,
+  selectedIsoCode,
+  hoveredIsoCode,
+  onReady,
+  svgRef,
+}: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
   const { projection } = useMapUI();
@@ -74,7 +70,12 @@ export function WorldMap(
     dimensions.height,
     geoData,
     onReady,
-  ]);
+  ]); 
+  
+  // Merge all visible overlays into a single ordered array
+  const overlayItems = overlays
+    .filter((o) => o.visible)
+    .flatMap(getOverlayItems);
 
   // Show spinner until overlays, dimensions, and geoData are ready
   const isLoading =
@@ -123,34 +124,19 @@ export function WorldMap(
             minZoom={DEFAULT_MAP_SETTINGS.minZoom}
             maxZoom={DEFAULT_MAP_SETTINGS.maxZoom}
             onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
-          >
-            {/* Base map */}
-            <BaseMapLayer
+          >            
+            {/* Countries layers */}
+            <CountriesLayer
               geographyData={geoData}
-              onCountryClick={onCountryClick}
-              onCountryHover={onCountryHover}
-            />
-            {/* Overlay layers */}
-            {overlays
-              .filter((o) => o.visible)
-              .map((overlay) => (
-                <OverlayLayer
-                  key={overlay.id}
-                  geographyData={geoData}
-                  overlayItems={getOverlayItems(overlay)}
-                  defaultColor={overlay.color}
-                  suffix={`-overlay-${overlay.id}`}
-                />
-              ))}
-            {/* Highlight Layer */}
-            <HighlightLayer
-              geographyData={geoData}
+              overlayItems={overlayItems}
               selectedIsoCode={selectedIsoCode}
               hoveredIsoCode={hoveredIsoCode}
+              onCountryClick={onCountryClick}
+              onCountryHover={onCountryHover}
             />
           </ZoomableGroup>
         </ComposableMap>
       </MapSvgContainer>
     </div>
   );
-};
+}

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { useKeyHandler } from "../hooks/useKeyHandler";
+import { useKeyHandler } from "@hooks/useKeyHandler";
 
 type UIContextType = {
   uiVisible: boolean;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaDownload, FaTimes, FaFileCode, FaFileImage } from "react-icons/fa";
 import { ActionButton, Modal, PanelHeader, Separator } from "@components";
-import { useUI } from "@context/UIContext";
+import { useUI } from "@contexts/UIContext";
 import { exportSvg, exportSvgAsPng } from "./mapExportUtils";
 
 interface MapExportModalProps {

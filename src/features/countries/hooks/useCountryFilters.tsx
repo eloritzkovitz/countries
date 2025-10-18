@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useDebounced } from "@hooks";
 import type { Country, Overlay } from "@types";
 import { filterCountries, getFilteredIsoCodes } from "../utils/countryFilters";
@@ -22,31 +22,17 @@ export function useCountryFilters({
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounced(search, 250);
 
-  // Memoize filtered iso codes and countries
-  const filteredIsoCodes = useMemo(
-    () => getFilteredIsoCodes(countries, overlays, overlaySelections),
-    [countries, overlays, overlaySelections]
-  );
+  // Getting filtered ISO codes based on overlay selections
+  const filteredIsoCodes = getFilteredIsoCodes(countries, overlays, overlaySelections);
 
   // Filtering countries based on current filters and search
-  const filteredCountries = useMemo(
-    () =>
-      filterCountries(countries, {
-        search: debouncedSearch,
-        selectedRegion,
-        selectedSubregion,
-        selectedSovereignty,
-        overlayCountries: filteredIsoCodes,
-      }),
-    [
-      countries,
-      debouncedSearch,
-      selectedRegion,
-      selectedSubregion,
-      selectedSovereignty,
-      filteredIsoCodes,
-    ]
-  );
+  const filteredCountries = filterCountries(countries, {
+    search: debouncedSearch,
+    selectedRegion,
+    selectedSubregion,
+    selectedSovereignty,
+    overlayCountries: filteredIsoCodes,
+  });
 
   return {
     selectedRegion,
