@@ -8,7 +8,7 @@ import { CountriesLayer } from "./CountriesLayer";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
-import { getOverlayItems } from "../utils/mapUtils";
+import { getOverlayItems, getProjection } from "../utils/mapUtils";
 
 type WorldMapProps = {
   zoom: number;
@@ -25,6 +25,8 @@ type WorldMapProps = {
   hoveredIsoCode: string | null;
   onReady?: () => void;
   svgRef?: React.Ref<SVGSVGElement>;
+  isAddingMarker?: boolean;
+  onMapClickForMarker?: (coords: [number, number]) => void;
 };
 
 export function WorldMap({
@@ -37,6 +39,8 @@ export function WorldMap({
   hoveredIsoCode,
   onReady,
   svgRef,
+  isAddingMarker,
+  onMapClickForMarker,
 }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
@@ -70,8 +74,8 @@ export function WorldMap({
     dimensions.height,
     geoData,
     onReady,
-  ]); 
-  
+  ]);
+
   // Merge all visible overlays into a single ordered array
   const overlayItems = overlays
     .filter((o) => o.visible)
@@ -96,10 +100,37 @@ export function WorldMap({
     );
   }
 
+  // Handle map click for adding marker
+  const handleMapClick = (event: React.MouseEvent<SVGSVGElement>) => {
+    if (!isAddingMarker || !onMapClickForMarker) return;
+
+    const svg = event.currentTarget;
+    const rect = svg.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    // Use your custom projection utility
+    const proj = getProjection(
+      projection || DEFAULT_MAP_SETTINGS.projection,
+      dimensions.width,
+      dimensions.height,
+      DEFAULT_MAP_SETTINGS.scaleDivisor
+    );
+
+    // Guard against undefined projection or missing invert method
+    const coords = proj?.invert?.([x, y]); // [lng, lat]
+    if (coords) {
+      onMapClickForMarker([coords[1], coords[0]]); // [lat, lng]
+    }
+  };
+
   return (
     <div
       ref={containerRef}
       className={`fixed inset-0 w-full h-[100dvh] ${DEFAULT_MAP_SETTINGS.bgColor} overflow-hidden`}
+      style={{
+        cursor: isAddingMarker ? "crosshair" : "default",
+      }}
     >
       {/* SVG map container */}
       <MapSvgContainer
@@ -117,6 +148,7 @@ export function WorldMap({
           }}
           width={dimensions.width}
           height={dimensions.height}
+          onClick={handleMapClick}
         >
           <ZoomableGroup
             zoom={zoom}
@@ -124,7 +156,7 @@ export function WorldMap({
             minZoom={DEFAULT_MAP_SETTINGS.minZoom}
             maxZoom={DEFAULT_MAP_SETTINGS.maxZoom}
             onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
-          >            
+          >
             {/* Countries layers */}
             <CountriesLayer
               geographyData={geoData}

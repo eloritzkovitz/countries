@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { ErrorMessage, LoadingSpinner, ShortcutsModal} from "@components";
+import { ErrorMessage, LoadingSpinner, ShortcutsModal } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useGeoData } from "@hooks/useGeoData";
@@ -7,7 +7,11 @@ import { useUiHint } from "@hooks/useUiHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
 import { Toolbar, WorldMap } from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
-import { MarkersPanel } from "@features/markers";
+import {
+  CreateMarkerModal,
+  MarkersPanel,
+  useMarkerCreation,
+} from "@features/markers";
 import { OverlayEditModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
 import type { Country } from "../types/country";
@@ -43,6 +47,17 @@ export default function CountryMapPage() {
     closeOverlayModal,
     setEditingOverlay,
   } = useOverlayContext();
+
+  // Marker creation state
+  const {
+    isAddingMarker,
+    modalOpen,
+    markerCoords,
+    startAddingMarker,
+    handleMapClickForMarker,
+    handleCreateMarker,
+    cancelMarkerCreation,
+  } = useMarkerCreation();
 
   // Derived state
   const isLoading = countriesLoading || overlaysLoading || !mapReady;
@@ -83,7 +98,7 @@ export default function CountryMapPage() {
           hoveredIsoCode={hoveredIsoCode}
           onSelect={setSelectedIsoCode}
           onHover={setHoveredIsoCode}
-          onCountryInfo={setModalCountry}          
+          onCountryInfo={setModalCountry}
         />
 
         {/* Main Map Area */}
@@ -100,6 +115,8 @@ export default function CountryMapPage() {
             hoveredIsoCode={hoveredIsoCode}
             onReady={() => handleMapReady()}
             svgRef={svgRef}
+            isAddingMarker={isAddingMarker}
+            onMapClickForMarker={handleMapClickForMarker}
           />
 
           {/* Toolbar & UI Overlays */}
@@ -114,9 +131,13 @@ export default function CountryMapPage() {
             }
             onClose={() => setModalCountry(null)}
           />
-          <MarkersPanel            
-            onAddMarker={() => {}}
+          <CreateMarkerModal
+            open={modalOpen}
+            coords={markerCoords}
+            onSubmit={handleCreateMarker}
+            onClose={cancelMarkerCreation}
           />
+          <MarkersPanel onAddMarker={startAddingMarker} />
           <OverlayEditModal
             overlay={editingOverlay}
             isNew={isNewOverlay}
