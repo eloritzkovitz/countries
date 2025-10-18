@@ -8,6 +8,8 @@ type UIContextType = {
   setShowCountries: (v: boolean) => void;
   showFilters: boolean;
   toggleFilters: () => void;
+  showMarkers: boolean;
+  toggleMarkers: () => void;
   showOverlays: boolean;
   toggleOverlays: () => void;
   showExport: boolean;
@@ -28,7 +30,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
   // State for which panel is open; null means no panel is open
   const [showCountries, setShowCountries] = useState(true);
   const [openPanel, setOpenPanel] = useState<
-    "filters" | "overlays" | "export" | "settings" | null
+    "filters" | "markers" | "overlays" | "export" | "settings" | null
   >(null);
 
   // Shortcuts modal state
@@ -38,6 +40,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // Derived states for individual panels
   const showFilters = openPanel === "filters";
+  const showMarkers = openPanel === "markers";
   const showOverlays = openPanel === "overlays";
   const showExport = openPanel === "export";
   const showSettings = openPanel === "settings";
@@ -45,6 +48,8 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const toggleUiVisible = () => setUiVisible((prev) => !prev);
   const toggleFilters = () =>
     setOpenPanel((prev) => (prev === "filters" ? null : "filters"));
+  const toggleMarkers = () =>
+    setOpenPanel((prev) => (prev === "markers" ? null : "markers"));
   const toggleOverlays = () =>
     setOpenPanel((prev) => (prev === "overlays" ? null : "overlays"));
   const toggleExport = () =>
@@ -58,6 +63,9 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // Toggle Filters panel with "F"
   useKeyHandler(toggleFilters, ["f", "F"], true);
+
+  // Toggle Markers panel with "M"
+  useKeyHandler(toggleMarkers, ["m", "M"], true);
 
   // Toggle Overlays panel with "O"
   useKeyHandler(toggleOverlays, ["o", "O"], true);
@@ -84,9 +92,11 @@ export function UIProvider({ children }: { children: ReactNode }) {
         uiVisible,
         setUiVisible,
         showCountries,
-        setShowCountries,
+        setShowCountries,        
         showFilters,
         toggleFilters,
+        showMarkers,
+        toggleMarkers,
         showOverlays,
         toggleOverlays,
         showExport,

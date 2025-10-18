@@ -3,8 +3,9 @@ import {
   FaLayerGroup,
   FaChevronLeft,
   FaChevronRight,
+  FaMapPin,
   FaDownload,
-  FaCog,
+  FaCog,  
 } from "react-icons/fa";
 import { ActionButton } from "@components";
 import { useUI } from "@contexts/UIContext";
@@ -24,7 +25,7 @@ export function Toolbar({
   children?: React.ReactNode;
 }) {
   // UI state
-  const { uiVisible, toggleOverlays, toggleExport, toggleSettings } = useUI();
+  const { uiVisible, toggleMarkers, toggleOverlays, toggleExport, toggleSettings } = useUI();
   const [visible, setVisible] = useState(true);
 
   return (
@@ -68,15 +69,22 @@ export function Toolbar({
           }}
         >
           <ActionButton
+            onClick={toggleMarkers}
+            ariaLabel="Markers"
+            title="Markers"
+            className="toolbar-btn"
+            icon={<FaMapPin />}
+          />
+          <ActionButton
             onClick={toggleOverlays}
-            ariaLabel="Open Overlays Panel"
-            title="Open Overlays Panel"
+            ariaLabel="Overlays"
+            title="Overlays"
             className="toolbar-btn"
             icon={<FaLayerGroup />}
           />
           <ActionButton
             onClick={toggleExport}
-            ariaLabel="Export map"
+            ariaLabel="Export"
             title="Export"
             className="toolbar-btn"
             icon={<FaDownload />}
@@ -85,7 +93,7 @@ export function Toolbar({
           <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
           <ActionButton
             onClick={toggleSettings}
-            ariaLabel="Open settings panel"
+            ariaLabel="Settings"
             title="Settings"
             className="toolbar-btn"
             icon={<FaCog />}

@@ -7,6 +7,7 @@ import { useUiHint } from "@hooks/useUiHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
 import { Toolbar, WorldMap } from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
+import { MarkersPanel } from "@features/markers";
 import { OverlayEditModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
 import type { Country } from "../types/country";
@@ -103,7 +104,6 @@ export default function CountryMapPage() {
 
           {/* Toolbar & UI Overlays */}
           <Toolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
-
           <CountryDetailsModal
             country={modalCountry}
             isOpen={!!modalCountry}
@@ -114,7 +114,9 @@ export default function CountryMapPage() {
             }
             onClose={() => setModalCountry(null)}
           />
-
+          <MarkersPanel            
+            onAddMarker={() => {}}
+          />
           <OverlayEditModal
             overlay={editingOverlay}
             isNew={isNewOverlay}
@@ -123,15 +125,12 @@ export default function CountryMapPage() {
             onClose={closeOverlayModal}
             isOpen={isEditModalOpen}
           />
-
           <OverlaysPanel
             onEditOverlay={openEditOverlay}
             onAddOverlay={openAddOverlay}
           />
-
           <SettingsPanel />
         </div>
-
         <ShortcutsModal />
 
         {/* Spinner */}
