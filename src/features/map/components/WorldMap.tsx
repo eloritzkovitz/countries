@@ -3,13 +3,14 @@ import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
+import { MapMarkersLayer } from "@features/markers";
+import { getOverlayItems } from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
 import { CountriesLayer } from "./CountriesLayer";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
-import { getOverlayItems, getProjection } from "../utils/mapUtils";
-import { MapMarkersLayer } from "@features/markers/components/MapMarkersLayer";
+import { getProjection } from "../utils/mapUtils";
 
 type WorldMapProps = {
   zoom: number;
@@ -101,7 +102,7 @@ export function WorldMap({
     );
   }
 
-  // Handle map click for adding marker
+  // Handle map click for adding markers
   const handleMapClick = (event: React.MouseEvent<SVGSVGElement>) => {
     if (!isAddingMarker || !onMapClickForMarker) return;
 
@@ -166,6 +167,7 @@ export function WorldMap({
               hoveredIsoCode={hoveredIsoCode}
               onCountryClick={onCountryClick}
               onCountryHover={onCountryHover}
+              isAddingMarker={isAddingMarker}
             />
             {/* Markers layer */}
             <MapMarkersLayer

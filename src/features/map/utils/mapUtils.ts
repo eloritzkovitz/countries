@@ -1,51 +1,5 @@
 import { geoBounds, geoCentroid, geoMercator, geoNaturalEarth1, geoEquirectangular} from "d3-geo";
 import type { GeoProjection } from "d3-geo";
-import { MAP_STYLE_CONFIG } from "@config/constants";
-import { useMapUI } from "@contexts/MapUIContext";
-
-/** Hook to get geography styles based on current map UI settings.
- * @returns An object with default, hover, and pressed styles for geographies.
- */
-export function useMapGeographyStyle() {
-  const { borderColor, borderWidth } = useMapUI();
-  return {
-    default: {
-      ...MAP_STYLE_CONFIG.default,
-      stroke: borderColor,
-      strokeWidth: borderWidth,
-    },
-    hover: {
-      ...MAP_STYLE_CONFIG.default,
-      ...MAP_STYLE_CONFIG.hovered,
-      stroke: borderColor,
-      strokeWidth: borderWidth,
-    },
-    pressed: {
-      ...MAP_STYLE_CONFIG.default,
-      ...MAP_STYLE_CONFIG.selected,
-      stroke: borderColor,
-      strokeWidth: borderWidth,
-    },
-  };
-}
-
-/**
- * Gets overlay items from an overlay definition.
- * @param overlay - The overlay definition containing countries, color, tooltip, and name.
- * @returns Array of overlay items with isoCode, color, and tooltip.
- */
-export function getOverlayItems(overlay: {
-  countries: any[];
-  color: any;
-  tooltip?: any;
-  name: any;
-}) {
-  return overlay.countries.map((isoCode) => ({
-    isoCode,
-    color: overlay.color,
-    tooltip: overlay.tooltip || overlay.name,
-  }));
-}
 
 /**
  * Returns a D3 projection instance based on type and map dimensions.

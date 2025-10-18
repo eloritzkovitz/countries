@@ -1,6 +1,6 @@
 import { Geographies, Geography } from "react-simple-maps";
 import { getCountryIsoCode } from "@features/countries";
-import { useMapGeographyStyle } from "../utils/mapUtils";
+import { useMapGeographyStyle } from "@features/map";
 import type { OverlayItem } from "@types";
 
 type MapCountriesLayerProps = {
@@ -11,6 +11,7 @@ type MapCountriesLayerProps = {
   onCountryClick?: (countryIsoCode: string) => void;
   onCountryHover?: (isoCode: string | null) => void;
   defaultColor?: string;
+  isAddingMarker?: boolean;
 };
 
 export function CountriesLayer({
@@ -20,8 +21,9 @@ export function CountriesLayer({
   hoveredIsoCode,
   onCountryClick,
   onCountryHover,
+  isAddingMarker,
 }: MapCountriesLayerProps) {
-  const geographyStyle = useMapGeographyStyle();
+  const geographyStyle = useMapGeographyStyle(isAddingMarker);
 
   // Build overlay lookup
   const overlayMap = Object.fromEntries(
