@@ -3,6 +3,7 @@ import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
+import { MapMarkersLayer } from "@features/markers/components/MapMarkersLayer";
 import { useGeoData } from "@hooks/useGeoData";
 import { CountriesLayer } from "./CountriesLayer";
 import { MapStatus } from "./MapStatus";
@@ -156,7 +157,7 @@ export function WorldMap({
             minZoom={DEFAULT_MAP_SETTINGS.minZoom}
             maxZoom={DEFAULT_MAP_SETTINGS.maxZoom}
             onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
-          >
+          >            
             {/* Countries layers */}
             <CountriesLayer
               geographyData={geoData}
@@ -165,6 +166,13 @@ export function WorldMap({
               hoveredIsoCode={hoveredIsoCode}
               onCountryClick={onCountryClick}
               onCountryHover={onCountryHover}
+            />
+            {/* Markers layer */}
+            <MapMarkersLayer
+              projectionType={projection || DEFAULT_MAP_SETTINGS.projection}
+              width={dimensions.width}
+              height={dimensions.height}
+              scaleDivisor={DEFAULT_MAP_SETTINGS.scaleDivisor}
             />
           </ZoomableGroup>
         </ComposableMap>
