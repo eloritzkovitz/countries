@@ -3,13 +3,13 @@ import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
-import { MapMarkersLayer } from "@features/markers/components/MapMarkersLayer";
 import { useGeoData } from "@hooks/useGeoData";
 import { CountriesLayer } from "./CountriesLayer";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
 import { getOverlayItems, getProjection } from "../utils/mapUtils";
+import { MapMarkersLayer } from "@features/markers/components/MapMarkersLayer";
 
 type WorldMapProps = {
   zoom: number;
@@ -173,6 +173,7 @@ export function WorldMap({
               width={dimensions.width}
               height={dimensions.height}
               scaleDivisor={DEFAULT_MAP_SETTINGS.scaleDivisor}
+              zoom={zoom}
             />
           </ZoomableGroup>
         </ComposableMap>

@@ -7,6 +7,7 @@ interface MapMarkersLayerProps {
   width: number;
   height: number;
   scaleDivisor: number;
+  zoom?: number;
 }
 
 export function MapMarkersLayer({
@@ -14,9 +15,9 @@ export function MapMarkersLayer({
   width,
   height,
   scaleDivisor,
-}: MapMarkersLayerProps) {
+  zoom = 1,
+}: MapMarkersLayerProps & { zoom?: number }) {
   const { markers } = useMarkers();
-
   const proj = getProjection(projectionType, width, height, scaleDivisor);
 
   return (
@@ -32,6 +33,7 @@ export function MapMarkersLayer({
             y={y}
             color={marker.color}
             name={marker.name}
+            zoom={zoom}
           />
         );
       })}
