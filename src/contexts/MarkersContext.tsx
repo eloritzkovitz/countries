@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import type { Marker } from "@types";
+
+const STORAGE_KEY = "countries_markers";
 
 interface MarkersContextType {
   markers: Marker[];
@@ -13,6 +15,27 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [markers, setMarkers] = useState<Marker[]>([]);
+  const [initialized, setInitialized] = useState(false);
+
+  // Load markers from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        setMarkers(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse markers from localStorage:", e);
+      }
+    }
+    setInitialized(true);
+  }, []);
+
+  // Save markers to localStorage whenever they change
+  useEffect(() => {
+    if (initialized) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(markers));
+    }
+  }, [markers, initialized]);
 
   const addMarker = (marker: Marker) => setMarkers((prev) => [...prev, marker]);
   const removeMarker = (id: string) =>
@@ -25,7 +48,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// Custom hook for easy access to the MarkersContext
+// Custom hook to use the MarkersContext
 export const useMarkers = () => {
   const context = useContext(MarkersContext);
   if (!context)
