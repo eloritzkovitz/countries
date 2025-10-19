@@ -6,9 +6,10 @@ const STORAGE_KEY = "countries_markers";
 interface MarkersContextType {
   markers: Marker[];
   addMarker: (marker: Marker) => void;
-  reorderMarkers: (newOrder: Marker[]) => void;
-  toggleMarkerVisibility: (id: string) => void;
+  editMarker: (updated: Marker) => void;
   removeMarker: (id: string) => void;
+  toggleMarkerVisibility: (id: string) => void;
+  reorderMarkers: (newOrder: Marker[]) => void;
 }
 
 const MarkersContext = createContext<MarkersContextType | undefined>(undefined);
@@ -42,9 +43,19 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
   // Add a new marker
   const addMarker = (marker: Marker) => setMarkers((prev) => [...prev, marker]);
 
-  // Reorder markers
-  const reorderMarkers = (newOrder: Marker[]) => setMarkers(newOrder);
-
+  // Edit marker by id
+  const editMarker = (updated: Marker) => {
+    setMarkers((markers) =>
+      markers.map((marker) =>
+        marker.id === updated.id ? { ...marker, ...updated } : marker
+      )
+    );
+  };
+  
+  // Remove marker by id
+  const removeMarker = (id: string) =>
+    setMarkers((prev) => prev.filter((m) => m.id !== id));
+  
   // Toggle marker visibility by id
   const toggleMarkerVisibility = (id: string) => {
     setMarkers((markers) =>
@@ -54,18 +65,18 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
 
-  // Remove marker by id
-  const removeMarker = (id: string) =>
-    setMarkers((prev) => prev.filter((m) => m.id !== id));
+  // Reorder markers
+  const reorderMarkers = (newOrder: Marker[]) => setMarkers(newOrder);
 
   return (
     <MarkersContext.Provider
       value={{
         markers,
         addMarker,
-        reorderMarkers,
-        toggleMarkerVisibility,
+        editMarker,
         removeMarker,
+        toggleMarkerVisibility,
+        reorderMarkers,
       }}
     >
       {children}

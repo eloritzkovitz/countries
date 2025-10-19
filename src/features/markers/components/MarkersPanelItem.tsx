@@ -5,23 +5,25 @@ import type { DragEvent } from "react";
 export function MarkersPanelItem({
   marker,
   idx,
+  onToggleVisibility,  
+  onCenter,
+  onEdit,
+  onRemove,
   draggedIndex,
   handleDragStart,
   handleDragOver,
-  handleDragEnd,
-  onCenter,
-  onToggleVisibility,
-  onRemove,
+  handleDragEnd,  
 }: {
   marker: Marker;
   idx: number;
+  onToggleVisibility: () => void;
+  onCenter: () => void;
+  onEdit: () => void;
+  onRemove: () => void;
   draggedIndex: number | null;
   handleDragStart: (idx: number) => void;
   handleDragOver: (e: React.DragEvent<HTMLLIElement>, idx: number) => void;
-  handleDragEnd: () => void;
-  onCenter: () => void;
-  onToggleVisibility: () => void;
-  onRemove: () => void;
+  handleDragEnd: () => void;  
 }) {
   return (
     <PanelListItem
@@ -30,7 +32,7 @@ export function MarkersPanelItem({
       visible={marker.visible}      
       onToggleVisibility={onToggleVisibility}
       onCenter={onCenter}
-      onEdit={onCenter}
+      onEdit={onEdit}
       onRemove={onRemove}
       dragged={draggedIndex === idx}
       onDragStart={() => handleDragStart(idx)}

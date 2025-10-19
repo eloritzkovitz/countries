@@ -1,10 +1,12 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import { FaMapPin, FaTimes } from "react-icons/fa";
 import { Modal, PanelHeader, ActionButton } from "@components";
-import { FaTimes } from "react-icons/fa";
+import type { Marker } from "@types";
 
 interface CreateMarkerModalProps {
   open: boolean;
   coords: [number, number] | null;
+  marker?: Marker;
   onSubmit: (name: string, color?: string, description?: string) => void;
   onClose: () => void;
 }
@@ -12,10 +14,18 @@ interface CreateMarkerModalProps {
 export const CreateMarkerModal: React.FC<CreateMarkerModalProps> = ({
   open,
   coords,
+  marker,
   onSubmit,
   onClose,
 }) => {
   const nameRef = useRef<HTMLInputElement>(null);
+
+  // Focus the name input when the modal opens
+  useEffect(() => {
+    if (open && nameRef.current) {
+      nameRef.current.focus();
+    }
+  }, [open]);
 
   return (
     <Modal
@@ -27,8 +37,8 @@ export const CreateMarkerModal: React.FC<CreateMarkerModalProps> = ({
       <PanelHeader
         title={
           <>
-            <span className="mr-2">📍</span>
-            Add Marker
+            <FaMapPin />
+            {marker ? "Edit Marker" : "Add Marker"}
           </>
         }
       >
@@ -36,7 +46,7 @@ export const CreateMarkerModal: React.FC<CreateMarkerModalProps> = ({
           <FaTimes />
         </ActionButton>
       </PanelHeader>
-      {open && coords ? (
+      {open && (coords || marker) ? (
         <form
           className="space-y-4"
           onSubmit={(e) => {
@@ -59,6 +69,7 @@ export const CreateMarkerModal: React.FC<CreateMarkerModalProps> = ({
               className="w-full border rounded px-2 py-1"
               placeholder="Marker name"
               required
+              defaultValue={marker?.name || ""}
               autoFocus
             />
           </div>
@@ -69,6 +80,7 @@ export const CreateMarkerModal: React.FC<CreateMarkerModalProps> = ({
               className="w-full border rounded px-2 py-1"
               placeholder="Color (optional)"
               type="color"
+              defaultValue={marker?.color || "#e53e3e"}
             />
           </div>
           <div>
@@ -79,11 +91,14 @@ export const CreateMarkerModal: React.FC<CreateMarkerModalProps> = ({
               name="description"
               className="w-full border rounded px-2 py-1"
               placeholder="Description (optional)"
+              defaultValue={marker?.description || ""}
             />
           </div>
-          <div className="text-xs text-gray-500">
-            Location: {coords[0].toFixed(4)}, {coords[1].toFixed(4)}
-          </div>
+          {coords && !marker && (
+            <div className="text-xs text-gray-500">
+              Location: {coords[0].toFixed(4)}, {coords[1].toFixed(4)}
+            </div>
+          )}
           <div className="flex justify-end gap-2 mt-4">
             <button
               type="button"
@@ -96,7 +111,7 @@ export const CreateMarkerModal: React.FC<CreateMarkerModalProps> = ({
               type="submit"
               className="px-3 py-1 rounded bg-blue-600 text-white"
             >
-              Add Marker
+              {marker ? "Save Changes" : "Add Marker"}
             </button>
           </div>
         </form>
