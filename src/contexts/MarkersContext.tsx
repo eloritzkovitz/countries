@@ -6,6 +6,8 @@ const STORAGE_KEY = "countries_markers";
 interface MarkersContextType {
   markers: Marker[];
   addMarker: (marker: Marker) => void;
+  reorderMarkers: (newOrder: Marker[]) => void;
+  toggleMarkerVisibility: (id: string) => void;
   removeMarker: (id: string) => void;
 }
 
@@ -37,12 +39,35 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [markers, initialized]);
 
+  // Add a new marker
   const addMarker = (marker: Marker) => setMarkers((prev) => [...prev, marker]);
+
+  // Reorder markers
+  const reorderMarkers = (newOrder: Marker[]) => setMarkers(newOrder);
+
+  // Toggle marker visibility by id
+  const toggleMarkerVisibility = (id: string) => {
+    setMarkers((markers) =>
+      markers.map((marker) =>
+        marker.id === id ? { ...marker, visible: !marker.visible } : marker
+      )
+    );
+  };
+
+  // Remove marker by id
   const removeMarker = (id: string) =>
     setMarkers((prev) => prev.filter((m) => m.id !== id));
 
   return (
-    <MarkersContext.Provider value={{ markers, addMarker, removeMarker }}>
+    <MarkersContext.Provider
+      value={{
+        markers,
+        addMarker,
+        reorderMarkers,
+        toggleMarkerVisibility,
+        removeMarker,
+      }}
+    >
       {children}
     </MarkersContext.Provider>
   );

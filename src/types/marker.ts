@@ -5,4 +5,5 @@ export type Marker = {
   longitude: number;
   color?: string;
   description?: string;
+  visible: boolean;
 };

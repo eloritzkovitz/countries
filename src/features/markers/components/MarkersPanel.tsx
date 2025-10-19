@@ -3,14 +3,19 @@ import { ActionButton, Panel } from "@components";
 import { DEFAULT_PANEL_WIDTH } from "@config/constants";
 import { useMarkers } from "@contexts/MarkersContext";
 import { useUI } from "@contexts/UIContext";
+import { useDragReorder } from "@hooks/useDragReorder";
+import { MarkersPanelItem } from "./MarkersPanelItem";
 
 interface MarkersPanelProps {
   onAddMarker: () => void;
+  onCenterMap: (marker: { longitude: number; latitude: number }) => void;
 }
 
-export function MarkersPanel({ onAddMarker }: MarkersPanelProps) {
-  const { markers, removeMarker } = useMarkers();
+export function MarkersPanel({ onAddMarker, onCenterMap }: MarkersPanelProps) {
+  const { markers, reorderMarkers, toggleMarkerVisibility, removeMarker } = useMarkers();
   const { showMarkers, closePanel } = useUI();
+  const { draggedIndex, handleDragStart, handleDragOver, handleDragEnd } =
+    useDragReorder(markers, reorderMarkers);  
 
   return (
     <Panel
@@ -28,7 +33,7 @@ export function MarkersPanel({ onAddMarker }: MarkersPanelProps) {
           <ActionButton
             onClick={onAddMarker}
             ariaLabel="Add Marker"
-            title="Add Marker"            
+            title="Add Marker"
           >
             <FaPlus />
           </ActionButton>
@@ -47,31 +52,19 @@ export function MarkersPanel({ onAddMarker }: MarkersPanelProps) {
           <div className="text-sm text-gray-500">No markers yet.</div>
         ) : (
           <ul className="space-y-2">
-            {markers.map((marker) => (
-              <li
+            {markers.map((marker, idx) => (
+              <MarkersPanelItem
                 key={marker.id}
-                className="flex items-center justify-between bg-gray-50 rounded px-3 py-2"
-              >
-                <div>
-                  <div className="font-medium">{marker.name}</div>
-                  <div className="text-xs text-gray-500">
-                    {marker.latitude.toFixed(4)}, {marker.longitude.toFixed(4)}
-                  </div>
-                  {marker.description && (
-                    <div className="text-xs text-gray-400">
-                      {marker.description}
-                    </div>
-                  )}
-                </div>
-                <ActionButton
-                  onClick={() => removeMarker(marker.id)}
-                  ariaLabel="Remove Marker"
-                  title="Remove Marker"
-                  className="ml-2 text-red-500"
-                >
-                  <FaTimes />
-                </ActionButton>
-              </li>
+                marker={marker}
+                idx={idx}
+                draggedIndex={draggedIndex}
+                handleDragStart={handleDragStart}
+                handleDragOver={handleDragOver}
+                handleDragEnd={handleDragEnd}
+                onCenter={() => onCenterMap(marker)}
+                onToggleVisibility={() => toggleMarkerVisibility(marker.id)}
+                onRemove={() => removeMarker(marker.id)}                
+              />
             ))}
           </ul>
         )}
@@ -79,5 +72,3 @@ export function MarkersPanel({ onAddMarker }: MarkersPanelProps) {
     </Panel>
   );
 }
-
-export default MarkersPanel;

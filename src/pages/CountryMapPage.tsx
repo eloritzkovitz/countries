@@ -27,8 +27,15 @@ export default function CountryMapPage() {
   const { geoData } = useGeoData();
 
   // Map state
-  const { zoom, setZoom, center, setCenter, handleMoveEnd, centerOnCountry } =
-    useMapView();
+  const {
+    zoom,
+    setZoom,
+    center,
+    setCenter,
+    handleMoveEnd,
+    centerOnCountry,
+    centerOnMarker,
+  } = useMapView();
   const svgRef = useRef<SVGSVGElement>(null);
 
   // Selection state
@@ -85,6 +92,14 @@ export default function CountryMapPage() {
     }
   }
 
+  // Center map on a marker
+  function handleCenterMapOnMarker(marker: {
+    longitude: number;
+    latitude: number;
+  }) {
+    centerOnMarker(marker);
+  }
+
   // Show error state
   if (error) return <ErrorMessage error={error} />;
 
@@ -137,7 +152,10 @@ export default function CountryMapPage() {
             onSubmit={handleCreateMarker}
             onClose={cancelMarkerCreation}
           />
-          <MarkersPanel onAddMarker={startAddingMarker} />
+          <MarkersPanel
+            onAddMarker={startAddingMarker}
+            onCenterMap={handleCenterMapOnMarker}
+          />
           <OverlayEditModal
             overlay={editingOverlay}
             isNew={isNewOverlay}

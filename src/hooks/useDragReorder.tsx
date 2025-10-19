@@ -10,7 +10,7 @@ export function useDragReorder<T>(
     setDraggedIndex(index);
   }
 
-  function handleDragOver(e: React.DragEvent<HTMLDivElement>, index: number) {
+  function handleDragOver(e: React.DragEvent<HTMLLIElement>, index: number) {
     e.preventDefault();
     if (draggedIndex === null || draggedIndex === index) return;
     const updated = [...items];

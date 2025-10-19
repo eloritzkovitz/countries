@@ -22,7 +22,7 @@ export function MapMarkersLayer({
 
   return (
     <>
-      {markers.map((marker) => {
+      {markers.filter(marker => marker.visible !== false).map((marker) => {
         const point = proj ? proj([marker.longitude, marker.latitude]) : null;
         if (!point) return null;
         const [x, y] = point;
