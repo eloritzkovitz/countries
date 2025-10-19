@@ -6,6 +6,7 @@ import { useOverlayContext } from "@contexts/OverlayContext";
 import { MapMarkersLayer } from "@features/markers";
 import { getOverlayItems } from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
+import { useUiHint } from "@hooks/useUiHint";
 import { CountriesLayer } from "./CountriesLayer";
 import { MapCoordinatesDisplay } from "./MapCoordinatesDisplay";
 import { MapStatus } from "./MapStatus";
@@ -88,6 +89,12 @@ export function WorldMap({
     .filter((o) => o.visible)
     .flatMap(getOverlayItems);
 
+  // UI hint for adding marker
+  const addMarkerHint = useUiHint(
+    isAddingMarker ? "Click on the map to place a marker." : "",
+    isAddingMarker ? 0 : 1
+  ); 
+
   // Show spinner until overlays, dimensions, and geoData are ready
   const isLoading =
     geoLoading ||
@@ -124,7 +131,7 @@ export function WorldMap({
         onMapClickForMarker([coords[1], coords[0]]);
       }
     }
-  };
+  };  
 
   return (
     <div
@@ -181,7 +188,9 @@ export function WorldMap({
           </ZoomableGroup>
         </ComposableMap>
       </MapSvgContainer>
-      {/*/ Display selected coordinates */}
+      {/* UI hint for adding marker */}
+      {addMarkerHint}
+      {/* Display selected coordinates */}
       {selectedCoords && <MapCoordinatesDisplay coords={selectedCoords} />}
     </div>
   );
