@@ -8,6 +8,7 @@ export { LoadingSpinner } from './LoadingSpinner';
 export { Modal } from './Modal';
 export { Panel } from './Panel';
 export { PanelHeader } from './PanelHeader';
+export { PanelListItem } from './PanelListItem';
 export { SearchInput } from './SearchInput';
 export { SelectInput } from './SelectInput';
 export { Separator } from './Separator';

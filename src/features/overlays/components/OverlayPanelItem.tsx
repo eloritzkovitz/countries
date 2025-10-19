@@ -1,49 +1,41 @@
-import { FaEye, FaEyeSlash, FaEdit, FaTrash } from "react-icons/fa";
-import { ActionButton } from "@components";
+import { PanelListItem } from "@components";
 import type { Overlay } from "@types";
 
 type OverlayPanelItemProps = {
   overlay: Overlay;
-  onToggleVisibility: (id: string) => void;
+  dragged?: boolean;
+  onDragStart?: () => void;
+  handleDragOver?: (e: React.DragEvent<HTMLLIElement>) => void;
+  handleDragEnd?: () => void;
   onEdit: (overlay: Overlay) => void;
+  onToggleVisibility: (id: string) => void;
   onRemove: (id: string) => void;
+  showEdit?: boolean;
+  showCenter?: boolean;
 };
 
 export function OverlayPanelItem({
   overlay,
-  onToggleVisibility,
+  dragged,
+  onDragStart,
+  handleDragOver,
+  handleDragEnd,
   onEdit,
+  onToggleVisibility,
   onRemove,
 }: OverlayPanelItemProps) {
   return (
-    <li className="mb-4 flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2">
-      <span
-        className="inline-block w-[22px] h-[22px] rounded-md border-2 border-gray-300 mr-1"
-        style={{ background: overlay.color }}
-        title={overlay.name}
-      />
-      <strong className="flex-1">{overlay.name}</strong>
-      <ActionButton
-        onClick={() => onToggleVisibility(overlay.id)}
-        ariaLabel={overlay.visible ? "Hide overlay" : "Show overlay"}
-        title={overlay.visible ? "Hide overlay" : "Show overlay"}
-        className={`mx-1 text-lg ${overlay.visible ? "text-blue-500" : "text-gray-400"}`}
-        icon={overlay.visible ? <FaEye /> : <FaEyeSlash />}
-      />
-      <ActionButton
-        onClick={() => onEdit(overlay)}
-        ariaLabel="Edit overlay"
-        title="Edit overlay"      
-        className="mx-1 text-lg text-blue-600 hover:text-blue-800"
-        icon={<FaEdit />}
-      />
-      <ActionButton
-        onClick={() => onRemove(overlay.id)}
-        ariaLabel="Remove overlay"
-        title="Remove overlay"
-        className="mx-1 text-lg text-red-600 hover:text-red-800"
-        icon={<FaTrash />}
-      />
-    </li>
+    <PanelListItem
+      color={overlay.color}
+      name={overlay.name}
+      visible={overlay.visible}
+      onToggleVisibility={() => onToggleVisibility(overlay.id)}
+      onEdit={() => onEdit(overlay)}
+      onRemove={() => onRemove(overlay.id)}
+      dragged={dragged}
+      onDragStart={onDragStart}
+      handleDragOver={handleDragOver}
+      handleDragEnd={handleDragEnd}      
+    />
   );
 }
