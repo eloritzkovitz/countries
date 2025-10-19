@@ -3,14 +3,16 @@ import { FaMapMarkerAlt, FaTimes } from "react-icons/fa";
 import type { Marker } from "@types";
 
 interface MarkerDetailsModalProps {
-  marker: Marker | null;
   open: boolean;
+  marker: Marker | null;
+  position: { top: number; left: number } | null;
   onClose: () => void;
 }
 
 export function MarkerDetailsModal({
-  marker,
   open,
+  marker,
+  position,
   onClose,
 }: MarkerDetailsModalProps) {
   if (!marker) return null;
@@ -19,8 +21,19 @@ export function MarkerDetailsModal({
     <Modal
       isOpen={open}
       onClose={onClose}
-      position="center"
+      position={position ? "custom" : "center"}
       className="min-w-[400px] max-w-[600px] bg-white rounded-xl shadow-2xl p-6 overflow-y-auto"
+      style={
+        position
+          ? {
+              position: "fixed",
+              top: position.top,
+              left: position.left,
+              transform: "translate(-50%, -100%)",
+              zIndex: 1000,
+            }
+          : undefined
+      }
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">

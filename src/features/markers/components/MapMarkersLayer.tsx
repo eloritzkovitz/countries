@@ -9,7 +9,10 @@ interface MapMarkersLayerProps {
   height: number;
   scaleDivisor: number;
   zoom?: number;
-  onMarkerDetails?: (marker: MarkerType) => void;
+  onMarkerDetails?: (
+    marker: MarkerType,
+    coords?: { top: number; left: number }
+  ) => void;
 }
 
 export function MapMarkersLayer({
@@ -25,22 +28,37 @@ export function MapMarkersLayer({
 
   return (
     <>
-      {markers.filter(marker => marker.visible !== false).map((marker) => {
-        const point = proj ? proj([marker.longitude, marker.latitude]) : null;
-        if (!point) return null;
-        const [x, y] = point;
-        return (
-          <Marker
-            key={marker.id}
-            x={x}
-            y={y}
-            color={marker.color}
-            name={marker.name}
-            zoom={zoom}
-            onClick={() => onMarkerDetails?.(marker)}
-          />
-        );
-      })}
+      {markers
+        .filter((marker) => marker.visible !== false)
+        .map((marker) => {
+          const point = proj ? proj([marker.longitude, marker.latitude]) : null;
+          if (!point) return null;
+          const [x, y] = point;
+          return (
+            <Marker
+              key={marker.id}
+              x={x}
+              y={y}
+              color={marker.color}
+              name={marker.name}
+              zoom={zoom}
+              onClick={(event, markerX, markerY) => {
+                const svg = event.currentTarget.ownerSVGElement;
+                if (!svg) return;
+                const pt = svg.createSVGPoint();
+                pt.x = markerX;
+                pt.y = markerY;
+                const ctm = svg.getScreenCTM();
+                if (!ctm) return;
+                const screenCoords = pt.matrixTransform(ctm);
+                onMarkerDetails?.(marker, {
+                  top: screenCoords.y,
+                  left: screenCoords.x,
+                });
+              }}
+            />
+          );
+        })}
     </>
   );
 }

@@ -101,21 +101,33 @@ export default function CountryMapPage() {
   }
 
   // Center map on a marker
-  function handleCenterMapOnMarker(marker: {
-    longitude: number;
-    latitude: number;
-  }) {
+  function handleCenterMapOnMarker(
+    marker: { longitude: number; latitude: number } | Marker
+  ) {
     centerOnMarker(marker);
+    // If a marker is provided, show its details
+    if ("id" in marker) {
+      handleMarkerDetails(marker);
+    }
   }
 
   // Marker details modal state
   const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [detailsModalPosition, setDetailsModalPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
 
   // Handle marker details view
-  const handleMarkerDetails = (marker: Marker) => {
+  const handleMarkerDetails = (
+    marker: Marker,
+    position?: { top: number; left: number }
+  ) => {
     setSelectedMarker(marker);
     setDetailsModalOpen(true);
+    if (position) setDetailsModalPosition(position);
+    else setDetailsModalPosition(null);
   };
 
   // Show error state
@@ -169,6 +181,7 @@ export default function CountryMapPage() {
             marker={selectedMarker}
             open={detailsModalOpen}
             onClose={() => setDetailsModalOpen(false)}
+            position={detailsModalPosition}
           />
           <MarkerModal
             open={modalOpen}

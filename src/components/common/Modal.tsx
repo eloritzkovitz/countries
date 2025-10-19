@@ -9,6 +9,7 @@ type ModalProps = {
   className?: string;
   position?: "center" | "custom";
   containerClassName?: string;
+  style?: React.CSSProperties;
 };
 
 export function Modal({
@@ -18,6 +19,7 @@ export function Modal({
   className = "",
   position = "center",
   containerClassName = "",
+  style,
 }: ModalProps) {
   useKeyHandler(onClose, ["Escape"], isOpen);
 
@@ -36,6 +38,7 @@ export function Modal({
             ? `fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${className}`
             : `fixed ${className} ${containerClassName}`
         }
+        style={position === "custom" ? style : undefined}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
