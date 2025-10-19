@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { FaMapPin, FaTimes } from "react-icons/fa";
-import { Modal, PanelHeader, ActionButton } from "@components";
+import { ActionButton, FormButton, FormField, Modal, PanelHeader } from "@components";
 import type { Marker } from "@types";
+import "./marker.css";
 
-interface CreateMarkerModalProps {
+interface MarkerModalProps {
   open: boolean;
   coords: [number, number] | null;
   marker?: Marker;
@@ -11,7 +12,7 @@ interface CreateMarkerModalProps {
   onClose: () => void;
 }
 
-export const CreateMarkerModal: React.FC<CreateMarkerModalProps> = ({
+export const MarkerModal: React.FC<MarkerModalProps> = ({
   open,
   coords,
   marker,
@@ -61,58 +62,47 @@ export const CreateMarkerModal: React.FC<CreateMarkerModalProps> = ({
             onSubmit(name, color, description);
           }}
         >
-          <div>
-            <label className="block text-sm font-medium mb-1">Name</label>
+          <FormField label="Name">
             <input
               ref={nameRef}
               name="name"
-              className="w-full border rounded px-2 py-1"
+              className="form-field"
               placeholder="Marker name"
               required
               defaultValue={marker?.name || ""}
               autoFocus
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Color</label>
+          </FormField>
+          <FormField label="Color">
             <input
               name="color"
-              className="w-full border rounded px-2 py-1"
-              placeholder="Color (optional)"
               type="color"
+              className="w-8 h-8 p-0 border rounded mt-1"
               defaultValue={marker?.color || "#e53e3e"}
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Description
-            </label>
+          </FormField>
+          <FormField label="Description">
             <input
               name="description"
-              className="w-full border rounded px-2 py-1"
+              className="form-field"
               placeholder="Description (optional)"
               defaultValue={marker?.description || ""}
             />
-          </div>
+          </FormField>
           {coords && !marker && (
             <div className="text-xs text-gray-500">
               Location: {coords[0].toFixed(4)}, {coords[1].toFixed(4)}
             </div>
           )}
           <div className="flex justify-end gap-2 mt-4">
-            <button
-              type="button"
-              className="px-3 py-1 rounded bg-gray-200"
-              onClick={onClose}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-3 py-1 rounded bg-blue-600 text-white"
-            >
-              {marker ? "Save Changes" : "Add Marker"}
-            </button>
+            <div className="flex justify-end gap-2 mt-4">
+              <FormButton type="button" variant="secondary" onClick={onClose}>
+                Cancel
+              </FormButton>
+              <FormButton type="submit" variant="primary">
+                {marker ? "Save Changes" : "Add Marker"}
+              </FormButton>
+            </div>
           </div>
         </form>
       ) : null}

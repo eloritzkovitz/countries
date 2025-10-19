@@ -29,12 +29,12 @@ export function ActionButton({
     <button
       type={type}
       onClick={onClick}
-      className={buttonClass}
+      className={`flex flex-row items-center justify-center gap-2 ${buttonClass}`}
       aria-label={ariaLabel}
       title={title}
       disabled={disabled}
     >
-      {icon}
+      {icon && <span className="inline-flex">{icon}</span>}
       {children}
     </button>
   );

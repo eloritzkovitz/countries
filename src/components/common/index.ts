@@ -2,6 +2,7 @@ export { ActionButton } from './ActionButton';
 export { Branding } from './Branding';
 export { CollapsibleHeader } from './CollapsibleHeader';
 export { ErrorMessage } from './ErrorMessage';
+export { FormButton } from './FormButton';
 export { FormField } from './FormField';
 export { HomeCard } from './HomeCard';
 export { LoadingSpinner } from './LoadingSpinner';

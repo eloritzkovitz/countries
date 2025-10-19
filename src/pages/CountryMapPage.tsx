@@ -8,11 +8,11 @@ import { CountryDetailsModal, CountriesPanel } from "@features/countries";
 import { Toolbar, WorldMap } from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
 import {
-  CreateMarkerModal,
+  MarkerModal,
   MarkersPanel,
   useMarkerCreation,
 } from "@features/markers";
-import { OverlayEditModal, OverlaysPanel } from "@features/overlays";
+import { OverlayModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
 import type { Country } from "../types/country";
 
@@ -46,8 +46,7 @@ export default function CountryMapPage() {
   // Overlay state
   const {
     editingOverlay,
-    isEditModalOpen,
-    isNewOverlay,
+    isEditModalOpen,    
     openAddOverlay,
     openEditOverlay,
     saveOverlay,
@@ -146,7 +145,7 @@ export default function CountryMapPage() {
             }
             onClose={() => setModalCountry(null)}
           />
-          <CreateMarkerModal
+          <MarkerModal
             open={modalOpen}
             coords={markerCoords}
             onSubmit={handleCreateMarker}
@@ -156,9 +155,8 @@ export default function CountryMapPage() {
             onAddMarker={startAddingMarker}
             onCenterMap={handleCenterMapOnMarker}
           />
-          <OverlayEditModal
+          <OverlayModal
             overlay={editingOverlay}
-            isNew={isNewOverlay}
             onChange={setEditingOverlay}
             onSave={saveOverlay}
             onClose={closeOverlayModal}

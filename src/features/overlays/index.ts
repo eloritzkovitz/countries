@@ -1,5 +1,5 @@
 // Components
-export { OverlayEditModal } from "./components/OverlayEditModal";
+export { OverlayModal } from "./components/OverlayModal";
 export { OverlaysPanel } from "./components/OverlaysPanel";
 
 // Utils

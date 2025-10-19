@@ -5,8 +5,8 @@ import { DEFAULT_PANEL_WIDTH } from "@config/constants";
 import { useMarkers } from "@contexts/MarkersContext";
 import { useUI } from "@contexts/UIContext";
 import { useDragReorder } from "@hooks/useDragReorder";
+import { MarkerModal } from "./MarkerModal";
 import { MarkersPanelItem } from "./MarkersPanelItem";
-import { CreateMarkerModal } from "./CreateMarkerModal";
 
 interface MarkersPanelProps {
   onAddMarker: () => void;
@@ -28,7 +28,7 @@ export function MarkersPanel({ onAddMarker, onCenterMap }: MarkersPanelProps) {
 
   return (
     <>
-      <CreateMarkerModal
+      <MarkerModal
         open={!!editingMarker}
         marker={editingMarker || undefined}
         onSubmit={(name, color, description) => {

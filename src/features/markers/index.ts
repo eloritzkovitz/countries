@@ -1,6 +1,6 @@
 // Components
-export { CreateMarkerModal } from "./components/CreateMarkerModal";
 export { MapMarkersLayer } from "./components/MapMarkersLayer";
+export { MarkerModal } from "./components/MarkerModal";
 export { MarkersPanel } from "./components/MarkersPanel";
 
 // Hooks
