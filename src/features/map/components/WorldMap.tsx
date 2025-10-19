@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
@@ -7,10 +7,11 @@ import { MapMarkersLayer } from "@features/markers";
 import { getOverlayItems } from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
 import { CountriesLayer } from "./CountriesLayer";
+import { MapCoordinatesDisplay } from "./MapCoordinatesDisplay";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
-import { getProjection } from "../utils/mapUtils";
+import { getGeoCoordsFromMouseEvent } from "../utils/mapUtils";
 
 type WorldMapProps = {
   zoom: number;
@@ -50,6 +51,10 @@ export function WorldMap({
 
   // Load geographical data
   const { geoData, geoError, loading: geoLoading } = useGeoData();
+
+  const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(
+    null
+  );
 
   // Load overlays data
   const {
@@ -102,27 +107,22 @@ export function WorldMap({
     );
   }
 
-  // Handle map click for adding markers
-  const handleMapClick = (event: React.MouseEvent<SVGSVGElement>) => {
-    if (!isAddingMarker || !onMapClickForMarker) return;
-
-    const svg = event.currentTarget;
-    const rect = svg.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    // Use your custom projection utility
-    const proj = getProjection(
+  // Handle map event for mouse move or click
+  const handleMapEvent = (event: React.MouseEvent<SVGSVGElement>) => {
+    const coords = getGeoCoordsFromMouseEvent(
+      event,
       projection || DEFAULT_MAP_SETTINGS.projection,
       dimensions.width,
       dimensions.height,
-      DEFAULT_MAP_SETTINGS.scaleDivisor
+      DEFAULT_MAP_SETTINGS.scaleDivisor,
+      zoom,
+      center
     );
-
-    // Guard against undefined projection or missing invert method
-    const coords = proj?.invert?.([x, y]); // [lng, lat]
     if (coords) {
-      onMapClickForMarker([coords[1], coords[0]]); // [lat, lng]
+      setSelectedCoords([coords[0], coords[1]]);
+      if (isAddingMarker && onMapClickForMarker && event.type === "click") {
+        onMapClickForMarker([coords[1], coords[0]]);
+      }
     }
   };
 
@@ -150,7 +150,8 @@ export function WorldMap({
           }}
           width={dimensions.width}
           height={dimensions.height}
-          onClick={handleMapClick}
+          onMouseMove={handleMapEvent}
+          onClick={handleMapEvent}
         >
           <ZoomableGroup
             zoom={zoom}
@@ -158,7 +159,7 @@ export function WorldMap({
             minZoom={DEFAULT_MAP_SETTINGS.minZoom}
             maxZoom={DEFAULT_MAP_SETTINGS.maxZoom}
             onMoveEnd={zoom >= 1 ? handleMoveEnd : undefined}
-          >            
+          >
             {/* Countries layers */}
             <CountriesLayer
               geographyData={geoData}
@@ -180,6 +181,8 @@ export function WorldMap({
           </ZoomableGroup>
         </ComposableMap>
       </MapSvgContainer>
+      {/*/ Display selected coordinates */}
+      {selectedCoords && <MapCoordinatesDisplay coords={selectedCoords} />}
     </div>
   );
 }
