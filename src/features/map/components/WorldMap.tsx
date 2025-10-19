@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { FaMapPin } from "react-icons/fa";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
@@ -89,9 +90,16 @@ export function WorldMap({
 
   // UI hint for adding marker
   const addMarkerHint = useUiHint(
-    isAddingMarker ? "Click on the map to place a marker." : "",
+    isAddingMarker ? (
+      <span>
+        <FaMapPin className="inline mr-2" />
+        Click on the map to place a marker.
+      </span>
+    ) : (
+      ""
+    ),
     isAddingMarker ? 0 : 1
-  ); 
+  );
 
   // Show spinner until overlays, dimensions, and geoData are ready
   const isLoading =
@@ -129,7 +137,7 @@ export function WorldMap({
         onMapClickForMarker([coords[1], coords[0]]);
       }
     }
-  };  
+  };
 
   return (
     <div
