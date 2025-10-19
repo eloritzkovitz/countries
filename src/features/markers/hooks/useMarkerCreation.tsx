@@ -32,6 +32,7 @@ export function useMarkerCreation() {
       longitude: markerCoords[1],
       color,
       description,
+      visible: true,
     });
     setModalOpen(false);
     setMarkerCoords(null);

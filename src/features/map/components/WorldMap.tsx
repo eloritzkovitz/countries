@@ -4,7 +4,7 @@ import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { MapMarkersLayer } from "@features/markers";
-import { getOverlayItems } from "@features/overlays";
+import { useOverlayItems } from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import { CountriesLayer } from "./CountriesLayer";
@@ -85,9 +85,7 @@ export function WorldMap({
   ]);
 
   // Merge all visible overlays into a single ordered array
-  const overlayItems = overlays
-    .filter((o) => o.visible)
-    .flatMap(getOverlayItems);
+  const overlayItems = useOverlayItems(overlays);
 
   // UI hint for adding marker
   const addMarkerHint = useUiHint(
