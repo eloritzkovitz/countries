@@ -1,6 +1,7 @@
 import { useMarkers } from "@contexts/MarkersContext";
 import { getProjection } from "@features/map/utils/mapUtils";
 import { Marker } from "./Marker";
+import type { Marker as MarkerType } from "@types";
 
 interface MapMarkersLayerProps {
   projectionType: string;
@@ -8,6 +9,7 @@ interface MapMarkersLayerProps {
   height: number;
   scaleDivisor: number;
   zoom?: number;
+  onMarkerDetails?: (marker: MarkerType) => void;
 }
 
 export function MapMarkersLayer({
@@ -16,6 +18,7 @@ export function MapMarkersLayer({
   height,
   scaleDivisor,
   zoom = 1,
+  onMarkerDetails,
 }: MapMarkersLayerProps & { zoom?: number }) {
   const { markers } = useMarkers();
   const proj = getProjection(projectionType, width, height, scaleDivisor);
@@ -34,6 +37,7 @@ export function MapMarkersLayer({
             color={marker.color}
             name={marker.name}
             zoom={zoom}
+            onClick={() => onMarkerDetails?.(marker)}
           />
         );
       })}

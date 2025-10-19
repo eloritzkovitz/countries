@@ -8,6 +8,7 @@ import { MapMarkersLayer } from "@features/markers";
 import { useOverlayItems } from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
+import type { Marker } from "@types";
 import { CountriesLayer } from "./CountriesLayer";
 import { MapCoordinatesDisplay } from "./MapCoordinatesDisplay";
 import { MapStatus } from "./MapStatus";
@@ -32,6 +33,7 @@ type WorldMapProps = {
   svgRef?: React.Ref<SVGSVGElement>;
   isAddingMarker?: boolean;
   onMapClickForMarker?: (coords: [number, number]) => void;
+  onMarkerDetails?: (marker: Marker) => void;
 };
 
 export function WorldMap({
@@ -46,6 +48,7 @@ export function WorldMap({
   svgRef,
   isAddingMarker,
   onMapClickForMarker,
+  onMarkerDetails,
 }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
@@ -189,7 +192,8 @@ export function WorldMap({
               width={dimensions.width}
               height={dimensions.height}
               scaleDivisor={DEFAULT_MAP_SETTINGS.scaleDivisor}
-              zoom={zoom}
+              zoom={zoom}              
+              onMarkerDetails={onMarkerDetails}
             />
           </ZoomableGroup>
         </ComposableMap>

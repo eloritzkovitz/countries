@@ -6,9 +6,10 @@ interface MarkerProps {
   color?: string;
   name: string;
   zoom?: number;
+  onClick: () => void;
 }
 
-export function Marker({ x, y, color, name, zoom = 1 }: MarkerProps) {
+export function Marker({ x, y, color, name, zoom = 1, onClick }: MarkerProps) {
   const { theme } = useTheme();
   const markerStrokeColor = theme === "dark" ? "#fff" : "#222";
   
@@ -17,7 +18,7 @@ export function Marker({ x, y, color, name, zoom = 1 }: MarkerProps) {
       transform={`translate(${x},${y}) scale(${1 / zoom})`}
       style={{ cursor: "pointer" }}
     >
-      <g transform="translate(0,-18)">
+      <g onClick={onClick} transform="translate(0,-18)">
         <path
           d="M0,-12 a8,8 0 1,1 0,16 a8,8 0 1,1 0,-16 M0,4 L0,18"
           fill={color || "#e53e3e"}

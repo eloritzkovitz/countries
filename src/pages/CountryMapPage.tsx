@@ -10,13 +10,14 @@ import { CountryDetailsModal, CountriesPanel } from "@features/countries";
 import { Toolbar, WorldMap } from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
 import {
+  MarkerDetailsModal,
   MarkerModal,
   MarkersPanel,
   useMarkerCreation,
 } from "@features/markers";
 import { OverlayModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
-import type { Country } from "../types/country";
+import type { Country, Marker } from "@types";
 
 export default function CountryMapPage() {
   // UI state
@@ -107,6 +108,16 @@ export default function CountryMapPage() {
     centerOnMarker(marker);
   }
 
+  // Marker details modal state
+  const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+
+  // Handle marker details view
+  const handleMarkerDetails = (marker: Marker) => {
+    setSelectedMarker(marker);
+    setDetailsModalOpen(true);
+  };
+
   // Show error state
   if (error) return <ErrorMessage error={error} />;
 
@@ -139,6 +150,7 @@ export default function CountryMapPage() {
             svgRef={svgRef}
             isAddingMarker={isAddingMarker}
             onMapClickForMarker={handleMapClickForMarker}
+            onMarkerDetails={handleMarkerDetails}
           />
 
           {/* Toolbar & UI Overlays */}
@@ -152,6 +164,11 @@ export default function CountryMapPage() {
                 : undefined
             }
             onClose={() => setModalCountry(null)}
+          />
+          <MarkerDetailsModal
+            marker={selectedMarker}
+            open={detailsModalOpen}
+            onClose={() => setDetailsModalOpen(false)}
           />
           <MarkerModal
             open={modalOpen}
