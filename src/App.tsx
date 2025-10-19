@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CountryDataProvider } from "@contexts/CountryDataContext";
 import { MapUIProvider } from "@contexts/MapUIContext";
+import { MarkersProvider } from "@contexts/MarkersContext";
 import { OverlayProvider } from "@contexts/OverlayContext";
 import { ThemeProvider } from "@contexts/ThemeContext";
 import { UIProvider } from "@contexts/UIContext";
@@ -22,7 +23,9 @@ function App() {
                 <UIProvider>
                   <OverlayProvider>
                     <MapUIProvider>
-                      <CountryMapPage />
+                      <MarkersProvider>
+                        <CountryMapPage />
+                      </MarkersProvider>
                     </MapUIProvider>
                   </OverlayProvider>
                 </UIProvider>

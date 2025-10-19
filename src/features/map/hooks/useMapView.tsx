@@ -25,6 +25,15 @@ export function useMapView(
     }
   };
 
+  // Center map on a marker
+  const centerOnMarker = (
+    marker: { longitude: number; latitude: number },
+    zoomLevel: number = 20
+  ) => {
+    setCenter([marker.longitude, marker.latitude]);
+    setZoom(zoomLevel);
+  };
+
   // Handler for map move end
   const handleMoveEnd = ({
     zoom: newZoom,
@@ -41,5 +50,13 @@ export function useMapView(
     }
   };
 
-  return { zoom, setZoom, center, setCenter, handleMoveEnd, centerOnCountry };
+  return {
+    zoom,
+    setZoom,
+    center,
+    setCenter,
+    handleMoveEnd,
+    centerOnCountry,
+    centerOnMarker,
+  };
 }

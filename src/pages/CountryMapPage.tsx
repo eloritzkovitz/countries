@@ -1,20 +1,31 @@
 import { useCallback, useRef, useState } from "react";
-import { ErrorMessage, LoadingSpinner, ShortcutsModal} from "@components";
+import { ErrorMessage, LoadingSpinner, ShortcutsModal } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
+import { useUI } from "@contexts/UIContext";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
+import { useUiToggleHint } from "@hooks/useUiToggleHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
 import { Toolbar, WorldMap } from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
-import { OverlayEditModal, OverlaysPanel } from "@features/overlays";
+import {
+  MarkerDetailsModal,
+  MarkerModal,
+  MarkersPanel,
+  useMarkerCreation,
+} from "@features/markers";
+import { OverlayModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
-import type { Country } from "../types/country";
+import type { Country, Marker } from "@types";
 
 export default function CountryMapPage() {
   // UI state
   const [mapReady, setMapReady] = useState(false);
-  const uiHint = useUiHint("Press U to hide/show the UI", 4000);
+  const { uiVisible, setUiVisible } = useUI();
+  const [hintMessage, setHintMessage] = useState<React.ReactNode>("");
+  const [hintKey, setHintKey] = useState(0);
+  const uiHint = useUiHint(hintMessage, 4000, { key: hintKey });
 
   // Data state
   const { countries, loading: countriesLoading, error } = useCountryData();
@@ -22,8 +33,15 @@ export default function CountryMapPage() {
   const { geoData } = useGeoData();
 
   // Map state
-  const { zoom, setZoom, center, setCenter, handleMoveEnd, centerOnCountry } =
-    useMapView();
+  const {
+    zoom,
+    setZoom,
+    center,
+    setCenter,
+    handleMoveEnd,
+    centerOnCountry,
+    centerOnMarker,
+  } = useMapView();
   const svgRef = useRef<SVGSVGElement>(null);
 
   // Selection state
@@ -35,7 +53,6 @@ export default function CountryMapPage() {
   const {
     editingOverlay,
     isEditModalOpen,
-    isNewOverlay,
     openAddOverlay,
     openEditOverlay,
     saveOverlay,
@@ -43,8 +60,22 @@ export default function CountryMapPage() {
     setEditingOverlay,
   } = useOverlayContext();
 
+  // Marker creation state
+  const {
+    isAddingMarker,
+    modalOpen,
+    markerCoords,
+    startAddingMarker,
+    handleMapClickForMarker,
+    handleCreateMarker,
+    cancelMarkerCreation,
+  } = useMarkerCreation();
+
   // Derived state
   const isLoading = countriesLoading || overlaysLoading || !mapReady;
+
+  // Show UI hint on 'U' key press
+  useUiToggleHint(uiVisible, setUiVisible, setHintKey, setHintMessage);
 
   // Map ready handler with slight delay
   const handleMapReady = useCallback(() => {
@@ -69,6 +100,36 @@ export default function CountryMapPage() {
     }
   }
 
+  // Center map on a marker
+  function handleCenterMapOnMarker(
+    marker: { longitude: number; latitude: number } | Marker
+  ) {
+    centerOnMarker(marker);
+    // If a marker is provided, show its details
+    if ("id" in marker) {
+      handleMarkerDetails(marker);
+    }
+  }
+
+  // Marker details modal state
+  const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [detailsModalPosition, setDetailsModalPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  // Handle marker details view
+  const handleMarkerDetails = (
+    marker: Marker,
+    position?: { top: number; left: number }
+  ) => {
+    setSelectedMarker(marker);
+    setDetailsModalOpen(true);
+    if (position) setDetailsModalPosition(position);
+    else setDetailsModalPosition(null);
+  };
+
   // Show error state
   if (error) return <ErrorMessage error={error} />;
 
@@ -82,7 +143,7 @@ export default function CountryMapPage() {
           hoveredIsoCode={hoveredIsoCode}
           onSelect={setSelectedIsoCode}
           onHover={setHoveredIsoCode}
-          onCountryInfo={setModalCountry}          
+          onCountryInfo={setModalCountry}
         />
 
         {/* Main Map Area */}
@@ -99,11 +160,13 @@ export default function CountryMapPage() {
             hoveredIsoCode={hoveredIsoCode}
             onReady={() => handleMapReady()}
             svgRef={svgRef}
+            isAddingMarker={isAddingMarker}
+            onMapClickForMarker={handleMapClickForMarker}
+            onMarkerDetails={handleMarkerDetails}
           />
 
           {/* Toolbar & UI Overlays */}
           <Toolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
-
           <CountryDetailsModal
             country={modalCountry}
             isOpen={!!modalCountry}
@@ -114,24 +177,35 @@ export default function CountryMapPage() {
             }
             onClose={() => setModalCountry(null)}
           />
-
-          <OverlayEditModal
+          <MarkerDetailsModal
+            marker={selectedMarker}
+            open={detailsModalOpen}
+            onClose={() => setDetailsModalOpen(false)}
+            position={detailsModalPosition}
+          />
+          <MarkerModal
+            open={modalOpen}
+            coords={markerCoords}
+            onSubmit={handleCreateMarker}
+            onClose={cancelMarkerCreation}
+          />
+          <MarkersPanel
+            onAddMarker={startAddingMarker}
+            onCenterMap={handleCenterMapOnMarker}
+          />
+          <OverlayModal
             overlay={editingOverlay}
-            isNew={isNewOverlay}
             onChange={setEditingOverlay}
             onSave={saveOverlay}
             onClose={closeOverlayModal}
             isOpen={isEditModalOpen}
           />
-
           <OverlaysPanel
             onEditOverlay={openEditOverlay}
             onAddOverlay={openAddOverlay}
           />
-
           <SettingsPanel />
         </div>
-
         <ShortcutsModal />
 
         {/* Spinner */}

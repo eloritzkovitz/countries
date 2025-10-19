@@ -1,6 +1,6 @@
 import { Geographies, Geography } from "react-simple-maps";
 import { getCountryIsoCode } from "@features/countries";
-import { useMapGeographyStyle } from "../utils/mapUtils";
+import { useMapGeographyStyle } from "@features/map";
 import type { OverlayItem } from "@types";
 
 type MapCountriesLayerProps = {
@@ -11,17 +11,19 @@ type MapCountriesLayerProps = {
   onCountryClick?: (countryIsoCode: string) => void;
   onCountryHover?: (isoCode: string | null) => void;
   defaultColor?: string;
+  isAddingMarker?: boolean;
 };
 
 export function CountriesLayer({
   geographyData,
-  overlayItems = [],  
+  overlayItems = [],
   selectedIsoCode,
   hoveredIsoCode,
   onCountryClick,
   onCountryHover,
+  isAddingMarker,
 }: MapCountriesLayerProps) {
-  const geographyStyle = useMapGeographyStyle();
+  const geographyStyle = useMapGeographyStyle(isAddingMarker);
 
   // Build overlay lookup
   const overlayMap = Object.fromEntries(
@@ -29,53 +31,55 @@ export function CountriesLayer({
   );
 
   return (
-    <Geographies geography={geographyData}>
-      {({ geographies }: { geographies: any[] }) =>
-        geographies.map((geo) => {
-          const isoA2 = getCountryIsoCode(geo.properties);
-          if (!isoA2) return null;
+    <g style={isAddingMarker ? { pointerEvents: "none" } : undefined}>
+      <Geographies geography={geographyData}>
+        {({ geographies }: { geographies: any[] }) =>
+          geographies.map((geo) => {
+            const isoA2 = getCountryIsoCode(geo.properties);
+            if (!isoA2) return null;
 
-          // Highlight logic
-          const isSelected =
-            !!selectedIsoCode && isoA2 === selectedIsoCode.toUpperCase();
-          const isHovered =
-            !!hoveredIsoCode && isoA2 === hoveredIsoCode.toUpperCase();
+            // Highlight logic
+            const isSelected =
+              !!selectedIsoCode && isoA2 === selectedIsoCode.toUpperCase();
+            const isHovered =
+              !!hoveredIsoCode && isoA2 === hoveredIsoCode.toUpperCase();
 
-          // Overlay logic
-          const overlay = overlayMap[isoA2];
+            // Overlay logic
+            const overlay = overlayMap[isoA2];
 
-          // Style: highlight takes precedence, then overlay, then base
-          let style = geographyStyle.default;
-          let tooltip = geo.properties.name;
+            // Style: highlight takes precedence, then overlay, then base
+            let style = geographyStyle.default;
+            let tooltip = geo.properties.name;
 
-          if (isSelected) {
-            style = geographyStyle.pressed;
-          } else if (isHovered) {
-            style = geographyStyle.hover;
-          } else if (overlay && overlay.color) {
-            style = { ...geographyStyle.default, fill: overlay.color };
-          }          
+            if (isSelected) {
+              style = geographyStyle.pressed;
+            } else if (isHovered) {
+              style = geographyStyle.hover;
+            } else if (overlay && overlay.color) {
+              style = { ...geographyStyle.default, fill: overlay.color };
+            }
 
-          return (
-            <Geography
-              key={geo.rsmKey}
-              geography={geo}
-              onMouseEnter={() =>
-                onCountryHover && onCountryHover(isoA2 ?? null)
-              }
-              onMouseLeave={() => onCountryHover && onCountryHover(null)}
-              onClick={() => onCountryClick && isoA2 && onCountryClick(isoA2)}
-              style={{
-                default: style,
-                hover: style,
-                pressed: style,
-              }}
-            >
-              <title>{tooltip}</title>
-            </Geography>
-          );
-        })
-      }
-    </Geographies>
+            return (
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                onMouseEnter={() =>
+                  onCountryHover && onCountryHover(isoA2 ?? null)
+                }
+                onMouseLeave={() => onCountryHover && onCountryHover(null)}
+                onClick={() => onCountryClick && isoA2 && onCountryClick(isoA2)}
+                style={{
+                  default: style,
+                  hover: style,
+                  pressed: style,
+                }}
+              >
+                <title>{tooltip}</title>
+              </Geography>
+            );
+          })
+        }
+      </Geographies>
+    </g>
   );
 }

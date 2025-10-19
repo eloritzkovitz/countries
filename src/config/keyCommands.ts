@@ -21,6 +21,7 @@ export const keyCommands: KeyCommand[] = [
   // Toolbar  
   { key: "e", modifiers: [], action: "Toggle Export Panel", category: "Toolbar" },
   { key: "f", modifiers: [], action: "Toggle Filters Panel", category: "Toolbar" },
+  { key: "m", modifiers: [], action: "Toggle Markers Panel", category: "Toolbar" },
   { key: "o", modifiers: [], action: "Toggle Overlays Panel", category: "Toolbar" },  
   { key: "s", modifiers: [], action: "Toggle Settings Panel", category: "Toolbar" },
   { key: "u", modifiers: [], action: "Toggle UI", category: "Toolbar" },  

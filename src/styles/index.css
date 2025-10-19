@@ -153,6 +153,13 @@ body::-webkit-scrollbar-thumb {
   background: theme("colors.gray.600");
 }
 
+/* Dashed ring utility for dragged panel items */
+.ring-dashed {
+  border: 2px dashed !important;
+  border-color: theme("colors.gray.500") !important;
+  border-radius: 0.5rem;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -11,7 +11,9 @@ export type OverlayContextType = {
   overlays: Overlay[];
   setOverlays: React.Dispatch<React.SetStateAction<Overlay[]>>;
   overlaySelections: Record<string, string>;
-  setOverlaySelections: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  setOverlaySelections: React.Dispatch<
+    React.SetStateAction<Record<string, string>>
+  >;
   addOverlay: (overlay: Overlay) => void;
   editOverlay: (overlay: Overlay) => void;
   removeOverlay: (id: string) => void;
@@ -20,7 +22,6 @@ export type OverlayContextType = {
   error: string | null;
   editingOverlay: Overlay | null;
   isEditModalOpen: boolean;
-  isNewOverlay: boolean;
   openAddOverlay: () => void;
   openEditOverlay: (overlay: Overlay) => void;
   saveOverlay: () => void;
@@ -33,7 +34,9 @@ const OverlayContext = createContext<OverlayContextType | undefined>(undefined);
 export function OverlayProvider({ children }: { children: React.ReactNode }) {
   // Overlay state
   const [overlays, setOverlays] = useState<Overlay[]>([]);
-  const [overlaySelections, setOverlaySelections] = useState<Record<string, string>>({});
+  const [overlaySelections, setOverlaySelections] = useState<
+    Record<string, string>
+  >({});
 
   // Loading and error state
   const [loading, setLoading] = useState(true);
@@ -42,9 +45,8 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   // Modal state
   const [editingOverlay, setEditingOverlay] = useState<Overlay | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [isNewOverlay, setIsNewOverlay] = useState(false);
 
-  // Load overlays from localStorage or fetch from files  
+  // Load overlays from localStorage or fetch from files
   useEffect(() => {
     const saved = localStorage.getItem("overlays");
     if (saved) {
@@ -109,24 +111,23 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
       visible: true,
       tooltip: "",
     });
-    setIsNewOverlay(true);
     setEditModalOpen(true);
   }
 
   // Open edit modal with selected overlay
   function openEditOverlay(overlay: Overlay) {
     setEditingOverlay({ ...overlay });
-    setIsNewOverlay(false);
     setEditModalOpen(true);
   }
 
   // Save overlay (add or edit)
   function saveOverlay() {
     if (!editingOverlay) return;
-    if (isNewOverlay) {
-      addOverlay(editingOverlay);
-    } else {
+    const exists = overlays.some((o) => o.id === editingOverlay.id);
+    if (exists) {
       editOverlay(editingOverlay);
+    } else {
+      addOverlay(editingOverlay);
     }
     closeOverlayModal();
   }
@@ -135,7 +136,6 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   function closeOverlayModal() {
     setEditModalOpen(false);
     setEditingOverlay(null);
-    setIsNewOverlay(false);
   }
 
   return (
@@ -153,7 +153,6 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
         error,
         editingOverlay,
         isEditModalOpen,
-        isNewOverlay,
         openAddOverlay,
         openEditOverlay,
         saveOverlay,

@@ -42,13 +42,13 @@ export function OverlaysPanel({
     loading,
     error,
   } = useOverlayContext();
-  
+
   // Drag state
   const { draggedIndex, handleDragStart, handleDragOver, handleDragEnd } =
     useDragReorder(overlays, setOverlays);
 
   // File input reference for importing overlays
-  const fileInputRef = useRef<HTMLInputElement>(null);  
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading overlays..." />;
@@ -109,23 +109,19 @@ export function OverlaysPanel({
       </PanelHeader>
       <ul className="list-none p-0">
         {overlays.map((overlay, index) => (
-          <div
+          <OverlayPanelItem
             key={overlay.id}
-            className={`rounded-lg mb-4 bg-gray-50 shadow-sm
-      ${draggedIndex === index ? "opacity-70 cursor-grabbing" : "cursor-grab"}
-    `}
-            draggable
+            overlay={overlay}
+            onToggleVisibility={toggleOverlayVisibility}
+            onEdit={onEditOverlay}
+            onRemove={removeOverlay}
+            dragged={draggedIndex === index}
             onDragStart={() => handleDragStart(index)}
-            onDragOver={(e) => handleDragOver(e, index)}
-            onDragEnd={handleDragEnd}
-          >
-            <OverlayPanelItem
-              overlay={overlay}
-              onToggleVisibility={toggleOverlayVisibility}
-              onEdit={onEditOverlay}
-              onRemove={removeOverlay}
-            />
-          </div>
+            handleDragOver={(e) => handleDragOver(e, index)}
+            handleDragEnd={handleDragEnd}
+            showEdit={true}
+            showCenter={false}
+          />
         ))}
       </ul>
     </Modal>
