@@ -2,8 +2,10 @@ import { useCallback, useRef, useState } from "react";
 import { ErrorMessage, LoadingSpinner, ShortcutsModal } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
+import { useUI } from "@contexts/UIContext";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
+import { useUiToggleHint } from "@hooks/useUiToggleHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
 import { Toolbar, WorldMap } from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
@@ -19,7 +21,10 @@ import type { Country } from "../types/country";
 export default function CountryMapPage() {
   // UI state
   const [mapReady, setMapReady] = useState(false);
-  const uiHint = useUiHint("Press U to hide/show the UI", 4000);
+  const { uiVisible, setUiVisible } = useUI();
+  const [hintMessage, setHintMessage] = useState<React.ReactNode>("");
+  const [hintKey, setHintKey] = useState(0);
+  const uiHint = useUiHint(hintMessage, 4000, { key: hintKey });
 
   // Data state
   const { countries, loading: countriesLoading, error } = useCountryData();
@@ -46,7 +51,7 @@ export default function CountryMapPage() {
   // Overlay state
   const {
     editingOverlay,
-    isEditModalOpen,    
+    isEditModalOpen,
     openAddOverlay,
     openEditOverlay,
     saveOverlay,
@@ -67,6 +72,9 @@ export default function CountryMapPage() {
 
   // Derived state
   const isLoading = countriesLoading || overlaysLoading || !mapReady;
+
+  // Show UI hint on 'U' key press
+  useUiToggleHint(uiVisible, setUiVisible, setHintKey, setHintMessage);
 
   // Map ready handler with slight delay
   const handleMapReady = useCallback(() => {
