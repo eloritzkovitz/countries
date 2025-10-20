@@ -8,7 +8,6 @@ const SOVEREIGNTY_ORDER: SovereigntyType[] = [
   "Sovereign",
   "Dependency",
   "Overseas Region",
-  "Special Administrative Region",
   "Disputed",
   "Unrecognized",  
 ];
@@ -20,7 +19,7 @@ const allOption: FilterOption = { value: "", label: "All" };
 export const coreFiltersConfig: FilterConfig[] = [
   createSelectFilter(
     "region",
-    "Continent",
+    "Region",
     (allRegions) => [allOption, ...mapOptions(allRegions ?? [])],
     (props) => props.selectedRegion,
     (props, val) => props.setSelectedRegion(val)

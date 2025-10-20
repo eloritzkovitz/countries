@@ -19,7 +19,6 @@ export type SovereigntyType =
   | "Sovereign"
   | "Dependency"
   | "Overseas Region"
-  | "Special Administrative Region"
   | "Unrecognized"
   | "Disputed"
   | "Unknown";
@@ -31,6 +30,5 @@ export type SovereigntyGroup = {
   dependencies?: { name: string; isoCode: string }[];
   regions?: { name: string; isoCode: string }[];
   territories?: { name: string; isoCode: string }[];
-  sars?: { name: string; isoCode: string }[];
   disputes?: { name: string; isoCode: string; }[];
 };

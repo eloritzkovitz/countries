@@ -120,16 +120,6 @@ export function getSovereigntyInfoForTerritory(territoryIsoCode: string): {
         sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
       };
     }
-    // SARs
-    if (
-      Array.isArray(sovereignObj.sars) &&
-      sovereignObj.sars.some((sar) => sar.isoCode === territoryIsoCode)
-    ) {
-      return {
-        type: "Special Administrative Region",
-        sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
-      };
-    }
     // Disputes
     if (
       Array.isArray(sovereignObj.disputes) &&
@@ -140,8 +130,8 @@ export function getSovereigntyInfoForTerritory(territoryIsoCode: string): {
         sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
       };
     }
-  } 
-
+  }
+  // If not found, assume sovereign
   return { type: "Sovereign" };
 }
 

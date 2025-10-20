@@ -114,7 +114,10 @@ export function filterCountries(
       // Add sovereignty filter
       const matchesSovereignty =
         selectedSovereignty && selectedSovereignty !== ""
-          ? country.sovereigntyType === selectedSovereignty
+          ? selectedSovereignty === "Dependency"
+            ? country.sovereigntyType === "Dependency" ||
+              country.sovereigntyType === "Special Administrative Region"
+            : country.sovereigntyType === selectedSovereignty
           : true;
 
       return (

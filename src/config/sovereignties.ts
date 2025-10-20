@@ -13,7 +13,7 @@ export const SOVEREIGN_DEPENDENCIES: Record<string, SovereigntyGroup> = {
   CN: {
     name: "China",
     disputes: [{ name: "Taiwan", isoCode: "TW" }],
-    sars: [
+    dependencies: [
       { name: "Hong Kong", isoCode: "HK" },
       { name: "Macao", isoCode: "MO" },
     ],
@@ -83,10 +83,10 @@ export const SOVEREIGN_DEPENDENCIES: Record<string, SovereigntyGroup> = {
     name: "Netherlands",
     dependencies: [
       { name: "Aruba", isoCode: "AW" },
-      { name: "Bonaire, Sint Eustatius and Saba", isoCode: "BQ" },
       { name: "Curaçao", isoCode: "CW" },
       { name: "Sint Maarten", isoCode: "SX" },
     ],
+    regions: [{ name: "Caribbean Netherlands", isoCode: "BQ" }],
   },
   NO: {
     name: "Norway",
