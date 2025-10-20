@@ -48,7 +48,7 @@ export function CountryList({
               <CountryFlag
                 flag={{
                   isoCode: country.isoCode,
-                  source: "flagcdn",
+                  source: "svg",
                   style: "flat",
                   size: "32x24",
                 }}

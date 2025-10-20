@@ -1,4 +1,4 @@
-import { EXCLUDED_ISO_CODES } from "@config";
+import { EXCLUDED_ISO_CODES, SOVEREIGN_FLAG_MAP } from "@config";
 import type { Country, FlagSource, FlagStyle, FlagSize } from "@types";
 
 /**
@@ -57,15 +57,19 @@ export function getFlagUrl(
   size: FlagSize = "32x24",
   source: FlagSource = "flagcdn",
   style: FlagStyle = "flat"
-): string {
+): string {  
   if (!isoCode) return "";
 
   const normalizedIso = isoCode.toUpperCase();
 
+  // Handle sovereign state flags for territories
+  const flagIso = SOVEREIGN_FLAG_MAP[normalizedIso] || normalizedIso;
+
   switch (source) {
     case "flagsapi":
+      if (!flagIso || flagIso.length !== 2) return "";
       // FlagsAPI: https://flagsapi.com/:country_code/:style/:size.png
-      return `https://flagsapi.com/${normalizedIso}/${style}/${size.split("x")[0]}.png`;
+      return `https://flagsapi.com/${flagIso}/${style}/${size.split("x")[0]}.png`;
     case "flagcdn":
     default:
       // FlagCDN: https://flagcdn.com/:size/:country_code.png

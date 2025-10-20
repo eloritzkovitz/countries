@@ -68,7 +68,7 @@ export default function CountrySelectModal({
               <CountryFlag
                 flag={{
                   isoCode: opt.value,
-                  source: "flagsapi",
+                  source: "svg",
                   style: "flat",
                   size: "32x24",
                 }}
