@@ -1,3 +1,8 @@
+
+/**
+ * Compresses a GeoJSON file by removing whitespace and indentation.
+ */
+
 const fs = require("fs");
 const path = require("path");
 
