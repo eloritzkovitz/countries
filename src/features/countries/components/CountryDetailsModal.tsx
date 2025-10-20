@@ -49,7 +49,24 @@ export function CountryDetailsModal({
       onClose={onClose}
       className="bg-white rounded-xl p-8 min-w-[340px] max-w-[100vw] w-[350px] shadow-lg"
     >
-      <PanelHeader title={country.name}>
+      <PanelHeader
+        title={
+          <span className="flex items-center gap-2">
+            <CountryFlag
+              flag={{
+                isoCode: country.isoCode,
+                source: "flagsapi",
+                style: "flat",
+                size: "32x24",
+              }}
+              alt={`${country.name} flag`}
+              style={{ marginBottom: 0 }}
+            />
+            <span className="font-bold text-lg">{country.name}</span>
+            <span className="text-gray-500 text-sm">({country.isoCode})</span>
+          </span>
+        }
+      >
         {onCenterMap && (
           <ActionButton
             onClick={onCenterMap}
@@ -74,31 +91,53 @@ export function CountryDetailsModal({
           size: "64x48",
         }}
         alt={`${country.name} flag`}
-        style={{ marginBottom: "16px" }}
+        style={{
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginBottom: "16px",
+        }}
       />
-      <ul className="list-none p-0 mb-4 text-gray-700">
-        <li>
-          <strong>Region:</strong> {country.region}
-        </li>
-        <li>
-          <strong>Subregion:</strong> {country.subregion}
-        </li>
-        <li>
-          <strong>Population:</strong> {country.population?.toLocaleString()}
-        </li>
-        <li>
-          <strong>Capital:</strong> {country.capital}
-        </li>
-        <li>
-          <strong>Currency: </strong>{" "}
-          {country.currency && currencies[country.currency]
-            ? `${currencies[country.currency]} (${country.currency})`
-            : country.currency || "N/A"}
-        </li>
-        <li>
-          <strong>Languages:</strong> {getLanguagesDisplay(country.languages)}
-        </li>
-      </ul>
+      <table className="w-full mb-4 text-gray-700 border-separate [border-spacing:0.5rem]">
+        <tbody>
+          <tr>
+            <td className="font-semibold">Continent:</td>
+            <td>{country.region}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Subregion:</td>
+            <td>{country.subregion}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Population:</td>
+            <td>{country.population?.toLocaleString()}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Capital:</td>
+            <td>{country.capital}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Currency:</td>
+            <td>
+              {country.currency && currencies[country.currency]
+                ? `${currencies[country.currency]} (${country.currency})`
+                : country.currency || "N/A"}
+            </td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Languages:</td>
+            <td>{getLanguagesDisplay(country.languages)}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Calling code:</td>
+            <td>{country.callingCode}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">ISO 3166 Code:</td>
+            <td>{country.isoCode}</td>
+          </tr>
+        </tbody>
+      </table>
       <a
         href={`https://en.wikipedia.org/wiki/${country.name.replace(
           / /g,
