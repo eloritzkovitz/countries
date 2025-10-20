@@ -21,7 +21,12 @@ export function CountryList({
   const highlightIsoCode = hoveredIsoCode || selectedIsoCode;
   return (
     <div
-      className="overflow-y-auto max-h-[720px] w-full"
+      className="overflow-y-auto max-h-[720px]"
+      style={{
+        marginLeft: "-1rem",
+        marginRight: "-1rem",
+        width: "calc(100% + 2rem)",
+      }}
       onMouseLeave={() => {
         onHover(null);
         onSelect(null);
