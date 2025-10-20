@@ -9,6 +9,15 @@ export function useUiToggleHint(
 ) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      // Ignore if typing in input, textarea, or contenteditable
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
       if (e.key.toLowerCase() === "u") {
         setUiVisible((v) => !v);
         setHintKey((k) => k + 1);

@@ -47,7 +47,7 @@ export function CountryDetailsModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="bg-white rounded-xl p-8 min-w-[340px] max-w-[100vw] w-[350px] shadow-lg"
+      className="bg-white rounded-xl p-8 min-w-[540px] max-w-[100vw] w-[350px] shadow-lg"
     >
       <PanelHeader
         title={
