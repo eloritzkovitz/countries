@@ -7,8 +7,10 @@ import type { Overlay } from "../types/overlay";
 const SOVEREIGNTY_ORDER: SovereigntyType[] = [
   "Sovereign",
   "Dependency",
-  "Partially Recognized",
+  "Overseas Region",
+  "Special Administrative Region",
   "Disputed",
+  "Unrecognized",  
 ];
 
 // "All" option constant

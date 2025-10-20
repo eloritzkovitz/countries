@@ -18,7 +18,19 @@ export type Country = {
 export type SovereigntyType =
   | "Sovereign"
   | "Dependency"
-  | "Partially Recognized"
+  | "Overseas Region"
+  | "Special Administrative Region"
   | "Unrecognized"
   | "Disputed"
   | "Unknown";
+
+// Sovereignty group definition
+export type SovereigntyGroup = {
+  name: string;
+  countries?: { name: string; isoCode: string }[];
+  dependencies?: { name: string; isoCode: string }[];
+  regions?: { name: string; isoCode: string }[];
+  territories?: { name: string; isoCode: string }[];
+  sars?: { name: string; isoCode: string }[];
+  disputes?: { name: string; isoCode: string; }[];
+};

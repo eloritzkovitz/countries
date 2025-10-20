@@ -1,4 +1,4 @@
-import { FaCrosshairs, FaTimes } from "react-icons/fa";
+import { FaWikipediaW, FaCrosshairs, FaTimes } from "react-icons/fa";
 import {
   ActionButton,
   CountryFlag,
@@ -11,7 +11,10 @@ import { useCountryData } from "@contexts/CountryDataContext";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Country } from "@types";
 import { SovereigntyBadge } from "./SovereigntyBadge";
-import { getLanguagesDisplay } from "../utils/countryData";
+import {
+  getLanguagesDisplay,
+  getSovereigntyInfoForTerritory,
+} from "../utils/countryData";
 
 type CountryDetailsModalProps = {
   country: Country | null;
@@ -37,6 +40,11 @@ export function CountryDetailsModal({
     ["c", "C"],
     isOpen
   );
+
+  // Get sovereignty info
+  const sovereigntyInfo = country
+    ? getSovereigntyInfoForTerritory(country.isoCode)
+    : undefined;
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading..." />;
@@ -67,6 +75,21 @@ export function CountryDetailsModal({
           </span>
         }
       >
+        <ActionButton
+          onClick={() =>
+            window.open(
+              `https://en.wikipedia.org/wiki/${country.name.replace(
+                / /g,
+                "_"
+              )}`,
+              "_blank",
+              "noopener,noreferrer"
+            )
+          }
+          ariaLabel="Open Wikipedia article"
+          title="Wikipedia"
+          icon={<FaWikipediaW />}
+        />
         {onCenterMap && (
           <ActionButton
             onClick={onCenterMap}
@@ -82,7 +105,12 @@ export function CountryDetailsModal({
           icon={<FaTimes />}
         />
       </PanelHeader>
-      <SovereigntyBadge type={country.sovereigntyType} />
+      {country.sovereigntyType && sovereigntyInfo && (
+        <SovereigntyBadge
+          type={country.sovereigntyType}
+          sovereign={sovereigntyInfo.sovereign}
+        />
+      )}
       <CountryFlag
         flag={{
           isoCode: country.isoCode,
@@ -138,17 +166,6 @@ export function CountryDetailsModal({
           </tr>
         </tbody>
       </table>
-      <a
-        href={`https://en.wikipedia.org/wiki/${country.name.replace(
-          / /g,
-          "_"
-        )}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 underline font-bold inline-block mt-2"
-      >
-        Wikipedia
-      </a>
     </Modal>
   );
 }
