@@ -129,7 +129,7 @@ export function CountryDetailsModal({
       <table className="w-full mb-4 text-gray-700 border-separate [border-spacing:0.5rem]">
         <tbody>
           <tr>
-            <td className="font-semibold">Continent:</td>
+            <td className="font-semibold">Region:</td>
             <td>{country.region}</td>
           </tr>
           <tr>
