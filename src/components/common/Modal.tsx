@@ -10,6 +10,7 @@ type ModalProps = {
   position?: "center" | "custom";
   containerClassName?: string;
   style?: React.CSSProperties;
+  disableClose?: boolean;
 };
 
 export function Modal({
@@ -20,15 +21,26 @@ export function Modal({
   position = "center",
   containerClassName = "",
   style,
+  disableClose = false,
 }: ModalProps) {
-  useKeyHandler(onClose, ["Escape"], isOpen);
+  // Handle Escape key to close modal
+  useKeyHandler(
+    () => {
+      if (!disableClose) onClose();
+    },
+    ["Escape"],
+    isOpen
+  );
 
+  // Don't render anything if the modal is not open
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
     <div
       className="fixed inset-0 z-[9999]"
-      onClick={onClose}
+      onClick={() => {
+        if (!disableClose) onClose();
+      }}
       aria-modal="true"
       role="dialog"
     >

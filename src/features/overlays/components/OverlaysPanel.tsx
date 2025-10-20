@@ -26,11 +26,13 @@ import {
 type OverlaysPanelProps = {
   onEditOverlay: (overlay: Overlay) => void;
   onAddOverlay: () => void;
+  overlayModalOpen: boolean;
 };
 
 export function OverlaysPanel({
   onEditOverlay,
   onAddOverlay,
+  overlayModalOpen,
 }: OverlaysPanelProps) {
   const { showOverlays, closePanel } = useUI();
 
@@ -48,7 +50,7 @@ export function OverlaysPanel({
     useDragReorder(overlays, setOverlays);
 
   // File input reference for importing overlays
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);  
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading overlays..." />;
@@ -58,6 +60,7 @@ export function OverlaysPanel({
     <Modal
       isOpen={showOverlays}
       onClose={closePanel}
+      disableClose={overlayModalOpen}
       position="custom"
       containerClassName="right-40 bottom-[80px]"
       className="min-w-[340px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-4 overflow-y-auto"
