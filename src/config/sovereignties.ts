@@ -59,6 +59,7 @@ export const SOVEREIGN_DEPENDENCIES: Record<string, SovereigntyGroup> = {
     ],
     dependencies: [
       { name: "Anguilla", isoCode: "AI" },
+      { name: "Akrotiri and Dhekelia", isoCode: "AK" },
       { name: "Bermuda", isoCode: "BM" },
       { name: "Falkland Islands (Malvinas)", isoCode: "FK" },
       { name: "Guernsey", isoCode: "GG" },

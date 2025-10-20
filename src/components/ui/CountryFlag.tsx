@@ -1,7 +1,8 @@
 import React from "react";
-import type { Flag } from "@types";
-import { getFlagUrl } from "@features/countries/utils/countryData";
 import * as Flags from "country-flag-icons/react/3x2";
+import { SOVEREIGN_FLAG_MAP } from "@config/constants";
+import { getFlagUrl } from "@features/countries/utils/countryData";
+import type { Flag } from "@types";
 
 export function CountryFlag({
   flag,
@@ -15,7 +16,9 @@ export function CountryFlag({
   const [width, height] = flag.size.split("x").map(Number);
 
   if (flag.source === "svg") {
-    const FlagSvg = Flags[flag.isoCode.toUpperCase() as keyof typeof Flags];
+    const mappedIso =
+      SOVEREIGN_FLAG_MAP?.[flag.isoCode.toUpperCase()] || flag.isoCode.toUpperCase();
+    const FlagSvg = Flags[mappedIso as keyof typeof Flags];
     if (FlagSvg) {
       return (
         <FlagSvg

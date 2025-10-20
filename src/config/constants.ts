@@ -57,6 +57,7 @@ export const EXCLUDED_ISO_CODES = [ // List of country codes that do not have th
 ];
 
 export const SOVEREIGN_FLAG_MAP: Record<string, string> = {
+  "AK": "GB", // Akrotiri and Dhekelia → United Kingdom
   "BV": "NO", // Bouvet Island → Norway
   "GF": "FR", // French Guiana → France  
   "HM": "AU", // Heard Island and McDonald Islands → Australia
