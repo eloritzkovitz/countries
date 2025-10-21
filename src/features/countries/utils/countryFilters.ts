@@ -6,6 +6,7 @@ import type {
   FilterOption,
   Overlay,
 } from "@types";
+import { normalizeString } from "@utils/stringUtils";
 
 /**
  * Maps an array of strings to FilterOption objects.
@@ -98,9 +99,9 @@ export function filterCountries(
   }
 ) {
   return countries.filter((country) => {
-    const matchesSearch = country.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const matchesSearch = normalizeString(country.name).includes(
+      normalizeString(search)
+    );
     const matchesRegion = selectedRegion
       ? country.region === selectedRegion
       : true;
