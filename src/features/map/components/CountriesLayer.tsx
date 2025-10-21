@@ -2,7 +2,7 @@ import { Geographies, Geography } from "react-simple-maps";
 import { getCountryIsoCode } from "@features/countries";
 import { useMapGeographyStyle } from "@features/map";
 import type { OverlayItem } from "@types";
-import { blendColors } from "@utils/colorUtils";
+import { blendColors } from "@utils/color";
 
 type MapCountriesLayerProps = {
   geographyData: string;

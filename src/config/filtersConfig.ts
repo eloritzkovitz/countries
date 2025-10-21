@@ -1,6 +1,6 @@
 import { createSelectFilter, mapOptions } from "@features/countries";
 import type { FilterConfig, FilterOption, Overlay, SovereigntyType } from "@types";
-import { capitalize } from "@utils/stringUtils";
+import { capitalize } from "@utils/string";
 
 // Predefined sovereignty order for consistent dropdown ordering
 const SOVEREIGNTY_ORDER: SovereigntyType[] = [

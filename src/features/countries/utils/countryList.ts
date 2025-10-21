@@ -3,7 +3,7 @@
  */
 
 import type { Country, FilterOption, SovereigntyType } from "@types";
-import { capitalizeWords, normalizeString } from "@utils/stringUtils";
+import { capitalizeWords, normalizeString } from "@utils/string";
 
 /**
  * Maps an array of strings to FilterOption objects.

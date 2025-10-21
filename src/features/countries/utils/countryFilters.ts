@@ -9,7 +9,7 @@ import type {
   FilterOption,
   Overlay,
 } from "@types";
-import { normalizeString } from "@utils/stringUtils";
+import { normalizeString } from "@utils/string";
 
 /**
  * Filters countries based on search, region, subregion, and overlay criteria.

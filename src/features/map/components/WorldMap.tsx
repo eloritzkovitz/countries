@@ -4,6 +4,7 @@ import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
+import { getGeoCoordsFromMouseEvent } from "@features/map";
 import { MapMarkersLayer } from "@features/markers";
 import { useOverlayItems } from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
@@ -14,7 +15,6 @@ import { MapCoordinatesDisplay } from "./MapCoordinatesDisplay";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
-import { getGeoCoordsFromMouseEvent } from "../utils/mapUtils";
 
 type WorldMapProps = {
   zoom: number;

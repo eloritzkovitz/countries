@@ -6,4 +6,5 @@ export { OverlaysPanel } from "./components/OverlaysPanel";
 export { useOverlayItems } from "./hooks/useOverlayItems";
 
 // Utils
-export { getOverlayItems} from "./utils/overlayUtils";
+export * from "./utils/overlay";
+export * from "./utils/overlayFile";

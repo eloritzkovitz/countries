@@ -1,2 +1,2 @@
-export * from "./colorUtils";
-export * from "./stringUtils";
+export * from "./color";
+export * from "./string";

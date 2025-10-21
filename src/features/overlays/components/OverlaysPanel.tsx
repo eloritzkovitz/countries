@@ -15,13 +15,13 @@ import {
 } from "@components";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
-import { useDragReorder } from "@hooks/useDragReorder";
-import type { Overlay } from "@types";
-import { OverlayPanelItem } from "./OverlayPanelItem";
 import {
   importOverlaysFromFile,
   exportOverlaysToFile,
-} from "../utils/overlayFileUtils";
+} from "@features/overlays";
+import { useDragReorder } from "@hooks/useDragReorder";
+import type { Overlay } from "@types";
+import { OverlayPanelItem } from "./OverlayPanelItem";
 
 type OverlaysPanelProps = {
   onEditOverlay: (overlay: Overlay) => void;
@@ -50,7 +50,7 @@ export function OverlaysPanel({
     useDragReorder(overlays, setOverlays);
 
   // File input reference for importing overlays
-  const fileInputRef = useRef<HTMLInputElement>(null);  
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading overlays..." />;
