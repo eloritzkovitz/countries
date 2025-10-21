@@ -97,38 +97,36 @@ export function filterCountries(
     overlayCountries: string[];
   }
 ) {
-  return countries
-    .filter((country) => {
-      const matchesSearch = country.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
-      const matchesRegion = selectedRegion
-        ? country.region === selectedRegion
-        : true;
-      const matchesSubregion = selectedSubregion
-        ? country.subregion === selectedSubregion
-        : true;
-      const matchesOverlay =
-        !overlayCountries.length || overlayCountries.includes(country.isoCode);
+  return countries.filter((country) => {
+    const matchesSearch = country.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    const matchesRegion = selectedRegion
+      ? country.region === selectedRegion
+      : true;
+    const matchesSubregion = selectedSubregion
+      ? country.subregion === selectedSubregion
+      : true;
+    const matchesOverlay =
+      !overlayCountries.length || overlayCountries.includes(country.isoCode);
 
-      // Add sovereignty filter
-      const matchesSovereignty =
-        selectedSovereignty && selectedSovereignty !== ""
-          ? selectedSovereignty === "Dependency"
-            ? country.sovereigntyType === "Dependency" ||
-              country.sovereigntyType === "Special Administrative Region"
-            : country.sovereigntyType === selectedSovereignty
-          : true;
+    // Add sovereignty filter
+    const matchesSovereignty =
+      selectedSovereignty && selectedSovereignty !== ""
+        ? selectedSovereignty === "Dependency"
+          ? country.sovereigntyType === "Dependency" ||
+            country.sovereigntyType === "Special Administrative Region"
+          : country.sovereigntyType === selectedSovereignty
+        : true;
 
-      return (
-        matchesSearch &&
-        matchesRegion &&
-        matchesSubregion &&
-        matchesOverlay &&
-        matchesSovereignty
-      );
-    })
-    .sort((a, b) => a.name.localeCompare(b.name));
+    return (
+      matchesSearch &&
+      matchesRegion &&
+      matchesSubregion &&
+      matchesOverlay &&
+      matchesSovereignty
+    );
+  });
 }
 
 /**

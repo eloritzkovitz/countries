@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import {
   ActionButton,
@@ -15,6 +15,7 @@ import { useUI } from "@contexts/UIContext";
 import type { Country } from "@types";
 import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
+import { CountrySortSelect } from "./CountrySortSelect";
 import { CountryFiltersPanel } from "../filters/CountryFiltersPanel";
 import { useCountryFilters } from "../hooks/useCountryFilters";
 import { useCountryListNavigation } from "../hooks/useCountryListNavigation";
@@ -65,6 +66,43 @@ export function CountriesPanel({
     overlaySelections,
   });
 
+  // Sorting state
+  const [sortBy, setSortBy] = useState<
+    "name-asc" | "name-desc" | "iso-asc" | "iso-desc"
+  >("name-asc");
+
+  // Custom dropdown state
+  const [sortMenuOpen, setSortMenuOpen] = useState(false);
+  const sortButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Close menu on click outside
+  useEffect(() => {
+    if (!sortMenuOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (
+        sortButtonRef.current &&
+        !sortButtonRef.current.contains(e.target as Node)
+      ) {
+        setSortMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [sortMenuOpen]);
+
+  // Sort filtered countries
+  const sortedCountries = [...filteredCountries].sort((a, b) => {
+    if (sortBy === "name-asc")
+      return (a.name || "").localeCompare(b.name || "");
+    if (sortBy === "name-desc")
+      return (b.name || "").localeCompare(a.name || "");
+    if (sortBy === "iso-asc")
+      return (a.isoCode || "").localeCompare(b.isoCode || "");
+    if (sortBy === "iso-desc")
+      return (b.isoCode || "").localeCompare(a.isoCode || "");
+    return 0;
+  });
+
   // Keyboard navigation within country list
   useCountryListNavigation({
     filteredCountries,
@@ -111,30 +149,36 @@ export function CountriesPanel({
           </>
         }
       >
-        {/* Search input and count */}
-        <div className="sticky top-0 z-10 bg-white dark:bg-gray-800">
+        {/* Search input and sort button */}
+        <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 flex items-stretch">
           <SearchInput
             value={search}
             onChange={setSearch}
             placeholder="Search countries..."
-            className="flex-1"
+            className="flex-1 h-10"
           />
-          <div className="my-2 font-semibold text-left flex-shrink-0">
-            Showing {filteredCountries.length} countries from {countries.length}
-          </div>
-          <Separator />
+          <CountrySortSelect
+            value={sortBy}
+            onChange={(v) => setSortBy(v as any)}
+          />
+        </div>
+
+        {/* Showing count */}
+        <div className="text-s text-left text-gray-500 font-semibold mb-2">
+          Showing {sortedCountries.length} countries
         </div>
 
         {/* Country list */}
+        <Separator />
         <CountryList
-          countries={filteredCountries}
+          countries={sortedCountries}
           selectedIsoCode={selectedIsoCode}
           hoveredIsoCode={hoveredIsoCode}
           onSelect={onSelect}
           onHover={onHover}
           onCountryInfo={handleCountryInfo}
         />
-        <Separator />        
+        <Separator />
       </Panel>
 
       {/* Collapsed action button */}
