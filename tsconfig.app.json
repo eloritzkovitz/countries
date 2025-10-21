@@ -20,7 +20,9 @@
       "@hooks": ["hooks/index.ts"],
       "@hooks/*": ["hooks/*"],
       "@types": ["types/index.ts"],
-      "@types/*": ["types/*"]
+      "@types/*": ["types/*"],
+      "@utils": ["utils/index.ts"],
+      "@utils/*": ["utils/*"]
     },
 
     /* Bundler mode */

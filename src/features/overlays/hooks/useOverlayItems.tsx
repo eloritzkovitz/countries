@@ -4,7 +4,7 @@ import type { Overlay } from "@types";
 
 export function useOverlayItems(overlays: Overlay[]) {
   return useMemo(
-    () => overlays.filter((o) => o.visible).slice().reverse().flatMap(getOverlayItems),
+    () => overlays.filter((o) => o.visible).flatMap(getOverlayItems),
     [overlays]
   );
 }
