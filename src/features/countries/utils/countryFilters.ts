@@ -1,80 +1,15 @@
+/**
+ * Utility functions for filtering countries based on various criteria.
+ */
+
 import type {
   Country,
-  SovereigntyType,
   FilterConfig,
   FilterKey,
   FilterOption,
   Overlay,
 } from "@types";
 import { normalizeString } from "@utils/stringUtils";
-
-/**
- * Maps an array of strings to FilterOption objects.
- * @param options Array of string options
- * @returns Array of FilterOption objects
- */
-export function mapOptions(options: string[]): FilterOption[] {
-  return options.map((r) => ({ value: r, label: r }));
-}
-
-/**
- * Returns all unique regions from the countries list, excluding undefined values.
- * @param countries - Array of country objects with optional region property.
- * @returns Sorted array of unique region strings.
- */
-export function getAllRegions(countries: { region?: string }[]) {
-  return Array.from(
-    new Set(countries.map((c) => c.region).filter((r): r is string => !!r))
-  ).sort((a, b) => a.localeCompare(b));
-}
-
-/**
- * Returns all unique subregions from the countries list, excluding undefined values.
- * @param countries - Array of country objects with optional subregion property.
- * @returns Sorted array of unique subregion strings.
- */
-export function getAllSubregions(countries: { subregion?: string }[]) {
-  return Array.from(
-    new Set(countries.map((c) => c.subregion).filter((r): r is string => !!r))
-  ).sort((a, b) => a.localeCompare(b));
-}
-
-/**
- * Returns all unique subregions for a given region from the countries list.
- * @param countries - Array of country objects with region and subregion properties.
- * @param selectedRegion - The region to filter subregions by.
- * @returns Sorted array of unique subregion strings for the selected region.
- */
-export function getSubregionsForRegion(
-  countries: { region?: string; subregion?: string }[],
-  selectedRegion: string
-) {
-  return Array.from(
-    new Set(
-      countries
-        .filter((c) => c.region === selectedRegion)
-        .map((c) => c.subregion)
-        .filter((r): r is string => !!r)
-    )
-  ).sort((a, b) => a.localeCompare(b));
-}
-
-/**
- * Returns all unique sovereignty types from the countries list.
- * @param countries - Array of country objects with sovereigntyType property.
- * @returns Sorted array of unique sovereignty type strings.
- */
-export function getAllSovereigntyTypes(
-  countries: { sovereigntyType?: SovereigntyType }[]
-): SovereigntyType[] {
-  return Array.from(
-    new Set(
-      countries
-        .map((c) => c.sovereigntyType)
-        .filter((t): t is SovereigntyType => !!t)
-    )
-  ).sort((a, b) => a.localeCompare(b));
-}
 
 /**
  * Filters countries based on search, region, subregion, and overlay criteria.

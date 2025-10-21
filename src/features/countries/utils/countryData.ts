@@ -25,37 +25,6 @@ export function getCountryIsoCode(properties: any): string | undefined {
 }
 
 /**
- * Returns countries whose flag matches their own ISO code and is not empty.
- * If you add a flagIsoCode property for borrowed flags, this will skip those.
- */
-export function getCountriesWithOwnFlag(countries: Country[]): Country[] {
-  return countries.filter(
-    (country) => country.flag && !EXCLUDED_ISO_CODES.includes(country.isoCode)
-  );
-}
-
-/**
- * Gets a random country from the provided list.
- * @param countries - Array of country objects.
- * @returns A random country object from the array.
- */
-export function getRandomCountry(countries: Country[]) {
-  return countries[Math.floor(Math.random() * countries.length)];
-}
-
-/**
- * Converts an array of countries into options suitable for a select input.
- * @param countries - Array of country objects.
- * @returns An array of objects with `value` and `label` properties.
- */
-export function getCountryOptions(countries: Country[]) {
-  return countries.map((country) => ({
-    value: country.isoCode,
-    label: country.name,
-  }));
-}
-
-/**
  * Gets the URL of a country's flag based on its ISO code, source, style, and size.
  * @param isoCode - The ISO code of the country.
  * @param size - The size of the flag image.
@@ -88,6 +57,35 @@ export function getFlagUrl(
       // FlagCDN: https://flagcdn.com/:size/:country_code.png
       return `https://flagcdn.com/${size}/${normalizedIso.toLowerCase()}.png`;
   }
+}
+
+/**
+ * Returns countries whose flag matches their own ISO code and is not empty.
+ * If you add a flagIsoCode property for borrowed flags, this will skip those.
+ */
+export function getCountriesWithOwnFlag(countries: Country[]): Country[] {
+  return countries.filter(
+    (country) => country.flag && !EXCLUDED_ISO_CODES.includes(country.isoCode)
+  );
+}
+
+/**
+ * Gets a random country from the provided list.
+ * @param countries - Array of country objects.
+ * @returns A random country object from the array.
+ */
+export function getRandomCountry(countries: Country[]) {
+  return countries[Math.floor(Math.random() * countries.length)];
+}
+
+/**
+ * Gets a formatted string of languages.
+ * @param languages - An array of language names.
+ * @returns A comma-separated string of languages or "None" if empty.
+ */
+export function getLanguagesDisplay(languages?: string[]) {
+  if (!languages || languages.length === 0) return "None";
+  return languages.join(", ");
 }
 
 // Precompute lookup maps
@@ -141,14 +139,4 @@ export function getSovereigntyInfoForTerritory(territoryIsoCode: string): {
   if (regionMap[territoryIsoCode]) return regionMap[territoryIsoCode];
   if (disputeMap[territoryIsoCode]) return disputeMap[territoryIsoCode];
   return { type: "Sovereign" };
-}
-
-/**
- * Gets a formatted string of languages.
- * @param languages - An array of language names.
- * @returns A comma-separated string of languages or "None" if empty.
- */
-export function getLanguagesDisplay(languages?: string[]) {
-  if (!languages || languages.length === 0) return "None";
-  return languages.join(", ");
 }

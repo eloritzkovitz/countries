@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { FaGlobe } from "react-icons/fa";
-import { CountryFlag, FormButton, FormField, Modal, SearchInput } from "@components";
+import {
+  CountryFlag,
+  FormButton,
+  FormField,
+  Modal,
+  SearchInput,
+} from "@components";
+import { getFilteredSortedCountries } from "@features/countries";
+import type { Country } from "@types";
 
 interface CountrySelectModalProps {
   isOpen: boolean;
   selected: string[];
-  options: { value: string; label: string }[];
+  options: Country[];
   onChange: (newCountries: string[]) => void;
   onClose: () => void;
 }
@@ -22,18 +30,17 @@ export default function CountrySelectModal({
     useState<string[]>(selected);
 
   // Sort and filter options
-  const sortedOptions = [...options].sort((a, b) =>
-    a.label.localeCompare(b.label)
-  );
-  const filteredOptions = sortedOptions.filter((opt) =>
-    opt.label.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredOptions = getFilteredSortedCountries({
+    countries: options,
+    search,
+    sortBy: "name-asc",
+  });
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="bg-white rounded-xl shadow-2xl p-6 min-w-[400px] max-w-[500px] max-h-[80vh] overflow-y-auto"
+      className="bg-white rounded-xl shadow-2xl p-6 w-[500px] max-h-[80vh] flex flex-col"
     >
       <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
         <FaGlobe />
@@ -47,39 +54,45 @@ export default function CountrySelectModal({
         />
       </FormField>
       <FormField label="Countries:">
-        <div className="max-h-[50vh] overflow-y-auto mb-4">
-          {filteredOptions.map((opt) => (
-            <label
-              key={opt.value}
-              className="flex items-center mb-2 cursor-pointer"
-            >
-              <input
-                type="checkbox"
-                checked={selectedCountries.includes(opt.value)}
-                onChange={() => {
-                  setSelectedCountries((prev) =>
-                    prev.includes(opt.value)
-                      ? prev.filter((v) => v !== opt.value)
-                      : [...prev, opt.value]
-                  );
-                }}
-                className="mr-2"
-              />
-              <CountryFlag
-                flag={{
-                  isoCode: opt.value,
-                  source: "svg",
-                  style: "flat",
-                  size: "32x24",
-                }}
-                style={{ marginRight: 8 }}
-              />
-              {opt.label}
-            </label>
-          ))}
+        <div className="h-64 max-h-[50vh] overflow-y-auto rounded px-2 py-1">
+          {filteredOptions.length === 0 ? (
+            <div className="text-gray-400 text-center py-8">
+              No countries found.
+            </div>
+          ) : (
+            filteredOptions.map((country) => (
+              <label
+                key={country.isoCode}
+                className="flex items-center mb-2 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedCountries.includes(country.isoCode)}
+                  onChange={() => {
+                    setSelectedCountries((prev) =>
+                      prev.includes(country.isoCode)
+                        ? prev.filter((v) => v !== country.isoCode)
+                        : [...prev, country.isoCode]
+                    );
+                  }}
+                  className="mr-2"
+                />
+                <CountryFlag
+                  flag={{
+                    isoCode: country.isoCode,
+                    source: "svg",
+                    style: "flat",
+                    size: "32x24",
+                  }}
+                  style={{ marginRight: 8 }}
+                />
+                {country.name}
+              </label>
+            ))
+          )}
         </div>
       </FormField>
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-2 mt-4">
         <FormButton type="button" variant="secondary" onClick={onClose}>
           Cancel
         </FormButton>

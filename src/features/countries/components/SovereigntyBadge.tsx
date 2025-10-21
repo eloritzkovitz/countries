@@ -24,7 +24,7 @@ export function SovereigntyBadge({ type, sovereign }: SovereigntyBadgeProps) {
       ? badgeColors.Blue
       : type === "Unrecognized"
       ? badgeColors.Red
-      : type === "Overseas Region" || type === "Special Administrative Region"
+      : type === "Overseas Region"
       ? badgeColors.Green
       : type === "Disputed"
       ? badgeColors.Yellow
@@ -39,9 +39,7 @@ export function SovereigntyBadge({ type, sovereign }: SovereigntyBadgeProps) {
   ) {
     label = (
       <>
-        {type === "Special Administrative Region"
-          ? "Special Administrative Region of "
-          : type === "Overseas Region"
+        {type === "Overseas Region"
           ? "Overseas Region of "
           : type === "Disputed"
           ? "Disputed by "

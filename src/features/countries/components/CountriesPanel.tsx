@@ -12,6 +12,7 @@ import {
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
+import { getFilteredSortedCountries } from "@features/countries";
 import type { Country } from "@types";
 import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
@@ -91,16 +92,10 @@ export function CountriesPanel({
   }, [sortMenuOpen]);
 
   // Sort filtered countries
-  const sortedCountries = [...filteredCountries].sort((a, b) => {
-    if (sortBy === "name-asc")
-      return (a.name || "").localeCompare(b.name || "");
-    if (sortBy === "name-desc")
-      return (b.name || "").localeCompare(a.name || "");
-    if (sortBy === "iso-asc")
-      return (a.isoCode || "").localeCompare(b.isoCode || "");
-    if (sortBy === "iso-desc")
-      return (b.isoCode || "").localeCompare(a.isoCode || "");
-    return 0;
+  const sortedCountries = getFilteredSortedCountries({
+    countries: filteredCountries,
+    search: "",
+    sortBy,
   });
 
   // Keyboard navigation within country list

@@ -8,7 +8,6 @@ import {
   PanelHeader,
 } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import { getCountryOptions } from "@features/countries";
 import type { Overlay } from "@types";
 import CountrySelectModal from "./CountrySelectModal";
 import { ColorPickerModal } from "./ColorPickerModal";
@@ -29,14 +28,13 @@ export function OverlayModal({
   isOpen,
 }: OverlayModalProps) {
   const { countries } = useCountryData();
-  const countryOptions = getCountryOptions(countries);
   const [countryModalOpen, setCountryModalOpen] = useState(false);
   const [colorModalOpen, setColorModalOpen] = useState(false);
 
   // State for country select modal
-  const selectedCountries = countryOptions.filter(
-    (opt) => overlay && overlay.countries.includes(opt.value)
-  ); 
+  const selectedCountries = countries.filter(
+    (country) => overlay && overlay.countries.includes(country.isoCode)
+  );
 
   // Handle modal close
   const handleClose = () => {
@@ -107,12 +105,12 @@ export function OverlayModal({
             {selectedCountries.length === 0 ? (
               <span className="text-gray-400">No countries selected</span>
             ) : (
-              selectedCountries.map((opt) => (
+              selectedCountries.map((country) => (
                 <span
-                  key={opt.value}
+                  key={country.isoCode}
                   className="bg-blue-100 text-blue-800 dark:bg-gray-500 dark:text-gray-200 px-2 py-1 rounded text-sm mr-1 mb-1"
                 >
-                  {opt.label}
+                  {country.name}
                 </span>
               ))
             )}
@@ -157,7 +155,7 @@ export function OverlayModal({
       <CountrySelectModal
         isOpen={countryModalOpen}
         selected={overlay.countries}
-        options={countryOptions}
+        options={countries}
         onClose={() => setCountryModalOpen(false)}
         onChange={(newCountries) => {
           onChange({ ...overlay, countries: newCountries });
