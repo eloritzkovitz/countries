@@ -1,3 +1,7 @@
+/**
+ * Utility functions for handling country data.
+ */
+
 import { EXCLUDED_ISO_CODES, SOVEREIGN_FLAG_MAP } from "@config";
 import { SOVEREIGN_DEPENDENCIES } from "@config/sovereignties";
 import type {
@@ -86,6 +90,43 @@ export function getFlagUrl(
   }
 }
 
+// Precompute lookup maps
+const dependencyMap: Record<
+  string,
+  { type: SovereigntyType; sovereign: { name: string; isoCode: string } }
+> = {};
+const regionMap: Record<
+  string,
+  { type: SovereigntyType; sovereign: { name: string; isoCode: string } }
+> = {};
+const disputeMap: Record<
+  string,
+  { type: SovereigntyType; sovereign: { name: string; isoCode: string } }
+> = {};
+
+for (const [sovereignIso, sovereignObj] of Object.entries(
+  SOVEREIGN_DEPENDENCIES
+)) {
+  sovereignObj.dependencies?.forEach((dep) => {
+    dependencyMap[dep.isoCode] = {
+      type: "Dependency",
+      sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
+    };
+  });
+  sovereignObj.regions?.forEach((region) => {
+    regionMap[region.isoCode] = {
+      type: "Overseas Region",
+      sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
+    };
+  });
+  sovereignObj.disputes?.forEach((dep) => {
+    disputeMap[dep.isoCode] = {
+      type: "Disputed",
+      sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
+    };
+  });
+}
+
 /**
  * Finds the sovereign country for a terrritory's ISO code.
  * @param territoryIsoCode - The ISO code of the territory.
@@ -96,42 +137,9 @@ export function getSovereigntyInfoForTerritory(territoryIsoCode: string): {
   sovereign?: { name: string; isoCode: string };
 } {
   if (!territoryIsoCode) return { type: undefined };
-
-  for (const [sovereignIso, sovereignObj] of Object.entries(
-    SOVEREIGN_DEPENDENCIES
-  )) {
-    // Dependencies
-    if (
-      Array.isArray(sovereignObj.dependencies) &&
-      sovereignObj.dependencies.some((dep) => dep.isoCode === territoryIsoCode)
-    ) {
-      return {
-        type: "Dependency",
-        sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
-      };
-    }
-    // Overseas Regions
-    if (
-      Array.isArray(sovereignObj.regions) &&
-      sovereignObj.regions.some((region) => region.isoCode === territoryIsoCode)
-    ) {
-      return {
-        type: "Overseas Region",
-        sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
-      };
-    }
-    // Disputes
-    if (
-      Array.isArray(sovereignObj.disputes) &&
-      sovereignObj.disputes.some((dep) => dep.isoCode === territoryIsoCode)
-    ) {
-      return {
-        type: "Disputed",
-        sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
-      };
-    }
-  }
-  // If not found, assume sovereign
+  if (dependencyMap[territoryIsoCode]) return dependencyMap[territoryIsoCode];
+  if (regionMap[territoryIsoCode]) return regionMap[territoryIsoCode];
+  if (disputeMap[territoryIsoCode]) return disputeMap[territoryIsoCode];
   return { type: "Sovereign" };
 }
 
