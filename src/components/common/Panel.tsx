@@ -40,7 +40,7 @@ export function Panel({
       role="complementary"
       aria-hidden={!show}
       tabIndex={-1}
-      className={`bg-white shadow-lg flex flex-col transition-all duration-300 ease-in-out ${
+      className={`bg-white shadow-lg flex flex-col transition-all duration-300 ease-in-out focus:outline-none ${
         show
           ? "translate-x-0 opacity-100 pointer-events-auto"
           : "-translate-x-full opacity-0 pointer-events-none"

@@ -119,7 +119,7 @@ export function CountriesPanel({
             placeholder="Search countries..."
             className="flex-1"
           />
-          <div className="my-2 font-bold text-center flex-shrink-0">
+          <div className="my-2 font-semibold text-left flex-shrink-0">
             Showing {filteredCountries.length} countries from {countries.length}
           </div>
           <Separator />
@@ -134,7 +134,7 @@ export function CountriesPanel({
           onHover={onHover}
           onCountryInfo={handleCountryInfo}
         />
-        <Separator />
+        <Separator />        
       </Panel>
 
       {/* Collapsed action button */}

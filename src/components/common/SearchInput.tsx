@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 
 type SearchInputProps = {
@@ -56,8 +56,19 @@ export function SearchInput({
         placeholder={placeholder}
         title={placeholder || "Search"}
         aria-label={placeholder || "Search"}
-        className={`filter-select pl-10 pr-3 py-2 bg-gray-100 rounded border border-none text-base focus:outline-none focus:ring-none w-full ${className}`}
+        className={`filter-select pl-10 pr-10 py-2 bg-gray-100 rounded border border-none text-base focus:outline-none focus:ring-none w-full ${className}`}
       />
+      {value && (
+        <button
+          type="button"
+          aria-label="Clear search"
+          title="Clear search"
+          onClick={() => onChange("")}
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-700 dark:hover:text-gray-100 focus:outline-none"
+        >
+          <FaTimes />
+        </button>
+      )}
     </div>
   );
 }
