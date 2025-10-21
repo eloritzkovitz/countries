@@ -1,4 +1,4 @@
-import { FaSort } from "react-icons/fa";
+import { PiArrowsDownUpBold } from "react-icons/pi";
 
 type SortSelectProps = {
   value: string;
@@ -21,10 +21,10 @@ export function CountrySortSelect({ value, onChange }: SortSelectProps) {
         <option value="iso-desc">ISO 3166 code (descending)</option>
       </select>
       <span
-        className="flex items-center justify-center h-10 w-10 rounded bg-gray-100 hover:bg-gray-200 text-base relative z-10 pointer-events-none focus:outline-none"
+        className="sort-btn flex items-center justify-center h-10 w-10 rounded bg-gray-100 hover:bg-gray-200 dark:hover text-base relative z-10 focus:outline-none"
         aria-hidden="true"
       >
-        <FaSort />
+        <PiArrowsDownUpBold size="24" />
       </span>
     </div>
   );
