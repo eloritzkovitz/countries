@@ -1,3 +1,7 @@
+/**
+ * Utility functions for managing overlays.
+ */
+
 import type { Overlay } from "@types";
 
 /**

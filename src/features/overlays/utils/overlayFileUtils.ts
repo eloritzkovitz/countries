@@ -1,4 +1,8 @@
 /**
+ * Utility functions for importing and exporting overlay files.
+ */
+
+/**
  * Imports overlays from a JSON file.
  * @param event The file input change event.
  * @param setOverlays The function to update the overlays state.

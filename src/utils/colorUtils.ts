@@ -1,4 +1,8 @@
 /**
+ * Utility functions for color manipulation.
+ */
+
+/**
  * Parses an RGBA color string into its component values.
  * @param rgba - The RGBA color string to parse.
  * @returns An array containing the red, green, blue, and alpha values.
