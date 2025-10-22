@@ -24,7 +24,7 @@ export function Modal({
   style,
   disableClose = false,
 }: ModalProps) {
-  usePanelHide({ show: isOpen, onHide: onClose });
+  usePanelHide({ show: isOpen, onHide: onClose, escEnabled: disableClose ? false : true });
 
   // Don't render anything if the modal is not open
   if (!isOpen) return null;

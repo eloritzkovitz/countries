@@ -33,7 +33,7 @@ export const MarkerModal: React.FC<MarkerModalProps> = ({
       isOpen={open}
       onClose={onClose}
       position="center"
-      className="min-w-[900px] max-w-[1200px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-4 overflow-y-auto"
+      className="modal min-w-[900px] max-w-[1200px] max-h-[90vh]"
     >
       <PanelHeader
         title={

@@ -1,6 +1,6 @@
 import { SketchPicker } from "react-color";
 import { FaPalette } from "react-icons/fa";
-import { Modal, FormButton } from "@components";
+import { Modal, FormButton, PanelHeader } from "@components";
 import { useTheme } from "@contexts/ThemeContext";
 
 interface ColorPickerModalProps {
@@ -22,12 +22,16 @@ export function ColorPickerModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="bg-white rounded-xl shadow-2xl p-6 min-w-[260px] max-w-[400px]"
+      className="modal min-w-[260px] max-w-[400px]"
     >
-      <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-        <FaPalette />
-        Select Color
-      </h3>
+      <PanelHeader
+        title={
+          <>
+            <FaPalette />
+            Select Color
+          </>
+        }
+      />
       <SketchPicker
         color={color}
         onChangeComplete={(color) =>

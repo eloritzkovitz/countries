@@ -4,14 +4,14 @@ import { useUI } from "@contexts/UIContext";
 
 type UsePanelHideOptions = {
   show?: boolean;
-  onHide?: () => void;
+  onHide?: () => void;  
   escEnabled?: boolean;
 };
 
 export function usePanelHide({
   show = true,
   onHide,
-  escEnabled = true,
+  escEnabled = false,
 }: UsePanelHideOptions) {
   const { uiVisible } = useUI();
 
@@ -23,7 +23,7 @@ export function usePanelHide({
       }
     },
     ["Escape"],
-    show
+    show && escEnabled
   );
 
   // Hide when UI is hidden

@@ -5,6 +5,7 @@ import {
   FormButton,
   FormField,
   Modal,
+  PanelHeader,
   SearchInput,
 } from "@components";
 import { filterCountriesBySearch } from "@features/countries";
@@ -36,12 +37,16 @@ export default function CountrySelectModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="bg-white rounded-xl shadow-2xl p-6 w-[500px] max-h-[80vh] flex flex-col"
+      className="modal w-[500px] max-h-[80vh] flex flex-col"
     >
-      <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-        <FaGlobe />
-        Select Countries
-      </h3>
+      <PanelHeader
+        title={
+          <>
+            <FaGlobe />
+            Select Countries
+          </>
+        }
+      />
       <FormField label="Search:">
         <SearchInput
           value={search}
