@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaDownload, FaTimes, FaFileCode, FaFileImage } from "react-icons/fa";
 import { ActionButton, Modal, PanelHeader, Separator } from "@components";
 import { useUI } from "@contexts/UIContext";
-import { exportSvg, exportSvgAsPng } from "./mapExportUtils";
+import { exportSvg, exportSvgAsPng } from "@features/map";
 
 interface MapExportModalProps {
   svgRef: React.RefObject<SVGSVGElement | null>;
@@ -38,7 +38,7 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
       onClose={() => closePanel()}
       position="custom"
       containerClassName="right-30 bottom-[80px]"
-      className="min-w-[220px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-4 overflow-y-auto"
+      className="modal min-w-[220px] max-w-[600px] max-h-[90vh]"
     >
       <PanelHeader
         title={

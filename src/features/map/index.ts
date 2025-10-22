@@ -8,3 +8,4 @@ export { useMapView } from "./hooks/useMapView";
 
 // Utils
 export * from "./utils/map";
+export * from "./utils/mapExport";

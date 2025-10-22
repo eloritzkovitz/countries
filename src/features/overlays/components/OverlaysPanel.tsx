@@ -63,7 +63,7 @@ export function OverlaysPanel({
       disableClose={overlayModalOpen}
       position="custom"
       containerClassName="right-40 bottom-[80px]"
-      className="min-w-[340px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-4 overflow-y-auto"
+      className="modal min-w-[340px] max-w-[600px] max-h-[90vh]"
     >
       <PanelHeader
         title={

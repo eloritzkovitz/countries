@@ -14,8 +14,10 @@ export { SelectInput } from './form/SelectInput';
 
 // Layout components
 export { CollapsibleHeader } from './layout/CollapsibleHeader';
-export { Modal } from './layout/Modal';
 export { Separator } from './layout/Separator';
+
+// Modal components
+export { Modal } from './layout/Modal/Modal';
 
 // Panel components
 export { Panel } from './layout/Panel/Panel';

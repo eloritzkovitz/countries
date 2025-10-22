@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import ReactDOM from "react-dom";
 import { useKeyHandler } from "@hooks/useKeyHandler";
+import "./Modal.css";
 
 type ModalProps = {
   isOpen: boolean;
@@ -37,18 +38,22 @@ export function Modal({
 
   return ReactDOM.createPortal(
     <div
-      className="fixed inset-0 z-[9999]"
+      className="modal-backdrop"
       onClick={() => {
         if (!disableClose) onClose();
       }}
       aria-modal="true"
       role="dialog"
+      style={{ pointerEvents: isOpen ? "auto" : "none" }}
     >
       <div
         className={
-          position === "center"
-            ? `fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${className}`
-            : `fixed ${className} ${containerClassName}`
+          (position === "center" ? "modal-center " : "modal-custom ") +
+          "modal " +
+          (isOpen ? "modal-show " : "modal-hide ") +
+          className +
+          " " +
+          containerClassName
         }
         style={position === "custom" ? style : undefined}
         onClick={(e) => e.stopPropagation()}

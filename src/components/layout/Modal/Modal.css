@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.modal {
+  @apply bg-white rounded-xl shadow-2xl pt-0 px-4 pb-4 overflow-y-auto transition-all duration-300 ease-in-out;
+}
+
+.dark .modal {
+    @apply bg-gray-700 text-white;
+}
+
+.modal-show {
+  @apply opacity-100 pointer-events-auto scale-100;
+}
+
+.modal-hide {
+  @apply opacity-0 pointer-events-none scale-95;
+}
+
+.modal-center {
+  @apply fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+.modal-custom {
+  @apply fixed;
+}
