@@ -74,28 +74,33 @@ export function getAllSovereigntyTypes(
 }
 
 /**
- * Filters and sorts a list of countries based on search string and sort criteria.
- * @param countries - The list of countries to filter and sort.
- * @param search - The search string to filter countries by name.
- * @param sortBy - The criteria to sort the countries by.
- * @returns The filtered and sorted list of countries.
+ * Filters a list of countries by search string (accent-insensitive).
+ * @param countries - The list of countries to filter.
+ * @param search - The search string to filter by.
+ * @returns The filtered list of countries.
  */
-export function getFilteredSortedCountries({
-  countries,
-  search,
-  sortBy,
-}: {
-  countries: Country[];
-  search: string;
-  sortBy: "name-asc" | "name-desc" | "iso-asc" | "iso-desc";
-}) {
+export function filterCountriesBySearch(
+  countries: Country[],
+  search: string
+) {
+  if (!search) return countries;
   const normalizedSearch = normalizeString(search);
-
-  const filtered = countries.filter((country) =>
+  return countries.filter((country) =>
     normalizeString(country.name).includes(normalizedSearch)
   );
+}
 
-  return filtered.sort((a, b) => {
+/**
+ * Sorts countries based on the specified criteria.
+ * @param countries - The list of countries to sort.
+ * @param sortBy - The criteria to sort the countries by.
+ * @returns The sorted list of countries.
+ */
+export function sortCountries(
+  countries: Country[],
+  sortBy: "name-asc" | "name-desc" | "iso-asc" | "iso-desc"
+) {
+  return [...countries].sort((a, b) => {
     if (sortBy === "name-asc")
       return normalizeString(a.name).localeCompare(normalizeString(b.name));
     if (sortBy === "name-desc")

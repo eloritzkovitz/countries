@@ -12,7 +12,8 @@ import {
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
-import { getFilteredSortedCountries } from "@features/countries";
+import { sortCountries } from "@features/countries";
+import { useSort } from "@hooks/useSort";
 import type { Country } from "@types";
 import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
@@ -67,10 +68,12 @@ export function CountriesPanel({
     overlaySelections,
   });
 
-  // Sorting state
-  const [sortBy, setSortBy] = useState<
-    "name-asc" | "name-desc" | "iso-asc" | "iso-desc"
-  >("name-asc");
+  // Sort state
+  const {
+    sortBy,
+    setSortBy,
+    sortedItems: sortedCountries,
+  } = useSort(filteredCountries, sortCountries, "name-asc");
 
   // Custom dropdown state
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
@@ -90,13 +93,6 @@ export function CountriesPanel({
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [sortMenuOpen]);
-
-  // Sort filtered countries
-  const sortedCountries = getFilteredSortedCountries({
-    countries: filteredCountries,
-    search: "",
-    sortBy,
-  });
 
   // Keyboard navigation within country list
   useCountryListNavigation({

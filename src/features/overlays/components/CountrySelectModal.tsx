@@ -7,7 +7,7 @@ import {
   Modal,
   SearchInput,
 } from "@components";
-import { getFilteredSortedCountries } from "@features/countries";
+import { filterCountriesBySearch } from "@features/countries";
 import type { Country } from "@types";
 
 interface CountrySelectModalProps {
@@ -29,12 +29,8 @@ export default function CountrySelectModal({
   const [selectedCountries, setSelectedCountries] =
     useState<string[]>(selected);
 
-  // Sort and filter options
-  const filteredOptions = getFilteredSortedCountries({
-    countries: options,
-    search,
-    sortBy: "name-asc",
-  });
+  // Filter options by search (accent-insensitive)
+  const filteredOptions = filterCountriesBySearch(options, search);
 
   return (
     <Modal
