@@ -11,7 +11,7 @@ import { ActionButton } from "@components";
 import { useUI } from "@contexts/UIContext";
 import { ZoomControls } from "./ZoomControls";
 import { MapExportModal } from "../export/MapExportModal";
-import "./toolbar.css";
+import "./Toolbar.css";
 
 export function Toolbar({
   zoom,
