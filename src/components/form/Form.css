@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Select input */
+
+.select-input {
+    @apply w-full px-3 py-2 rounded border border-none mt-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:focus:ring-blue-400;
+}
+
+.select-input:hover {
+  background-color: theme("colors.gray.200");
+}
+
+.select-input:focus {
+  background-color: theme("colors.gray.200");
+}
+
+.dark .select-input:hover {
+  background-color: theme("colors.gray.500");
+}
+
+.dark .select-input:focus {
+  background-color: theme("colors.gray.500");
+}

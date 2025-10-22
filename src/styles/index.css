@@ -101,24 +101,6 @@ button:focus-visible {
   color: theme("colors.gray.300");
 }
 
-/* Select input */
-
-.select-input:hover {
-  background-color: theme("colors.gray.200");
-}
-
-.select-input:focus {
-  background-color: theme("colors.gray.200");
-}
-
-.dark .select-input:hover {
-  background-color: theme("colors.gray.500");
-}
-
-.dark .select-input:focus {
-  background-color: theme("colors.gray.500");
-}
-
 /* Custom scrollbar styles */
 body::-webkit-scrollbar {
   width: 8px;
@@ -151,13 +133,6 @@ body::-webkit-scrollbar-thumb {
 }
 .dark .filter-select::-webkit-scrollbar-thumb {
   background: theme("colors.gray.600");
-}
-
-/* Dashed ring utility for dragged panel items */
-.ring-dashed {
-  border: 2px dashed !important;
-  border-color: theme("colors.gray.500") !important;
-  border-radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: light) {

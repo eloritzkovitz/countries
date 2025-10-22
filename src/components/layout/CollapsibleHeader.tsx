@@ -1,6 +1,6 @@
 import React from "react";
-import { ActionButton } from "./ActionButton";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { ActionButton } from "@components";
 
 export function CollapsibleHeader({
   icon,

@@ -1,5 +1,5 @@
-import { Modal } from "@components/common/Modal";
 import { FaMapMarkerAlt, FaTimes } from "react-icons/fa";
+import { Modal } from "@components";
 import type { Marker } from "@types";
 
 interface MarkerDetailsModalProps {

@@ -19,7 +19,7 @@ export interface PanelListItemProps {
   dragged?: boolean;
   onDragStart?: () => void;
   handleDragOver?: (e: DragEvent<HTMLLIElement>) => void;
-  handleDragEnd?: () => void;  
+  handleDragEnd?: () => void;
 }
 
 export function PanelListItem({
@@ -33,13 +33,11 @@ export function PanelListItem({
   dragged,
   onDragStart,
   handleDragOver,
-  handleDragEnd,  
+  handleDragEnd,
 }: PanelListItemProps) {
   return (
     <li
-      className={`mb-4 flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2 ${
-        dragged ? "ring-dashed" : ""
-      }`}
+      className={`panel-list-item ${dragged ? "ring-dashed" : ""}`}
       draggable={!!onDragStart}
       onDragStart={onDragStart}
       onDragOver={handleDragOver}
