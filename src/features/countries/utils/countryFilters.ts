@@ -37,27 +37,34 @@ export function filterCountries(
     overlayCountries?: string[];
   }
 ) {
-  // Normalize search term
-  const normalizedSearch = search ? normalizeString(search ?? "") : "";
+  // Filter by search first
+  let filtered = filterCountriesBySearch(countries, search ?? "");
 
-  // Apply filters
-  return countries.filter((country) => {
-    if (search && !normalizeString(country.name).includes(normalizedSearch))
-      return false;
-
+  // Apply other filters
+  return filtered.filter((country) => {
     if (selectedRegion && country.region !== selectedRegion) return false;
-
     if (selectedSubregion && country.subregion !== selectedSubregion)
       return false;
-    
     if (selectedSovereignty && country.sovereigntyType !== selectedSovereignty)
       return false;
-
     if (overlayCountries.length && !overlayCountries.includes(country.isoCode))
-      return false;    
-
+      return false;
     return true;
   });
+}
+
+/**
+ * Filters a list of countries by search string (accent-insensitive).
+ * @param countries - The list of countries to filter.
+ * @param search - The search string to filter by.
+ * @returns The filtered list of countries.
+ */
+export function filterCountriesBySearch(countries: Country[], search: string) {
+  if (!search) return countries;
+  const normalizedSearch = normalizeString(search);
+  return countries.filter((country) =>
+    normalizeString(country.name).includes(normalizedSearch)
+  );
 }
 
 /**

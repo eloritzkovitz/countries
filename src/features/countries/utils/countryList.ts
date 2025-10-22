@@ -74,23 +74,6 @@ export function getAllSovereigntyTypes(
 }
 
 /**
- * Filters a list of countries by search string (accent-insensitive).
- * @param countries - The list of countries to filter.
- * @param search - The search string to filter by.
- * @returns The filtered list of countries.
- */
-export function filterCountriesBySearch(
-  countries: Country[],
-  search: string
-) {
-  if (!search) return countries;
-  const normalizedSearch = normalizeString(search);
-  return countries.filter((country) =>
-    normalizeString(country.name).includes(normalizedSearch)
-  );
-}
-
-/**
  * Sorts countries based on the specified criteria.
  * @param countries - The list of countries to sort.
  * @param sortBy - The criteria to sort the countries by.

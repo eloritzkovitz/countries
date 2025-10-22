@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, useEffect } from "react";
+import { useCallback } from "react";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import {
   ActionButton,
@@ -73,26 +73,7 @@ export function CountriesPanel({
     sortBy,
     setSortBy,
     sortedItems: sortedCountries,
-  } = useSort(filteredCountries, sortCountries, "name-asc");
-
-  // Custom dropdown state
-  const [sortMenuOpen, setSortMenuOpen] = useState(false);
-  const sortButtonRef = useRef<HTMLButtonElement>(null);
-
-  // Close menu on click outside
-  useEffect(() => {
-    if (!sortMenuOpen) return;
-    function handleClick(e: MouseEvent) {
-      if (
-        sortButtonRef.current &&
-        !sortButtonRef.current.contains(e.target as Node)
-      ) {
-        setSortMenuOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [sortMenuOpen]);
+  } = useSort(filteredCountries, sortCountries, "name-asc");  
 
   // Keyboard navigation within country list
   useCountryListNavigation({
