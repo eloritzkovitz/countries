@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import ReactDOM from "react-dom";
-import { useKeyHandler } from "@hooks/useKeyHandler";
+import { usePanelHide } from "@hooks/usePanelHide";
 import "./Modal.css";
 
 type ModalProps = {
@@ -24,14 +24,7 @@ export function Modal({
   style,
   disableClose = false,
 }: ModalProps) {
-  // Handle Escape key to close modal
-  useKeyHandler(
-    () => {
-      if (!disableClose) onClose();
-    },
-    ["Escape"],
-    isOpen
-  );
+  usePanelHide({ show: isOpen, onHide: onClose });
 
   // Don't render anything if the modal is not open
   if (!isOpen) return null;

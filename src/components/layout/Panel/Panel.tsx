@@ -1,10 +1,9 @@
-import type { ReactNode } from "react";
-import { PanelHeader } from "./PanelHeader";
-import { DEFAULT_PANEL_WIDTH } from "@config/constants";
-import { useKeyHandler } from "@hooks/useKeyHandler";
-import "./Panel.css";
-import { useUI } from "@contexts/UIContext";
 import React from "react";
+import type { ReactNode } from "react";
+import { DEFAULT_PANEL_WIDTH } from "@config/constants";
+import { usePanelHide } from "@hooks/usePanelHide";
+import { PanelHeader } from "./PanelHeader";
+import "./Panel.css";
 
 type PanelProps = {
   title: ReactNode;
@@ -31,22 +30,7 @@ export function Panel({
   showSeparator = true,
   scrollable = true,
 }: PanelProps) {
-  // UI state
-  const { uiVisible } = useUI();
-
-  // Handle Escape key to close the panel
-  useKeyHandler(() => {
-    if (show && onHide) {
-      onHide();
-    }
-  }, ["Escape"]);  
-
-  // Close the panel when uiVisible becomes false
-  React.useEffect(() => {
-    if (!uiVisible && show && onHide) {
-      onHide();
-    }
-  }, [uiVisible, show, onHide]);
+  usePanelHide({ show, onHide });
 
   return (
     <div
