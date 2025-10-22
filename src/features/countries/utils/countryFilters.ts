@@ -1,131 +1,70 @@
+/**
+ * Utility functions for filtering countries based on various criteria.
+ */
+
 import type {
   Country,
-  SovereigntyType,
   FilterConfig,
   FilterKey,
   FilterOption,
   Overlay,
 } from "@types";
+import { normalizeString } from "@utils/string";
 
 /**
- * Maps an array of strings to FilterOption objects.
- * @param options Array of string options
- * @returns Array of FilterOption objects
- */
-export function mapOptions(options: string[]): FilterOption[] {
-  return options.map((r) => ({ value: r, label: r }));
-}
-
-/**
- * Returns all unique regions from the countries list, excluding undefined values.
- * @param countries - Array of country objects with optional region property.
- * @returns Sorted array of unique region strings.
- */
-export function getAllRegions(countries: { region?: string }[]) {
-  return Array.from(
-    new Set(countries.map((c) => c.region).filter((r): r is string => !!r))
-  ).sort((a, b) => a.localeCompare(b));
-}
-
-/**
- * Returns all unique subregions from the countries list, excluding undefined values.
- * @param countries - Array of country objects with optional subregion property.
- * @returns Sorted array of unique subregion strings.
- */
-export function getAllSubregions(countries: { subregion?: string }[]) {
-  return Array.from(
-    new Set(countries.map((c) => c.subregion).filter((r): r is string => !!r))
-  ).sort((a, b) => a.localeCompare(b));
-}
-
-/**
- * Returns all unique subregions for a given region from the countries list.
- * @param countries - Array of country objects with region and subregion properties.
- * @param selectedRegion - The region to filter subregions by.
- * @returns Sorted array of unique subregion strings for the selected region.
- */
-export function getSubregionsForRegion(
-  countries: { region?: string; subregion?: string }[],
-  selectedRegion: string
-) {
-  return Array.from(
-    new Set(
-      countries
-        .filter((c) => c.region === selectedRegion)
-        .map((c) => c.subregion)
-        .filter((r): r is string => !!r)
-    )
-  ).sort((a, b) => a.localeCompare(b));
-}
-
-/**
- * Returns all unique sovereignty types from the countries list.
- * @param countries - Array of country objects with sovereigntyType property.
- * @returns Sorted array of unique sovereignty type strings.
- */
-export function getAllSovereigntyTypes(
-  countries: { sovereigntyType?: SovereigntyType }[]
-): SovereigntyType[] {
-  return Array.from(
-    new Set(
-      countries
-        .map((c) => c.sovereigntyType)
-        .filter((t): t is SovereigntyType => !!t)
-    )
-  ).sort((a, b) => a.localeCompare(b));
-}
-
-/**
- * Filters countries based on search, region, subregion, and overlay criteria.
- * @param countries - Array of country objects with name, region, subregion, and isoCode properties.
- * @param filters - Object containing search, selectedRegion, selectedSubregion, and overlayCountries.
- * @returns Filtered and sorted array of country objects.
+ * Filters countries based on search, region, subregion, sovereignty, and overlay criteria.
+ * @param countries - The list of countries to filter.
+ * @param search - Search term to filter by country name.
+ * @param selectedRegion - Selected region to filter by.
+ * @param selectedSubregion - Selected subregion to filter by.
+ * @param selectedSovereignty - Selected sovereignty type to filter by.
+ * @param overlayCountries - List of country ISO codes to include based on overlay selection.
+ * @returns Filtered list of countries.
  */
 export function filterCountries(
-  countries: any[],
+  countries: Country[],
   {
     search,
     selectedRegion,
     selectedSubregion,
     selectedSovereignty,
-    overlayCountries,
+    overlayCountries = [],
   }: {
-    search: string;
-    selectedRegion: string;
-    selectedSubregion: string;
-    selectedSovereignty: string;
-    overlayCountries: string[];
+    search?: string;
+    selectedRegion?: string;
+    selectedSubregion?: string;
+    selectedSovereignty?: string;
+    overlayCountries?: string[];
   }
 ) {
-  return countries
-    .filter((country) => {
-      const matchesSearch = country.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
-      const matchesRegion = selectedRegion
-        ? country.region === selectedRegion
-        : true;
-      const matchesSubregion = selectedSubregion
-        ? country.subregion === selectedSubregion
-        : true;
-      const matchesOverlay =
-        !overlayCountries.length || overlayCountries.includes(country.isoCode);
+  // Filter by search first
+  let filtered = filterCountriesBySearch(countries, search ?? "");
 
-      // Add sovereignty filter
-      const matchesSovereignty =
-        selectedSovereignty && selectedSovereignty !== ""
-          ? country.sovereigntyType === selectedSovereignty
-          : true;
+  // Apply other filters
+  return filtered.filter((country) => {
+    if (selectedRegion && country.region !== selectedRegion) return false;
+    if (selectedSubregion && country.subregion !== selectedSubregion)
+      return false;
+    if (selectedSovereignty && country.sovereigntyType !== selectedSovereignty)
+      return false;
+    if (overlayCountries.length && !overlayCountries.includes(country.isoCode))
+      return false;
+    return true;
+  });
+}
 
-      return (
-        matchesSearch &&
-        matchesRegion &&
-        matchesSubregion &&
-        matchesOverlay &&
-        matchesSovereignty
-      );
-    })
-    .sort((a, b) => a.name.localeCompare(b.name));
+/**
+ * Filters a list of countries by search string (accent-insensitive).
+ * @param countries - The list of countries to filter.
+ * @param search - The search string to filter by.
+ * @returns The filtered list of countries.
+ */
+export function filterCountriesBySearch(countries: Country[], search: string) {
+  if (!search) return countries;
+  const normalizedSearch = normalizeString(search);
+  return countries.filter((country) =>
+    normalizeString(country.name).includes(normalizedSearch)
+  );
 }
 
 /**
@@ -133,30 +72,25 @@ export function filterCountries(
  * @param countries
  * @param overlays
  * @param overlaySelections
- * @returns
+ * @returns Filtered list of ISO codes.
  */
 export function getFilteredIsoCodes(
   countries: Country[],
   overlays: Overlay[],
   overlaySelections: Record<string, string>
 ) {
-  let filteredIsoCodes = countries.map((c) => c.isoCode);
+  const base = countries.map((c) => c.isoCode);
 
-  overlays.forEach((overlay) => {
+  return overlays.reduce((accIsoCodes, overlay) => {
     const selection = overlaySelections[overlay.id] || "all";
     if (selection === "only") {
-      filteredIsoCodes = filteredIsoCodes.filter((iso) =>
-        overlay.countries.includes(iso)
-      );
-    } else if (selection === "exclude") {
-      filteredIsoCodes = filteredIsoCodes.filter(
-        (iso) => !overlay.countries.includes(iso)
-      );
+      return accIsoCodes.filter((iso) => overlay.countries.includes(iso));
     }
-    // "all" does not filter
-  });
-
-  return filteredIsoCodes;
+    if (selection === "exclude") {
+      return accIsoCodes.filter((iso) => !overlay.countries.includes(iso));
+    }
+    return accIsoCodes; // "all"
+  }, base as string[]);
 }
 
 /** Creates a select filter configuration.

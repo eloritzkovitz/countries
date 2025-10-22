@@ -1,6 +1,10 @@
 import { Geographies, Geography } from "react-simple-maps";
 import { getCountryIsoCode } from "@features/countries";
-import { useMapGeographyStyle } from "@features/map";
+import { useMapGeographyStyle } from "@features/map/hooks/useMapGeographyStyle";
+import {
+  getBlendedOverlayColor,
+  groupOverlayItemsByIsoCode,
+} from "@features/overlays";
 import type { OverlayItem } from "@types";
 
 type MapCountriesLayerProps = {
@@ -25,10 +29,8 @@ export function CountriesLayer({
 }: MapCountriesLayerProps) {
   const geographyStyle = useMapGeographyStyle(isAddingMarker);
 
-  // Build overlay lookup
-  const overlayMap = Object.fromEntries(
-    (overlayItems ?? []).map((item) => [item.isoCode.toUpperCase(), item])
-  );
+  // Group overlay items by isoCode for stacking/blending
+  const overlayGroups = groupOverlayItemsByIsoCode(overlayItems);
 
   return (
     <g style={isAddingMarker ? { pointerEvents: "none" } : undefined}>
@@ -44,19 +46,21 @@ export function CountriesLayer({
             const isHovered =
               !!hoveredIsoCode && isoA2 === hoveredIsoCode.toUpperCase();
 
-            // Overlay logic
-            const overlay = overlayMap[isoA2];
+            // Overlay logic: blend all overlays for this country
+            const overlays = overlayGroups[isoA2] || [];
+            const blendedFill = getBlendedOverlayColor(
+              overlays,
+              geographyStyle.default.fill
+            );
 
-            // Style: highlight takes precedence, then overlay, then base
+            // Style: highlight takes precedence, then blended overlays, then base
             let style = geographyStyle.default;
             let tooltip = geo.properties.name;
 
-            if (isSelected) {
-              style = geographyStyle.pressed;
-            } else if (isHovered) {
+            if (isSelected || isHovered) {
               style = geographyStyle.hover;
-            } else if (overlay && overlay.color) {
-              style = { ...geographyStyle.default, fill: overlay.color };
+            } else if (blendedFill) {
+              style = { ...geographyStyle.default, fill: blendedFill };
             }
 
             return (

@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FaMapPin } from "react-icons/fa";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
+import { getGeoCoordsFromMouseEvent } from "@features/map";
 import { MapMarkersLayer } from "@features/markers";
 import { useOverlayItems } from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
@@ -14,7 +15,7 @@ import { MapCoordinatesDisplay } from "./MapCoordinatesDisplay";
 import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
-import { getGeoCoordsFromMouseEvent } from "../utils/mapUtils";
+import { useMapStatus } from "../hooks/useMapStatus";
 
 type WorldMapProps = {
   zoom: number;
@@ -52,11 +53,10 @@ export function WorldMap({
 }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
+  
+  // Map projection and data
   const { projection } = useMapUI();
-
-  // Load geographical data
-  const { geoData, geoError, loading: geoLoading } = useGeoData();
-
+  const { geoData, geoError, loading: geoLoading } = useGeoData();  
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(
     null
   );
@@ -67,26 +67,6 @@ export function WorldMap({
     loading: overlaysLoading,
     error: overlaysError,
   } = useOverlayContext();
-
-  // Call onReady when everything is loaded and ready
-  useEffect(() => {
-    if (
-      !geoLoading &&
-      !overlaysLoading &&
-      dimensions.width &&
-      dimensions.height &&
-      geoData
-    ) {
-      onReady?.();
-    }
-  }, [
-    geoLoading,
-    overlaysLoading,
-    dimensions.width,
-    dimensions.height,
-    geoData,
-    onReady,
-  ]);
 
   // Merge all visible overlays into a single ordered array
   const overlayItems = useOverlayItems(overlays);
@@ -104,15 +84,18 @@ export function WorldMap({
     isAddingMarker ? 0 : 1
   );
 
-  // Show spinner until overlays, dimensions, and geoData are ready
-  const isLoading =
-    geoLoading ||
-    overlaysLoading ||
-    !dimensions.width ||
-    !dimensions.height ||
-    !geoData;
-  const errorMsg = overlaysError || geoError;
+  // Determine map status
+  const { isLoading, errorMsg } = useMapStatus({
+    geoLoading,
+    overlaysLoading,
+    dimensions,
+    geoData,
+    overlaysError: overlaysError ?? undefined,
+    geoError: geoError ?? undefined,
+    onReady,
+  });
 
+  // Show loading or error state
   if (isLoading || errorMsg) {
     return (
       <MapStatus
@@ -192,7 +175,7 @@ export function WorldMap({
               width={dimensions.width}
               height={dimensions.height}
               scaleDivisor={DEFAULT_MAP_SETTINGS.scaleDivisor}
-              zoom={zoom}              
+              zoom={zoom}
               onMarkerDetails={onMarkerDetails}
             />
           </ZoomableGroup>

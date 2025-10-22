@@ -5,13 +5,13 @@ import {
   FaChevronRight,
   FaMapPin,
   FaDownload,
-  FaCog,  
+  FaCog,
 } from "react-icons/fa";
 import { ActionButton } from "@components";
 import { useUI } from "@contexts/UIContext";
 import { ZoomControls } from "./ZoomControls";
 import { MapExportModal } from "../export/MapExportModal";
-import "./toolbar.css"
+import "./Toolbar.css";
 
 export function Toolbar({
   zoom,
@@ -25,30 +25,28 @@ export function Toolbar({
   children?: React.ReactNode;
 }) {
   // UI state
-  const { uiVisible, toggleMarkers, toggleOverlays, toggleExport, toggleSettings } = useUI();
+  const {
+    uiVisible,
+    toggleMarkers,
+    toggleOverlays,
+    toggleExport,
+    toggleSettings,
+  } = useUI();
   const [visible, setVisible] = useState(true);
 
   return (
     <div
-      className={`absolute right-8 bottom-8 z-[101] flex flex-col items-end group transition-transform duration-300 ease-in-out`}
-      style={{
-        transform: uiVisible ? "translateX(0)" : "translateX(400px)",
-        opacity: uiVisible ? 1 : 0,
-        pointerEvents: uiVisible ? "auto" : "none",
-        transition: "transform 0.3s, opacity 0.3s",
-      }}
+      className={`toolbar-container ${
+        uiVisible ? "toolbar-container-visible" : "toolbar-container-hidden"
+      }`}
     >
       {/* Zoom controls: vertical slide */}
       <div
-        className={`transition-all duration-300 ${
+        className={`toolbar-zoom-controls ${
           visible
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        } mb-2`}
-        style={{
-          transform: visible ? "translateY(0)" : "translateY(40px)",
-          transition: "transform 0.3s, opacity 0.3s",
-        }}
+            ? "toolbar-zoom-controls-visible"
+            : "toolbar-zoom-controls-hidden"
+        }`}
       >
         <ZoomControls zoom={zoom} setZoom={setZoom} />
       </div>
@@ -56,17 +54,11 @@ export function Toolbar({
       <div className="relative flex items-center" style={{ height: "40px" }}>
         {/* Actions: horizontal slide */}
         <div
-          className={`absolute right-12 top-0 flex flex-row items-center bg-gray-200 dark:bg-gray-800 rounded-full shadow border border-gray-300 dark:border-gray-700 px-2 transition-all duration-300 ${
+          className={`toolbar-actions-row ${
             visible
-              ? "opacity-100 pointer-events-auto"
-              : "opacity-0 pointer-events-none"
+              ? "toolbar-actions-row-visible"
+              : "toolbar-actions-row-hidden"
           }`}
-          style={{
-            transform: visible ? "translateX(0)" : "translateX(40px)",
-            transition: "transform 0.3s, opacity 0.3s",
-            height: "42px",
-            alignItems: "center",
-          }}
         >
           <ActionButton
             onClick={toggleMarkers}

@@ -1,5 +1,16 @@
-import { EXCLUDED_ISO_CODES } from "@config";
-import type { Country, FlagSource, FlagStyle, FlagSize } from "@types";
+/**
+ * Utility functions for handling country data.
+ */
+
+import { EXCLUDED_ISO_CODES, SOVEREIGN_FLAG_MAP } from "@config";
+import { SOVEREIGN_DEPENDENCIES } from "@config/sovereignties";
+import type {
+  Country,
+  SovereigntyType,
+  FlagSource,
+  FlagStyle,
+  FlagSize,
+} from "@types";
 
 /**
  * Extracts the ISO country code from various possible property names.
@@ -11,6 +22,41 @@ export function getCountryIsoCode(properties: any): string | undefined {
     properties.ISO_A2?.toUpperCase?.() ||
     properties["ISO3166-1-Alpha-2"]?.toUpperCase?.()
   );
+}
+
+/**
+ * Gets the URL of a country's flag based on its ISO code, source, style, and size.
+ * @param isoCode - The ISO code of the country.
+ * @param size - The size of the flag image.
+ * @param source - The flag provider ("flagcdn" or "flagsapi").
+ * @param style - The style of the flag ("flat" or "shiny").
+ * @returns The URL of the country's flag image.
+ */
+export function getFlagUrl(
+  isoCode: string,
+  size: FlagSize = "32x24",
+  source: FlagSource = "flagcdn",
+  style: FlagStyle = "flat"
+): string {
+  if (!isoCode) return "";
+
+  const normalizedIso = isoCode.toUpperCase();
+
+  // Handle sovereign state flags for territories
+  const flagIso = SOVEREIGN_FLAG_MAP[normalizedIso] || normalizedIso;
+
+  switch (source) {
+    case "flagsapi":
+      if (!flagIso || flagIso.length !== 2) return "";
+      // FlagsAPI: https://flagsapi.com/:country_code/:style/:size.png
+      return `https://flagsapi.com/${flagIso}/${style}/${
+        size.split("x")[0]
+      }.png`;
+    case "flagcdn":
+    default:
+      // FlagCDN: https://flagcdn.com/:size/:country_code.png
+      return `https://flagcdn.com/${size}/${normalizedIso.toLowerCase()}.png`;
+  }
 }
 
 /**
@@ -33,47 +79,6 @@ export function getRandomCountry(countries: Country[]) {
 }
 
 /**
- * Converts an array of countries into options suitable for a select input.
- * @param countries - Array of country objects.
- * @returns An array of objects with `value` and `label` properties.
- */
-export function getCountryOptions(countries: Country[]) {
-  return countries.map((country) => ({
-    value: country.isoCode,
-    label: country.name,
-  }));
-}
-
-/**
- * Gets the URL of a country's flag based on its ISO code, source, style, and size.
- * @param isoCode - The ISO code of the country.
- * @param size - The size of the flag image.
- * @param source - The flag provider ("flagcdn" or "flagsapi").
- * @param style - The style of the flag ("flat" or "shiny").
- * @returns The URL of the country's flag image.
- */
-export function getFlagUrl(
-  isoCode: string,
-  size: FlagSize = "32x24",
-  source: FlagSource = "flagcdn",
-  style: FlagStyle = "flat"
-): string {
-  if (!isoCode) return "";
-
-  const normalizedIso = isoCode.toUpperCase();
-
-  switch (source) {
-    case "flagsapi":
-      // FlagsAPI: https://flagsapi.com/:country_code/:style/:size.png
-      return `https://flagsapi.com/${normalizedIso}/${style}/${size.split("x")[0]}.png`;
-    case "flagcdn":
-    default:
-      // FlagCDN: https://flagcdn.com/:size/:country_code.png
-      return `https://flagcdn.com/${size}/${normalizedIso.toLowerCase()}.png`;
-  }
-}
-
-/**
  * Gets a formatted string of languages.
  * @param languages - An array of language names.
  * @returns A comma-separated string of languages or "None" if empty.
@@ -81,4 +86,57 @@ export function getFlagUrl(
 export function getLanguagesDisplay(languages?: string[]) {
   if (!languages || languages.length === 0) return "None";
   return languages.join(", ");
+}
+
+// Precompute lookup maps
+const dependencyMap: Record<
+  string,
+  { type: SovereigntyType; sovereign: { name: string; isoCode: string } }
+> = {};
+const regionMap: Record<
+  string,
+  { type: SovereigntyType; sovereign: { name: string; isoCode: string } }
+> = {};
+const disputeMap: Record<
+  string,
+  { type: SovereigntyType; sovereign: { name: string; isoCode: string } }
+> = {};
+
+for (const [sovereignIso, sovereignObj] of Object.entries(
+  SOVEREIGN_DEPENDENCIES
+)) {
+  sovereignObj.dependencies?.forEach((dep) => {
+    dependencyMap[dep.isoCode] = {
+      type: "Dependency",
+      sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
+    };
+  });
+  sovereignObj.regions?.forEach((region) => {
+    regionMap[region.isoCode] = {
+      type: "Overseas Region",
+      sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
+    };
+  });
+  sovereignObj.disputes?.forEach((dep) => {
+    disputeMap[dep.isoCode] = {
+      type: "Disputed",
+      sovereign: { name: sovereignObj.name, isoCode: sovereignIso },
+    };
+  });
+}
+
+/**
+ * Finds the sovereign country for a terrritory's ISO code.
+ * @param territoryIsoCode - The ISO code of the territory.
+ * @returns The sovereign's name and ISO code, or undefined if not found.
+ */
+export function getSovereigntyInfoForTerritory(territoryIsoCode: string): {
+  type?: SovereigntyType;
+  sovereign?: { name: string; isoCode: string };
+} {
+  if (!territoryIsoCode) return { type: undefined };
+  if (dependencyMap[territoryIsoCode]) return dependencyMap[territoryIsoCode];
+  if (regionMap[territoryIsoCode]) return regionMap[territoryIsoCode];
+  if (disputeMap[territoryIsoCode]) return disputeMap[territoryIsoCode];
+  return { type: "Sovereign" };
 }

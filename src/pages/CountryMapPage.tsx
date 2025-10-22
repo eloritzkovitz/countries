@@ -203,6 +203,7 @@ export default function CountryMapPage() {
           <OverlaysPanel
             onEditOverlay={openEditOverlay}
             onAddOverlay={openAddOverlay}
+            overlayModalOpen={isEditModalOpen}
           />
           <SettingsPanel />
         </div>

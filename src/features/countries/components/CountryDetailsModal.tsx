@@ -1,4 +1,4 @@
-import { FaCrosshairs, FaTimes } from "react-icons/fa";
+import { FaWikipediaW, FaCrosshairs, FaTimes } from "react-icons/fa";
 import {
   ActionButton,
   CountryFlag,
@@ -11,7 +11,10 @@ import { useCountryData } from "@contexts/CountryDataContext";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Country } from "@types";
 import { SovereigntyBadge } from "./SovereigntyBadge";
-import { getLanguagesDisplay } from "../utils/countryData";
+import {
+  getLanguagesDisplay,
+  getSovereigntyInfoForTerritory,
+} from "../utils/countryData";
 
 type CountryDetailsModalProps = {
   country: Country | null;
@@ -38,6 +41,11 @@ export function CountryDetailsModal({
     isOpen
   );
 
+  // Get sovereignty info
+  const sovereigntyInfo = country
+    ? getSovereigntyInfoForTerritory(country.isoCode)
+    : undefined;
+
   // Show loading or error states
   if (loading) return <LoadingSpinner message="Loading..." />;
   if (error) return <ErrorMessage error={error} />;
@@ -47,9 +55,41 @@ export function CountryDetailsModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="bg-white rounded-xl p-8 min-w-[340px] max-w-[100vw] w-[350px] shadow-lg"
+      className="bg-white rounded-xl p-8 min-w-[540px] max-w-[100vw] w-[350px] shadow-lg"
     >
-      <PanelHeader title={country.name}>
+      <PanelHeader
+        title={
+          <span className="flex items-center gap-2">
+            <CountryFlag
+              flag={{
+                isoCode: country.isoCode,
+                source: "svg",
+                style: "flat",
+                size: "32x24",
+              }}
+              alt={`${country.name} flag`}
+              style={{ marginBottom: 0 }}
+            />
+            <span className="font-bold text-lg">{country.name}</span>
+            <span className="text-gray-500 text-sm">({country.isoCode})</span>
+          </span>
+        }
+      >
+        <ActionButton
+          onClick={() =>
+            window.open(
+              `https://en.wikipedia.org/wiki/${country.name.replace(
+                / /g,
+                "_"
+              )}`,
+              "_blank",
+              "noopener,noreferrer"
+            )
+          }
+          ariaLabel="Open Wikipedia article"
+          title="Wikipedia"
+          icon={<FaWikipediaW />}
+        />
         {onCenterMap && (
           <ActionButton
             onClick={onCenterMap}
@@ -65,7 +105,12 @@ export function CountryDetailsModal({
           icon={<FaTimes />}
         />
       </PanelHeader>
-      <SovereigntyBadge type={country.sovereigntyType} />
+      {country.sovereigntyType && sovereigntyInfo && (
+        <SovereigntyBadge
+          type={country.sovereigntyType}
+          sovereign={sovereigntyInfo.sovereign}
+        />
+      )}
       <CountryFlag
         flag={{
           isoCode: country.isoCode,
@@ -74,42 +119,53 @@ export function CountryDetailsModal({
           size: "64x48",
         }}
         alt={`${country.name} flag`}
-        style={{ marginBottom: "16px" }}
+        style={{
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginBottom: "16px",
+        }}
       />
-      <ul className="list-none p-0 mb-4 text-gray-700">
-        <li>
-          <strong>Region:</strong> {country.region}
-        </li>
-        <li>
-          <strong>Subregion:</strong> {country.subregion}
-        </li>
-        <li>
-          <strong>Population:</strong> {country.population?.toLocaleString()}
-        </li>
-        <li>
-          <strong>Capital:</strong> {country.capital}
-        </li>
-        <li>
-          <strong>Currency: </strong>{" "}
-          {country.currency && currencies[country.currency]
-            ? `${currencies[country.currency]} (${country.currency})`
-            : country.currency || "N/A"}
-        </li>
-        <li>
-          <strong>Languages:</strong> {getLanguagesDisplay(country.languages)}
-        </li>
-      </ul>
-      <a
-        href={`https://en.wikipedia.org/wiki/${country.name.replace(
-          / /g,
-          "_"
-        )}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 underline font-bold inline-block mt-2"
-      >
-        Wikipedia
-      </a>
+      <table className="w-full mb-4 text-gray-700 border-separate [border-spacing:0.5rem]">
+        <tbody>
+          <tr>
+            <td className="font-semibold">Region:</td>
+            <td>{country.region}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Subregion:</td>
+            <td>{country.subregion}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Population:</td>
+            <td>{country.population?.toLocaleString()}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Capital:</td>
+            <td>{country.capital}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Currency:</td>
+            <td>
+              {country.currency && currencies[country.currency]
+                ? `${currencies[country.currency]} (${country.currency})`
+                : country.currency || "N/A"}
+            </td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Languages:</td>
+            <td>{getLanguagesDisplay(country.languages)}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">Calling code:</td>
+            <td>{country.callingCode}</td>
+          </tr>
+          <tr>
+            <td className="font-semibold">ISO 3166 Code:</td>
+            <td>{country.isoCode}</td>
+          </tr>
+        </tbody>
+      </table>
     </Modal>
   );
 }

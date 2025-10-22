@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import type { Overlay } from "@types";
 import {
   addOverlay as addOverlayUtil,
   editOverlay as editOverlayUtil,
   removeOverlay as removeOverlayUtil,
   updateOverlayVisibility,
-} from "../features/overlays/utils/overlayUtils";
+} from "@features/overlays";
+import type { Overlay } from "@types";
 
 export type OverlayContextType = {
   overlays: Overlay[];

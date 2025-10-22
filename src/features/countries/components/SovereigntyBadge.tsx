@@ -1,29 +1,71 @@
+import { CountryFlag } from "@components";
 import type { SovereigntyType } from "@types";
 
 type SovereigntyBadgeProps = {
   type?: SovereigntyType;
+  sovereign?: { name: string; isoCode?: string };
 };
 
-// Define colors for different sovereignty types
-const sovereigntyColors: Record<SovereigntyType, string> = {
+// Map sovereignty types to badge colors
+const badgeColors: Record<SovereigntyType, string> = {
   Sovereign: "bg-blue-300 text-gray-700 dark:bg-blue-700 dark:text-gray-100",
   Dependency: "bg-gray-300 text-gray-700 dark:bg-gray-500 dark:text-gray-100",
-  "Partially Recognized": "bg-yellow-300 text-gray-700 dark:bg-yellow-700 dark:text-gray-100",
+  "Overseas Region":
+    "bg-green-300 text-gray-700 dark:bg-green-700 dark:text-gray-100",
   Unrecognized: "bg-red-300 text-gray-700 dark:bg-red-700 dark:text-gray-100",
-  Disputed: "bg-red-300 text-gray-700 dark:bg-red-700 dark:text-gray-100",  
+  Disputed: "bg-yellow-300 text-gray-700 dark:bg-yellow-700 dark:text-gray-100",
   Unknown: "bg-gray-300 text-gray-700 dark:bg-gray-500 dark:text-gray-100",
 };
 
-export function SovereigntyBadge({ type }: SovereigntyBadgeProps) {
+// Optional label prefixes for sovereignty types
+const labelPrefixes: Partial<Record<SovereigntyType, string>> = {
+  "Overseas Region": "Overseas Region of ",
+  Disputed: "Disputed by ",
+  Dependency: "Dependency of ",
+};
+
+export function SovereigntyBadge({ type, sovereign }: SovereigntyBadgeProps) {
   if (!type) return null;
+
+  const color = badgeColors[type] || badgeColors.Dependency;
+
+  let label: React.ReactNode = type;
+
+  if (
+    sovereign &&
+    sovereign.name &&
+    labelPrefixes[type as keyof typeof labelPrefixes]
+  ) {
+    label = (
+      <>
+        {labelPrefixes[type as keyof typeof labelPrefixes]}
+        {sovereign.isoCode && (
+          <CountryFlag
+            flag={{
+              isoCode: sovereign.isoCode,
+              source: "svg",
+              style: "flat",
+              size: "32x24",
+            }}
+            alt={`${sovereign.name} flag`}
+            style={{
+              marginLeft: 6,
+              marginRight: 6,
+              display: "inline-block",
+              verticalAlign: "middle",
+            }}
+          />
+        )}
+        {sovereign.name}
+      </>
+    );
+  }
+
   return (
     <div
-      className={`mb-6 text-base text-center font-semibold rounded-full p-2 ${
-        sovereigntyColors[type] ||
-        "bg-blue-300 text-gray-600 dark:bg-gray-600 dark:text-gray-300"
-      }`}
+      className={`mb-6 text-base text-center font-semibold rounded-full p-2 ${color}`}
     >
-      {type}
+      {label}
     </div>
   );
 }

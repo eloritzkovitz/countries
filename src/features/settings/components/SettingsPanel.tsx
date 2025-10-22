@@ -4,6 +4,7 @@ import { DEFAULT_PANEL_WIDTH } from "@config/constants";
 import { useUI } from "@contexts/UIContext";
 import { ThemeSettingsGroup } from "./ThemeSettingsGroup";
 import { MapSettingsGroup } from "./MapSettingsGroup";
+import "./Settings.css";
 
 export function SettingsPanel() {
   const { showSettings, closePanel } = useUI();

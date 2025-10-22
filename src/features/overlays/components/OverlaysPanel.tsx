@@ -15,22 +15,24 @@ import {
 } from "@components";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
-import { useDragReorder } from "@hooks/useDragReorder";
-import type { Overlay } from "@types";
-import { OverlayPanelItem } from "./OverlayPanelItem";
 import {
   importOverlaysFromFile,
   exportOverlaysToFile,
-} from "../utils/overlayFileUtils";
+} from "@features/overlays";
+import { useDragReorder } from "@hooks/useDragReorder";
+import type { Overlay } from "@types";
+import { OverlayPanelItem } from "./OverlayPanelItem";
 
 type OverlaysPanelProps = {
   onEditOverlay: (overlay: Overlay) => void;
   onAddOverlay: () => void;
+  overlayModalOpen: boolean;
 };
 
 export function OverlaysPanel({
   onEditOverlay,
   onAddOverlay,
+  overlayModalOpen,
 }: OverlaysPanelProps) {
   const { showOverlays, closePanel } = useUI();
 
@@ -58,9 +60,10 @@ export function OverlaysPanel({
     <Modal
       isOpen={showOverlays}
       onClose={closePanel}
+      disableClose={overlayModalOpen}
       position="custom"
       containerClassName="right-40 bottom-[80px]"
-      className="min-w-[340px] max-w-[600px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-4 overflow-y-auto"
+      className="modal min-w-[340px] max-w-[600px] max-h-[90vh]"
     >
       <PanelHeader
         title={

@@ -1,5 +1,5 @@
 import { useMarkers } from "@contexts/MarkersContext";
-import { getProjection } from "@features/map/utils/mapUtils";
+import { getProjection } from "@features/map";
 import { Marker } from "./Marker";
 import type { Marker as MarkerType } from "@types";
 

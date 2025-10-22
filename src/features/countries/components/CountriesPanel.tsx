@@ -12,9 +12,12 @@ import {
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
+import { sortCountries } from "@features/countries";
+import { useSort } from "@hooks/useSort";
 import type { Country } from "@types";
 import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
+import { CountrySortSelect } from "./CountrySortSelect";
 import { CountryFiltersPanel } from "../filters/CountryFiltersPanel";
 import { useCountryFilters } from "../hooks/useCountryFilters";
 import { useCountryListNavigation } from "../hooks/useCountryListNavigation";
@@ -65,6 +68,13 @@ export function CountriesPanel({
     overlaySelections,
   });
 
+  // Sort state
+  const {
+    sortBy,
+    setSortBy,
+    sortedItems: sortedCountries,
+  } = useSort(filteredCountries, sortCountries, "name-asc");  
+
   // Keyboard navigation within country list
   useCountryListNavigation({
     filteredCountries,
@@ -111,23 +121,29 @@ export function CountriesPanel({
           </>
         }
       >
-        {/* Search input and count */}
-        <div className="sticky top-0 z-10 bg-white dark:bg-gray-800">
+        {/* Search input and sort button */}
+        <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 flex items-stretch">
           <SearchInput
             value={search}
             onChange={setSearch}
             placeholder="Search countries..."
-            className="flex-1"
+            className="flex-1 h-10"
           />
-          <div className="my-2 font-bold text-center flex-shrink-0">
-            Showing {filteredCountries.length} countries from {countries.length}
-          </div>
-          <Separator />
+          <CountrySortSelect
+            value={sortBy}
+            onChange={(v) => setSortBy(v as any)}
+          />
+        </div>
+
+        {/* Showing count */}
+        <div className="text-s text-left text-gray-500 font-semibold mb-2">
+          Showing {sortedCountries.length} countries
         </div>
 
         {/* Country list */}
+        <Separator />
         <CountryList
-          countries={filteredCountries}
+          countries={sortedCountries}
           selectedIsoCode={selectedIsoCode}
           hoveredIsoCode={hoveredIsoCode}
           onSelect={onSelect}

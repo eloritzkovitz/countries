@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import ReactDOM from "react-dom";
-import { useKeyHandler } from "@hooks/useKeyHandler";
+import { usePanelHide } from "@hooks/usePanelHide";
+import "./Modal.css";
 
 type ModalProps = {
   isOpen: boolean;
@@ -10,6 +11,7 @@ type ModalProps = {
   position?: "center" | "custom";
   containerClassName?: string;
   style?: React.CSSProperties;
+  disableClose?: boolean;
 };
 
 export function Modal({
@@ -20,23 +22,31 @@ export function Modal({
   position = "center",
   containerClassName = "",
   style,
+  disableClose = false,
 }: ModalProps) {
-  useKeyHandler(onClose, ["Escape"], isOpen);
+  usePanelHide({ show: isOpen, onHide: onClose, escEnabled: disableClose ? false : true });
 
+  // Don't render anything if the modal is not open
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
     <div
-      className="fixed inset-0 z-[9999]"
-      onClick={onClose}
+      className="modal-backdrop"
+      onClick={() => {
+        if (!disableClose) onClose();
+      }}
       aria-modal="true"
       role="dialog"
+      style={{ pointerEvents: isOpen ? "auto" : "none" }}
     >
       <div
         className={
-          position === "center"
-            ? `fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${className}`
-            : `fixed ${className} ${containerClassName}`
+          (position === "center" ? "modal-center " : "modal-custom ") +
+          "modal " +
+          (isOpen ? "modal-show " : "modal-hide ") +
+          className +
+          " " +
+          containerClassName
         }
         style={position === "custom" ? style : undefined}
         onClick={(e) => e.stopPropagation()}

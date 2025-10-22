@@ -1,3 +1,7 @@
+/**
+ * Map utility functions using D3.js for projections and geographical calculations.
+ */
+
 import {
   geoBounds,
   geoCentroid,
