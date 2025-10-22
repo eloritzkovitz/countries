@@ -4,7 +4,7 @@ import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 
 type MapStatusProps = {
   loading: boolean;
-  error?: string | null;
+  error?: string;
   containerRef: React.RefObject<HTMLDivElement | null>;
 };
 
@@ -20,7 +20,7 @@ export function MapStatus({ loading, error, containerRef }: MapStatusProps) {
     );
   }
   if (error) {
-    return <ErrorMessage error={error} />;
+    return <ErrorMessage error={error || "An unknown error occurred."} />;
   }
   return null;
 }

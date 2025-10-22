@@ -2,6 +2,66 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+.toolbar-container {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.toolbar-container-hidden {
+  transform: translateX(400px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toolbar-container-visible {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Zoom controls */
+
+.toolbar-zoom-controls {
+  transition: transform 0.3s, opacity 0.3s;
+  margin-bottom: 0.5rem;
+}
+
+.toolbar-zoom-controls-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(40px);
+}
+
+.toolbar-zoom-controls-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Toolbar actions row */
+
+.toolbar-actions-row {
+  @apply absolute right-12 top-0 flex flex-row items-center bg-gray-200 dark:bg-gray-800 rounded-full shadow border border-gray-300 dark:border-gray-700 px-2 transition-all duration-300;
+}
+
+.toolbar-actions-row-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(40px);
+}
+
+.toolbar-actions-row-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
 /* Toolbar button */
 
 .toolbar-btn {
@@ -13,6 +73,7 @@
 }
 
 /* Export button */
+
 .export-btn {
   @apply flex items-center gap-2 w-full justify-start px-3 py-2 whitespace-nowrap text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800;
 }
@@ -22,6 +83,7 @@
 }
 
 /* Scale button */
+
 .scale-btn {
   @apply px-2 py-1 bg-transparent text-gray-700 dark:text-gray-200;
 }

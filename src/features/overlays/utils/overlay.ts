@@ -5,24 +5,6 @@
 import type { Overlay } from "@types";
 
 /**
- * Gets overlay items from an overlay definition.
- * @param overlay - The overlay definition containing countries, color, tooltip, and name.
- * @returns Array of overlay items with isoCode, color, and tooltip.
- */
-export function getOverlayItems(overlay: {
-  countries: any[];
-  color: any;
-  tooltip?: any;
-  name: any;
-}) {
-  return overlay.countries.map((isoCode) => ({
-    isoCode,
-    color: overlay.color,
-    tooltip: overlay.tooltip || overlay.name,
-  }));
-}
-
-/**
  * Adds a new overlay to the overlays array.
  */
 export function addOverlay(

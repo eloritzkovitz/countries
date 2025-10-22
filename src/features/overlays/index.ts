@@ -8,3 +8,4 @@ export { useOverlayItems } from "./hooks/useOverlayItems";
 // Utils
 export * from "./utils/overlay";
 export * from "./utils/overlayFile";
+export * from "./utils/overlayRender";

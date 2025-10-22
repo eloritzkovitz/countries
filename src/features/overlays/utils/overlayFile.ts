@@ -2,6 +2,8 @@
  * Utility functions for importing and exporting overlay files.
  */
 
+import type { Overlay } from "@types";
+
 /**
  * Imports overlays from a JSON file.
  * @param event The file input change event.
@@ -10,7 +12,7 @@
  */
 export function importOverlaysFromFile(
   event: React.ChangeEvent<HTMLInputElement>,
-  setOverlays: (overlays: any[]) => void
+  setOverlays: (overlays: Overlay[]) => void
 ) {
   const file = event.target.files?.[0];
   if (!file) return;
