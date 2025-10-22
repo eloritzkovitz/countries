@@ -57,9 +57,7 @@ export function CountriesLayer({
             let style = geographyStyle.default;
             let tooltip = geo.properties.name;
 
-            if (isSelected) {
-              style = geographyStyle.pressed;
-            } else if (isHovered) {
+            if (isSelected || isHovered) {
               style = geographyStyle.hover;
             } else if (blendedFill) {
               style = { ...geographyStyle.default, fill: blendedFill };
