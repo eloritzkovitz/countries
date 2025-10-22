@@ -12,56 +12,51 @@ import type {
 import { normalizeString } from "@utils/string";
 
 /**
- * Filters countries based on search, region, subregion, and overlay criteria.
- * @param countries - Array of country objects with name, region, subregion, and isoCode properties.
- * @param filters - Object containing search, selectedRegion, selectedSubregion, and overlayCountries.
- * @returns Filtered and sorted array of country objects.
+ * Filters countries based on search, region, subregion, sovereignty, and overlay criteria.
+ * @param countries - The list of countries to filter.
+ * @param search - Search term to filter by country name.
+ * @param selectedRegion - Selected region to filter by.
+ * @param selectedSubregion - Selected subregion to filter by.
+ * @param selectedSovereignty - Selected sovereignty type to filter by.
+ * @param overlayCountries - List of country ISO codes to include based on overlay selection.
+ * @returns Filtered list of countries.
  */
 export function filterCountries(
-  countries: any[],
+  countries: Country[],
   {
     search,
     selectedRegion,
     selectedSubregion,
     selectedSovereignty,
-    overlayCountries,
+    overlayCountries = [],
   }: {
-    search: string;
-    selectedRegion: string;
-    selectedSubregion: string;
-    selectedSovereignty: string;
-    overlayCountries: string[];
+    search?: string;
+    selectedRegion?: string;
+    selectedSubregion?: string;
+    selectedSovereignty?: string;
+    overlayCountries?: string[];
   }
 ) {
+  // Normalize search term
+  const normalizedSearch = search ? normalizeString(search ?? "") : "";
+
+  // Apply filters
   return countries.filter((country) => {
-    const matchesSearch = normalizeString(country.name).includes(
-      normalizeString(search)
-    );
-    const matchesRegion = selectedRegion
-      ? country.region === selectedRegion
-      : true;
-    const matchesSubregion = selectedSubregion
-      ? country.subregion === selectedSubregion
-      : true;
-    const matchesOverlay =
-      !overlayCountries.length || overlayCountries.includes(country.isoCode);
+    if (search && !normalizeString(country.name).includes(normalizedSearch))
+      return false;
 
-    // Add sovereignty filter
-    const matchesSovereignty =
-      selectedSovereignty && selectedSovereignty !== ""
-        ? selectedSovereignty === "Dependency"
-          ? country.sovereigntyType === "Dependency" ||
-            country.sovereigntyType === "Special Administrative Region"
-          : country.sovereigntyType === selectedSovereignty
-        : true;
+    if (selectedRegion && country.region !== selectedRegion) return false;
 
-    return (
-      matchesSearch &&
-      matchesRegion &&
-      matchesSubregion &&
-      matchesOverlay &&
-      matchesSovereignty
-    );
+    if (selectedSubregion && country.subregion !== selectedSubregion)
+      return false;
+    
+    if (selectedSovereignty && country.sovereigntyType !== selectedSovereignty)
+      return false;
+
+    if (overlayCountries.length && !overlayCountries.includes(country.isoCode))
+      return false;    
+
+    return true;
   });
 }
 
@@ -70,30 +65,25 @@ export function filterCountries(
  * @param countries
  * @param overlays
  * @param overlaySelections
- * @returns
+ * @returns Filtered list of ISO codes.
  */
 export function getFilteredIsoCodes(
   countries: Country[],
   overlays: Overlay[],
   overlaySelections: Record<string, string>
 ) {
-  let filteredIsoCodes = countries.map((c) => c.isoCode);
+  const base = countries.map((c) => c.isoCode);
 
-  overlays.forEach((overlay) => {
+  return overlays.reduce((accIsoCodes, overlay) => {
     const selection = overlaySelections[overlay.id] || "all";
     if (selection === "only") {
-      filteredIsoCodes = filteredIsoCodes.filter((iso) =>
-        overlay.countries.includes(iso)
-      );
-    } else if (selection === "exclude") {
-      filteredIsoCodes = filteredIsoCodes.filter(
-        (iso) => !overlay.countries.includes(iso)
-      );
+      return accIsoCodes.filter((iso) => overlay.countries.includes(iso));
     }
-    // "all" does not filter
-  });
-
-  return filteredIsoCodes;
+    if (selection === "exclude") {
+      return accIsoCodes.filter((iso) => !overlay.countries.includes(iso));
+    }
+    return accIsoCodes; // "all"
+  }, base as string[]);
 }
 
 /** Creates a select filter configuration.
