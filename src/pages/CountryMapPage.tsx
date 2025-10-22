@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { ErrorMessage, LoadingSpinner, ShortcutsModal } from "@components";
+import { ErrorMessage, ShortcutsModal, SplashScreen } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
@@ -209,12 +209,8 @@ export default function CountryMapPage() {
         </div>
         <ShortcutsModal />
 
-        {/* Spinner */}
-        {isLoading && (
-          <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-gray-100 bg-opacity-80">
-            <LoadingSpinner message="Loading data..." />
-          </div>
-        )}
+        {/* Splash screen */}
+        {isLoading && <SplashScreen />}
       </div>
     </>
   );

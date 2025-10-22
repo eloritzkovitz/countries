@@ -5,6 +5,7 @@ export { ShortcutsModal } from './ShortcutsModal';
 // Feedback components
 export { ErrorMessage } from './feedback/ErrorMessage';
 export { LoadingSpinner } from './feedback/LoadingSpinner';
+export { SplashScreen } from './feedback/SplashScreen';
 
 // Form components
 export { FormButton } from './form/FormButton';
