@@ -1,7 +1,21 @@
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { CountryFlag } from "@components";
+import { useState } from "react";
+import { DropdownSelectInput } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import type { Trip } from "@types";
+import {
+  getUsedCountryCodes,
+  getUsedYears,
+  filterTrips,
+  sortTrips,
+} from "@features/trips";
+import {
+  getCountryDropdownOptions,
+  getYearDropdownOptions,
+} from "@features/trips/utils/dropdownOptions";
+import type { SortKey, Trip } from "@types";
+import { CountryCell } from "./CountryCell";
+import { SortableFilterHeader } from "./SortableFilterHeader";
+import { TripRows } from "./TripRows";
+import { getTripRowClass } from "../utils/trips";
 import "./TripsTable.css";
 
 type TripsTableProps = {
@@ -13,6 +27,65 @@ type TripsTableProps = {
 export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
   const countryData = useCountryData();
 
+  // Filters state
+  const [filters, setFilters] = useState({
+    name: "",
+    country: "",
+    year: "",
+  });
+  const [sortKey, setSortKey] = useState<SortKey>("startDate");
+  const [sortAsc, setSortAsc] = useState(true);
+
+  // Used country codes for dropdowns
+  const usedCountryCodes = getUsedCountryCodes(trips);
+  const rawCountryOptions = getCountryDropdownOptions(
+    countryData.countries,
+    usedCountryCodes
+  );
+
+  // Enhance country options with flags
+  const countryOptions = rawCountryOptions.map((opt) =>
+    opt.value
+      ? {
+          ...opt,
+          label: (
+            <span className="flex items-center gap-2">
+              <CountryCell code={opt.value} countryData={countryData} />
+            </span>
+          ),
+        }
+      : opt
+  );
+
+  // Used years for year dropdown
+  const usedYears = getUsedYears(trips);
+  const yearOptions = getYearDropdownOptions(usedYears);
+  let filteredTrips = filterTrips(trips, filters);
+  filteredTrips = sortTrips(
+    filteredTrips,
+    sortKey,
+    sortAsc,
+    countryData.countries
+  );
+
+  // Generic filter handler
+  function handleFilterChange<K extends keyof typeof filters>(
+    key: K,
+    value: string
+  ) {
+    setFilters((f) => ({ ...f, [key]: value }));
+  }
+
+  // Header click handler
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortAsc(!sortAsc);
+    } else {
+      setSortKey(key);
+      setSortAsc(true);
+    }
+  };
+
   return (
     <div
       className="overflow-x-auto w-full"
@@ -21,126 +94,92 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
       <table className="trips-table w-full min-w-[1200px]">
         <thead>
           <tr>
-            <th className="trips-th">Name</th>
-            <th className="trips-th">Countries</th>
-            <th className="trips-th">Year</th>
-            <th className="trips-th">Start Date</th>
-            <th className="trips-th">End Date</th>
-            <th className="trips-th">Full Days</th>
-            <th className="trips-th">Notes</th>
+            <th className="trips-th">#</th>
+            <SortableFilterHeader
+              label="Name"
+              sortKey="name"
+              currentSortKey={sortKey}
+              sortAsc={sortAsc}
+              onSort={handleSort}
+              filterValue={filters.name}
+              onFilterChange={(v) => handleFilterChange("name", v)}
+            />
+            <SortableFilterHeader
+              label="Countries"
+              sortKey="countries"
+              currentSortKey={sortKey}
+              sortAsc={sortAsc}
+              onSort={handleSort}
+              filterElement={
+                <DropdownSelectInput
+                  value={filters.country}
+                  onChange={(v) => handleFilterChange("country", v)}
+                  options={countryOptions}
+                  placeholder="All Countries"
+                  className="block w-full mt-1 text-xs focus:outline-none"
+                />
+              }
+            />
+            <SortableFilterHeader
+              label="Year"
+              sortKey="year"
+              currentSortKey={sortKey}
+              sortAsc={sortAsc}
+              onSort={handleSort}
+              filterElement={
+                <DropdownSelectInput
+                  value={filters.year}
+                  onChange={(v) => handleFilterChange("year", v)}
+                  options={yearOptions}
+                  placeholder="All Years"
+                  className="block w-full mt-1 text-xs"
+                />
+              }
+            />
+            <SortableFilterHeader
+              label="Start Date"
+              sortKey="startDate"
+              currentSortKey={sortKey}
+              sortAsc={sortAsc}
+              onSort={handleSort}
+            />
+            <SortableFilterHeader
+              label="End Date"
+              sortKey="endDate"
+              currentSortKey={sortKey}
+              sortAsc={sortAsc}
+              onSort={handleSort}
+            />
+            <SortableFilterHeader
+              label="Full Days"
+              sortKey="fullDays"
+              currentSortKey={sortKey}
+              sortAsc={sortAsc}
+              onSort={handleSort}
+            />
+            <SortableFilterHeader
+              label="Notes"
+              sortKey="notes"
+              currentSortKey={sortKey}
+              sortAsc={sortAsc}
+              onSort={handleSort}
+            />
             <th className="trips-th">Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {trips.flatMap((trip) =>
-            (trip.countryCodes && trip.countryCodes.length > 0
-              ? trip.countryCodes
-              : [undefined]
-            ).map((code, idx) => {
-              const country = code
-                ? countryData.countries.find(
-                    (c) => c.isoCode?.toLowerCase() === code.toLowerCase()
-                  )
-                : null;
-              return (
-                <tr key={trip.id + "-" + (code || idx)}>
-                  {idx === 0 && (
-                    <>
-                      <td
-                        className="trips-td"
-                        rowSpan={trip.countryCodes?.length || 1}
-                      >
-                        {trip.name}
-                      </td>
-                    </>
-                  )}
-                  <td className="trips-td">
-                    {country ? (
-                      <span className="trips-country-item">
-                        <CountryFlag
-                          flag={{
-                            isoCode: country.isoCode,
-                            source: "svg",
-                            style: "flat",
-                            size: "32x24",
-                          }}
-                        />
-                        <span className="trips-country-name">
-                          {country.name}
-                        </span>
-                      </span>
-                    ) : code ? (
-                      <span>{code}</span>
-                    ) : (
-                      <span className="text-gray-400 italic">No country</span>
-                    )}
-                  </td>
-                  {idx === 0 && (
-                    <>
-                      <td
-                        className="trips-td"
-                        rowSpan={trip.countryCodes?.length || 1}
-                      >
-                        {trip.startDate
-                          ? new Date(trip.startDate).getFullYear()
-                          : ""}
-                      </td>
-                      <td
-                        className="trips-td"
-                        rowSpan={trip.countryCodes?.length || 1}
-                      >
-                        {trip.startDate
-                          ? new Date(trip.startDate).toLocaleDateString()
-                          : ""}
-                      </td>
-                      <td
-                        className="trips-td"
-                        rowSpan={trip.countryCodes?.length || 1}
-                      >
-                        {trip.endDate
-                          ? new Date(trip.endDate).toLocaleDateString()
-                          : ""}
-                      </td>
-                      <td
-                        className="trips-td"
-                        rowSpan={trip.countryCodes?.length || 1}
-                      >
-                        {trip.fullDays}
-                      </td>
-                      <td
-                        className="trips-td"
-                        rowSpan={trip.countryCodes?.length || 1}
-                      >
-                        {trip.notes}
-                      </td>
-                      <td
-                        className="trips-td"
-                        rowSpan={trip.countryCodes?.length || 1}
-                      >
-                        <div className="flex gap-2">
-                          <button
-                            className="px-2 py-1 bg-yellow-500 text-white rounded"
-                            onClick={() => onEdit(trip)}
-                            title="Edit Trip"
-                          >
-                            <FaEdit />
-                          </button>
-                          <button
-                            className="px-2 py-1 bg-red-600 text-white rounded"
-                            onClick={() => onDelete(trip)}
-                            title="Delete Trip"
-                          >
-                            <FaTrash />
-                          </button>
-                        </div>
-                      </td>
-                    </>
-                  )}
-                </tr>
-              );
-            })
-          )}
-        </tbody>
+        {/* Trip table rows */}
+        {filteredTrips.map((trip, tripIdx) => (
+          <tbody key={trip.id} className="trips-group">
+            <TripRows
+              trip={trip}
+              tripIdx={tripIdx}
+              countryData={countryData}
+              getTripRowClass={getTripRowClass}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          </tbody>
+        ))}
       </table>
     </div>
   );

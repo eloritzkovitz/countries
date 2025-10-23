@@ -59,7 +59,7 @@ export default function TripsPage() {
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col bg-gray-50 dark:bg-gray-900 px-4 py-8">
+    <div className="min-h-screen w-full flex flex-col bg-white px-4 py-8">
       <div className="w-full mx-auto flex flex-col">
         <div className="flex gap-2 mb-4">
           <button
