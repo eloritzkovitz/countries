@@ -28,6 +28,14 @@ export default function HomePage() {
           linkTo="/game"
           linkText="Play Game"
         />
+        <HomeCard
+          imageSrc="/images/trips.png"
+          imageAlt="Trips Log"
+          title="Trips Log"
+          description="Log your trips, see where you've been, and plan future adventures. Highlight visited countries and cities."
+          linkTo="/trips"
+          linkText="View Trips"
+        />
       </div>
       <footer className="mt-12 text-gray-400 dark:text-gray-300 text-sm text-center">
         &copy; {new Date().getFullYear()} Countries Explorer &mdash; All rights

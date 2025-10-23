@@ -22,7 +22,7 @@ export const TripsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     let mounted = true;
     const loadTrips = async () => {
       setLoading(true);
-      const allTrips = await appDb.trips.toArray(); // <-- Use appDb.trips
+      const allTrips = await appDb.trips.toArray();
       if (mounted) {
         setTrips(allTrips);
         setLoading(false);
@@ -34,19 +34,19 @@ export const TripsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Add a trip
   const addTrip = async (trip: Trip) => {
-    await appDb.trips.add(trip); // <-- Use appDb.trips
+    await appDb.trips.add(trip);
     setTrips(prev => [...prev, trip]);
   };
 
   // Update a trip
   const updateTrip = async (trip: Trip) => {
-    await appDb.trips.put(trip); // <-- Use appDb.trips
+    await appDb.trips.put(trip);
     setTrips(prev => prev.map(t => (t.id === trip.id ? trip : t)));
   };
 
   // Remove a trip
   const removeTrip = async (id: string) => {
-    await appDb.trips.delete(id); // <-- Use appDb.trips
+    await appDb.trips.delete(id);
     setTrips(prev => prev.filter(t => t.id !== id));
   };
 
