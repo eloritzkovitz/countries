@@ -109,9 +109,24 @@ export function OverlayModal({
               selectedCountries.map((country) => (
                 <span
                   key={country.isoCode}
-                  className="bg-blue-100 text-blue-800 dark:bg-gray-500 dark:text-gray-200 px-2 py-1 rounded text-sm mr-1 mb-1"
+                  className="flex items-center gap-1 bg-blue-100 text-blue-800 dark:bg-gray-500 dark:text-gray-200 px-2 py-1 rounded text-sm mr-1 mb-1"
                 >
                   {country.name}
+                  <button
+                    type="button"
+                    className="ml-auto text-gray-400 hover:text-blue-500 dark:hover:text-gray-300"
+                    title="Remove"
+                    onClick={() =>
+                      onChange({
+                        ...overlay,
+                        countries: overlay.countries.filter(
+                          (code) => code !== country.isoCode
+                        ),
+                      })
+                    }
+                  >
+                    <FaTimes />
+                  </button>
                 </span>
               ))
             )}

@@ -27,8 +27,6 @@ export function CountrySelectModal({
   onClose,
 }: CountrySelectModalProps) {
   const [search, setSearch] = useState("");
-  const [selectedCountries, setSelectedCountries] =
-    useState<string[]>(selected);
 
   // Filter options by search (accent-insensitive)
   const filteredOptions = filterCountriesBySearch(options, search);
@@ -55,41 +53,43 @@ export function CountrySelectModal({
         />
       </FormField>
       <FormField label="Countries:">
-        <div className="h-64 max-h-[50vh] overflow-y-auto rounded px-2 py-1">
+        <div className="bg-gray-100 h-64 max-h-[50vh] overflow-y-auto rounded px-2 py-1">
           {filteredOptions.length === 0 ? (
             <div className="text-gray-400 text-center py-8">
               No countries found.
             </div>
           ) : (
-            filteredOptions.map((country) => (
-              <label
-                key={country.isoCode}
-                className="flex items-center mb-2 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedCountries.includes(country.isoCode)}
-                  onChange={() => {
-                    setSelectedCountries((prev) =>
-                      prev.includes(country.isoCode)
-                        ? prev.filter((v) => v !== country.isoCode)
-                        : [...prev, country.isoCode]
-                    );
-                  }}
-                  className="mr-2"
-                />
-                <CountryFlag
-                  flag={{
-                    isoCode: country.isoCode,
-                    source: "svg",
-                    style: "flat",
-                    size: "32x24",
-                  }}
-                  style={{ marginRight: 8 }}
-                />
-                {country.name}
-              </label>
-            ))
+            filteredOptions.map((country) => {
+              const checked = selected.includes(country.isoCode);
+              return (
+                <label
+                  key={country.isoCode}
+                  className="flex items-center mb-2 cursor-pointer hover:text-blue-500 dark:hover:text-gray-300"
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => {
+                      const newSelected = checked
+                        ? selected.filter((v) => v !== country.isoCode)
+                        : [...selected, country.isoCode];
+                      onChange(newSelected);
+                    }}
+                    className="mr-2"
+                  />
+                  <CountryFlag
+                    flag={{
+                      isoCode: country.isoCode,
+                      source: "svg",
+                      style: "flat",
+                      size: "32x24",
+                    }}
+                    style={{ marginRight: 8 }}
+                  />
+                  {country.name}
+                </label>
+              );
+            })
           )}
         </div>
       </FormField>
@@ -97,11 +97,7 @@ export function CountrySelectModal({
         <FormButton type="button" variant="secondary" onClick={onClose}>
           Cancel
         </FormButton>
-        <FormButton
-          type="button"
-          variant="primary"
-          onClick={() => onChange(selectedCountries)}
-        >
+        <FormButton type="button" variant="primary" onClick={onClose}>
           Confirm
         </FormButton>
       </div>

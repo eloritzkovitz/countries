@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { FaSuitcaseRolling, FaGlobe, FaSave } from "react-icons/fa";
-import { CountryFlag, FormButton, FormField, Modal, ModalActions } from "@components";
-import type { Trip } from "@types";
-import { CountrySelectModal } from "@features/countries";
+import { FaSuitcaseRolling, FaGlobe, FaSave, FaTimes } from "react-icons/fa";
+import { CountryFlag, FormField, Modal, ModalActions } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
+import { CountrySelectModal } from "@features/countries";
+import type { Trip } from "@types";
 
 type TripModalProps = {
   trip: Trip | null;
@@ -36,7 +36,7 @@ export function TripModal({
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        className="bg-white w-[700px] max-h-[80vh] flex flex-row"
+        className="bg-white w-[800px] max-h-[80vh] flex flex-row"
       >
         {/* Left: Form */}
         <form
@@ -75,14 +75,16 @@ export function TripModal({
             />
           </FormField>
           <FormField label="Countries" className="mb-2">
-            <FormButton
+            <button
               type="button"
-              className="bg-blue-100 text-blue-800 mb-2 flex items-center gap-2"
+              className="flex items-center gap-2 px-4 py-2 rounded-full hover:text-blue-500 dark:hover:text-gray-300 font-medium"
               onClick={() => setCountryModalOpen(true)}
             >
               <FaGlobe />
-              Select Countries
-            </FormButton>
+              {selectedCountries.length > 0
+                ? `Edit Countries (${selectedCountries.length})`
+                : "Select Countries"}
+            </button>
           </FormField>
           <FormField label="Full Days" className="mb-2">
             <input
@@ -115,7 +117,7 @@ export function TripModal({
           />
         </form>
         {/* Right: Selected Countries */}
-        <div className="flex flex-col min-w-[180px] max-w-[220px] border-l border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
+        <div className="flex flex-col w-[250px] border-l border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
           <div className="font-semibold mb-2 text-gray-700 dark:text-gray-200">
             Selected Countries
           </div>
@@ -128,7 +130,7 @@ export function TripModal({
             {selectedCountries.map((country) => (
               <span
                 key={country.isoCode}
-                className="inline-flex items-center gap-1 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700"
+                className="flex items-center gap-1 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700"
               >
                 <CountryFlag
                   flag={{
@@ -139,6 +141,21 @@ export function TripModal({
                   }}
                 />
                 <span className="text-sm">{country.name}</span>
+                <button
+                  type="button"
+                  className="ml-auto text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  title="Remove"
+                  onClick={() =>
+                    onChange({
+                      ...trip,
+                      countryCodes: trip.countryCodes.filter(
+                        (code) => code !== country.isoCode
+                      ),
+                    })
+                  }
+                >
+                  <FaTimes />
+                </button>
               </span>
             ))}
           </div>
@@ -151,7 +168,6 @@ export function TripModal({
         onClose={() => setCountryModalOpen(false)}
         onChange={(newCodes) => {
           onChange({ ...trip, countryCodes: newCodes });
-          setCountryModalOpen(false);
         }}
       />
     </>
