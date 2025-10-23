@@ -6,6 +6,7 @@ export type Overlay = {
   countries: string[];
   tooltip?: string;
   visible: boolean;
+  order?: number;
 };
 
 // Overlay item type definition

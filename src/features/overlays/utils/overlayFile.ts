@@ -22,7 +22,6 @@ export function importOverlaysFromFile(
       const imported = JSON.parse(e.target?.result as string);
       if (Array.isArray(imported)) {
         setOverlays(imported);
-        localStorage.setItem("overlays", JSON.stringify(imported));
       } else {
         alert("Invalid overlays file format.");
       }
@@ -36,12 +35,12 @@ export function importOverlaysFromFile(
 
 /**
  * Exports overlays to a JSON file.
+ * @param overlays The overlays data to export.
  * @returns void
  */
-export function exportOverlaysToFile() {
-  const overlays = localStorage.getItem("overlays");
+export function exportOverlaysToFile(overlays: Overlay[]) {
   if (!overlays) return;
-  const pretty = JSON.stringify(JSON.parse(overlays), null, 2);
+  const pretty = JSON.stringify(overlays, null, 2);
   const blob = new Blob([pretty], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

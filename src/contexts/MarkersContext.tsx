@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import type { Marker } from "@types";
-
-const STORAGE_KEY = "countries_markers";
+import { appDb } from "@utils/db";
 
 interface MarkersContextType {
   markers: Marker[];
@@ -20,23 +19,26 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [initialized, setInitialized] = useState(false);
 
-  // Load markers from localStorage on mount
+  // Load markers from IndexedDB on mount
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setMarkers(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse markers from localStorage:", e);
-      }
-    }
-    setInitialized(true);
+    let mounted = true;
+    const loadMarkers = async () => {
+      const dbMarkers = await appDb.markers.toArray();
+      if (mounted) setMarkers(dbMarkers);
+      setInitialized(true);
+    };
+    loadMarkers();
+    return () => { mounted = false; };
   }, []);
 
-  // Save markers to localStorage whenever they change
+  // Save markers to IndexedDB whenever they change
   useEffect(() => {
     if (initialized) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(markers));
+      appDb.markers.clear().then(() => {
+        if (markers.length > 0) {
+          appDb.markers.bulkAdd(markers);
+        }
+      });
     }
   }, [markers, initialized]);
 
