@@ -19,6 +19,7 @@ export { Separator } from './layout/Separator';
 
 // Modal components
 export { Modal } from './layout/Modal/Modal';
+export { ModalActions } from './layout/Modal/ModalActions';
 
 // Panel components
 export { Panel } from './layout/Panel/Panel';

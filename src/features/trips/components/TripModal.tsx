@@ -1,132 +1,159 @@
-import { useState, useEffect } from "react";
-import { FaSave, FaTimes } from "react-icons/fa";
-import { FormButton, FormField, Modal } from "@components";
+import { useState } from "react";
+import { FaSuitcaseRolling, FaGlobe, FaSave } from "react-icons/fa";
+import { CountryFlag, FormButton, FormField, Modal, ModalActions } from "@components";
 import type { Trip } from "@types";
+import { CountrySelectModal } from "@features/countries";
+import { useCountryData } from "@contexts/CountryDataContext";
 
 type TripModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
+  trip: Trip | null;
+  onChange: (trip: Trip) => void;
   onSave: (trip: Trip) => Promise<void>;
-  initialTrip?: Trip | null;
+  onClose: () => void;
+  isOpen: boolean;
 };
 
 export function TripModal({
-  isOpen,
-  onClose,
+  trip,
+  onChange,
   onSave,
-  initialTrip,
+  onClose,
+  isOpen,
 }: TripModalProps) {
-  const [name, setName] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [countryCodes, setCountryCodes] = useState("");
-  const [fullDays, setFullDays] = useState(1);
-  const [notes, setNotes] = useState("");
+  // Contexts
+  const { countries } = useCountryData();
+  const [countryModalOpen, setCountryModalOpen] = useState(false);
 
-  useEffect(() => {
-    if (initialTrip) {
-      setName(initialTrip.name || "");
-      setStartDate(initialTrip.startDate || "");
-      setEndDate(initialTrip.endDate || "");
-      setCountryCodes(initialTrip.countryCodes?.join(", ") || "");
-      setFullDays(initialTrip.fullDays || 1);
-      setNotes(initialTrip.notes || "");
-    } else {
-      setName("");
-      setStartDate("");
-      setEndDate("");
-      setCountryCodes("");
-      setFullDays(1);
-      setNotes("");
-    }
-  }, [initialTrip, isOpen]);
+  if (!trip) return null;
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const trip: Trip = {
-      id: initialTrip?.id || Date.now().toString(),
-      name,
-      startDate,
-      endDate,
-      countryCodes: countryCodes
-        .split(",")
-        .map((c) => c.trim())
-        .filter(Boolean),
-      fullDays,
-      notes,
-    };
-    onSave(trip).then(onClose);
-  }
+  // Get the selected country objects
+  const selectedCountries = countries.filter((country) =>
+    trip.countryCodes.includes(country.isoCode)
+  );
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <form className="p-4 max-w-md mx-auto" onSubmit={handleSubmit}>
-        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-          <FaSave />
-          {initialTrip ? "Edit Trip" : "Add Trip"}
-        </h2>
-        <FormField label="Name" className="mb-2">
-          <input
-            className="border px-2 py-1 w-full"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
+    <>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        className="bg-white w-[700px] max-h-[80vh] flex flex-row"
+      >
+        {/* Left: Form */}
+        <form
+          className="p-4 flex-1 min-w-0"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSave(trip);
+          }}
+        >
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <FaSuitcaseRolling />
+            {trip.id ? "Edit Trip" : "Add Trip"}
+          </h2>
+          <FormField label="Name" className="mb-2">
+            <input
+              className="form-field"
+              value={trip.name}
+              onChange={(e) => onChange({ ...trip, name: e.target.value })}
+              required
+            />
+          </FormField>
+          <FormField label="Start Date" className="mb-2">
+            <input
+              type="date"
+              className="form-field"
+              value={trip.startDate}
+              onChange={(e) => onChange({ ...trip, startDate: e.target.value })}
+            />
+          </FormField>
+          <FormField label="End Date" className="mb-2">
+            <input
+              type="date"
+              className="form-field"
+              value={trip.endDate}
+              onChange={(e) => onChange({ ...trip, endDate: e.target.value })}
+            />
+          </FormField>
+          <FormField label="Countries" className="mb-2">
+            <FormButton
+              type="button"
+              className="bg-blue-100 text-blue-800 mb-2 flex items-center gap-2"
+              onClick={() => setCountryModalOpen(true)}
+            >
+              <FaGlobe />
+              Select Countries
+            </FormButton>
+          </FormField>
+          <FormField label="Full Days" className="mb-2">
+            <input
+              type="number"
+              min={1}
+              className="form-field"
+              value={trip.fullDays}
+              onChange={(e) =>
+                onChange({ ...trip, fullDays: Number(e.target.value) })
+              }
+            />
+          </FormField>
+          <FormField label="Notes" className="mb-2">
+            <input
+              className="form-field"
+              value={trip.notes}
+              onChange={(e) => onChange({ ...trip, notes: e.target.value })}
+            />
+          </FormField>
+          <ModalActions
+            onCancel={onClose}
+            submitIcon={
+              trip.id ? (
+                <FaSave className="inline" />
+              ) : (
+                <FaSuitcaseRolling className="inline" />
+              )
+            }
+            submitLabel={trip.id ? "Save Changes" : "Add Trip"}
           />
-        </FormField>
-        <FormField label="Start Date" className="mb-2">
-          <input
-            type="date"
-            className="border px-2 py-1 w-full"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-        </FormField>
-        <FormField label="End Date" className="mb-2">
-          <input
-            type="date"
-            className="border px-2 py-1 w-full"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-        </FormField>
-        <FormField label="Country Codes (comma separated)" className="mb-2">
-          <input
-            className="border px-2 py-1 w-full"
-            value={countryCodes}
-            onChange={(e) => setCountryCodes(e.target.value)}
-          />
-        </FormField>
-        <FormField label="Full Days" className="mb-2">
-          <input
-            type="number"
-            min={1}
-            className="border px-2 py-1 w-full"
-            value={fullDays}
-            onChange={(e) => setFullDays(Number(e.target.value))}
-          />
-        </FormField>
-        <FormField label="Notes" className="mb-2">
-          <input
-            className="border px-2 py-1 w-full"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          />
-        </FormField>
-        <div className="flex gap-2 mt-4">
-          <FormButton type="submit" className="bg-blue-600 text-white">
-            <FaSave className="mr-2" />
-            {initialTrip ? "Save Changes" : "Add Trip"}
-          </FormButton>
-          <FormButton
-            type="button"
-            className="bg-gray-400 text-white"
-            onClick={onClose}
-          >
-            <FaTimes className="mr-2" />
-            Cancel
-          </FormButton>
+        </form>
+        {/* Right: Selected Countries */}
+        <div className="flex flex-col min-w-[180px] max-w-[220px] border-l border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
+          <div className="font-semibold mb-2 text-gray-700 dark:text-gray-200">
+            Selected Countries
+          </div>
+          <div className="flex flex-col gap-2">
+            {selectedCountries.length === 0 && (
+              <span className="text-gray-400 text-sm">
+                No countries selected
+              </span>
+            )}
+            {selectedCountries.map((country) => (
+              <span
+                key={country.isoCode}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700"
+              >
+                <CountryFlag
+                  flag={{
+                    isoCode: country.isoCode,
+                    source: "svg",
+                    style: "flat",
+                    size: "32x24",
+                  }}
+                />
+                <span className="text-sm">{country.name}</span>
+              </span>
+            ))}
+          </div>
         </div>
-      </form>
-    </Modal>
+      </Modal>
+      <CountrySelectModal
+        isOpen={countryModalOpen}
+        selected={trip.countryCodes}
+        options={countries}
+        onClose={() => setCountryModalOpen(false)}
+        onChange={(newCodes) => {
+          onChange({ ...trip, countryCodes: newCodes });
+          setCountryModalOpen(false);
+        }}
+      />
+    </>
   );
 }

@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { FaLayerGroup, FaEdit, FaTimes } from "react-icons/fa";
+import { FaLayerGroup, FaEdit, FaTimes, FaSave } from "react-icons/fa";
 import {
   ActionButton,
   FormButton,
   FormField,
   Modal,
+  ModalActions,
   PanelHeader,
 } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
+import { CountrySelectModal } from "@features/countries";
 import type { Overlay } from "@types";
-import CountrySelectModal from "./CountrySelectModal";
 import { ColorPickerModal } from "./ColorPickerModal";
 
 type OverlayModalProps = {
@@ -77,7 +78,7 @@ export function OverlayModal({
             type="text"
             value={overlay.name}
             onChange={(e) => onChange({ ...overlay, name: e.target.value })}
-            className="w-full px-3 py-2 bg-gray-100 rounded border-none text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:focus:ring-blue-400"
+            className="form-field"
           />
         </FormField>
 
@@ -130,19 +131,22 @@ export function OverlayModal({
             type="text"
             value={overlay.tooltip || ""}
             onChange={(e) => onChange({ ...overlay, tooltip: e.target.value })}
-            className="w-full px-3 py-2 bg-gray-100 rounded border-none text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:focus:ring-blue-400"
+            className="form-field"
           />
         </FormField>
-
-        {/* Buttons */}
-        <div className="flex justify-end gap-2 mt-4">
-          <FormButton type="button" variant="secondary" onClick={onClose}>
-            Cancel
-          </FormButton>
-          <FormButton type="button" variant="primary" onClick={onSave}>
-            {overlay ? "Save Changes" : "Add Overlay"}
-          </FormButton>
-        </div>
+        <ModalActions
+          onCancel={onClose}
+          onSubmit={onSave}
+          submitType="button"
+          submitIcon={
+            overlay ? (
+              <FaSave className="inline" />
+            ) : (
+              <FaLayerGroup className="inline" />
+            )
+          }
+          submitLabel={overlay ? "Save Changes" : "Add Overlay"}
+        />
       </Modal>
       {/* Color Picker Modal */}
       <ColorPickerModal

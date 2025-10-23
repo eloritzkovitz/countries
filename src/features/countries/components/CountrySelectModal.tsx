@@ -19,7 +19,7 @@ interface CountrySelectModalProps {
   onClose: () => void;
 }
 
-export default function CountrySelectModal({
+export function CountrySelectModal({
   isOpen,
   selected,
   options,
