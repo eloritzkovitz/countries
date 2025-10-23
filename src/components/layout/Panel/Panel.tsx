@@ -30,7 +30,7 @@ export function Panel({
   showSeparator = true,
   scrollable = true,
 }: PanelProps) {
-  usePanelHide({ show, onHide });
+  usePanelHide({ show, onHide, escEnabled: true });
 
   return (
     <div
