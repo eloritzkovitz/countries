@@ -2,7 +2,7 @@
  * Utility functions for trips.
  */
 
-import type { Trip } from "@types";
+import type { Trip, TripStatus } from "@types";
 
 /**
  * Generates a CSS class string for a trip row based on its index and whether it's upcoming.
@@ -22,6 +22,23 @@ export function getTripRowClass(trip: Trip, tripIdx: number): string {
  */
 export function isUpcomingTrip(trip: Trip): boolean {
   return !!trip.startDate && new Date(trip.startDate) > new Date();
+}
+
+/**
+ * Gets the automatic status of a trip based on current date and trip dates.
+ * @param trip - The trip object.
+ * @returns The automatic status of the trip.
+ */
+export function getAutoTripStatus(trip: Trip): TripStatus {
+  const now = new Date();
+  const start = trip.startDate ? new Date(trip.startDate) : null;
+  const end = trip.endDate ? new Date(trip.endDate) : null;
+
+  if (!start || !end) return trip.status || "planned";
+  if (now < start) return "planned";
+  if (now >= start && now <= end) return "in-progress";
+  if (now > end) return "completed";
+  return trip.status || "planned";
 }
 
 /**

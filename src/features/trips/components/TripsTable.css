@@ -7,27 +7,27 @@
 }
 
 .trips-th {
-  @apply border border-gray-300 px-2 py-1 bg-gray-100 dark:border-gray-600 dark:bg-gray-900;
+  @apply border border-gray-300 px-2 py-1 bg-gray-100 dark:border-gray-600 dark:bg-gray-800;
 }
 
 .trips-td {
-  @apply border border-gray-300 px-2 py-1 align-top dark:border-gray-600;
+  @apply border border-gray-300 px-2 py-1 align-top dark:border-gray-500;
 }
 
 .trips-row-even {
-  @apply bg-white dark:bg-gray-800;
+  @apply bg-white dark:bg-gray-600;
 }
 
 .trips-row-odd {
-  @apply bg-gray-50 dark:bg-gray-900;
+  @apply bg-gray-50 dark:bg-gray-700;
 }
 
 .trips-row-upcoming {
-  @apply bg-green-50/60 dark:bg-green-900/60;
+  @apply bg-yellow-50/60 dark:bg-yellow-300/60;
 }
 
 tbody.trips-group:hover tr {
-  @apply bg-blue-50/60 dark:bg-blue-600/40;
+  @apply bg-blue-50/60 dark:bg-blue-500/60;
 }
 
 .trips-country-list {
@@ -40,4 +40,8 @@ tbody.trips-group:hover tr {
 
 .trips-country-name {
   @apply text-sm;
+}
+
+.status-hover {
+  @apply group-hover:bg-blue-50/60 dark:group-hover:bg-blue-600/40 group-hover:text-inherit
 }

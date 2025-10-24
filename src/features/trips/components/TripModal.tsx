@@ -1,9 +1,21 @@
 import { useState } from "react";
 import { FaSuitcaseRolling, FaGlobe, FaSave, FaTimes } from "react-icons/fa";
-import { CountryFlag, FormField, Modal, ModalActions } from "@components";
+import {
+  CountryFlag,
+  FormField,
+  Modal,
+  ModalActions,
+  SelectInput,
+} from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { CountrySelectModal } from "@features/countries";
-import type { Trip } from "@types";
+import {
+  getCategoryDropdownOptions,
+  getStatusDropdownOptions,
+  getTagDropdownOptions,
+} from "@features/trips/utils/dropdownOptions";
+import { DropdownSelectInput } from "@components";
+import type { Trip, TripCategory, TripStatus } from "@types";
 
 type TripModalProps = {
   trip: Trip | null;
@@ -20,7 +32,6 @@ export function TripModal({
   onClose,
   isOpen,
 }: TripModalProps) {
-  // Contexts
   const { countries } = useCountryData();
   const [countryModalOpen, setCountryModalOpen] = useState(false);
 
@@ -30,6 +41,11 @@ export function TripModal({
   const selectedCountries = countries.filter((country) =>
     trip.countryCodes.includes(country.isoCode)
   );
+
+  // Dropdown options
+  const categoryOptions = getCategoryDropdownOptions(null);
+  const statusOptions = getStatusDropdownOptions(null);
+  const tagOptions = getTagDropdownOptions(null);
 
   return (
     <>
@@ -95,6 +111,50 @@ export function TripModal({
               onChange={(e) =>
                 onChange({ ...trip, fullDays: Number(e.target.value) })
               }
+            />
+          </FormField>
+          <FormField label="Categories" className="mb-2">
+            <DropdownSelectInput
+              value={trip.categories || []}
+              onChange={(v) =>
+                onChange({
+                  ...trip,
+                  categories: Array.isArray(v)
+                    ? (v as TripCategory[])
+                    : v
+                    ? [v as TripCategory]
+                    : [],
+                })
+              }
+              options={categoryOptions}
+              placeholder="Select categories"
+              isMulti
+              className="form-field"
+            />
+          </FormField>
+          <FormField label="Status" className="mb-2">
+            <SelectInput
+              value={trip.status || ""}
+              onChange={(v) =>
+                onChange({
+                  ...trip,
+                  status: v as TripStatus,
+                })
+              }
+              options={statusOptions}
+              label={""}
+            />
+          </FormField>
+          <FormField label="Tags" className="mb-2">
+            <DropdownSelectInput
+              value={trip.tags || []}
+              onChange={(v) =>
+                onChange({ ...trip, tags: Array.isArray(v) ? v : v ? [v] : [] })
+              }
+              options={tagOptions}
+              placeholder="Add tags"
+              isMulti
+              className="form-field"
             />
           </FormField>
           <FormField label="Notes" className="mb-2">

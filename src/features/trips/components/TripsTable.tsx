@@ -10,8 +10,11 @@ import {
 import {
   getCountryDropdownOptions,
   getYearDropdownOptions,
+  getCategoryDropdownOptions,
+  getStatusDropdownOptions,
+  getTagDropdownOptions,
 } from "@features/trips/utils/dropdownOptions";
-import type { SortKey, Trip } from "@types";
+import type { SortKey, Trip, TripCategory, TripStatus } from "@types";
 import { CountryCell } from "./CountryCell";
 import { SortableFilterHeader } from "./SortableFilterHeader";
 import { TripRows } from "./TripRows";
@@ -30,8 +33,11 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
   // Filters state
   const [filters, setFilters] = useState({
     name: "",
-    country: "",
-    year: "",
+    country: [] as string[],
+    year: [] as string[],
+    categories: [] as TripCategory[],
+    status: "" as TripStatus | "",
+    tags: [] as string[],
   });
   const [sortKey, setSortKey] = useState<SortKey>("startDate");
   const [sortAsc, setSortAsc] = useState(true);
@@ -60,7 +66,7 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
   // Used years for year dropdown
   const usedYears = getUsedYears(trips);
   const yearOptions = getYearDropdownOptions(usedYears);
-  let filteredTrips = filterTrips(trips, filters);
+  let filteredTrips = filterTrips(trips, filters as unknown as any);
   filteredTrips = sortTrips(
     filteredTrips,
     sortKey,
@@ -68,10 +74,15 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
     countryData.countries
   );
 
+  // Get category, status, and tag options
+  const categoryOptions = getCategoryDropdownOptions(trips);
+  const statusOptions = getStatusDropdownOptions(trips);
+  const tagOptions = getTagDropdownOptions(trips);
+
   // Generic filter handler
   function handleFilterChange<K extends keyof typeof filters>(
     key: K,
-    value: string
+    value: (typeof filters)[K]
   ) {
     setFilters((f) => ({ ...f, [key]: value }));
   }
@@ -103,6 +114,7 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
               onSort={handleSort}
               filterValue={filters.name}
               onFilterChange={(v) => handleFilterChange("name", v)}
+              placeholder="Search by name..."
             />
             <SortableFilterHeader
               label="Countries"
@@ -113,9 +125,15 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
               filterElement={
                 <DropdownSelectInput
                   value={filters.country}
-                  onChange={(v) => handleFilterChange("country", v)}
+                  onChange={(v) =>
+                    handleFilterChange(
+                      "country",
+                      Array.isArray(v) ? v : v ? [v] : []
+                    )
+                  }
                   options={countryOptions}
                   placeholder="All Countries"
+                  isMulti
                   className="block w-full mt-1 text-xs focus:outline-none"
                 />
               }
@@ -129,9 +147,15 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
               filterElement={
                 <DropdownSelectInput
                   value={filters.year}
-                  onChange={(v) => handleFilterChange("year", v)}
+                  onChange={(v) =>
+                    handleFilterChange(
+                      "year",
+                      Array.isArray(v) ? v : v ? [v] : []
+                    )
+                  }
                   options={yearOptions}
                   placeholder="All Years"
+                  isMulti
                   className="block w-full mt-1 text-xs"
                 />
               }
@@ -158,11 +182,66 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
               onSort={handleSort}
             />
             <SortableFilterHeader
-              label="Notes"
-              sortKey="notes"
+              label="Categories"
+              sortKey="categories"
               currentSortKey={sortKey}
               sortAsc={sortAsc}
               onSort={handleSort}
+              filterElement={
+                <DropdownSelectInput
+                  value={filters.categories}
+                  onChange={(v) =>
+                    handleFilterChange(
+                      "categories",
+                      Array.isArray(v) ? v : v ? [v] : []
+                    )
+                  }
+                  options={categoryOptions}
+                  placeholder="All Categories"
+                  isMulti
+                  className="block w-full mt-1 text-xs"
+                />
+              }
+            />
+            <SortableFilterHeader
+              label="Status"
+              sortKey="status"
+              currentSortKey={sortKey}
+              sortAsc={sortAsc}
+              onSort={handleSort}
+              filterElement={
+                <DropdownSelectInput
+                  value={filters.status}
+                  onChange={(v) =>
+                    handleFilterChange("status", Array.isArray(v) ? v[0] : v)
+                  }
+                  options={statusOptions}
+                  placeholder="All Statuses"
+                  className="block w-full mt-1 text-xs"
+                />
+              }
+            />
+            <SortableFilterHeader
+              label="Tags"
+              sortKey="tags"
+              currentSortKey={sortKey}
+              sortAsc={sortAsc}
+              onSort={handleSort}
+              filterElement={
+                <DropdownSelectInput
+                  value={filters.tags}
+                  onChange={(v) =>
+                    handleFilterChange(
+                      "tags",
+                      Array.isArray(v) ? v : v ? [v] : []
+                    )
+                  }
+                  options={tagOptions}
+                  placeholder="All Tags"
+                  isMulti
+                  className="block w-full mt-1 text-xs"
+                />
+              }
             />
             <th className="trips-th">Actions</th>
           </tr>

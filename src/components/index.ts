@@ -28,5 +28,6 @@ export { PanelHeader } from './layout/Panel/PanelHeader';
 export { PanelListItem } from './layout/Panel/PanelListItem';
 
 // UI components
+export { CardList } from './ui/CardList';
 export { CountryFlag } from './ui/CountryFlag';
 export { HomeCard } from './ui/HomeCard';
