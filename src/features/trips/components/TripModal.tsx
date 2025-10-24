@@ -64,7 +64,7 @@ export function TripModal({
         >
           <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
             <FaSuitcaseRolling />
-            {trip.id ? "Edit Trip" : "Add Trip"}
+            {trip ? "Edit Trip" : "Add Trip"}
           </h2>
           <FormField label="Name" className="mb-2">
             <input
@@ -79,7 +79,14 @@ export function TripModal({
               type="date"
               className="form-field"
               value={trip.startDate}
-              onChange={(e) => onChange({ ...trip, startDate: e.target.value })}
+              onChange={(e) => {
+                const newStart = e.target.value;
+                let newEnd = trip.endDate;
+                if (!trip.endDate || newEnd < newStart) {
+                  newEnd = newStart;
+                }
+                onChange({ ...trip, startDate: newStart, endDate: newEnd });
+              }}
             />
           </FormField>
           <FormField label="End Date" className="mb-2">
@@ -87,6 +94,7 @@ export function TripModal({
               type="date"
               className="form-field"
               value={trip.endDate}
+              min={trip.startDate || undefined}
               onChange={(e) => onChange({ ...trip, endDate: e.target.value })}
             />
           </FormField>

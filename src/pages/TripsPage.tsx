@@ -25,7 +25,7 @@ export default function TripsPage() {
 
   // Add trip
   function handleAdd() {
-    setTrip({ ...emptyTrip, id: "" });
+    setTrip({ ...emptyTrip, id: crypto.randomUUID() });
     setModalOpen(true);
   }
 
@@ -60,8 +60,7 @@ export default function TripsPage() {
   return (
     <div className="min-h-screen w-full flex flex-col bg-white">
       {/* Toolbar */}
-      <TripsToolbar>
-      </TripsToolbar>
+      <TripsToolbar></TripsToolbar>
 
       {/* Table area */}
       <div className="flex-1 w-full mx-auto flex flex-col overflow-auto">

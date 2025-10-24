@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaGlobe } from "react-icons/fa";
 import {
   CountryFlag,
@@ -27,9 +27,16 @@ export function CountrySelectModal({
   onClose,
 }: CountrySelectModalProps) {
   const [search, setSearch] = useState("");
+  
+  // Reset search when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setSearch("");
+    }
+  }, [isOpen]);
 
   // Filter options by search (accent-insensitive)
-  const filteredOptions = filterCountriesBySearch(options, search);
+  const filteredOptions = filterCountriesBySearch(options, search);  
 
   return (
     <Modal
