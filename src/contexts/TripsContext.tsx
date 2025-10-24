@@ -49,12 +49,14 @@ export const TripsProvider: React.FC<{ children: React.ReactNode }> = ({
   // Add a trip
   function addTrip(trip: Trip) {
     const updatedTrip = { ...trip, status: getAutoTripStatus(trip) };
+    appDb.trips.add(updatedTrip);
     setTrips((prev) => [...prev, updatedTrip]);
   }
 
   // Update a trip
   function updateTrip(trip: Trip) {
     const updatedTrip = { ...trip, status: getAutoTripStatus(trip) };
+    appDb.trips.put(updatedTrip);
     setTrips((prev) => prev.map((t) => (t.id === trip.id ? updatedTrip : t)));
   }
 
