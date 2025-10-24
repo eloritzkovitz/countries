@@ -100,9 +100,9 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
   return (
     <div
       className="overflow-x-auto w-full"
-      style={{ maxHeight: "90vh", overflowY: "auto" }}
+      style={{ maxHeight: "93vh", overflowY: "auto" }}
     >
-      <table className="trips-table w-full min-w-[1200px]">
+      <table className="trips-table w-full">
         <thead>
           <tr>
             <th className="trips-th">#</th>

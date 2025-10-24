@@ -1,6 +1,9 @@
-export { ActionButton } from './ActionButton';
 export { Branding } from './Branding';
 export { ShortcutsModal } from './ShortcutsModal';
+
+// Action components
+export { ActionButton } from './action/ActionButton';
+export { FloatingActionButton } from './action/FloatingActionButton';
 
 // Feedback components
 export { ErrorMessage } from './feedback/ErrorMessage';
@@ -26,6 +29,9 @@ export { ModalActions } from './layout/Modal/ModalActions';
 export { Panel } from './layout/Panel/Panel';
 export { PanelHeader } from './layout/Panel/PanelHeader';
 export { PanelListItem } from './layout/Panel/PanelListItem';
+
+// Toolbar components
+export { ActionsToolbar } from './layout/Toolbar/ActionsToolbar';
 
 // UI components
 export { CardList } from './ui/CardList';

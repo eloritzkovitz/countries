@@ -135,6 +135,11 @@ body::-webkit-scrollbar-thumb {
   background: theme("colors.gray.600");
 }
 
+/* Separator styles */
+.separator {
+  @apply border-b border-gray-200 dark:border-gray-600;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

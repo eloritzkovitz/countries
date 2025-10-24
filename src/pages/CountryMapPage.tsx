@@ -7,7 +7,7 @@ import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import { useUiToggleHint } from "@hooks/useUiToggleHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
-import { Toolbar, WorldMap } from "@features/map";
+import { MapToolbar, WorldMap } from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
 import {
   MarkerDetailsModal,
@@ -166,7 +166,7 @@ export default function CountryMapPage() {
           />
 
           {/* Toolbar & UI Overlays */}
-          <Toolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
+          <MapToolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
           <CountryDetailsModal
             country={modalCountry}
             isOpen={!!modalCountry}

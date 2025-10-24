@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { FaArrowLeft, FaPlus } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
+import { FloatingActionButton } from "@components";
 import { useTrips } from "@contexts/TripsContext";
 import { TripsTable } from "@features/trips";
 import { TripModal } from "@features/trips/components/TripModal";
 import type { Trip } from "@types";
+import { TripsToolbar } from "@features/trips/components/TripsToolbar";
 
+// Empty trip template
 const emptyTrip: Trip = {
   id: "",
   name: "",
@@ -20,6 +23,7 @@ export default function TripsPage() {
   const [trip, setTrip] = useState<Trip | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
+  // Add trip
   function handleAdd() {
     setTrip({ ...emptyTrip, id: "" });
     setModalOpen(true);
@@ -53,28 +57,14 @@ export default function TripsPage() {
     }
   }
 
-  // Return button handle
-  function handleReturn() {
-    window.history.back();
-  }
-
   return (
-    <div className="min-h-screen w-full flex flex-col bg-white px-4 py-8">
-      <div className="w-full mx-auto flex flex-col">
-        <div className="flex gap-2 mb-4">
-          <button
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded flex items-center gap-2"
-            onClick={handleReturn}
-          >
-            <FaArrowLeft /> Return
-          </button>
-          <button
-            className="px-4 py-2 bg-blue-600 text-white rounded flex items-center gap-2"
-            onClick={handleAdd}
-          >
-            <FaPlus /> Add Trip
-          </button>
-        </div>
+    <div className="min-h-screen w-full flex flex-col bg-white">
+      {/* Toolbar */}
+      <TripsToolbar>
+      </TripsToolbar>
+
+      {/* Table area */}
+      <div className="flex-1 w-full mx-auto flex flex-col overflow-auto">
         <TripModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
@@ -94,6 +84,12 @@ export default function TripsPage() {
           />
         )}
       </div>
+      <FloatingActionButton
+        onClick={handleAdd}
+        icon={<FaPencilAlt />}
+        ariaLabel="Add Trip"
+        title="Add Trip"
+      />
     </div>
   );
 }
