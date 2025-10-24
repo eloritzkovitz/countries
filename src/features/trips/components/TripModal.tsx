@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaSuitcaseRolling, FaGlobe, FaSave, FaTimes } from "react-icons/fa";
 import {
   CountryFlag,
+  DropdownSelectInput,
   FormField,
   Modal,
   ModalActions,
@@ -14,23 +15,24 @@ import {
   getStatusDropdownOptions,
   getTagDropdownOptions,
 } from "@features/trips/utils/dropdownOptions";
-import { DropdownSelectInput } from "@components";
 import type { Trip, TripCategory, TripStatus } from "@types";
 
 type TripModalProps = {
+  isOpen: boolean;
   trip: Trip | null;
   onChange: (trip: Trip) => void;
   onSave: (trip: Trip) => Promise<void>;
   onClose: () => void;
-  isOpen: boolean;
+  isEditing: boolean;
 };
 
 export function TripModal({
+  isOpen,
   trip,
   onChange,
   onSave,
   onClose,
-  isOpen,
+  isEditing,
 }: TripModalProps) {
   const { countries } = useCountryData();
   const [countryModalOpen, setCountryModalOpen] = useState(false);
@@ -64,7 +66,7 @@ export function TripModal({
         >
           <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
             <FaSuitcaseRolling />
-            {trip ? "Edit Trip" : "Add Trip"}
+            {isEditing ? "Edit Trip" : "Add Trip"}
           </h2>
           <FormField label="Name" className="mb-2">
             <input
@@ -175,13 +177,13 @@ export function TripModal({
           <ModalActions
             onCancel={onClose}
             submitIcon={
-              trip.id ? (
+              isEditing ? (
                 <FaSave className="inline" />
               ) : (
                 <FaSuitcaseRolling className="inline" />
               )
             }
-            submitLabel={trip.id ? "Save Changes" : "Add Trip"}
+            submitLabel={isEditing ? "Save Changes" : "Add Trip"}
           />
         </form>
         {/* Right: Selected Countries */}

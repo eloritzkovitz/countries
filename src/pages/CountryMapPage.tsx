@@ -51,6 +51,7 @@ export default function CountryMapPage() {
 
   // Overlay state
   const {
+    overlays,
     editingOverlay,
     isEditModalOpen,
     openAddOverlay,
@@ -59,6 +60,9 @@ export default function CountryMapPage() {
     closeOverlayModal,
     setEditingOverlay,
   } = useOverlayContext();
+
+  // Determine if currently editing an existing overlay
+  const isEditing = !!editingOverlay && overlays.some(o => o.id === editingOverlay.id);
 
   // Marker creation state
   const {
@@ -199,6 +203,7 @@ export default function CountryMapPage() {
             onSave={saveOverlay}
             onClose={closeOverlayModal}
             isOpen={isEditModalOpen}
+            isEditing={isEditing}
           />
           <OverlaysPanel
             onEditOverlay={openEditOverlay}

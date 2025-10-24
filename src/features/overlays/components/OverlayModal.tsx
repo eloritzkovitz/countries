@@ -19,6 +19,7 @@ type OverlayModalProps = {
   onSave: () => void;
   onClose: () => void;
   isOpen: boolean;
+  isEditing: boolean;
 };
 
 export function OverlayModal({
@@ -27,6 +28,7 @@ export function OverlayModal({
   onSave,
   onClose,
   isOpen,
+  isEditing,
 }: OverlayModalProps) {
   const { countries } = useCountryData();
   const [countryModalOpen, setCountryModalOpen] = useState(false);
@@ -60,7 +62,7 @@ export function OverlayModal({
           title={
             <>
               <FaLayerGroup />
-              {overlay ? "Edit Overlay" : "Add Overlay"}
+              {isEditing ? "Edit Overlay" : "Add Overlay"}
             </>
           }
         >
@@ -154,13 +156,13 @@ export function OverlayModal({
           onSubmit={onSave}
           submitType="button"
           submitIcon={
-            overlay ? (
+            isEditing ? (
               <FaSave className="inline" />
             ) : (
               <FaLayerGroup className="inline" />
             )
           }
-          submitLabel={overlay ? "Save Changes" : "Add Overlay"}
+          submitLabel={isEditing ? "Save Changes" : "Add Overlay"}
         />
       </Modal>
       {/* Color Picker Modal */}
