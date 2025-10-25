@@ -45,8 +45,8 @@ export type SortKey =
 // TripFilters type definition
 export type TripFilters = {
   name: string;
-  country: string;
-  year: string;
+  country: string[];
+  year: string[];
   categories: TripCategory[];
   status: TripStatus | "";
   tags: TripTag[];

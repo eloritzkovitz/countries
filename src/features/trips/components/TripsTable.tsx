@@ -1,23 +1,10 @@
 import { useState } from "react";
 import { DropdownSelectInput } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import {
-  getUsedCountryCodes,
-  getUsedYears,
-  filterTrips,
-  sortTrips,
-} from "@features/trips";
-import {
-  getCountryDropdownOptions,
-  getYearDropdownOptions,
-  getCategoryDropdownOptions,
-  getStatusDropdownOptions,
-  getTagDropdownOptions,
-} from "@features/trips/utils/dropdownOptions";
-import type { SortKey, Trip, TripCategory, TripStatus } from "@types";
-import { CountryCell } from "./CountryCell";
+import { sortTrips } from "@features/trips";
+import { useTripFilters } from "@features/trips/hooks/useTripFilters";
+import type { SortKey, Trip, TripCategory } from "@types";
 import { SortableFilterHeader } from "./SortableFilterHeader";
-import { TRIP_CATEGORY_ICONS } from "./TripCategoryIcons";
 import { TripRows } from "./TripRows";
 import { getTripRowClass } from "../utils/trips";
 import "./TripsTable.css";
@@ -32,78 +19,26 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
   const countryData = useCountryData();
 
   // Filters state
-  const [filters, setFilters] = useState({
-    name: "",
-    country: [] as string[],
-    year: [] as string[],
-    categories: [] as TripCategory[],
-    status: "" as TripStatus | "",
-    tags: [] as string[],
-  });
+  const {
+    filters,
+    updateFilter,
+    filteredTrips,
+    countryOptions,
+    yearOptions,
+    categoryOptions,
+    statusOptions,
+    tagOptions,
+  } = useTripFilters(trips, countryData);
   const [sortKey, setSortKey] = useState<SortKey>("startDate");
   const [sortAsc, setSortAsc] = useState(true);
 
-  // Used country codes for dropdowns
-  const usedCountryCodes = getUsedCountryCodes(trips);
-  const rawCountryOptions = getCountryDropdownOptions(
-    countryData.countries,
-    usedCountryCodes
-  );
-
-  // Enhance country options with flags
-  const countryOptions = rawCountryOptions.map((opt) =>
-    opt.value
-      ? {
-          ...opt,
-          label: (
-            <span className="flex items-center gap-2">
-              <CountryCell code={opt.value} countryData={countryData} />
-            </span>
-          ),
-        }
-      : opt
-  );
-
-  // Used years for year dropdown
-  const usedYears = getUsedYears(trips);
-  const yearOptions = getYearDropdownOptions(usedYears);
-  let filteredTrips = filterTrips(trips, filters as unknown as any);
-  filteredTrips = sortTrips(
-    filteredTrips,
+  // Sorted state
+  const sortedTrips = sortTrips(
+    filteredTrips ?? [],
     sortKey,
     sortAsc,
     countryData.countries
   );
-
-  // Get all categories used in trips
-  const usedCategories = Array.from(
-    new Set(trips.flatMap((trip) => trip.categories ?? []))
-  );
-
-  // Filter dropdown options to only used categories
-  const categoryOptions = getCategoryDropdownOptions(null)
-    .filter((opt) => usedCategories.includes(opt.value))
-    .map((opt) => ({
-      ...opt,
-      label: (
-        <span className="flex items-center gap-2">
-          {TRIP_CATEGORY_ICONS[opt.value] ?? null}
-          <span>{opt.label}</span>
-        </span>
-      ),
-    }));
-
-  // Get status and tag options
-  const statusOptions = getStatusDropdownOptions(trips);
-  const tagOptions = getTagDropdownOptions(trips);
-
-  // Generic filter handler
-  function handleFilterChange<K extends keyof typeof filters>(
-    key: K,
-    value: (typeof filters)[K]
-  ) {
-    setFilters((f) => ({ ...f, [key]: value }));
-  }
 
   // Header click handler
   const handleSort = (key: SortKey) => {
@@ -131,7 +66,7 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
               sortAsc={sortAsc}
               onSort={handleSort}
               filterValue={filters.name}
-              onFilterChange={(v) => handleFilterChange("name", v)}
+              onFilterChange={(v) => updateFilter("name", v)}
               placeholder="Search by name..."
             />
             <SortableFilterHeader
@@ -141,13 +76,10 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
               sortAsc={sortAsc}
               onSort={handleSort}
               filterElement={
-                <DropdownSelectInput
+                <DropdownSelectInput<string>
                   value={filters.country}
                   onChange={(v) =>
-                    handleFilterChange(
-                      "country",
-                      Array.isArray(v) ? v : v ? [v] : []
-                    )
+                    updateFilter("country", Array.isArray(v) ? v : v ? [v] : [])
                   }
                   options={countryOptions}
                   placeholder="All Countries"
@@ -163,13 +95,10 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
               sortAsc={sortAsc}
               onSort={handleSort}
               filterElement={
-                <DropdownSelectInput
+                <DropdownSelectInput<string>
                   value={filters.year}
                   onChange={(v) =>
-                    handleFilterChange(
-                      "year",
-                      Array.isArray(v) ? v : v ? [v] : []
-                    )
+                    updateFilter("year", Array.isArray(v) ? v : v ? [v] : [])
                   }
                   options={yearOptions}
                   placeholder="All Years"
@@ -206,10 +135,10 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
               sortAsc={sortAsc}
               onSort={handleSort}
               filterElement={
-                <DropdownSelectInput
+                <DropdownSelectInput<TripCategory>
                   value={filters.categories}
                   onChange={(v) =>
-                    handleFilterChange(
+                    updateFilter(
                       "categories",
                       Array.isArray(v) ? v : v ? [v] : []
                     )
@@ -231,7 +160,7 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
                 <DropdownSelectInput
                   value={filters.status}
                   onChange={(v) =>
-                    handleFilterChange("status", Array.isArray(v) ? v[0] : v)
+                    updateFilter("status", Array.isArray(v) ? v[0] : v)
                   }
                   options={statusOptions}
                   placeholder="All Statuses"
@@ -249,10 +178,7 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
                 <DropdownSelectInput
                   value={filters.tags}
                   onChange={(v) =>
-                    handleFilterChange(
-                      "tags",
-                      Array.isArray(v) ? v : v ? [v] : []
-                    )
+                    updateFilter("tags", Array.isArray(v) ? v : v ? [v] : [])
                   }
                   options={tagOptions}
                   placeholder="All Tags"
@@ -265,7 +191,7 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
           </tr>
         </thead>
         {/* Trip table rows */}
-        {filteredTrips.map((trip, tripIdx) => (
+        {sortedTrips.map((trip, tripIdx) => (
           <tbody key={trip.id} className="trips-group">
             <TripRows
               trip={trip}

@@ -38,7 +38,7 @@ tbody.trips-group:hover tr {
 }
 
 .trips-country-item {
-  @apply inline-flex items-center gap-1 px-2 py-1 rounded;
+  @apply inline-flex items-center gap-1 py-1 rounded;
 }
 
 .trips-country-name {

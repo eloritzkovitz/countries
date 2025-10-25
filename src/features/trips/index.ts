@@ -2,6 +2,10 @@
 export * from "./components/TripModal";
 export * from "./components/TripsTable";
 
+// Config
+export * from "./config/TripCategoryIcons";
+export * from "./config/mapCountryOptions";
+
 // Toolbar
 export { TripsToolbar } from "./toolbar/TripsToolbar";
 

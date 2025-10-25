@@ -1,9 +1,9 @@
 type CardListProps = {
-  items?: string[];
+  items?: React.ReactNode[];
   limit?: number;
   colorClass?: string;
   moreColorClass?: string;
-  renderItem?: (item: string) => React.ReactNode;
+  renderItem?: (item: React.ReactNode) => React.ReactNode;
 };
 
 export function CardList({
@@ -18,14 +18,12 @@ export function CardList({
 
   return (
     <div className="flex flex-wrap gap-1">
-      {items.slice(0, limit).map((item) => (
+      {items.slice(0, limit).map((item, idx) => (
         <span
-          key={item}
+          key={idx}
           className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${colorClass}`}
         >
-          {renderItem
-            ? renderItem(item)
-            : item.charAt(0).toUpperCase() + item.slice(1)}
+          {renderItem ? renderItem(item) : item}
         </span>
       ))}
       {items.length > limit && (

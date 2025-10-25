@@ -4,7 +4,7 @@ import { formatDate } from "@utils/date";
 import { CountryCell } from "./CountryCell";
 import { TripActions } from "./TripActions";
 import { StatusCell } from "./StatusCell";
-import { TRIP_CATEGORY_ICONS } from "./TripCategoryIcons";
+import { mapCategoryOptionsWithIcons } from "../config/TripCategoryIcons";
 
 export function TripRows({
   trip,
@@ -60,13 +60,12 @@ export function TripRows({
           {/* Categories as cards */}
           <td className="trips-td" rowSpan={trip.countryCodes?.length || 1}>
             <CardList
-              items={trip.categories}
-              renderItem={(cat) => (
-                <span className="flex items-center gap-1">
-                  {TRIP_CATEGORY_ICONS[cat] ?? null}
-                  <span>{cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
-                </span>
-              )}
+              items={mapCategoryOptionsWithIcons(
+                (trip.categories ?? []).map((cat) => ({
+                  value: cat,
+                  label: cat.charAt(0).toUpperCase() + cat.slice(1),
+                }))
+              ).map((opt) => opt.label)}
             />
           </td>
           {/* Status */}

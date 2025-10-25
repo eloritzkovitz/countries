@@ -10,13 +10,8 @@ import {
 } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { CountrySelectModal } from "@features/countries";
-import {
-  getCategoryDropdownOptions,
-  getStatusDropdownOptions,
-  getTagDropdownOptions,
-} from "@features/trips/utils/dropdownOptions";
 import type { Trip, TripCategory, TripStatus } from "@types";
-import { TRIP_CATEGORY_ICONS } from "./TripCategoryIcons";
+import { useTripFilters } from "../hooks/useTripFilters";
 
 type TripModalProps = {
   isOpen: boolean;
@@ -38,25 +33,16 @@ export function TripModal({
   const { countries } = useCountryData();
   const [countryModalOpen, setCountryModalOpen] = useState(false);
 
+  // Dropdown options
+  const { categoryOptions, statusOptions, tagOptions } = useTripFilters();
+
+  // If no trip is provided, don't render anything
   if (!trip) return null;
 
   // Get the selected country objects
   const selectedCountries = countries.filter((country) =>
     trip.countryCodes.includes(country.isoCode)
-  );
-
-  // Dropdown options
-  const categoryOptions = getCategoryDropdownOptions(null).map((opt) => ({
-    ...opt,
-    label: (
-      <span className="flex items-center gap-2">
-        {TRIP_CATEGORY_ICONS[opt.value] ?? null}
-        <span>{opt.label}</span>
-      </span>
-    ),
-  }));
-  const statusOptions = getStatusDropdownOptions(null);
-  const tagOptions = getTagDropdownOptions(null);
+  ); 
 
   return (
     <>

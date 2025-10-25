@@ -23,7 +23,7 @@ export function CountryCell({
             size: "32x24",
           }}
         />
-        <span className="trips-country-name">{country.name}</span>
+        <span className="trips-country-name ml-1">{country.name}</span>
       </span>
     );
   }

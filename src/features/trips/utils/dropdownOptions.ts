@@ -11,10 +11,10 @@ import type { Country, Trip, TripCategory, TripStatus, TripTag } from "@types";
 import { capitalizeWords } from "@utils/string";
 
 // Generic helper for dropdown options
-function toDropdownOptions<T extends string>(
+export function toDropdownOptions<T extends string>(
   values: T[],
   labelFn: (val: T) => string = capitalizeWords
-) {
+): { value: T; label: string }[] {
   return values.map((val) => ({
     value: val,
     label: labelFn(val),
@@ -62,7 +62,7 @@ export function getCategoryDropdownOptions(trips?: Trip[] | null) {
     trips.forEach((trip) => trip.categories?.forEach((cat) => set.add(cat)));
     categories = Array.from(set);
   }
-  return toDropdownOptions(categories);
+  return toDropdownOptions<TripCategory>(categories);
 }
 
 /**
