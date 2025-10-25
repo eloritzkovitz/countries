@@ -3,6 +3,7 @@ export * from "./components/TripModal";
 export * from "./components/TripsTable";
 
 // Config
+export * from "./config/columnConfig";
 export * from "./config/TripCategoryIcons";
 export * from "./config/mapCountryOptions";
 

@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { DropdownSelectInput } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { sortTrips } from "@features/trips";
 import { useTripFilters } from "@features/trips/hooks/useTripFilters";
-import type { SortKey, Trip, TripCategory } from "@types";
-import { SortableFilterHeader } from "./SortableFilterHeader";
-import { TripRows } from "./TripRows";
+import type { SortKey, Trip } from "@types";
+import { TripsTableRows } from "./TripsTableRows";
 import { getTripRowClass } from "../utils/trips";
 import "./TripsTable.css";
+import { useResizableColumns } from "../hooks/useResizableColumns";
+import { TripsTableHeader } from "./TripsTableHeader";
 
 type TripsTableProps = {
   trips: Trip[];
@@ -17,6 +17,9 @@ type TripsTableProps = {
 
 export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
   const countryData = useCountryData();
+
+  // Use the resizing hook
+  const { colWidths, handleResizeStart } = useResizableColumns();
 
   // Filters state
   const {
@@ -50,156 +53,59 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
     }
   };
 
+  // Helper to render resize handle
+  const renderResizeHandle = (key: string) => {
+    const colKey = key as keyof typeof colWidths;
+    return (
+      <div
+        className="absolute right-0 top-0 w-[6px] h-full cursor-col-resize z-10 select-none bg-transparent"
+        onMouseDown={(e) => handleResizeStart(e, colKey)}
+      />
+    );
+  };
+
   return (
     <div
       className="overflow-x-auto w-full"
       style={{ maxHeight: "93vh", overflowY: "auto" }}
     >
       <table className="trips-table w-full">
-        <thead>
-          <tr>
-            <th className="trips-th">#</th>
-            <SortableFilterHeader
-              label="Name"
-              sortKey="name"
-              currentSortKey={sortKey}
-              sortAsc={sortAsc}
-              onSort={handleSort}
-              filterValue={filters.name}
-              onFilterChange={(v) => updateFilter("name", v)}
-              placeholder="Search by name..."
-            />
-            <SortableFilterHeader
-              label="Countries"
-              sortKey="countries"
-              currentSortKey={sortKey}
-              sortAsc={sortAsc}
-              onSort={handleSort}
-              filterElement={
-                <DropdownSelectInput<string>
-                  value={filters.country}
-                  onChange={(v) =>
-                    updateFilter("country", Array.isArray(v) ? v : v ? [v] : [])
-                  }
-                  options={countryOptions}
-                  placeholder="All Countries"
-                  isMulti
-                  className="block w-full mt-1 text-xs focus:outline-none"
-                />
-              }
-            />
-            <SortableFilterHeader
-              label="Year"
-              sortKey="year"
-              currentSortKey={sortKey}
-              sortAsc={sortAsc}
-              onSort={handleSort}
-              filterElement={
-                <DropdownSelectInput<string>
-                  value={filters.year}
-                  onChange={(v) =>
-                    updateFilter("year", Array.isArray(v) ? v : v ? [v] : [])
-                  }
-                  options={yearOptions}
-                  placeholder="All Years"
-                  isMulti
-                  className="block w-full mt-1 text-xs"
-                />
-              }
-            />
-            <SortableFilterHeader
-              label="Start Date"
-              sortKey="startDate"
-              currentSortKey={sortKey}
-              sortAsc={sortAsc}
-              onSort={handleSort}
-            />
-            <SortableFilterHeader
-              label="End Date"
-              sortKey="endDate"
-              currentSortKey={sortKey}
-              sortAsc={sortAsc}
-              onSort={handleSort}
-            />
-            <SortableFilterHeader
-              label="Full Days"
-              sortKey="fullDays"
-              currentSortKey={sortKey}
-              sortAsc={sortAsc}
-              onSort={handleSort}
-            />
-            <SortableFilterHeader
-              label="Categories"
-              sortKey="categories"
-              currentSortKey={sortKey}
-              sortAsc={sortAsc}
-              onSort={handleSort}
-              filterElement={
-                <DropdownSelectInput<TripCategory>
-                  value={filters.categories}
-                  onChange={(v) =>
-                    updateFilter(
-                      "categories",
-                      Array.isArray(v) ? v : v ? [v] : []
-                    )
-                  }
-                  options={categoryOptions}
-                  placeholder="All Categories"
-                  isMulti
-                  className="block w-full mt-1 text-xs"
-                />
-              }
-            />
-            <SortableFilterHeader
-              label="Status"
-              sortKey="status"
-              currentSortKey={sortKey}
-              sortAsc={sortAsc}
-              onSort={handleSort}
-              filterElement={
-                <DropdownSelectInput
-                  value={filters.status}
-                  onChange={(v) =>
-                    updateFilter("status", Array.isArray(v) ? v[0] : v)
-                  }
-                  options={statusOptions}
-                  placeholder="All Statuses"
-                  className="block w-full mt-1 text-xs"
-                />
-              }
-            />
-            <SortableFilterHeader
-              label="Tags"
-              sortKey="tags"
-              currentSortKey={sortKey}
-              sortAsc={sortAsc}
-              onSort={handleSort}
-              filterElement={
-                <DropdownSelectInput
-                  value={filters.tags}
-                  onChange={(v) =>
-                    updateFilter("tags", Array.isArray(v) ? v : v ? [v] : [])
-                  }
-                  options={tagOptions}
-                  placeholder="All Tags"
-                  isMulti
-                  className="block w-full mt-1 text-xs"
-                />
-              }
-            />
-            <th className="trips-th">Actions</th>
-          </tr>
-        </thead>
-        {/* Trip table rows */}
+        <colgroup>
+          <col style={{ width: `${colWidths.idx}px` }} />
+          <col style={{ width: `${colWidths.name}px` }} />
+          <col style={{ width: `${colWidths.countries}px` }} />
+          <col style={{ width: `${colWidths.year}px` }} />
+          <col style={{ width: `${colWidths.startDate}px` }} />
+          <col style={{ width: `${colWidths.endDate}px` }} />
+          <col style={{ width: `${colWidths.fullDays}px` }} />
+          <col style={{ width: `${colWidths.categories}px` }} />
+          <col style={{ width: `${colWidths.status}px` }} />
+          <col style={{ width: `${colWidths.tags}px` }} />
+          <col style={{ width: `${colWidths.actions}px` }} />
+        </colgroup>
+        <TripsTableHeader
+          sortKey={sortKey}
+          sortAsc={sortAsc}
+          handleSort={handleSort}
+          filters={filters}
+          updateFilter={updateFilter as (key: string, value: any) => void}
+          countryOptions={countryOptions}
+          yearOptions={yearOptions}
+          categoryOptions={categoryOptions}
+          statusOptions={statusOptions}
+          tagOptions={tagOptions}
+          renderResizeHandle={renderResizeHandle}
+        />
         {sortedTrips.map((trip, tripIdx) => (
           <tbody key={trip.id} className="trips-group">
-            <TripRows
+            <TripsTableRows
               trip={trip}
               tripIdx={tripIdx}
               countryData={countryData}
               getTripRowClass={getTripRowClass}
               onEdit={onEdit}
               onDelete={onDelete}
+              handleResizeStart={handleResizeStart}
             />
           </tbody>
         ))}
