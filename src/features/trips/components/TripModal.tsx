@@ -16,6 +16,7 @@ import {
   getTagDropdownOptions,
 } from "@features/trips/utils/dropdownOptions";
 import type { Trip, TripCategory, TripStatus } from "@types";
+import { TRIP_CATEGORY_ICONS } from "./TripCategoryIcons";
 
 type TripModalProps = {
   isOpen: boolean;
@@ -45,7 +46,15 @@ export function TripModal({
   );
 
   // Dropdown options
-  const categoryOptions = getCategoryDropdownOptions(null);
+  const categoryOptions = getCategoryDropdownOptions(null).map((opt) => ({
+    ...opt,
+    label: (
+      <span className="flex items-center gap-2">
+        {TRIP_CATEGORY_ICONS[opt.value] ?? null}
+        <span>{opt.label}</span>
+      </span>
+    ),
+  }));
   const statusOptions = getStatusDropdownOptions(null);
   const tagOptions = getTagDropdownOptions(null);
 

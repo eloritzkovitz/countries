@@ -17,6 +17,7 @@ import {
 import type { SortKey, Trip, TripCategory, TripStatus } from "@types";
 import { CountryCell } from "./CountryCell";
 import { SortableFilterHeader } from "./SortableFilterHeader";
+import { TRIP_CATEGORY_ICONS } from "./TripCategoryIcons";
 import { TripRows } from "./TripRows";
 import { getTripRowClass } from "../utils/trips";
 import "./TripsTable.css";
@@ -74,8 +75,25 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
     countryData.countries
   );
 
-  // Get category, status, and tag options
-  const categoryOptions = getCategoryDropdownOptions(trips);
+  // Get all categories used in trips
+  const usedCategories = Array.from(
+    new Set(trips.flatMap((trip) => trip.categories ?? []))
+  );
+
+  // Filter dropdown options to only used categories
+  const categoryOptions = getCategoryDropdownOptions(null)
+    .filter((opt) => usedCategories.includes(opt.value))
+    .map((opt) => ({
+      ...opt,
+      label: (
+        <span className="flex items-center gap-2">
+          {TRIP_CATEGORY_ICONS[opt.value] ?? null}
+          <span>{opt.label}</span>
+        </span>
+      ),
+    }));
+
+  // Get status and tag options
   const statusOptions = getStatusDropdownOptions(trips);
   const tagOptions = getTagDropdownOptions(trips);
 

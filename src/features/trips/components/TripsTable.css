@@ -8,6 +8,9 @@
 
 .trips-th {
   @apply border border-gray-300 px-2 py-1 bg-gray-100 dark:border-gray-600 dark:bg-gray-800;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .trips-td {

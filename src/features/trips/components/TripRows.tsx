@@ -4,6 +4,7 @@ import { formatDate } from "@utils/date";
 import { CountryCell } from "./CountryCell";
 import { TripActions } from "./TripActions";
 import { StatusCell } from "./StatusCell";
+import { TRIP_CATEGORY_ICONS } from "./TripCategoryIcons";
 
 export function TripRows({
   trip,
@@ -60,8 +61,12 @@ export function TripRows({
           <td className="trips-td" rowSpan={trip.countryCodes?.length || 1}>
             <CardList
               items={trip.categories}
-              colorClass="bg-blue-100 text-blue-800"
-              moreColorClass="bg-blue-200 text-blue-900"
+              renderItem={(cat) => (
+                <span className="flex items-center gap-1">
+                  {TRIP_CATEGORY_ICONS[cat] ?? null}
+                  <span>{cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+                </span>
+              )}
             />
           </td>
           {/* Status */}

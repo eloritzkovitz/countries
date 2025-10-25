@@ -2,10 +2,8 @@ import { useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { FloatingActionButton } from "@components";
 import { useTrips } from "@contexts/TripsContext";
-import { TripsTable } from "@features/trips";
-import { TripModal } from "@features/trips/components/TripModal";
+import { TripModal, TripsTable, TripsToolbar } from "@features/trips";
 import type { Trip } from "@types";
-import { TripsToolbar } from "@features/trips/components/TripsToolbar";
 
 // Empty trip template
 const emptyTrip: Trip = {
@@ -22,6 +20,16 @@ export default function TripsPage() {
   const { trips, loading, addTrip, updateTrip, removeTrip } = useTrips();
   const [trip, setTrip] = useState<Trip | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [filter, setFilter] = useState({ local: true, abroad: true });
+
+  // Filter trips before passing to TripsTable
+  const filteredTrips = trips.filter((trip) => {
+    const isLocal = trip.categories?.includes("local");
+    if (filter.local && filter.abroad) return true;
+    if (filter.local) return isLocal;
+    if (filter.abroad) return !isLocal;
+    return false; // If both are off, show nothing
+  });
 
   // Add trip
   function handleAdd() {
@@ -40,9 +48,9 @@ export default function TripsPage() {
     if (!trip) return;
     if (!trip.id) {
       const newTrip = { ...trip, id: crypto.randomUUID() };
-      await addTrip(newTrip);
+      addTrip(newTrip);
     } else if (trips.some((t) => t.id === trip.id)) {
-      await updateTrip(trip);
+      updateTrip(trip);
     }
     setModalOpen(false);
   }
@@ -61,14 +69,14 @@ export default function TripsPage() {
   return (
     <div className="min-h-screen w-full flex flex-col bg-white">
       {/* Toolbar */}
-      <TripsToolbar></TripsToolbar>
+      <TripsToolbar filter={filter} setFilter={setFilter} />
 
       {/* Table area */}
       <div className="flex-1 w-full mx-auto flex flex-col overflow-auto">
         <TripModal
           isOpen={modalOpen}
           trip={trip}
-          onChange={setTrip}         
+          onChange={setTrip}
           onSave={handleSave}
           onClose={() => setModalOpen(false)}
           isEditing={!!trip && !!trip.id}
@@ -79,7 +87,7 @@ export default function TripsPage() {
           <div>No trips yet.</div>
         ) : (
           <TripsTable
-            trips={trips}
+            trips={filteredTrips}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
