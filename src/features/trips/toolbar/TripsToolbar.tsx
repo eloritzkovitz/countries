@@ -1,6 +1,11 @@
 import React, { useRef, useState } from "react";
-import { FaMapMarkerAlt, FaPlane, FaFileExport, FaFileImport } from "react-icons/fa";
-import { ActionButton, ActionsToolbar } from "@components";
+import {
+  FaMapMarkerAlt,
+  FaPlane,
+  FaFileExport,
+  FaFileImport,
+} from "react-icons/fa";
+import { ActionButton, ActionsToolbar, SearchInput } from "@components";
 import { useTrips } from "@contexts/TripsContext";
 import { useClickOutside } from "@hooks/useClickOutside";
 import { ExportMenu } from "./ExportMenu";
@@ -16,9 +21,11 @@ type FilterState = { local: boolean; abroad: boolean };
 type ToolbarProps = {
   filter: FilterState;
   setFilter: (filter: FilterState) => void;
+  globalSearch: string;
+  setGlobalSearch: (search: string) => void;
 };
 
-export function TripsToolbar({ filter, setFilter }: ToolbarProps) {
+export function TripsToolbar({ filter, setFilter, globalSearch, setGlobalSearch }: ToolbarProps) {
   const { trips, addTrip } = useTrips();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const exportMenuRef = useRef<HTMLDivElement>(null);
@@ -74,6 +81,13 @@ export function TripsToolbar({ filter, setFilter }: ToolbarProps) {
     <div className="w-full px-8 flex items-center justify-between h-10 bg-white">
       <ActionsToolbar>
         <div className="flex items-center">
+          {/* Global search input */}
+          <SearchInput
+            value={globalSearch}
+            onChange={setGlobalSearch}
+            placeholder="Search all trips..."
+            className="w-64"
+          />
           {/* Filter buttons */}
           <ActionButton
             onClick={toggleLocal}

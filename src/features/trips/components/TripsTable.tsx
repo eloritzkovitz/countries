@@ -13,9 +13,15 @@ type TripsTableProps = {
   trips: Trip[];
   onEdit: (trip: Trip) => void;
   onDelete: (trip: Trip) => void;
+  globalSearch: string;
 };
 
-export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
+export function TripsTable({
+  trips,
+  onEdit,
+  onDelete,
+  globalSearch,
+}: TripsTableProps) {
   const countryData = useCountryData();
 
   // Use the resizing hook
@@ -31,7 +37,7 @@ export function TripsTable({ trips, onEdit, onDelete }: TripsTableProps) {
     categoryOptions,
     statusOptions,
     tagOptions,
-  } = useTripFilters(trips, countryData);
+  } = useTripFilters(trips, countryData, undefined, globalSearch);
   const [sortKey, setSortKey] = useState<SortKey>("startDate");
   const [sortAsc, setSortAsc] = useState(true);
 

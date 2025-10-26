@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import {
   defaultTripFilters,
   filterTrips,
+  getCountryNames,
   getUsedCountryCodes,
   getUsedYears,
   mapCategoryOptionsWithIcons,
@@ -19,7 +20,8 @@ import type { Trip, TripFilters, TripCategory } from "@types";
 export function useTripFilters(
   trips?: Trip[],
   countryData?: any,
-  initialFilters?: Partial<TripFilters>
+  initialFilters?: Partial<TripFilters>,
+  globalSearch?: string
 ) {
   const [filters, setFilters] = useState<TripFilters>({
     ...defaultTripFilters,
@@ -38,11 +40,32 @@ export function useTripFilters(
     setFilters(defaultTripFilters);
   }
 
-  // Filtered trips
-  const filteredTrips = useMemo(
-    () => (trips ? filterTrips(trips, filters) : undefined),
-    [trips, filters]
-  );
+  // Filtered trips with global search
+  const filteredTrips = useMemo(() => {
+    let result = trips ? filterTrips(trips, filters) : [];
+    
+    // Apply global search if provided
+    if (globalSearch && globalSearch.trim() !== "") {
+      const search = globalSearch.toLowerCase();
+      result = result.filter((trip) => {
+        const countriesArr = countryData?.countries ?? [];
+        const countryNamesRaw = getCountryNames(trip, countriesArr);
+        const countryNames = (
+          Array.isArray(countryNamesRaw) ? countryNamesRaw : [countryNamesRaw]
+        ).map((name) => name.toLowerCase());
+        return (
+          trip.name?.toLowerCase().includes(search) ||
+          trip.countryCodes?.some((c) => c.toLowerCase().includes(search)) ||
+          countryNames.some((name) => name.includes(search)) ||
+          (trip.tags ?? []).some((tag) => tag.toLowerCase().includes(search)) ||
+          (trip.categories ?? []).some((cat) =>
+            cat.toLowerCase().includes(search)
+          )
+        );
+      });
+    }
+    return result;
+  }, [trips, filters, globalSearch, countryData?.countries]);
 
   // Country options
   const usedCountryCodes = getUsedCountryCodes(trips ?? []);

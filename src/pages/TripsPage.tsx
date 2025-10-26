@@ -21,6 +21,7 @@ export default function TripsPage() {
   const [trip, setTrip] = useState<Trip | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [filter, setFilter] = useState({ local: true, abroad: true });
+  const [globalSearch, setGlobalSearch] = useState("");
 
   // Filter trips before passing to TripsTable
   const filteredTrips = trips.filter((trip) => {
@@ -69,7 +70,7 @@ export default function TripsPage() {
   return (
     <div className="min-h-screen w-full flex flex-col bg-white">
       {/* Toolbar */}
-      <TripsToolbar filter={filter} setFilter={setFilter} />
+      <TripsToolbar filter={filter} setFilter={setFilter} globalSearch={globalSearch} setGlobalSearch={setGlobalSearch} />
 
       {/* Table area */}
       <div className="flex-1 w-full mx-auto flex flex-col overflow-auto">
@@ -90,6 +91,7 @@ export default function TripsPage() {
             trips={filteredTrips}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            globalSearch={globalSearch}
           />
         )}
       </div>
