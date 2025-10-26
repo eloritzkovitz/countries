@@ -55,8 +55,8 @@ export function MapToolbar({
         <ActionsToolbar
           className={
             visible
-              ? "toolbar-actions-row-visible"
-              : "toolbar-actions-row-hidden"
+              ? "toolbar-actions-row-bg toolbar-actions-row-visible"
+              : "toolbar-actions-row-bg toolbar-actions-row-hidden"
           }
         >
           <ActionButton

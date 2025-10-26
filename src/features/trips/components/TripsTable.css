@@ -30,7 +30,7 @@
 }
 
 tbody.trips-group:hover tr {
-  @apply bg-blue-50/60 dark:bg-blue-500/60;
+  @apply bg-blue-100 dark:bg-blue-500/60;
 }
 
 .trips-country-list {
@@ -50,19 +50,5 @@ tbody.trips-group:hover tr {
 }
 
 .trips-resize-handle {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 6px;
-  height: 100%;
-  cursor: col-resize;
-  z-index: 100;
-  user-select: none;
-  background: transparent;
-  opacity: 0;
-}
-.trips-td:hover .trips-resize-handle,
-.trips-th:hover .trips-resize-handle {
-  opacity: 0.5;
-  background: #8884;
+  @apply absolute right-0 top-0 w-[6px] h-full cursor-col-resize z-[100] select-none bg-transparent opacity-0;
 }

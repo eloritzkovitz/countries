@@ -70,7 +70,12 @@ export default function TripsPage() {
   return (
     <div className="min-h-screen w-full flex flex-col bg-white">
       {/* Toolbar */}
-      <TripsToolbar filter={filter} setFilter={setFilter} globalSearch={globalSearch} setGlobalSearch={setGlobalSearch} />
+      <TripsToolbar
+        filter={filter}
+        setFilter={setFilter}
+        globalSearch={globalSearch}
+        setGlobalSearch={setGlobalSearch}
+      />
 
       {/* Table area */}
       <div className="flex-1 w-full mx-auto flex flex-col overflow-auto">

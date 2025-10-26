@@ -4,6 +4,7 @@ import {
   FaPlane,
   FaFileExport,
   FaFileImport,
+  FaArrowLeft,
 } from "react-icons/fa";
 import { ActionButton, ActionsToolbar, SearchInput } from "@components";
 import { useTrips } from "@contexts/TripsContext";
@@ -25,7 +26,12 @@ type ToolbarProps = {
   setGlobalSearch: (search: string) => void;
 };
 
-export function TripsToolbar({ filter, setFilter, globalSearch, setGlobalSearch }: ToolbarProps) {
+export function TripsToolbar({
+  filter,
+  setFilter,
+  globalSearch,
+  setGlobalSearch,
+}: ToolbarProps) {
   const { trips, addTrip } = useTrips();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const exportMenuRef = useRef<HTMLDivElement>(null);
@@ -38,6 +44,11 @@ export function TripsToolbar({ filter, setFilter, globalSearch, setGlobalSearch 
   useClickOutside([exportMenuRef as React.RefObject<HTMLElement>], () =>
     setShowExportMenu(false)
   );
+
+  const handleReturn = () => {
+    // For example, navigate back or close the page/modal
+    window.history.back();
+  };
 
   // Toggle local filter
   const toggleLocal = () => setFilter({ ...filter, local: !filter.local });
@@ -78,32 +89,43 @@ export function TripsToolbar({ filter, setFilter, globalSearch, setGlobalSearch 
   };
 
   return (
-    <div className="w-full px-8 flex items-center justify-between h-10 bg-white">
+    <div className="w-full px-3 flex items-center justify-between h-10 bg-white border-b border-gray-300 dark:border-gray-600">
       <ActionsToolbar>
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
+          <ActionButton
+            onClick={handleReturn}
+            ariaLabel="Return"
+            title="Return"
+            className="toolbar-btn-menu"
+            icon={<FaArrowLeft />}
+          />
           {/* Global search input */}
           <SearchInput
             value={globalSearch}
             onChange={setGlobalSearch}
             placeholder="Search all trips..."
-            className="w-64"
+            className="w-64 h-8 rounded-full"
           />
           {/* Filter buttons */}
           <ActionButton
             onClick={toggleLocal}
             ariaLabel="Show/Hide Local Trips"
-            title="Local Trips"
-            className={`toolbar-btn ${
-              filter.local ? "text-blue-700" : "text-gray-400"
+            title="Toggle Local Trips"
+            className={`toolbar-btn-toggle ${
+              filter.local
+                ? "toolbar-btn-toggle-active"
+                : "toolbar-btn-toggle-inactive"
             }`}
             icon={<FaMapMarkerAlt />}
           />
           <ActionButton
             onClick={toggleAbroad}
             ariaLabel="Show/Hide Abroad Trips"
-            title="Abroad Trips"
-            className={`toolbar-btn ${
-              filter.abroad ? "text-blue-700" : "text-gray-400"
+            title="Toggle Abroad Trips"
+            className={`toolbar-btn-toggle ${
+              filter.abroad
+                ? "toolbar-btn-toggle-active"
+                : "toolbar-btn-toggle-inactive"
             }`}
             icon={<FaPlane />}
           />
@@ -112,7 +134,7 @@ export function TripsToolbar({ filter, setFilter, globalSearch, setGlobalSearch 
             onClick={handleImportClick}
             ariaLabel="Import"
             title="Import Trips"
-            className="toolbar-btn"
+            className="toolbar-btn-menu"
             icon={<FaFileImport />}
           />
           {showImportNotice && (
@@ -133,8 +155,8 @@ export function TripsToolbar({ filter, setFilter, globalSearch, setGlobalSearch 
             <ActionButton
               onClick={() => setShowExportMenu((v) => !v)}
               ariaLabel="Export"
-              title="Export"
-              className="toolbar-btn"
+              title="Export Trips"
+              className="toolbar-btn-menu"
               icon={<FaFileExport />}
             />
             {showExportMenu && (

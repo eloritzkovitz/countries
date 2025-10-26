@@ -3,11 +3,11 @@ import { useCountryData } from "@contexts/CountryDataContext";
 import { sortTrips } from "@features/trips";
 import { useTripFilters } from "@features/trips/hooks/useTripFilters";
 import type { SortKey, Trip } from "@types";
+import { TripsTableHeader } from "./TripsTableHeader";
 import { TripsTableRows } from "./TripsTableRows";
 import { getTripRowClass } from "../utils/trips";
-import "./TripsTable.css";
 import { useResizableColumns } from "../hooks/useResizableColumns";
-import { TripsTableHeader } from "./TripsTableHeader";
+import "./TripsTable.css";
 
 type TripsTableProps = {
   trips: Trip[];
