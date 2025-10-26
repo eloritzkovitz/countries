@@ -1,3 +1,6 @@
+import { Modal, ModalActions } from "@components";
+import { FaCheck } from "react-icons/fa";
+
 type ImportNoticeModalProps = {
   onConfirm: () => void;
   onCancel: () => void;
@@ -8,21 +11,20 @@ export function ImportNoticeModal({
   onCancel,
 }: ImportNoticeModalProps) {
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-      <div className="bg-white p-4 rounded shadow">
-        <p>
+    <Modal isOpen={true} onClose={onCancel}>
+      <div className="p-4">
+        <p className="mb-4 text-base">
           Importing will <b>add</b> trips to your current list. Existing trips
           will not be overwritten.
         </p>
-        <div className="flex gap-2 mt-4">
-          <button className="btn" onClick={onConfirm}>
-            Continue
-          </button>
-          <button className="btn" onClick={onCancel}>
-            Cancel
-          </button>
-        </div>
+        <ModalActions
+          onCancel={onCancel}
+          onSubmit={onConfirm}
+          submitLabel="Continue"
+          cancelLabel="Cancel"
+          submitIcon={<FaCheck className="inline" />}
+        />
       </div>
-    </div>
+    </Modal>
   );
 }
