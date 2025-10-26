@@ -73,7 +73,7 @@
 }
 
 .toolbar-btn-menu {
-  @apply w-8 h-8 flex items-center justify-center p-0 bg-transparent text-blue-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 border-none rounded transition-colors duration-200;
+  @apply w-8 h-8 px-2 flex items-center justify-center p-0 bg-transparent text-blue-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 border-none rounded transition-colors duration-200;
 }
 
 .toolbar-btn-action {
@@ -81,7 +81,7 @@
 }
 
 .toolbar-btn-toggle {
-  @apply w-8 h-8 flex items-center justify-center bg-transparent border-none transition-colors duration-200;
+  @apply w-8 h-8 px-2 flex items-center justify-center bg-transparent border-none transition-colors duration-200;
 }
 
 .toolbar-btn-toggle-active {

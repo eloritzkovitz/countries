@@ -91,7 +91,7 @@ export function TripsToolbar({
   return (
     <div className="w-full px-3 flex items-center justify-between h-10 bg-white border-b border-gray-300 dark:border-gray-600">
       <ActionsToolbar>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <ActionButton
             onClick={handleReturn}
             ariaLabel="Return"
@@ -100,12 +100,14 @@ export function TripsToolbar({
             icon={<FaArrowLeft />}
           />
           {/* Global search input */}
-          <SearchInput
-            value={globalSearch}
-            onChange={setGlobalSearch}
-            placeholder="Search all trips..."
-            className="w-64 h-8 rounded-full"
-          />
+          <div className="mx-2">
+            <SearchInput
+              value={globalSearch}
+              onChange={setGlobalSearch}
+              placeholder="Search all trips..."
+              className="w-64 h-8 rounded-full"
+            />
+          </div>
           {/* Filter buttons */}
           <ActionButton
             onClick={toggleLocal}
