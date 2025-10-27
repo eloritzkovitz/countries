@@ -77,3 +77,42 @@ export function exportTripsToJSON(trips: Trip[]) {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+/**
+ * Exports a visited countries overlay based on the provided trips.
+ * @param trips - The array of trips to derive visited countries from.
+ * @returns void
+ */
+export function exportVisitedOverlay(trips: Trip[]) {
+  // Collect visited country codes from trips
+  const visitedCountries = Array.from(
+    new Set(
+      trips
+        .filter(trip => trip.status === "completed")
+        .flatMap(trip => trip.countryCodes ?? [])
+    )
+  );
+
+  // Build overlay object
+  const overlay = {
+    id: "visited",
+    name: "Visited",
+    color: "rgba(0,67,129,0.5)",
+    tooltip: "Visited Country",
+    visible: true,
+    dataKey: "visitedCountries",
+    countries: visitedCountries,
+  };
+
+  // Export as JSON
+  const json = JSON.stringify([overlay], null, 2);
+  const blob = new Blob([json], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "visited-overlay.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}

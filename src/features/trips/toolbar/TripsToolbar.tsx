@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
 import {
+  FaArrowLeft,
   FaMapMarkerAlt,
   FaPlane,
   FaFileExport,
   FaFileImport,
-  FaArrowLeft,
+  FaGlobe,
 } from "react-icons/fa";
 import { ActionButton, ActionsToolbar, SearchInput } from "@components";
 import { useTrips } from "@contexts/TripsContext";
@@ -34,20 +35,13 @@ export function TripsToolbar({
   const { addTrip } = useTrips();
   const exportMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close export menu on outside click
-  useClickOutside([exportMenuRef as React.RefObject<HTMLElement>], () =>
-    setShowExportMenu(false)
-  );
-
+  // Return button handler
   const handleReturn = () => {
-    // For example, navigate back or close the page/modal
     window.history.back();
   };
 
-  // Toggle local filter
+  // Toggle local/abroad filters
   const toggleLocal = () => setFilter({ ...filter, local: !filter.local });
-
-  // Toggle abroad filter
   const toggleAbroad = () => setFilter({ ...filter, abroad: !filter.abroad });
 
   // Import/export logic
@@ -62,7 +56,13 @@ export function TripsToolbar({
     setShowExportMenu,
     handleExportCSV,
     handleExportJSON,
+    handleExportVisitedOverlay,
   } = useTripIO(trips, addTrip);
+
+  // Close export menu on outside click
+  useClickOutside([exportMenuRef as React.RefObject<HTMLElement>], () =>
+    setShowExportMenu(false)
+  );
 
   return (
     <div className="w-full px-3 flex items-center justify-between h-10 bg-white border-b border-gray-300 dark:border-gray-600">
@@ -108,6 +108,7 @@ export function TripsToolbar({
             icon={<FaPlane />}
           />
           <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
+          {/* Import/Export buttons */}
           <ActionButton
             onClick={handleImportClick}
             ariaLabel="Import"
@@ -128,14 +129,14 @@ export function TripsToolbar({
             style={{ display: "none" }}
             onChange={handleFileChange}
           />
-          <ActionButton
-            onClick={() => setShowExportMenu((v) => !v)}
-            ariaLabel="Export"
-            title="Export Trips"
-            className="toolbar-btn-menu"
-            icon={<FaFileExport />}
-          />
           <div className="relative" ref={exportMenuRef}>
+            <ActionButton
+              onClick={() => setShowExportMenu((v) => !v)}
+              ariaLabel="Export"
+              title="Export Trips"
+              className="toolbar-btn-menu"
+              icon={<FaFileExport />}
+            />
             {showExportMenu && (
               <ExportMenu
                 onExportCSV={handleExportCSV}
@@ -143,6 +144,13 @@ export function TripsToolbar({
               />
             )}
           </div>
+          <ActionButton
+            onClick={handleExportVisitedOverlay}
+            ariaLabel="Export Visited Countries"
+            title="Export Visited Countries"
+            className="toolbar-btn-menu"
+            icon={<FaGlobe />}
+          />
         </div>
       </ActionsToolbar>
     </div>
