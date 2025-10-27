@@ -20,6 +20,7 @@ export { SelectInput } from './form/SelectInput';
 // Layout components
 export { CollapsibleHeader } from './layout/CollapsibleHeader';
 export { Separator } from './layout/Separator';
+export { SeparatorRow } from './layout/SeparatorRow';
 
 // Modal components
 export { Modal } from './layout/Modal/Modal';

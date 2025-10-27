@@ -1,12 +1,12 @@
 /**
- * Utility functions for trips.
+ * @fileoverview Utility functions for trips.
  */
 
 import type { Trip, TripStatus } from "@types";
 
 /**
  * Generates a CSS class string for a trip row based on its index and whether it's upcoming.
- * @param trip - The trip object.
+ * @param trip - The trip object. *
  * @param tripIdx - The index of the trip in the list.
  * @returns A string containing the CSS class names.
  */
@@ -16,12 +16,85 @@ export function getTripRowClass(trip: Trip, tripIdx: number): string {
 }
 
 /**
+ * Determines if a trip is local (within the home country).
+ * @param trip - The trip object to evaluate.
+ * @param homeCountry - The home country code to compare against.
+ * @returns True if the trip is local, false otherwise.
+ */
+export function isLocalTrip(trip: Trip, homeCountry: string) {
+  return (
+    trip.countryCodes &&
+    trip.countryCodes.length > 0 &&
+    trip.countryCodes.every((code) => code === homeCountry)
+  );
+}
+
+/**
+ * Determines if a trip is abroad (outside the home country).
+ * @param trip - The trip object to evaluate.
+ * @param homeCountry - The home country code to compare against.
+ * @returns True if the trip is abroad, false otherwise.
+ */
+export function isAbroadTrip(trip: Trip, homeCountry: string) {
+  return (
+    trip.countryCodes && trip.countryCodes.some((code) => code !== homeCountry)
+  );
+}
+
+/**
+ * Gets whether a trip is completed.
+ * @param trip - The trip object to evaluate.
+ * @returns True if the trip is completed, false otherwise.
+ */
+export function isCompletedTrip(trip: Trip) {
+  return trip.status === "completed";
+}
+
+/**
  * Determines if a trip is upcoming based on its start date.
  * @param trip - The trip object to evaluate.
  * @returns True if the trip is upcoming, false otherwise.
  */
 export function isUpcomingTrip(trip: Trip): boolean {
   return !!trip.startDate && new Date(trip.startDate) > new Date();
+}
+
+/**
+ * Gets a filtered list of local trips.
+ * @param trips - Array of trips to analyze.
+ * @param homeCountry - The home country code to determine local trips.
+ * @returns An array of local trips.
+ */
+export function getLocalTrips(trips: Trip[], homeCountry: string): Trip[] {
+  return trips.filter((trip) => isLocalTrip(trip, homeCountry));
+}
+
+/**
+ * Gets a filtered list of abroad trips.
+ * @param trips - Array of trips to analyze.
+ * @param homeCountry - The home country code to determine abroad trips.
+ * @returns An array of abroad trips.
+ */
+export function getAbroadTrips(trips: Trip[], homeCountry: string): Trip[] {
+  return trips.filter((trip) => isAbroadTrip(trip, homeCountry));
+}
+
+/**
+ * Gets a filtered list of upcoming trips.
+ * @param trips - Array of trips to analyze.
+ * @returns An array of upcoming trips.
+ */
+export function getUpcomingTrips(trips: Trip[]): Trip[] {
+  return trips.filter(isUpcomingTrip);
+}
+
+/**
+ * Gets a filtered list of completed trips.
+ * @param trips - Array of trips to analyze.
+ * @returns An array of completed trips.
+ */
+export function getCompletedTrips(trips: Trip[]): Trip[] {
+  return trips.filter((trip) => isCompletedTrip(trip));
 }
 
 /**
@@ -42,45 +115,16 @@ export function getAutoTripStatus(trip: Trip): TripStatus {
 }
 
 /**
- * Gets the country names for a given trip based on its country codes.
- * @param trip - The trip object containing country codes.
- * @param countries - An array of country objects with isoCode and name.
- * @returns a string of country names separated by commas.
+ * Calculates the number of trip days (inclusive of start and end date).
+ * @param trip - The trip object with startDate and endDate.
+ * @returns The number of trip days, or 0 if dates are missing.
  */
-export function getCountryNames(
-  trip: Trip,
-  countries: { isoCode: string; name: string }[]
-): string {
-  return trip.countryCodes
-    .map((code) => {
-      const country = countries.find(
-        (c) => c.isoCode?.toLowerCase() === code.toLowerCase()
-      );
-      return country?.name || "";
-    })
-    .join(", ");
-}
-
-/**
- * Gets all country codes that have trips associated with them.
- * @param trips - An array of trips
- * @returns a set of country codes.
- */
-export function getUsedCountryCodes(trips: Trip[]): Set<string> {
-  return new Set(trips.flatMap((trip) => trip.countryCodes));
-}
-
-/**
- * Gets all years that have trips associated with them.
- * @param trips - An array of trips
- * @returns an array of years.
- */
-export function getUsedYears(trips: Trip[]): number[] {
-  return Array.from(
-    new Set(
-      trips
-        .map((trip) => trip.startDate && new Date(trip.startDate).getFullYear())
-        .filter((y): y is number => typeof y === "number")
-    )
-  ).sort((a, b) => b - a);
+export function getTripDays(trip: Trip): number {
+  if (!trip.startDate || !trip.endDate) return 0;
+  const start = new Date(trip.startDate);
+  const end = new Date(trip.endDate);
+  // Add 1 to include both start and end dates
+  return (
+    Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1
+  );
 }

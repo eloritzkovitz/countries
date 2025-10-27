@@ -13,7 +13,7 @@ const SettingsContext = createContext<{
   updateSettings: (updates: Partial<Settings>) => Promise<void>;
   loading: boolean;
 }>({
-  settings: { id: "main", theme: "light" },
+  settings: { id: "main", homeCountry: "", theme: "light" },
   updateSettings: async () => {},
   loading: false,
 });
@@ -21,6 +21,7 @@ const SettingsContext = createContext<{
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>({
     id: "main",
+    homeCountry: "",
     theme: "light",
   });
   const [loading, setLoading] = useState(true);

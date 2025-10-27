@@ -17,6 +17,7 @@ interface CountrySelectModalProps {
   options: Country[];
   onChange: (newCountries: string[]) => void;
   onClose: () => void;
+  multiple?: boolean;
 }
 
 export function CountrySelectModal({
@@ -25,9 +26,10 @@ export function CountrySelectModal({
   options,
   onChange,
   onClose,
+  multiple = true,
 }: CountrySelectModalProps) {
   const [search, setSearch] = useState("");
-  
+
   // Reset search when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -36,7 +38,7 @@ export function CountrySelectModal({
   }, [isOpen]);
 
   // Filter options by search (accent-insensitive)
-  const filteredOptions = filterCountriesBySearch(options, search);  
+  const filteredOptions = filterCountriesBySearch(options, search);
 
   return (
     <Modal
@@ -77,10 +79,14 @@ export function CountrySelectModal({
                     type="checkbox"
                     checked={checked}
                     onChange={() => {
-                      const newSelected = checked
-                        ? selected.filter((v) => v !== country.isoCode)
-                        : [...selected, country.isoCode];
-                      onChange(newSelected);
+                      if (multiple) {
+                        const newSelected = checked
+                          ? selected.filter((v) => v !== country.isoCode)
+                          : [...selected, country.isoCode];
+                        onChange(newSelected);
+                      } else {
+                        onChange([country.isoCode]);
+                      }
                     }}
                     className="mr-2"
                   />

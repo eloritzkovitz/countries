@@ -1,13 +1,16 @@
 import React, { useRef } from "react";
 import {
   FaArrowLeft,
-  FaMapMarkerAlt,
+  FaRotateLeft,
+  FaLocationDot,
   FaPlane,
   FaFileExport,
   FaFileImport,
   FaGlobe,
-  FaUndo,
-} from "react-icons/fa";
+  FaChartSimple,
+  FaCheck,
+  FaCalendar,
+} from "react-icons/fa6";
 import {
   ActionButton,
   ActionsToolbar,
@@ -16,17 +19,16 @@ import {
 } from "@components";
 import { useTrips } from "@contexts/TripsContext";
 import { useClickOutside } from "@hooks/useClickOutside";
-import type { Trip } from "@types";
+import type { Trip, TripFilterState } from "@types";
 import { ExportMenu } from "./ExportMenu";
 import { ImportNoticeModal } from "./ImportNoticeModal";
 import { useTripIO } from "../hooks/useTripsIO";
-
-type FilterState = { local: boolean; abroad: boolean };
+import { TripsStats } from "../stats/TripsStats";
 
 type ToolbarProps = {
   trips: Trip[];
-  filter: FilterState;
-  setFilter: (filter: FilterState) => void;
+  filters: TripFilterState;
+  setFilters: React.Dispatch<React.SetStateAction<TripFilterState>>;
   globalSearch: string;
   setGlobalSearch: (search: string) => void;
   resetFilters: () => void;
@@ -34,14 +36,15 @@ type ToolbarProps = {
 
 export function TripsToolbar({
   trips,
-  filter,
-  setFilter,
+  filters,
+  setFilters,
   globalSearch,
   setGlobalSearch,
   resetFilters,
 }: ToolbarProps) {
   const { addTrip } = useTrips();
   const exportMenuRef = useRef<HTMLDivElement>(null);
+  const [showStats, setShowStats] = React.useState(false);
 
   // Return button handler
   const handleReturn = () => {
@@ -50,14 +53,18 @@ export function TripsToolbar({
 
   // Clear filters handler
   const handleClearFilters = () => {
-    setFilter({ local: true, abroad: true });
-    setGlobalSearch("");
     resetFilters();
+    setGlobalSearch("");
   };
 
-  // Toggle local/abroad filters
-  const toggleLocal = () => setFilter({ ...filter, local: !filter.local });
-  const toggleAbroad = () => setFilter({ ...filter, abroad: !filter.abroad });
+  // Toggle filters
+  const toggleLocal = () => setFilters({ ...filters, local: !filters.local });
+  const toggleAbroad = () =>
+    setFilters({ ...filters, abroad: !filters.abroad });
+  const toggleCompleted = () =>
+    setFilters({ ...filters, completed: !filters.completed });
+  const toggleUpcoming = () =>
+    setFilters({ ...filters, upcoming: !filters.upcoming });
 
   // Import/export logic
   const {
@@ -79,6 +86,11 @@ export function TripsToolbar({
     setShowExportMenu(false)
   );
 
+  // Show stats modal handler
+  const handleShowStats = () => {
+    setShowStats(true);
+  };
+
   return (
     <div className="w-full px-3 flex items-center justify-between h-10 bg-white border-b border-gray-300 dark:border-gray-600">
       <ActionsToolbar>
@@ -90,6 +102,7 @@ export function TripsToolbar({
             className="toolbar-btn-menu"
             icon={<FaArrowLeft />}
           />
+
           {/* Global search input */}
           <div className="mx-2">
             <SearchInput
@@ -99,37 +112,62 @@ export function TripsToolbar({
               className="w-64 h-8 rounded-full"
             />
           </div>
+
           {/* Filter buttons */}
           <ActionButton
             onClick={handleClearFilters}
             ariaLabel="Clear Filters"
             title="Clear Filters"
             className="toolbar-btn-menu"
-            icon={<FaUndo />}
+            icon={<FaRotateLeft />}
           />
           <ActionButton
             onClick={toggleLocal}
             ariaLabel="Show/Hide Local Trips"
             title="Toggle Local Trips"
             className={`toolbar-btn-toggle ${
-              filter.local
+              filters.local
                 ? "toolbar-btn-toggle-active"
                 : "toolbar-btn-toggle-inactive"
             }`}
-            icon={<FaMapMarkerAlt />}
+            icon={<FaLocationDot />}
           />
           <ActionButton
             onClick={toggleAbroad}
             ariaLabel="Show/Hide Abroad Trips"
             title="Toggle Abroad Trips"
             className={`toolbar-btn-toggle ${
-              filter.abroad
+              filters.abroad
                 ? "toolbar-btn-toggle-active"
                 : "toolbar-btn-toggle-inactive"
             }`}
             icon={<FaPlane />}
           />
+          <ActionButton
+            onClick={toggleCompleted}
+            ariaLabel="Show/Hide Completed Trips"
+            title="Toggle Completed Trips"
+            className={`toolbar-btn-toggle ${
+              filters.completed
+                ? "toolbar-btn-toggle-active"
+                : "toolbar-btn-toggle-inactive"
+            }`}
+            icon={<FaCheck />}
+          />
+          <ActionButton
+            onClick={toggleUpcoming}
+            ariaLabel="Show/Hide Upcoming Trips"
+            title="Toggle Upcoming Trips"
+            className={`toolbar-btn-toggle ${
+              filters.upcoming
+                ? "toolbar-btn-toggle-active"
+                : "toolbar-btn-toggle-inactive"
+            }`}
+            icon={<FaCalendar />}
+          />
+
           <ToolbarSeparator />
+
           {/* Import/Export buttons */}
           <ActionButton
             onClick={handleImportClick}
@@ -173,6 +211,24 @@ export function TripsToolbar({
             className="toolbar-btn-menu"
             icon={<FaGlobe />}
           />
+
+          <ToolbarSeparator />
+
+          {/* Stats button */}
+          <ActionButton
+            onClick={handleShowStats}
+            ariaLabel="Statistics"
+            title="Show Trip Statistics"
+            className="toolbar-btn-menu"
+            icon={<FaChartSimple />}
+          />
+          {showStats && (
+            <TripsStats
+              isOpen={showStats}
+              onClose={() => setShowStats(false)}
+              trips={trips}
+            />
+          )}
         </div>
       </ActionsToolbar>
     </div>

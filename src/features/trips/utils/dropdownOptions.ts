@@ -10,6 +10,30 @@ import {
 import type { Country, Trip, TripCategory, TripStatus, TripTag } from "@types";
 import { capitalizeWords } from "@utils/string";
 
+/**
+ * Gets all country codes that have trips associated with them.
+ * @param trips - An array of trips
+ * @returns a set of country codes.
+ */
+export function getUsedCountryCodes(trips: Trip[]): Set<string> {
+  return new Set(trips.flatMap((trip) => trip.countryCodes));
+}
+
+/**
+ * Gets all years that have trips associated with them.
+ * @param trips - An array of trips
+ * @returns an array of years.
+ */
+export function getUsedYears(trips: Trip[]): number[] {
+  return Array.from(
+    new Set(
+      trips
+        .map((trip) => trip.startDate && new Date(trip.startDate).getFullYear())
+        .filter((y): y is number => typeof y === "number")
+    )
+  ).sort((a, b) => b - a);
+}
+
 // Generic helper for dropdown options
 export function toDropdownOptions<T extends string>(
   values: T[],

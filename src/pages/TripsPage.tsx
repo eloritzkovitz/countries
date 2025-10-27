@@ -1,23 +1,23 @@
 import { useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { FloatingActionButton } from "@components";
+import { useCountryData } from "@contexts/CountryDataContext";
 import { useTrips } from "@contexts/TripsContext";
 import { TripModal, TripsTable, TripsToolbar } from "@features/trips";
-import { useCountryData } from "@contexts/CountryDataContext";
 import { useTripFilters } from "@features/trips/hooks/useTripFilters";
-import type { Trip } from "@types";
 import { useTripModal } from "@features/trips/hooks/useTripModal";
+import type { Trip } from "@types";
 
-export default function TripsPage() {  
+export default function TripsPage() {
   const countryData = useCountryData();
   const { trips, loading, addTrip, updateTrip, removeTrip } = useTrips();
   const [globalSearch, setGlobalSearch] = useState("");
-  const [filter, setFilter] = useState({ local: true, abroad: true });   
 
   // Trip filtering hook
   const {
     filteredTrips,
     filters,
+    setFilters,
     updateFilter,
     resetFilters,
     countryOptions,
@@ -25,7 +25,7 @@ export default function TripsPage() {
     categoryOptions,
     statusOptions,
     tagOptions,
-  } = useTripFilters(trips, countryData, filter, undefined, globalSearch);
+  } = useTripFilters(trips, countryData, undefined, globalSearch);
 
   // Trip modal hook
   const {
@@ -36,7 +36,7 @@ export default function TripsPage() {
     handleAdd,
     handleEdit,
     handleSave,
-  } = useTripModal({ addTrip, updateTrip, trips });  
+  } = useTripModal({ addTrip, updateTrip, trips });
 
   // Delete trip
   async function handleDelete(selectedTrip: Trip) {
@@ -54,8 +54,8 @@ export default function TripsPage() {
       {/* Toolbar */}
       <TripsToolbar
         trips={filteredTrips}
-        filter={filter}
-        setFilter={setFilter}
+        filters={filters}
+        setFilters={setFilters}
         globalSearch={globalSearch}
         setGlobalSearch={setGlobalSearch}
         resetFilters={resetFilters}

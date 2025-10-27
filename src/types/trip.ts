@@ -51,3 +51,11 @@ export type TripFilters = {
   status: TripStatus | "";
   tags: TripTag[];
 };
+
+// TripFilterState type definition
+export type TripFilterState = TripFilters & {
+  local: boolean;
+  abroad: boolean;
+  completed: boolean;
+  upcoming: boolean;
+};

@@ -4,6 +4,10 @@ import {
   getCountryNames,
   getUsedCountryCodes,
   getUsedYears,
+  isAbroadTrip,
+  isCompletedTrip,
+  isLocalTrip,
+  isUpcomingTrip,
   mapCategoryOptionsWithIcons,
   mapCountryOptionsWithFlags,
 } from "@features/trips";
@@ -14,57 +18,70 @@ import {
   getStatusDropdownOptions,
   getTagDropdownOptions,
 } from "@features/trips/utils/dropdownOptions";
-import type { Trip, TripFilters, TripCategory } from "@types";
+import type { Trip, TripCategory, TripFilterState } from "@types";
+import { useSettings } from "@contexts/SettingsContext";
 
 // Default trip filters
-const defaultTripFilters: TripFilters = {
+const defaultTripFilterState: TripFilterState = {
   name: "",
   country: [],
   year: [],
   categories: [],
   status: "",
   tags: [],
+  local: true,
+  abroad: true,
+  completed: true,
+  upcoming: true,
 };
 
 export function useTripFilters(
   trips?: Trip[],
   countryData?: any,
-  filter?: { local: boolean; abroad: boolean },
-  initialFilters?: Partial<TripFilters>,
+  initialFilters?: Partial<TripFilterState>,
   globalSearch?: string
 ) {
-  const [filters, setFilters] = useState<TripFilters>({
-    ...defaultTripFilters,
+  const settings = useSettings();
+  const homeCountry = settings.settings.homeCountry;
+
+  // Unified filter state
+  const [filters, setFilters] = useState<TripFilterState>({
+    ...defaultTripFilterState,
     ...initialFilters,
   });
 
   // Update a single filter
-  function updateFilter<K extends keyof TripFilters>(
+  function updateFilter<K extends keyof TripFilterState>(
     key: K,
-    value: TripFilters[K]
+    value: TripFilterState[K]
   ) {
     setFilters((prev) => ({ ...prev, [key]: value }));
   }
 
   // Reset all filters to default
   function resetFilters() {
-    setFilters(defaultTripFilters);
+    setFilters(defaultTripFilterState);
   }
 
-  // Filtered trips with local/abroad and global search
+  // Filtered trips with toggles and global search
   const filteredTrips = useMemo(() => {
     let result = trips ?? [];
 
-    // Apply local/abroad filter if provided
-    if (filter) {
-      result = result.filter((trip) => {
-        const isLocal = trip.categories?.includes("local");
-        if (filter.local && filter.abroad) return true;
-        if (filter.local) return isLocal;
-        if (filter.abroad) return !isLocal;
-        return false;
-      });
-    }
+    // Apply toggle filters (local, abroad, completed, upcoming)
+    result = result.filter((trip) => {
+      // Location toggles
+      const locationMatch =
+        (filters.local && isLocalTrip(trip, homeCountry)) ||
+        (filters.abroad && isAbroadTrip(trip, homeCountry));
+
+      // Status toggles
+      const statusMatch =
+        (filters.completed && isCompletedTrip(trip)) ||
+        (filters.upcoming && isUpcomingTrip(trip));
+
+      // Must match one from each group
+      return locationMatch && statusMatch;
+    });
 
     // Apply column filters
     result = filterTrips(result, filters);
@@ -90,7 +107,7 @@ export function useTripFilters(
       });
     }
     return result;
-  }, [trips, filter, filters, globalSearch, countryData?.countries]);
+  }, [trips, filters, globalSearch, countryData?.countries]);
 
   // Country options
   const usedCountryCodes = getUsedCountryCodes(trips ?? []);
