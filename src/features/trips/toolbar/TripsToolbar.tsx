@@ -6,8 +6,14 @@ import {
   FaFileExport,
   FaFileImport,
   FaGlobe,
+  FaUndo,
 } from "react-icons/fa";
-import { ActionButton, ActionsToolbar, SearchInput, ToolbarSeparator } from "@components";
+import {
+  ActionButton,
+  ActionsToolbar,
+  SearchInput,
+  ToolbarSeparator,
+} from "@components";
 import { useTrips } from "@contexts/TripsContext";
 import { useClickOutside } from "@hooks/useClickOutside";
 import type { Trip } from "@types";
@@ -23,6 +29,7 @@ type ToolbarProps = {
   setFilter: (filter: FilterState) => void;
   globalSearch: string;
   setGlobalSearch: (search: string) => void;
+  resetFilters: () => void;
 };
 
 export function TripsToolbar({
@@ -31,6 +38,7 @@ export function TripsToolbar({
   setFilter,
   globalSearch,
   setGlobalSearch,
+  resetFilters,
 }: ToolbarProps) {
   const { addTrip } = useTrips();
   const exportMenuRef = useRef<HTMLDivElement>(null);
@@ -38,6 +46,13 @@ export function TripsToolbar({
   // Return button handler
   const handleReturn = () => {
     window.history.back();
+  };
+
+  // Clear filters handler
+  const handleClearFilters = () => {
+    setFilter({ local: true, abroad: true });
+    setGlobalSearch("");
+    resetFilters();
   };
 
   // Toggle local/abroad filters
@@ -85,6 +100,13 @@ export function TripsToolbar({
             />
           </div>
           {/* Filter buttons */}
+          <ActionButton
+            onClick={handleClearFilters}
+            ariaLabel="Clear Filters"
+            title="Clear Filters"
+            className="toolbar-btn-menu"
+            icon={<FaUndo />}
+          />
           <ActionButton
             onClick={toggleLocal}
             ariaLabel="Show/Hide Local Trips"

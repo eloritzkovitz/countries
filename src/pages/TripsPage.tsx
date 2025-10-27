@@ -19,6 +19,7 @@ export default function TripsPage() {
     filteredTrips,
     filters,
     updateFilter,
+    resetFilters,
     countryOptions,
     yearOptions,
     categoryOptions,
@@ -57,6 +58,7 @@ export default function TripsPage() {
         setFilter={setFilter}
         globalSearch={globalSearch}
         setGlobalSearch={setGlobalSearch}
+        resetFilters={resetFilters}
       />
 
       {/* Table area */}
