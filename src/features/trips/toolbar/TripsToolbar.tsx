@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   FaMapMarkerAlt,
   FaPlane,
@@ -9,14 +9,10 @@ import {
 import { ActionButton, ActionsToolbar, SearchInput } from "@components";
 import { useTrips } from "@contexts/TripsContext";
 import { useClickOutside } from "@hooks/useClickOutside";
+import type { Trip } from "@types";
 import { ExportMenu } from "./ExportMenu";
 import { ImportNoticeModal } from "./ImportNoticeModal";
-import {
-  importTripsFromFile,
-  exportTripsToCSV,
-  exportTripsToJSON,
-} from "../utils/tripsIO";
-import type { Trip } from "@types";
+import { useTripIO } from "../hooks/useTripsIO";
 
 type FilterState = { local: boolean; abroad: boolean };
 
@@ -36,12 +32,7 @@ export function TripsToolbar({
   setGlobalSearch,
 }: ToolbarProps) {
   const { addTrip } = useTrips();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const exportMenuRef = useRef<HTMLDivElement>(null);
-
-  // UI state
-  const [showImportNotice, setShowImportNotice] = useState(false);
-  const [showExportMenu, setShowExportMenu] = useState(false);
 
   // Close export menu on outside click
   useClickOutside([exportMenuRef as React.RefObject<HTMLElement>], () =>
@@ -59,37 +50,19 @@ export function TripsToolbar({
   // Toggle abroad filter
   const toggleAbroad = () => setFilter({ ...filter, abroad: !filter.abroad });
 
-  // Show import notice
-  const handleImportClick = () => setShowImportNotice(true);
-
-  // Confirm import after notice
-  const confirmImport = () => {
-    setShowImportNotice(false);
-    fileInputRef.current?.click();
-  };
-
-  // Handle file selection for import
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      await importTripsFromFile(file, async (trip) => {
-        addTrip(trip);
-      });
-    }
-    e.target.value = "";
-  };
-
-  // Export to CSV
-  const handleExportCSV = () => {
-    exportTripsToCSV(trips);
-    setShowExportMenu(false);
-  };
-
-  // Export to JSON
-  const handleExportJSON = () => {
-    exportTripsToJSON(trips);
-    setShowExportMenu(false);
-  };
+  // Import/export logic
+  const {
+    showImportNotice,
+    setShowImportNotice,
+    fileInputRef,
+    handleImportClick,
+    handleFileChange,
+    confirmImport,
+    showExportMenu,
+    setShowExportMenu,
+    handleExportCSV,
+    handleExportJSON,
+  } = useTripIO(trips, addTrip);
 
   return (
     <div className="w-full px-3 flex items-center justify-between h-10 bg-white border-b border-gray-300 dark:border-gray-600">
