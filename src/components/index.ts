@@ -32,6 +32,7 @@ export { PanelListItem } from './layout/Panel/PanelListItem';
 
 // Toolbar components
 export { ActionsToolbar } from './layout/Toolbar/ActionsToolbar';
+export { ToolbarSeparator } from './layout/Toolbar/ToolbarSeparator';
 
 // UI components
 export { CardList } from './ui/CardList';

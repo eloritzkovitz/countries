@@ -4,7 +4,7 @@ export * from "./components/TripsTable";
 
 // Config
 export * from "./config/columnConfig";
-export * from "./config/TripCategoryIcons";
+export * from "./config/tripCategoryIcons";
 export * from "./config/mapCountryOptions";
 
 // Toolbar

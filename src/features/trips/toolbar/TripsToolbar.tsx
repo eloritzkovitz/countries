@@ -7,7 +7,7 @@ import {
   FaFileImport,
   FaGlobe,
 } from "react-icons/fa";
-import { ActionButton, ActionsToolbar, SearchInput } from "@components";
+import { ActionButton, ActionsToolbar, SearchInput, ToolbarSeparator } from "@components";
 import { useTrips } from "@contexts/TripsContext";
 import { useClickOutside } from "@hooks/useClickOutside";
 import type { Trip } from "@types";
@@ -107,7 +107,7 @@ export function TripsToolbar({
             }`}
             icon={<FaPlane />}
           />
-          <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
+          <ToolbarSeparator />
           {/* Import/Export buttons */}
           <ActionButton
             onClick={handleImportClick}

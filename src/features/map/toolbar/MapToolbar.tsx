@@ -7,7 +7,7 @@ import {
   FaDownload,
   FaCog,
 } from "react-icons/fa";
-import { ActionButton, ActionsToolbar } from "@components";
+import { ActionButton, ActionsToolbar, ToolbarSeparator } from "@components";
 import { useUI } from "@contexts/UIContext";
 import { ZoomControls } from "./ZoomControls";
 import { MapExportModal } from "../export/MapExportModal";
@@ -81,7 +81,7 @@ export function MapToolbar({
             icon={<FaDownload />}
           />
           <MapExportModal svgRef={svgRef} />
-          <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
+          <ToolbarSeparator />
           <ActionButton
             onClick={toggleSettings}
             ariaLabel="Settings"
