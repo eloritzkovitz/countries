@@ -3,58 +3,39 @@ import { FaPencilAlt } from "react-icons/fa";
 import { FloatingActionButton } from "@components";
 import { useTrips } from "@contexts/TripsContext";
 import { TripModal, TripsTable, TripsToolbar } from "@features/trips";
+import { useCountryData } from "@contexts/CountryDataContext";
+import { useTripFilters } from "@features/trips/hooks/useTripFilters";
 import type { Trip } from "@types";
+import { useTripModal } from "@features/trips/hooks/useTripModal";
 
-// Empty trip template
-const emptyTrip: Trip = {
-  id: "",
-  name: "",
-  startDate: "",
-  endDate: "",
-  countryCodes: [],
-  fullDays: 1,
-  notes: "",
-};
-
-export default function TripsPage() {
+export default function TripsPage() {  
+  const countryData = useCountryData();
   const { trips, loading, addTrip, updateTrip, removeTrip } = useTrips();
-  const [trip, setTrip] = useState<Trip | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [filter, setFilter] = useState({ local: true, abroad: true });
   const [globalSearch, setGlobalSearch] = useState("");
+  const [filter, setFilter] = useState({ local: true, abroad: true });   
 
-  // Filter trips before passing to TripsTable
-  const filteredTrips = trips.filter((trip) => {
-    const isLocal = trip.categories?.includes("local");
-    if (filter.local && filter.abroad) return true;
-    if (filter.local) return isLocal;
-    if (filter.abroad) return !isLocal;
-    return false; // If both are off, show nothing
-  });
+  // Trip filtering hook
+  const {
+    filteredTrips,
+    filters,
+    updateFilter,
+    countryOptions,
+    yearOptions,
+    categoryOptions,
+    statusOptions,
+    tagOptions,
+  } = useTripFilters(trips, countryData, filter, undefined, globalSearch);
 
-  // Add trip
-  function handleAdd() {
-    setTrip({ ...emptyTrip });
-    setModalOpen(true);
-  }
-
-  // Edit trip
-  function handleEdit(selectedTrip: Trip) {
-    setTrip({ ...selectedTrip });
-    setModalOpen(true);
-  }
-
-  // Save trip (add or edit)
-  async function handleSave() {
-    if (!trip) return;
-    if (!trip.id) {
-      const newTrip = { ...trip, id: crypto.randomUUID() };
-      addTrip(newTrip);
-    } else if (trips.some((t) => t.id === trip.id)) {
-      updateTrip(trip);
-    }
-    setModalOpen(false);
-  }
+  // Trip modal hook
+  const {
+    trip,
+    setTrip,
+    modalOpen,
+    setModalOpen,
+    handleAdd,
+    handleEdit,
+    handleSave,
+  } = useTripModal({ addTrip, updateTrip, trips });  
 
   // Delete trip
   async function handleDelete(selectedTrip: Trip) {
@@ -71,6 +52,7 @@ export default function TripsPage() {
     <div className="min-h-screen w-full flex flex-col bg-white">
       {/* Toolbar */}
       <TripsToolbar
+        trips={filteredTrips}
         filter={filter}
         setFilter={setFilter}
         globalSearch={globalSearch}
@@ -96,7 +78,15 @@ export default function TripsPage() {
             trips={filteredTrips}
             onEdit={handleEdit}
             onDelete={handleDelete}
-            globalSearch={globalSearch}
+            filters={filters}
+            updateFilter={(key: string, value: any) =>
+              updateFilter(key as any, value)
+            }
+            countryOptions={countryOptions}
+            yearOptions={yearOptions}
+            categoryOptions={categoryOptions}
+            statusOptions={statusOptions}
+            tagOptions={tagOptions}
           />
         )}
       </div>

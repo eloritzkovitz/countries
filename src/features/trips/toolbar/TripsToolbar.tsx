@@ -16,10 +16,12 @@ import {
   exportTripsToCSV,
   exportTripsToJSON,
 } from "../utils/tripsIO";
+import type { Trip } from "@types";
 
 type FilterState = { local: boolean; abroad: boolean };
 
 type ToolbarProps = {
+  trips: Trip[];
   filter: FilterState;
   setFilter: (filter: FilterState) => void;
   globalSearch: string;
@@ -27,12 +29,13 @@ type ToolbarProps = {
 };
 
 export function TripsToolbar({
+  trips,
   filter,
   setFilter,
   globalSearch,
   setGlobalSearch,
 }: ToolbarProps) {
-  const { trips, addTrip } = useTrips();
+  const { addTrip } = useTrips();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const exportMenuRef = useRef<HTMLDivElement>(null);
 
@@ -152,15 +155,14 @@ export function TripsToolbar({
             style={{ display: "none" }}
             onChange={handleFileChange}
           />
-          {/* Export button and dropdown in their own relative wrapper */}
-          <div className="relative">
-            <ActionButton
-              onClick={() => setShowExportMenu((v) => !v)}
-              ariaLabel="Export"
-              title="Export Trips"
-              className="toolbar-btn-menu"
-              icon={<FaFileExport />}
-            />
+          <ActionButton
+            onClick={() => setShowExportMenu((v) => !v)}
+            ariaLabel="Export"
+            title="Export Trips"
+            className="toolbar-btn-menu"
+            icon={<FaFileExport />}
+          />
+          <div className="relative" ref={exportMenuRef}>
             {showExportMenu && (
               <ExportMenu
                 onExportCSV={handleExportCSV}

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { sortTrips } from "@features/trips";
-import { useTripFilters } from "@features/trips/hooks/useTripFilters";
 import type { SortKey, Trip } from "@types";
 import { TripsTableHeader } from "./TripsTableHeader";
 import { TripsTableRows } from "./TripsTableRows";
@@ -13,37 +12,38 @@ type TripsTableProps = {
   trips: Trip[];
   onEdit: (trip: Trip) => void;
   onDelete: (trip: Trip) => void;
-  globalSearch: string;
+  filters: any;
+  updateFilter: (key: string, value: any) => void;
+  countryOptions: any[];
+  yearOptions: any[];
+  categoryOptions: any[];
+  statusOptions: any[];
+  tagOptions: any[];
 };
 
 export function TripsTable({
   trips,
   onEdit,
   onDelete,
-  globalSearch,
+  filters,
+  updateFilter,
+  countryOptions,
+  yearOptions,
+  categoryOptions,
+  statusOptions,
+  tagOptions,
 }: TripsTableProps) {
   const countryData = useCountryData();
 
   // Use the resizing hook
   const { colWidths, handleResizeStart } = useResizableColumns();
 
-  // Filters state
-  const {
-    filters,
-    updateFilter,
-    filteredTrips,
-    countryOptions,
-    yearOptions,
-    categoryOptions,
-    statusOptions,
-    tagOptions,
-  } = useTripFilters(trips, countryData, undefined, globalSearch);
   const [sortKey, setSortKey] = useState<SortKey>("startDate");
   const [sortAsc, setSortAsc] = useState(true);
 
   // Sorted state
   const sortedTrips = sortTrips(
-    filteredTrips ?? [],
+    trips ?? [],
     sortKey,
     sortAsc,
     countryData.countries

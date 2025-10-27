@@ -5,16 +5,6 @@
 import type { SortKey, Trip, TripFilters } from "@types";
 import { getCountryNames } from "./trips";
 
-// Default trip filters
-export const defaultTripFilters: TripFilters = {
-  name: "",
-  country: [],
-  year: [],
-  categories: [],
-  status: "",
-  tags: [],
-};
-
 /**
  * Sorts trips based on a given key and order.
  * @param trips - An array of trips to sort.
