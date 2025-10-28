@@ -86,70 +86,73 @@ export function TripsStats({ isOpen, onClose, trips }: TripsStatsProps) {
           icon={<FaXmark />}
         />
       </PanelHeader>
-      <div className="w-[500px] p-4">
-        <table className="w-full mb-4 text-gray-700 border-separate [border-spacing:0.5rem]">
-          <tbody>
-            <TripStatRow
-              icon={<FaSuitcaseRolling />}
-              label="Total trips:"
-              value={totalTrips}
-            />
-            <TripStatRow
-              icon={<FaLocationDot />}
-              label="Local trips:"
-              value={localTrips.length}
-            />
-            <TripStatRow
-              icon={<FaPlane />}
-              label="Abroad trips:"
-              value={abroadTrips.length}
-            />
-            <SeparatorRow />
-            <TripStatRow
-              icon={<FaGlobe />}
-              label="Countries visited:"
-              value={countriesVisited}
-            />
-            <TripStatRow
-              icon={<FaFlag />}
-              label="Most visited country:"
-              value={
-                mostVisitedCountries.length > 0
-                  ? mostVisitedCountries.map((country, idx) => (
-                      <span
-                        key={country.isoCode}
-                        className="inline-flex items-center gap-1"
-                      >
-                        <CountryCell
-                          code={country.isoCode}
-                          countryData={{ countries }}
-                        />
-                        <span>({maxCount} times)</span>
-                        {idx < mostVisitedCountries.length - 1 && (
-                          <span>,</span>
-                        )}
-                      </span>
-                    ))
-                  : "—"
-              }
-            />
-            <SeparatorRow />
-            <TripStatRow
-              icon={<FaClock />}
-              label="Longest trip:"
-              value={`${longestTrip} days`}
-            />
-            <TripStatRow
-              icon={<FaRegClock />}
-              label="Shortest trip:"
-              value={
-                shortestTrip !== Infinity && shortestTrip > 0
-                  ? `${shortestTrip} days`
-                  : "—"
-              }
-            />
-          </tbody>
-        </table>
+      <div className="relative flex">
+        {/* Main stats table */}
+        <div className="w-[500px] max-h-[70vh] overflow-y-auto p-4">
+          <table className="w-full mb-4 text-gray-700 border-separate [border-spacing:0.5rem]">
+            <tbody>
+              <TripStatRow
+                icon={<FaSuitcaseRolling />}
+                label="Total trips:"
+                value={totalTrips}
+              />
+              <TripStatRow
+                icon={<FaLocationDot />}
+                label="Local trips:"
+                value={localTrips.length}
+              />
+              <TripStatRow
+                icon={<FaPlane />}
+                label="Abroad trips:"
+                value={abroadTrips.length}
+              />
+              <SeparatorRow />
+              <TripStatRow
+                icon={<FaGlobe />}
+                label="Countries visited:"
+                value={countriesVisited}
+              />
+              <TripStatRow
+                icon={<FaFlag />}
+                label="Most visited country:"
+                value={
+                  mostVisitedCountries.length > 0
+                    ? mostVisitedCountries.map((country, idx) => (
+                        <span
+                          key={country.isoCode}
+                          className="inline-flex items-center gap-1"
+                        >
+                          <CountryCell
+                            code={country.isoCode}
+                            countryData={{ countries }}
+                          />
+                          <span>({maxCount} times)</span>
+                          {idx < mostVisitedCountries.length - 1 && (
+                            <span>,</span>
+                          )}
+                        </span>
+                      ))
+                    : "—"
+                }
+              />
+              <SeparatorRow />
+              <TripStatRow
+                icon={<FaClock />}
+                label="Longest trip:"
+                value={`${longestTrip} days`}
+              />
+              <TripStatRow
+                icon={<FaRegClock />}
+                label="Shortest trip:"
+                value={
+                  shortestTrip !== Infinity && shortestTrip > 0
+                    ? `${shortestTrip} days`
+                    : "—"
+                }
+              />
+            </tbody>
+          </table>
+        </div>
       </div>
     </Modal>
   );

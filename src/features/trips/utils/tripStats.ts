@@ -37,6 +37,37 @@ export function getMostVisitedCountries(trips: Trip[], homeCountry: string) {
 }
 
 /**
+ * Gets the number of trips per country.
+ * @param trips - Array of trips to analyze.
+ * @returns A record mapping country codes to the number of trips.
+ */
+export function getTripsPerCountry(trips: Trip[]): Record<string, number> {
+  const counts: Record<string, number> = {};
+  trips.forEach((trip) => {
+    (trip.countryCodes ?? []).forEach((code) => {
+      counts[code] = (counts[code] || 0) + 1;
+    });
+  });
+  return counts;
+}
+
+/**
+ * Returns a sorted array of years a country was visited.
+ */
+export function getVisitYearsForCountry(
+  trips: Trip[],
+  countryCode: string
+): number[] {
+  return Array.from(
+    new Set(
+      trips
+        .filter((trip) => trip.countryCodes?.includes(countryCode))
+        .map((trip) => new Date(trip.startDate).getFullYear())
+    )
+  ).sort((a, b) => a - b);
+}
+
+/**
  * Gets the longest trip duration in days from a list of trips.
  * @param trips - Array of trips to analyze.
  * @returns The longest trip duration in days.

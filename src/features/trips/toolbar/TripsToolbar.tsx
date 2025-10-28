@@ -44,6 +44,8 @@ export function TripsToolbar({
 }: ToolbarProps) {
   const { addTrip } = useTrips();
   const exportMenuRef = useRef<HTMLDivElement>(null);
+  const [showImportNotice, setShowImportNotice] = React.useState(false);
+  const [showExportMenu, setShowExportMenu] = React.useState(false);
   const [showStats, setShowStats] = React.useState(false);
 
   // Return button handler
@@ -68,14 +70,8 @@ export function TripsToolbar({
 
   // Import/export logic
   const {
-    showImportNotice,
-    setShowImportNotice,
     fileInputRef,
-    handleImportClick,
     handleFileChange,
-    confirmImport,
-    showExportMenu,
-    setShowExportMenu,
     handleExportCSV,
     handleExportJSON,
     handleExportVisitedOverlay,
@@ -86,13 +82,23 @@ export function TripsToolbar({
     setShowExportMenu(false)
   );
 
+  // Import button handler
+  const handleImportClick = () => {
+    setShowImportNotice(true);
+  };
+
+  // Trigger file input
+  function triggerFileInput() {
+    fileInputRef.current?.click();
+  }
+
   // Show stats modal handler
   const handleShowStats = () => {
     setShowStats(true);
   };
 
   return (
-    <div className="w-full px-3 flex items-center justify-between h-10 bg-white border-b border-gray-300 dark:border-gray-600">
+    <div className="w-full px-3 flex items-center justify-between h-16 bg-white border-b border-gray-300 dark:border-gray-600">
       <ActionsToolbar>
         <div className="flex items-center">
           <ActionButton
@@ -178,7 +184,7 @@ export function TripsToolbar({
           />
           {showImportNotice && (
             <ImportNoticeModal
-              onConfirm={confirmImport}
+              onConfirm={triggerFileInput}
               onCancel={() => setShowImportNotice(false)}
             />
           )}

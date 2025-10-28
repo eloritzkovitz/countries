@@ -27,7 +27,7 @@ export function HomeCountrySelect() {
       {expanded && (
         <button
           type="button"
-          className="settings-select-btn flex items-center gap-3 px-3 py-2 rounded border bg-gray-600 text-white hover:bg-gray-500 transition"
+          className="settings-select-btn flex items-center gap-3 px-3 py-2 rounded border bg-gray-200 dark:bg-gray-600 text-dark hover:bg-gray-300 dark:hover:bg-gray-500 transition"
           onClick={() => setModalOpen(true)}
           aria-label="Select home country"
         >
