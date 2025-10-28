@@ -42,7 +42,11 @@ export function TripModal({
   // Get the selected country objects
   const selectedCountries = countries.filter((country) =>
     trip.countryCodes.includes(country.isoCode)
-  ); 
+  );
+
+  // Form validation
+  const isValid =
+    trip.name.trim() && trip.startDate && trip.countryCodes.length > 0;
 
   return (
     <>
@@ -56,6 +60,7 @@ export function TripModal({
           className="p-4 flex-1 min-w-0"
           onSubmit={(e) => {
             e.preventDefault();
+            if (!isValid) return;
             onSave(trip);
           }}
         >
@@ -84,6 +89,7 @@ export function TripModal({
                 }
                 onChange({ ...trip, startDate: newStart, endDate: newEnd });
               }}
+              required
             />
           </FormField>
           <FormField label="End Date" className="mb-2">
@@ -105,7 +111,7 @@ export function TripModal({
               {selectedCountries.length > 0
                 ? `Edit Countries (${selectedCountries.length})`
                 : "Select Countries"}
-            </button>
+            </button>            
           </FormField>
           <FormField label="Full Days" className="mb-2">
             <input
@@ -179,6 +185,7 @@ export function TripModal({
               )
             }
             submitLabel={isEditing ? "Save Changes" : "Add Trip"}
+            disabled={!isValid}
           />
         </form>
         {/* Right: Selected Countries */}

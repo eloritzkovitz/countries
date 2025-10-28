@@ -10,6 +10,7 @@ type ModalActionsProps = {
   submitIcon: ReactNode;
   submitLabel: string;
   cancelLabel?: string;
+  disabled?: boolean;
 };
 
 export function ModalActions({
@@ -20,13 +21,14 @@ export function ModalActions({
   submitIcon,
   submitLabel,
   cancelLabel = "Cancel",
+  disabled = false,
 }: ModalActionsProps) {
   return (
     <div className="flex justify-end gap-2 mt-4">
       <FormButton type="button" variant="secondary" onClick={onCancel}>
         <FaTimes className="inline" /> {cancelLabel}
       </FormButton>
-      <FormButton type={submitType} variant={submitVariant} onClick={onSubmit}>
+      <FormButton type={submitType} variant={submitVariant} onClick={onSubmit} disabled={disabled}>
         {submitIcon} {submitLabel}
       </FormButton>
     </div>
