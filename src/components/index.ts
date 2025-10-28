@@ -23,6 +23,7 @@ export { Separator } from './layout/Separator';
 export { SeparatorRow } from './layout/SeparatorRow';
 
 // Modal components
+export { ConfirmModal } from './layout/Modal/ConfirmModal';
 export { Modal } from './layout/Modal/Modal';
 export { ModalActions } from './layout/Modal/ModalActions';
 

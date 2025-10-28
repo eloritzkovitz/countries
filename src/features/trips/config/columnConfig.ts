@@ -1,4 +1,5 @@
 export type ColumnKey =
+  | "select"
   | "idx"
   | "name"
   | "countries"
@@ -13,6 +14,7 @@ export type ColumnKey =
 
 // Minimum widths for each column
 export const MIN_WIDTHS: Record<ColumnKey, number> = {
+  select: 10,
   idx: 20,
   name: 80,
   countries: 60,
@@ -28,6 +30,7 @@ export const MIN_WIDTHS: Record<ColumnKey, number> = {
 
 // Default widths for each column
 export const DEFAULT_WIDTHS: Record<ColumnKey, number> = {
+  select: 10,
   idx: 40,
   name: 160,
   countries: 180,

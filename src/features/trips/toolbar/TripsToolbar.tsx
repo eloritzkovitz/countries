@@ -10,10 +10,12 @@ import {
   FaChartSimple,
   FaCheck,
   FaCalendar,
+  FaTrash,
 } from "react-icons/fa6";
 import {
   ActionButton,
   ActionsToolbar,
+  ConfirmModal,
   SearchInput,
   ToolbarSeparator,
 } from "@components";
@@ -21,7 +23,6 @@ import { useTrips } from "@contexts/TripsContext";
 import { useClickOutside } from "@hooks/useClickOutside";
 import type { Trip, TripFilterState } from "@types";
 import { ExportMenu } from "./ExportMenu";
-import { ImportNoticeModal } from "./ImportNoticeModal";
 import { useTripIO } from "../hooks/useTripsIO";
 import { TripsStats } from "../stats/TripsStats";
 
@@ -32,6 +33,8 @@ type ToolbarProps = {
   globalSearch: string;
   setGlobalSearch: (search: string) => void;
   resetFilters: () => void;
+  selectedTripIds: string[];
+  onBulkDelete: () => void;
 };
 
 export function TripsToolbar({
@@ -41,12 +44,15 @@ export function TripsToolbar({
   globalSearch,
   setGlobalSearch,
   resetFilters,
+  selectedTripIds,
+  onBulkDelete,
 }: ToolbarProps) {
   const { addTrip } = useTrips();
   const exportMenuRef = useRef<HTMLDivElement>(null);
   const [showImportNotice, setShowImportNotice] = React.useState(false);
   const [showExportMenu, setShowExportMenu] = React.useState(false);
   const [showStats, setShowStats] = React.useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
 
   // Return button handler
   const handleReturn = () => {
@@ -183,9 +189,21 @@ export function TripsToolbar({
             icon={<FaFileImport />}
           />
           {showImportNotice && (
-            <ImportNoticeModal
-              onConfirm={triggerFileInput}
+            <ConfirmModal
+              message={
+                <>
+                  Importing will <b>add</b> trips to your current list. Existing
+                  trips will not be overwritten.
+                </>
+              }
+              onConfirm={() => {
+                setShowImportNotice(false);
+                setTimeout(triggerFileInput, 0);
+              }}
               onCancel={() => setShowImportNotice(false)}
+              submitLabel="Continue"
+              cancelLabel="Cancel"
+              submitIcon={<FaCheck className="inline" />}
             />
           )}
           <input
@@ -233,6 +251,31 @@ export function TripsToolbar({
               isOpen={showStats}
               onClose={() => setShowStats(false)}
               trips={trips}
+            />
+          )}
+
+          <ToolbarSeparator />
+          
+          <ActionButton
+            onClick={() => setShowDeleteConfirm(true)}
+            ariaLabel="Delete selected trips"
+            title="Delete selected trips"
+            className="toolbar-btn-menu"
+            icon={<FaTrash />}
+            disabled={selectedTripIds.length === 0}
+          />
+          {showDeleteConfirm && (
+            <ConfirmModal
+              title="Delete Trips"
+              message={`Delete ${selectedTripIds.length} selected trips?`}
+              onConfirm={() => {
+                setShowDeleteConfirm(false);
+                onBulkDelete();
+              }}
+              onCancel={() => setShowDeleteConfirm(false)}
+              submitLabel="Delete"
+              cancelLabel="Cancel"
+              submitIcon={<FaTrash className="inline" />}
             />
           )}
         </div>

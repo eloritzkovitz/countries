@@ -1,9 +1,11 @@
-import { SortableFilterHeader } from "./SortableFilterHeader";
+import type { JSX } from "react";
 import { DropdownSelectInput } from "@components";
 import type { SortKey, TripCategory, TripFilters } from "@types";
-import type { JSX } from "react";
+import { SortableFilterHeader } from "./SortableFilterHeader";
 
 type TripsTableHeaderProps = {
+  allSelected: boolean;
+  handleSelectAll: () => void;
   sortKey: SortKey;
   sortAsc: boolean;
   handleSort: (key: SortKey) => void;
@@ -13,11 +15,13 @@ type TripsTableHeaderProps = {
   yearOptions: any[];
   categoryOptions: any[];
   statusOptions: any[];
-  tagOptions: any[];
-  renderResizeHandle: (key: string) => JSX.Element;
+  tagOptions: any[];  
+  renderResizeHandle: (key: string) => JSX.Element;  
 };
 
 export function TripsTableHeader({
+  allSelected,
+  handleSelectAll,
   sortKey,
   sortAsc,
   handleSort,
@@ -28,11 +32,19 @@ export function TripsTableHeader({
   categoryOptions,
   statusOptions,
   tagOptions,
-  renderResizeHandle,
+  renderResizeHandle,  
 }: TripsTableHeaderProps) {
   return (
     <thead>
       <tr>
+        <th className="trips-th">
+          <input
+            type="checkbox"
+            checked={allSelected}
+            onChange={handleSelectAll}
+            aria-label="Select all trips"
+          />
+        </th>
         <th className="trips-th">#{renderResizeHandle("idx")}</th>
         <th className="trips-th">
           <SortableFilterHeader

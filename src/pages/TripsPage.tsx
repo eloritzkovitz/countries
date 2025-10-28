@@ -12,6 +12,7 @@ export default function TripsPage() {
   const countryData = useCountryData();
   const { trips, loading, addTrip, updateTrip, removeTrip } = useTrips();
   const [globalSearch, setGlobalSearch] = useState("");
+  const [selectedTripIds, setSelectedTripIds] = useState<string[]>([]);
 
   // Trip filtering hook
   const {
@@ -26,6 +27,34 @@ export default function TripsPage() {
     statusOptions,
     tagOptions,
   } = useTripFilters(trips, countryData, undefined, globalSearch);
+
+  // Selection handlers
+  function handleSelectTrip(id: string) {
+    setSelectedTripIds((prev) =>
+      prev.includes(id) ? prev.filter((tripId) => tripId !== id) : [...prev, id]
+    );
+  }
+
+  // Select all handler
+  function handleSelectAll() {
+    if (selectedTripIds.length === filteredTrips.length) {
+      setSelectedTripIds([]);
+    } else {
+      setSelectedTripIds(filteredTrips.map((trip) => trip.id));
+    }
+  }
+
+  // Determine if all trips are selected
+  const allSelected =
+    selectedTripIds.length === filteredTrips.length && filteredTrips.length > 0;
+
+  // Bulk delete handler
+  async function handleBulkDelete() {
+    for (const id of selectedTripIds) {
+      await removeTrip(id);
+    }
+    setSelectedTripIds([]);
+  }
 
   // Trip modal hook
   const {
@@ -59,6 +88,8 @@ export default function TripsPage() {
         globalSearch={globalSearch}
         setGlobalSearch={setGlobalSearch}
         resetFilters={resetFilters}
+        selectedTripIds={selectedTripIds}
+        onBulkDelete={handleBulkDelete}
       />
 
       {/* Table area */}
@@ -89,6 +120,10 @@ export default function TripsPage() {
             categoryOptions={categoryOptions}
             statusOptions={statusOptions}
             tagOptions={tagOptions}
+            selectedTripIds={selectedTripIds}
+            onSelectTrip={handleSelectTrip}
+            allSelected={allSelected}
+            handleSelectAll={handleSelectAll}
           />
         )}
       </div>
