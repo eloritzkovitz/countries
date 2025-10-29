@@ -1,12 +1,14 @@
 // Components
 export * from "./components/CountryCell";
 export * from "./components/TripModal";
-export * from "./components/TripsTable";
 
 // Config
 export * from "./config/columnConfig";
 export * from "./config/tripCategoryIcons";
 export * from "./config/mapCountryOptions";
+
+// Table
+export * from "./table/TripsTable";
 
 // Toolbar
 export { TripsToolbar } from "./toolbar/TripsToolbar";

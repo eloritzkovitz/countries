@@ -3,7 +3,7 @@ import { mapCategoryOptionsWithIcons } from "@features/trips";
 import type { ColumnKey } from "@features/trips";
 import type { Trip } from "@types";
 import { formatDate } from "@utils/date";
-import { CountryCell } from "./CountryCell";
+import { CountryCell } from "../components/CountryCell";
 import { TripActions } from "./TripActions";
 import { StatusCell } from "./StatusCell";
 
