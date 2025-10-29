@@ -12,6 +12,7 @@ import { CountrySelectModal } from "@features/countries";
 import type { Trip, TripCategory, TripStatus } from "@types";
 import { SelectedCountriesList } from "./SelectedCountriesList";
 import { useTripFilters } from "../hooks/useTripFilters";
+import './TripModal.css';
 
 type TripModalProps = {
   isOpen: boolean;
