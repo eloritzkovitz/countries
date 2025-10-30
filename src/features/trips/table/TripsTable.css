@@ -12,6 +12,10 @@
   @apply sticky border-t border-b top-0 border-gray-300 px-2 py-1 z-3 bg-gray-100 dark:border-gray-600 dark:bg-gray-800;
 }
 
+.trips-th-unsortable {
+  @apply sticky border-t border-b top-0 border-gray-300 px-2 pb-7 z-3 bg-gray-100 dark:border-gray-600 dark:bg-gray-800;
+}
+
 .trips-filter-dropdown {
   @apply block w-full text-xs;
 }

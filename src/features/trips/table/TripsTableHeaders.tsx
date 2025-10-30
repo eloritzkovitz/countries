@@ -37,7 +37,7 @@ export function TripsTableHeaders({
   return (
     <thead>
       <tr>
-        <th className="trips-th">
+        <th className="trips-th-unsortable">
           <input
             type="checkbox"
             checked={allSelected}
@@ -45,7 +45,7 @@ export function TripsTableHeaders({
             aria-label="Select all trips"
           />
         </th>
-        <th className="trips-th">#{renderResizeHandle("idx")}</th>
+        <th className="trips-th-unsortable">#{renderResizeHandle("idx")}</th>
         <th className="trips-th">
           <SortableFilterHeader
             label="Name"
@@ -201,7 +201,7 @@ export function TripsTableHeaders({
           />
           {renderResizeHandle("tags")}
         </th>
-        <th className="trips-th">
+        <th className="trips-th-unsortable">
           Actions
           {renderResizeHandle("actions")}
         </th>
