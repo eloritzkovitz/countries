@@ -10,7 +10,8 @@ import type { Trip } from "@types";
 
 export default function TripsPage() {
   const countryData = useCountryData();
-  const { trips, loading, addTrip, updateTrip, removeTrip } = useTrips();
+  const { trips, loading, addTrip, updateTrip, removeTrip, duplicateTrip } =
+    useTrips();
   const [globalSearch, setGlobalSearch] = useState("");
   const [selectedTripIds, setSelectedTripIds] = useState<string[]>([]);
 
@@ -28,6 +29,15 @@ export default function TripsPage() {
     tagOptions,
   } = useTripFilters(trips, countryData, undefined, globalSearch);
 
+  // Determine if all trips are selected
+  const allSelected =
+    selectedTripIds.length === filteredTrips.length && filteredTrips.length > 0;
+
+  // Get selected trips for bulk actions
+  const selectedTrips = filteredTrips.filter((trip) =>
+    selectedTripIds.includes(trip.id)
+  );
+
   // Selection handlers
   function handleSelectTrip(id: string) {
     setSelectedTripIds((prev) =>
@@ -44,9 +54,10 @@ export default function TripsPage() {
     }
   }
 
-  // Determine if all trips are selected
-  const allSelected =
-    selectedTripIds.length === filteredTrips.length && filteredTrips.length > 0;
+  // Bulk duplicate handler
+  function handleBulkDuplicate() {
+    selectedTrips.forEach((trip) => duplicateTrip(trip));
+  }
 
   // Bulk delete handler
   async function handleBulkDelete() {
@@ -68,13 +79,9 @@ export default function TripsPage() {
   } = useTripModal({ addTrip, updateTrip, trips });
 
   // Delete trip
-  async function handleDelete(selectedTrip: Trip) {
-    if (
-      confirm(
-        `Are you sure you want to delete the trip "${selectedTrip.name}"?`
-      )
-    ) {
-      await removeTrip(selectedTrip.id);
+  async function handleDelete(trip: Trip) {
+    if (confirm(`Are you sure you want to delete the trip "${trip.name}"?`)) {
+      await removeTrip(trip.id);
     }
   }
 
@@ -89,6 +96,7 @@ export default function TripsPage() {
         setGlobalSearch={setGlobalSearch}
         resetFilters={resetFilters}
         selectedTripIds={selectedTripIds}
+        onBulkDuplicate={handleBulkDuplicate}
         onBulkDelete={handleBulkDelete}
       />
 

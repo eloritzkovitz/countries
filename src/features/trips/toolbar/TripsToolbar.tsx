@@ -1,9 +1,6 @@
 import React from "react";
-import { FaTrash } from "react-icons/fa6";
 import {
-  ActionButton,
   ActionsToolbar,
-  ConfirmModal,
   ToolbarSeparator,
 } from "@components";
 import type { Trip, TripFilterState } from "@types";
@@ -11,6 +8,7 @@ import { ToolbarNavigationSearch } from "./ToolbarNavigationSearch";
 import { ToolbarFilters } from "./ToolbarFilters";
 import { ToolbarImportExport } from "./ToolbarImportExport";
 import { ToolbarStatistics } from "./ToolbarStatistics";
+import { ToolbarActions } from "./ToolbarActions";
 
 type ToolbarProps = {
   trips: Trip[];
@@ -20,6 +18,7 @@ type ToolbarProps = {
   setGlobalSearch: (search: string) => void;
   resetFilters: () => void;
   selectedTripIds: string[];
+  onBulkDuplicate: () => void;
   onBulkDelete: () => void;
 };
 
@@ -31,10 +30,9 @@ export function TripsToolbar({
   setGlobalSearch,
   resetFilters,
   selectedTripIds,
+  onBulkDuplicate,
   onBulkDelete,
 }: ToolbarProps) {
-  const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);  
-
   return (
     <div className="w-full px-3 flex items-center justify-between h-[7vh] bg-white border-b border-gray-300 dark:border-gray-600">
       <ActionsToolbar>
@@ -63,32 +61,12 @@ export function TripsToolbar({
           <ToolbarStatistics trips={trips} />
           <ToolbarSeparator />
 
-          <ActionButton
-            onClick={() => setShowDeleteConfirm(true)}
-            ariaLabel="Delete selected"
-            title="Delete selected"
-            className={`toolbar-btn-toggle ${
-              selectedTripIds.length === 0
-                ? "toolbar-btn-toggle-inactive"
-                : "toolbar-btn-menu"
-            }`}
-            icon={<FaTrash />}
-            disabled={selectedTripIds.length === 0}
+          {/* Action Buttons */}
+          <ToolbarActions
+            selectedTripIds={selectedTripIds}
+            onBulkDuplicate={onBulkDuplicate}
+            onBulkDelete={onBulkDelete}
           />
-          {showDeleteConfirm && (
-            <ConfirmModal
-              title="Delete Trips"
-              message={`Delete ${selectedTripIds.length} selected trips?`}
-              onConfirm={() => {
-                setShowDeleteConfirm(false);
-                onBulkDelete();
-              }}
-              onCancel={() => setShowDeleteConfirm(false)}
-              submitLabel="Delete"
-              cancelLabel="Cancel"
-              submitIcon={<FaTrash className="inline" />}
-            />
-          )}
         </div>
       </ActionsToolbar>
     </div>
