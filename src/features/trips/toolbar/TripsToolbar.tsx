@@ -36,7 +36,7 @@ export function TripsToolbar({
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);  
 
   return (
-    <div className="w-full px-3 flex items-center justify-between h-16 bg-white border-b border-gray-300 dark:border-gray-600">
+    <div className="w-full px-3 flex items-center justify-between h-[7vh] bg-white border-b border-gray-300 dark:border-gray-600">
       <ActionsToolbar>
         <div className="flex items-center">
           {/* Navigation & Search */}

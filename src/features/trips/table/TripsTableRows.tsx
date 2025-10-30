@@ -28,7 +28,7 @@ export function TripsTableRows({
   getTripRowClass,
   handleResizeStart,
   onEdit,
-  onDelete
+  onDelete,
 }: TripsTableRowsProps) {
   return (
     trip.countryCodes && trip.countryCodes.length > 0
@@ -80,7 +80,13 @@ export function TripsTableRows({
           </td>
         </>
       )}
-      <td className="trips-td" style={{ position: "relative" }}>
+      <td
+        className={`trips-td-middle
+    ${idx === 0 ? "trips-td-top" : ""}
+    ${idx === (trip.countryCodes?.length ?? 1) - 1 ? "trips-td-bottom" : ""}
+  `}
+        style={{ position: "relative" }}
+      >
         <CountryCell code={code} countryData={countryData} />
         <div
           className="trips-resize-handle"

@@ -75,7 +75,7 @@ export function TripsTableHeader({
                 options={countryOptions}
                 placeholder="All Countries"
                 isMulti
-                className="block w-full mt-1 text-xs focus:outline-none"
+                className="trips-filter-dropdown"
               />
             }
           />
@@ -97,7 +97,7 @@ export function TripsTableHeader({
                 options={yearOptions}
                 placeholder="All Years"
                 isMulti
-                className="block w-full mt-1 text-xs"
+                className="trips-filter-dropdown"
               />
             }
           />
@@ -152,7 +152,7 @@ export function TripsTableHeader({
                 options={categoryOptions}
                 placeholder="All Categories"
                 isMulti
-                className="block w-full mt-1 text-xs"
+                className="trips-filter-dropdown"
               />
             }
           />
@@ -173,7 +173,7 @@ export function TripsTableHeader({
                 }
                 options={statusOptions}
                 placeholder="All Statuses"
-                className="block w-full mt-1 text-xs"
+                className="trips-filter-dropdown"
               />
             }
           />
@@ -195,7 +195,7 @@ export function TripsTableHeader({
                 options={tagOptions}
                 placeholder="All Tags"
                 isMulti
-                className="block w-full mt-1 text-xs"
+                className="trips-filter-dropdown"
               />
             }
           />
