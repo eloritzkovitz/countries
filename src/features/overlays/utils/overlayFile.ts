@@ -12,7 +12,7 @@ import type { Overlay } from "@types";
  */
 export function importOverlaysFromFile(
   event: React.ChangeEvent<HTMLInputElement>,
-  setOverlays: (overlays: Overlay[]) => void
+  setOverlays: React.Dispatch<React.SetStateAction<Overlay[]>>
 ) {
   const file = event.target.files?.[0];
   if (!file) return;
@@ -21,7 +21,7 @@ export function importOverlaysFromFile(
     try {
       const imported = JSON.parse(e.target?.result as string);
       if (Array.isArray(imported)) {
-        setOverlays(imported);
+        setOverlays((prev: any) => [...prev, ...imported]);
       } else {
         alert("Invalid overlays file format.");
       }
