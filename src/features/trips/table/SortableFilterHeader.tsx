@@ -53,7 +53,7 @@ export function SortableFilterHeader({
                 value={filterValue || ""}
                 onChange={onFilterChange}
                 placeholder={placeholder}
-                className="w-full text-xs"
+                className="w-full text-xs opacity-70"
               />
             )}
       </div>
