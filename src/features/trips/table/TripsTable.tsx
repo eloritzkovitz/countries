@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { sortTrips } from "@features/trips";
 import type { SortKey, Trip } from "@types";
-import { TripsTableHeader } from "./TripsTableHeader";
+import { TripsTableHeaders } from "./TripsTableHeaders";
 import { TripsTableRows } from "./TripsTableRows";
 import { getTripRowClass } from "../utils/trips";
 import { useResizableColumns } from "../hooks/useResizableColumns";
@@ -98,7 +98,7 @@ export function TripsTable({
           <col style={{ width: `${colWidths.tags}px` }} />
           <col style={{ width: `${colWidths.actions}px` }} />
         </colgroup>
-        <TripsTableHeader
+        <TripsTableHeaders
           allSelected={allSelected}
           handleSelectAll={handleSelectAll}          
           sortKey={sortKey}

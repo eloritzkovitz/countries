@@ -3,7 +3,7 @@ import { DropdownSelectInput } from "@components";
 import type { SortKey, TripCategory, TripFilters } from "@types";
 import { SortableFilterHeader } from "./SortableFilterHeader";
 
-type TripsTableHeaderProps = {
+type TripsTableHeadersProps = {
   allSelected: boolean;
   handleSelectAll: () => void;
   sortKey: SortKey;
@@ -19,7 +19,7 @@ type TripsTableHeaderProps = {
   renderResizeHandle: (key: string) => JSX.Element;  
 };
 
-export function TripsTableHeader({
+export function TripsTableHeaders({
   allSelected,
   handleSelectAll,
   sortKey,
@@ -33,7 +33,7 @@ export function TripsTableHeader({
   statusOptions,
   tagOptions,
   renderResizeHandle,  
-}: TripsTableHeaderProps) {
+}: TripsTableHeadersProps) {
   return (
     <thead>
       <tr>
