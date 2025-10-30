@@ -21,20 +21,24 @@ export function ToolbarActions({
   const hasSelection = selectedTripIds.length > 0;
 
   return (
-    <div className="flex items-center gap-2">
+    <>
       <ActionButton
         onClick={onBulkDuplicate}
         ariaLabel="Duplicate selected"
         title="Duplicate selected"
-        className={`toolbar-btn-toggle ${hasSelection ? "toolbar-btn-menu" : "toolbar-btn-toggle-inactive"}`}
+        className={`toolbar-btn-toggle ${
+          hasSelection ? "toolbar-btn-menu" : "toolbar-btn-toggle-inactive"
+        }`}
         icon={<FaCopy />}
         disabled={!hasSelection}
-      />      
+      />
       <ActionButton
         onClick={() => setShowDeleteConfirm(true)}
         ariaLabel="Delete selected"
         title="Delete selected"
-        className={`toolbar-btn-toggle ${hasSelection ? "toolbar-btn-menu" : "toolbar-btn-toggle-inactive"}`}
+        className={`toolbar-btn-toggle ${
+          hasSelection ? "toolbar-btn-menu" : "toolbar-btn-toggle-inactive"
+        }`}
         icon={<FaTrash />}
         disabled={!hasSelection}
       />
@@ -53,7 +57,7 @@ export function ToolbarActions({
           cancelLabel="Cancel"
           submitIcon={<FaTrash className="inline" />}
         />
-      )}      
-    </div>
+      )}
+    </>
   );
 }
