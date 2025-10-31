@@ -23,6 +23,7 @@ type TripsTableProps = {
   onSelectTrip: (id: string) => void;
   allSelected: boolean;
   handleSelectAll: () => void;
+  showRowNumbers: boolean;
 };
 
 export function TripsTable({
@@ -40,6 +41,7 @@ export function TripsTable({
   onSelectTrip,
   allSelected,
   handleSelectAll,
+  showRowNumbers,
 }: TripsTableProps) {
   const countryData = useCountryData();
 
@@ -85,8 +87,8 @@ export function TripsTable({
     >
       <table className="trips-table w-full">
         <colgroup>
-          <col style={{ width: `${colWidths.select}px` }} />
           <col style={{ width: `${colWidths.idx}px` }} />
+          <col style={{ width: `${colWidths.select}px` }} />
           <col style={{ width: `${colWidths.name}px` }} />
           <col style={{ width: `${colWidths.countries}px` }} />
           <col style={{ width: `${colWidths.year}px` }} />
@@ -100,7 +102,7 @@ export function TripsTable({
         </colgroup>
         <TripsTableHeaders
           allSelected={allSelected}
-          handleSelectAll={handleSelectAll}          
+          handleSelectAll={handleSelectAll}
           sortKey={sortKey}
           sortAsc={sortAsc}
           handleSort={handleSort}
@@ -112,6 +114,7 @@ export function TripsTable({
           statusOptions={statusOptions}
           tagOptions={tagOptions}
           renderResizeHandle={renderResizeHandle}
+          showRowNumbers={showRowNumbers}
         />
         {sortedTrips.map((trip, tripIdx) => (
           <tbody key={trip.id} className="trips-group">
@@ -125,6 +128,7 @@ export function TripsTable({
               handleResizeStart={handleResizeStart}
               onEdit={onEdit}
               onDelete={onDelete}
+              showRowNumbers={showRowNumbers}             
             />
           </tbody>
         ))}

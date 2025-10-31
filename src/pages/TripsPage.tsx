@@ -14,6 +14,7 @@ export default function TripsPage() {
     useTrips();
   const [globalSearch, setGlobalSearch] = useState("");
   const [selectedTripIds, setSelectedTripIds] = useState<string[]>([]);
+  const [showRowNumbers, setShowRowNumbers] = useState(false);
 
   // Trip filtering hook
   const {
@@ -96,8 +97,10 @@ export default function TripsPage() {
         setGlobalSearch={setGlobalSearch}
         resetFilters={resetFilters}
         selectedTripIds={selectedTripIds}
+        showRowNumbers={showRowNumbers}
+        setShowRowNumbers={setShowRowNumbers}
         onBulkDuplicate={handleBulkDuplicate}
-        onBulkDelete={handleBulkDelete}
+        onBulkDelete={handleBulkDelete}        
       />
 
       {/* Table area */}
@@ -132,6 +135,7 @@ export default function TripsPage() {
             onSelectTrip={handleSelectTrip}
             allSelected={allSelected}
             handleSelectAll={handleSelectAll}
+            showRowNumbers={showRowNumbers}
           />
         )}
       </div>

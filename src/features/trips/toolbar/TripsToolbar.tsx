@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  ActionsToolbar,
-  ToolbarSeparator,
-} from "@components";
+import { ActionsToolbar, ToolbarSeparator } from "@components";
 import type { Trip, TripFilterState } from "@types";
 import { ToolbarNavigationSearch } from "./ToolbarNavigationSearch";
 import { ToolbarFilters } from "./ToolbarFilters";
@@ -18,6 +15,8 @@ type ToolbarProps = {
   setGlobalSearch: (search: string) => void;
   resetFilters: () => void;
   selectedTripIds: string[];
+  showRowNumbers: boolean;
+  setShowRowNumbers: React.Dispatch<React.SetStateAction<boolean>>;
   onBulkDuplicate: () => void;
   onBulkDelete: () => void;
 };
@@ -30,6 +29,8 @@ export function TripsToolbar({
   setGlobalSearch,
   resetFilters,
   selectedTripIds,
+  showRowNumbers,
+  setShowRowNumbers,
   onBulkDuplicate,
   onBulkDelete,
 }: ToolbarProps) {
@@ -50,6 +51,8 @@ export function TripsToolbar({
             setFilters={setFilters}
             setGlobalSearch={setGlobalSearch}
             resetFilters={resetFilters}
+            showRowNumbers={showRowNumbers}
+            setShowRowNumbers={setShowRowNumbers}
           />
           <ToolbarSeparator />
 

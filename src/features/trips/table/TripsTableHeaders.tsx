@@ -15,8 +15,9 @@ type TripsTableHeadersProps = {
   yearOptions: any[];
   categoryOptions: any[];
   statusOptions: any[];
-  tagOptions: any[];  
-  renderResizeHandle: (key: string) => JSX.Element;  
+  tagOptions: any[];
+  renderResizeHandle: (key: string) => JSX.Element;
+  showRowNumbers: boolean;
 };
 
 export function TripsTableHeaders({
@@ -32,11 +33,19 @@ export function TripsTableHeaders({
   categoryOptions,
   statusOptions,
   tagOptions,
-  renderResizeHandle,  
+  renderResizeHandle,
+  showRowNumbers,
 }: TripsTableHeadersProps) {
   return (
     <thead>
       <tr>
+        {showRowNumbers ? (
+          <th className="trips-th-unsortable text-left">
+            #{renderResizeHandle("idx")}
+          </th>
+        ) : (
+          <th className="trips-th-unsortable" />
+        )}
         <th className="trips-th-unsortable">
           <input
             type="checkbox"
@@ -45,7 +54,6 @@ export function TripsTableHeaders({
             aria-label="Select all trips"
           />
         </th>
-        <th className="trips-th-unsortable">#{renderResizeHandle("idx")}</th>
         <th className="trips-th">
           <SortableFilterHeader
             label="Name"

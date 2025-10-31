@@ -5,6 +5,7 @@ import {
   FaPlane,
   FaCheck,
   FaCalendar,
+  FaHashtag,
 } from "react-icons/fa6";
 import { ActionButton } from "@components";
 import type { TripFilterState } from "@types";
@@ -14,6 +15,8 @@ type ToolbarFiltersProps = {
   setFilters: React.Dispatch<React.SetStateAction<TripFilterState>>;
   setGlobalSearch: (search: string) => void;
   resetFilters: () => void;
+  showRowNumbers: boolean;
+  setShowRowNumbers: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export function ToolbarFilters({
@@ -21,6 +24,8 @@ export function ToolbarFilters({
   setFilters,
   setGlobalSearch,
   resetFilters,
+  showRowNumbers,
+  setShowRowNumbers,
 }: ToolbarFiltersProps) {
   // Clear filters handler
   const handleClearFilters = () => {
@@ -89,6 +94,17 @@ export function ToolbarFilters({
             : "toolbar-btn-toggle-inactive"
         }`}
         icon={<FaCalendar />}
+      />
+      <ActionButton
+        onClick={() => setShowRowNumbers((v) => !v)}
+        ariaLabel={showRowNumbers ? "Hide row numbers" : "Show row numbers"}
+        title={showRowNumbers ? "Hide Numbers" : "Show Numbers"}
+        className={`toolbar-btn-toggle ${
+          showRowNumbers
+            ? "toolbar-btn-toggle-active"
+            : "toolbar-btn-toggle-inactive"
+        }`}
+        icon={<FaHashtag />}
       />
     </>
   );

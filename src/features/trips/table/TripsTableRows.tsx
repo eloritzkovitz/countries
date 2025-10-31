@@ -17,6 +17,7 @@ type TripsTableRowsProps = {
   handleResizeStart: (e: React.MouseEvent, key: ColumnKey) => void;
   onEdit: (trip: Trip) => void;
   onDelete: (trip: Trip) => void;
+  showRowNumbers: boolean;
 };
 
 export function TripsTableRows({
@@ -29,6 +30,7 @@ export function TripsTableRows({
   handleResizeStart,
   onEdit,
   onDelete,
+  showRowNumbers,
 }: TripsTableRowsProps) {
   return (
     trip.countryCodes && trip.countryCodes.length > 0
@@ -41,6 +43,18 @@ export function TripsTableRows({
     >
       {idx === 0 && (
         <>
+          {/* Number column */}
+          <td className="trips-td" rowSpan={trip.countryCodes?.length || 1}>
+            {showRowNumbers ? (
+              <>
+                {tripIdx + 1}
+                <div
+                  className="trips-resize-handle"
+                  onMouseDown={(e) => handleResizeStart(e, "idx")}
+                />
+              </>
+            ) : null}
+          </td>
           {/* Checkbox column */}
           <td
             className="trips-td"
@@ -52,18 +66,6 @@ export function TripsTableRows({
               checked={selected}
               onChange={() => onSelect(trip.id)}
               aria-label={`Select trip ${trip.name}`}
-            />
-          </td>
-          {/* Number column */}
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
-          >
-            {tripIdx + 1}
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "idx")}
             />
           </td>
           {/* Name column */}
