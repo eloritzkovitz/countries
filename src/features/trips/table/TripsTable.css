@@ -13,17 +13,21 @@
 }
 
 .trips-th-unsortable {
-  @apply sticky border-t border-b top-0 border-gray-300 px-2 pb-7 z-3 bg-gray-100 dark:border-gray-600 dark:bg-gray-800;
+  @apply sticky text-left border-t border-b top-0 border-gray-300 px-2 pb-7 z-3 bg-gray-100 dark:border-gray-600 dark:bg-gray-800;
 }
 
 .trips-filter-dropdown {
   @apply block w-full text-xs;
 }
 
+.trips-resize-handle {
+  @apply absolute right-0 top-0 w-[6px] h-full cursor-col-resize z-[100] select-none bg-transparent;
+}
+
 /* Cell styles */
 
 .trips-td {
-  @apply border-t border-b border-gray-300 px-2 py-1 align-top dark:border-gray-500;
+  @apply px-2 py-2 border-t border-b border-gray-300 dark:border-gray-500;
 }
 
 .trips-td-top {
@@ -31,7 +35,7 @@
 }
 
 .trips-td-middle {
-  @apply border-t-0 border-b-0;
+  @apply py-1 border-t-0 border-b-0;
 }
 
 .trips-td-bottom {

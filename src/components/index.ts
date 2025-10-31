@@ -11,6 +11,7 @@ export { LoadingSpinner } from './feedback/LoadingSpinner';
 export { SplashScreen } from './feedback/SplashScreen';
 
 // Form components
+export { Checkbox } from './form/Checkbox';
 export { DropdownSelectInput } from './form/DropdownSelectInput';
 export { FormButton } from './form/FormButton';
 export { FormField } from './form/FormField';

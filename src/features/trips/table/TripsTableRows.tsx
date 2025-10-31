@@ -1,11 +1,11 @@
-import { CardList } from "@components";
-import { mapCategoryOptionsWithIcons } from "@features/trips";
+import { CardList, Checkbox } from "@components";
+import { CountryCell, mapCategoryOptionsWithIcons } from "@features/trips";
 import type { ColumnKey } from "@features/trips";
 import type { Trip } from "@types";
 import { formatDate } from "@utils/date";
-import { CountryCell } from "../components/CountryCell";
-import { TripActions } from "./TripActions";
 import { StatusCell } from "./StatusCell";
+import { TableCell } from "./TableCell";
+import { TripActions } from "./TripActions";
 
 type TripsTableRowsProps = {
   trip: Trip;
@@ -32,6 +32,8 @@ export function TripsTableRows({
   onDelete,
   showRowNumbers,
 }: TripsTableRowsProps) {
+  const rowSpan = trip.countryCodes?.length || 1;
+
   return (
     trip.countryCodes && trip.countryCodes.length > 0
       ? trip.countryCodes
@@ -44,108 +46,83 @@ export function TripsTableRows({
       {idx === 0 && (
         <>
           {/* Number column */}
-          <td className="trips-td" rowSpan={trip.countryCodes?.length || 1}>
-            {showRowNumbers ? (
-              <>
-                {tripIdx + 1}
-                <div
-                  className="trips-resize-handle"
-                  onMouseDown={(e) => handleResizeStart(e, "idx")}
-                />
-              </>
-            ) : null}
-          </td>
-          {/* Checkbox column */}
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative", textAlign: "center" }}
+          <TableCell
+            columnKey="idx"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
           >
-            <input
-              type="checkbox"
+            {showRowNumbers ? tripIdx + 1 : null}
+          </TableCell>
+          {/* Checkbox column */}
+          <TableCell
+            columnKey="select"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
+          >
+            <Checkbox
               checked={selected}
               onChange={() => onSelect(trip.id)}
               aria-label={`Select trip ${trip.name}`}
             />
-          </td>
+          </TableCell>
           {/* Name column */}
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
+          <TableCell
+            columnKey="name"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
           >
             {trip.name}
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "name")}
-            />
-          </td>
+          </TableCell>
         </>
       )}
-      <td
-        className={`trips-td-middle
-    ${idx === 0 ? "trips-td-top" : ""}
-    ${idx === (trip.countryCodes?.length ?? 1) - 1 ? "trips-td-bottom" : ""}
-  `}
-        style={{ position: "relative" }}
+      <TableCell
+        columnKey="countries"
+        className={`trips-td-middle ${idx === 0 ? "trips-td-top" : ""} ${
+          idx === (trip.countryCodes?.length ?? 1) - 1 ? "trips-td-bottom" : ""
+        }`}
+        handleResizeStart={handleResizeStart}
       >
         <CountryCell code={code} countryData={countryData} />
-        <div
-          className="trips-resize-handle"
-          onMouseDown={(e) => handleResizeStart(e, "countries")}
-        />
-      </td>
+      </TableCell>
       {idx === 0 && (
         <>
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
+          {/* Year */}
+          <TableCell
+            columnKey="year"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
           >
             {trip.startDate ? new Date(trip.startDate).getFullYear() : ""}
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "year")}
-            />
-          </td>
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
+          </TableCell>
+          {/* Start Date */}
+          <TableCell
+            columnKey="startDate"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
           >
             {formatDate(trip.startDate)}
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "startDate")}
-            />
-          </td>
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
+          </TableCell>
+          {/* End Date */}
+          <TableCell
+            columnKey="endDate"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
           >
             {formatDate(trip.endDate)}
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "endDate")}
-            />
-          </td>
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
+          </TableCell>
+          {/* Full Days */}
+          <TableCell
+            columnKey="fullDays"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
           >
             {trip.fullDays}
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "fullDays")}
-            />
-          </td>
-          {/* Categories as cards */}
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
+          </TableCell>
+          {/* Categories */}
+          <TableCell
+            columnKey="categories"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
           >
             <CardList
               items={mapCategoryOptionsWithIcons(
@@ -155,50 +132,36 @@ export function TripsTableRows({
                 }))
               ).map((opt) => opt.label)}
             />
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "categories")}
-            />
-          </td>
+          </TableCell>
           {/* Status */}
-          <td
+          <TableCell
+            columnKey="status"
+            rowSpan={rowSpan}
             className="trips-td p-0"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
+            handleResizeStart={handleResizeStart}
           >
             <StatusCell status={trip.status} />
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "status")}
-            />
-          </td>
-          {/* Tags as cards */}
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
+          </TableCell>
+          {/* Tags */}
+          <TableCell
+            columnKey="tags"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
           >
             <CardList
               items={trip.tags}
               colorClass="bg-purple-100 text-purple-800"
               moreColorClass="bg-purple-200 text-purple-900"
             />
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "tags")}
-            />
-          </td>
-          <td
-            className="trips-td"
-            rowSpan={trip.countryCodes?.length || 1}
-            style={{ position: "relative" }}
+          </TableCell>
+          {/* Actions */}
+          <TableCell
+            columnKey="actions"
+            rowSpan={rowSpan}
+            handleResizeStart={handleResizeStart}
           >
             <TripActions trip={trip} onEdit={onEdit} onDelete={onDelete} />
-            <div
-              className="trips-resize-handle"
-              onMouseDown={(e) => handleResizeStart(e, "actions")}
-            />
-          </td>
+          </TableCell>
         </>
       )}
     </tr>

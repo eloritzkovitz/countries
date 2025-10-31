@@ -9,8 +9,8 @@ type CardListProps = {
 export function CardList({
   items,
   limit = 2,
-  colorClass = "bg-blue-100 text-blue-800",
-  moreColorClass = "bg-blue-200 text-blue-900",
+  colorClass = "bg-blue-100 text-blue-800 dark:bg-gray-400 dark:text-gray-900",
+  moreColorClass = "bg-blue-200 text-blue-900 dark:bg-gray-500 dark:text-gray-900",
   renderItem,
 }: CardListProps) {
   if (!items || items.length === 0)
@@ -21,14 +21,14 @@ export function CardList({
       {items.slice(0, limit).map((item, idx) => (
         <span
           key={idx}
-          className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${colorClass}`}
+          className={`inline-block px-2 py-1 rounded text-xs font-medium ${colorClass}`}
         >
           {renderItem ? renderItem(item) : item}
         </span>
       ))}
       {items.length > limit && (
         <span
-          className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${moreColorClass}`}
+          className={`inline-block px-2 py-1 rounded text-xs font-medium ${moreColorClass}`}
         >
           +{items.length - limit} more
         </span>

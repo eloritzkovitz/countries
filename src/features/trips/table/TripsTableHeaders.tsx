@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { DropdownSelectInput } from "@components";
+import { Checkbox, DropdownSelectInput } from "@components";
 import type { SortKey, TripCategory, TripFilters } from "@types";
 import { SortableFilterHeader } from "./SortableFilterHeader";
 
@@ -40,15 +40,14 @@ export function TripsTableHeaders({
     <thead>
       <tr>
         {showRowNumbers ? (
-          <th className="trips-th-unsortable text-left">
+          <th className="trips-th-unsortable">
             #{renderResizeHandle("idx")}
           </th>
         ) : (
           <th className="trips-th-unsortable" />
         )}
         <th className="trips-th-unsortable">
-          <input
-            type="checkbox"
+          <Checkbox
             checked={allSelected}
             onChange={handleSelectAll}
             aria-label="Select all trips"
