@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { FaGlobe } from "react-icons/fa";
+import { FaGlobe } from "react-icons/fa6";
 import {
+  Checkbox,
   CountryFlag,
   FormButton,
   FormField,
@@ -75,21 +76,20 @@ export function CountrySelectModal({
                   key={country.isoCode}
                   className="flex items-center mb-2 cursor-pointer hover:text-blue-500 dark:hover:text-gray-300"
                 >
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={checked}
-                    onChange={() => {
+                    onChange={(checked) => {
                       if (multiple) {
                         const newSelected = checked
-                          ? selected.filter((v) => v !== country.isoCode)
-                          : [...selected, country.isoCode];
+                          ? [...selected, country.isoCode]
+                          : selected.filter((v) => v !== country.isoCode);
                         onChange(newSelected);
                       } else {
                         onChange([country.isoCode]);
                       }
                     }}
-                    className="mr-2"
                   />
+                  <span className="w-2" />
                   <CountryFlag
                     flag={{
                       isoCode: country.isoCode,
