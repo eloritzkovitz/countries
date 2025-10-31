@@ -12,17 +12,14 @@ const statusColors: Record<TripStatus, string> = {
 };
 
 export function StatusCell({ status }: { status?: TripStatus }) {
-  if (!status)
-    return (
-      <div className="trips-td bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-400">
-        —
-      </div>
-    );
+  // If no status is provided, return null
+  if (!status) return null;    
 
+  // Get the corresponding color classes for the status
   const color = statusColors[status] || statusColors.planned;
 
   return (
-    <div className={`trips-td font-semibold text-center rounded ${color}`}>
+    <div className={`trips-status-card ${color}`}>
       {status.charAt(0).toUpperCase() + status.slice(1).replace("-", " ")}
     </div>
   );

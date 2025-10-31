@@ -57,6 +57,7 @@ export function getCountryDropdownOptions(
 ) {
   return countries
     .filter((c) => usedCountryCodes.has(c.isoCode))
+    .sort((a, b) => a.name.localeCompare(b.name))
     .map((c) => ({
       value: c.isoCode,
       label: c.name,

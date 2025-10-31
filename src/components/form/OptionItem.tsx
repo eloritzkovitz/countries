@@ -1,4 +1,5 @@
 import type { Option } from "@types";
+import { Checkbox } from "./Checkbox";
 
 export function OptionItem<T>({
   opt,
@@ -15,31 +16,32 @@ export function OptionItem<T>({
   onChange: (v: T | T[]) => void;
   setOpen: (v: boolean) => void;
 }) {
+  // Toggle handler
+  function handleToggle() {
+    if (isMulti && Array.isArray(value)) {
+      if (value.includes(opt.value)) {
+        onChange(value.filter((v) => v !== opt.value));
+      } else {
+        onChange([...value, opt.value]);
+      }
+    } else {
+      onChange(opt.value);
+      setOpen(false);
+    }
+  }
+
   return (
     <div
       className={`flex items-center gap-2 px-2 py-1 hover:bg-blue-100 dark:hover:bg-gray-500 cursor-pointer ${
-        isSelected(opt.value) ? "bg-blue-50 font-semibold" : ""
+        isSelected(opt.value) ? "bg-blue-50 dark:bg-gray-600 font-semibold" : ""
       }`}
-      onClick={() => {
-        if (isMulti) {
-          if (!Array.isArray(value)) return;
-          if (value.includes(opt.value)) {
-            onChange(value.filter((v) => v !== opt.value));
-          } else {
-            onChange([...value, opt.value]);
-          }
-        } else {
-          onChange(opt.value);
-          setOpen(false);
-        }
-      }}
+      onClick={handleToggle}
     >
       {isMulti && Array.isArray(value) && (
-        <input
-          type="checkbox"
+        <Checkbox
           checked={value.includes(opt.value)}
-          readOnly
-          className="mr-1"
+          onChange={handleToggle}
+          onClick={(e) => e.stopPropagation()}
         />
       )}
       {opt.label}

@@ -2,11 +2,15 @@ type CheckboxProps = {
   checked: boolean;
   onChange: (checked: boolean) => void;
   label?: string;
+  onClick?: React.MouseEventHandler<HTMLInputElement>;
 };
 
 export function Checkbox({ checked, onChange, label }: CheckboxProps) {
   return (
-    <label className="inline-flex items-center cursor-pointer relative">
+    <label
+      className="inline-flex items-center cursor-pointer relative"
+      onClick={(e) => e.stopPropagation()}
+    >
       <input
         type="checkbox"
         checked={checked}

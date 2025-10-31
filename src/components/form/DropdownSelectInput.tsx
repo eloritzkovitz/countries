@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { FaChevronDown } from "react-icons/fa6";
 import ReactDOM from "react-dom";
 import { useClickOutside } from "@hooks/useClickOutside";
 import type { Option } from "@types";
@@ -45,10 +46,10 @@ export function DropdownSelectInput<T = string>({
     isMulti && Array.isArray(value) ? value.includes(val) : value === val;
 
   return (
-    <div className={`relative ${className}`} ref={ref}>
+    <div className={`relative w-full ${className}`} ref={ref}>
       <button
         type="button"
-        className="w-full flex items-center gap-2 px-2 py-1 border rounded bg-white text-left min-h-[32px] disabled:opacity-50"
+        className="w-full flex items-center text-left disabled:opacity-50"
         onClick={(e) => {
           if (options.length === 0) return;
           const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -72,7 +73,9 @@ export function DropdownSelectInput<T = string>({
         ) : (
           <span className="text-gray-400">{placeholder}</span>
         )}
-        <span className="ml-auto">&#9662;</span>
+        <span className="chevron-container">
+          <FaChevronDown />
+        </span>
       </button>
       {open &&
         menuPos &&
