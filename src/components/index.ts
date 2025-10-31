@@ -37,6 +37,9 @@ export { PanelListItem } from './layout/Panel/PanelListItem';
 export { ActionsToolbar } from './layout/Toolbar/ActionsToolbar';
 export { ToolbarSeparator } from './layout/Toolbar/ToolbarSeparator';
 
+// Table components
+export { SortableFilterHeader } from './table/SortableFilterHeader';
+
 // UI components
 export { CardList } from './ui/CardList';
 export { CountryFlag } from './ui/CountryFlag';

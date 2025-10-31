@@ -1,7 +1,6 @@
 import type { JSX } from "react";
-import { Checkbox, DropdownSelectInput } from "@components";
+import { Checkbox, DropdownSelectInput, SortableFilterHeader } from "@components";
 import type { SortKey, TripCategory, TripFilters } from "@types";
-import { SortableFilterHeader } from "./SortableFilterHeader";
 
 type TripsTableHeadersProps = {
   allSelected: boolean;
@@ -61,7 +60,6 @@ export function TripsTableHeaders({
             sortAsc={sortAsc}
             onSort={handleSort}
             filterValue={filters.name}
-            onFilterChange={(v) => updateFilter("name", v)}
             placeholder="Search by name..."
           />
           {renderResizeHandle("name")}
