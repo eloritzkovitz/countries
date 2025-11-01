@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaSuitcaseRolling, FaGlobe, FaSave } from "react-icons/fa";
+import { FaSuitcaseRolling, FaGlobe, FaFloppyDisk } from "react-icons/fa6";
 import {
   DropdownSelectInput,
   FormField,
@@ -8,11 +8,11 @@ import {
   SelectInput,
 } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import { CountrySelectModal } from "@features/countries";
+import { CountrySelectModal, getCountryByIsoCode } from "@features/countries";
 import type { Trip, TripCategory, TripStatus } from "@types";
 import { SelectedCountriesList } from "./SelectedCountriesList";
+import "./TripModal.css";
 import { useTripFilters } from "../hooks/useTripFilters";
-import './TripModal.css';
 
 type TripModalProps = {
   isOpen: boolean;
@@ -41,9 +41,9 @@ export function TripModal({
   if (!trip) return null;
 
   // Get the selected country objects
-  const selectedCountries = countries.filter((country) =>
-    trip.countryCodes.includes(country.isoCode)
-  );
+  const selectedCountries = trip.countryCodes
+    .map((isoCode) => getCountryByIsoCode(isoCode, { countries }))
+    .filter(Boolean);
 
   // Form validation
   const isValid =
@@ -180,7 +180,7 @@ export function TripModal({
             onCancel={onClose}
             submitIcon={
               isEditing ? (
-                <FaSave className="inline" />
+                <FaFloppyDisk className="inline" />
               ) : (
                 <FaSuitcaseRolling className="inline" />
               )

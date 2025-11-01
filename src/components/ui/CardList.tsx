@@ -1,18 +1,18 @@
-type CardListProps = {
-  items?: React.ReactNode[];
+type CardListProps<T = string> = {
+  items?: T[];
   limit?: number;
   colorClass?: string;
   moreColorClass?: string;
-  renderItem?: (item: React.ReactNode) => React.ReactNode;
+  renderItem?: (item: T) => React.ReactNode;
 };
 
-export function CardList({
+export function CardList<T>({
   items,
   limit = 2,
   colorClass = "bg-blue-100 text-blue-800 dark:bg-gray-400 dark:text-gray-900",
   moreColorClass = "bg-blue-200 text-blue-900 dark:bg-gray-500 dark:text-gray-900",
   renderItem,
-}: CardListProps) {
+}: CardListProps<T>) {
   if (!items || items.length === 0)
     return <span className="text-gray-400 text-xs">—</span>;
 
@@ -23,7 +23,7 @@ export function CardList({
           key={idx}
           className={`inline-block px-2 py-1 rounded text-xs font-medium ${colorClass}`}
         >
-          {renderItem ? renderItem(item) : item}
+          {renderItem ? renderItem(item) : String(item)}
         </span>
       ))}
       {items.length > limit && (

@@ -9,11 +9,10 @@ import {
   FaXmark,
   FaSuitcaseRolling,
 } from "react-icons/fa6";
-import { ActionButton, Modal, PanelHeader } from "@components";
+import { ActionButton, CountryWithFlag, Modal, PanelHeader } from "@components";
 import { SeparatorRow } from "@components/layout/SeparatorRow";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useSettings } from "@contexts/SettingsContext";
-import { CountryCell } from "@features/trips";
 import {
   getCompletedTrips,
   getLocalTrips,
@@ -122,9 +121,10 @@ export function TripsStats({ isOpen, onClose, trips }: TripsStatsProps) {
                           key={country.isoCode}
                           className="inline-flex items-center gap-1"
                         >
-                          <CountryCell
-                            code={country.isoCode}
-                            countryData={{ countries }}
+                          <CountryWithFlag
+                            isoCode={country.isoCode}
+                            name={country.name}
+                            size="32x24"
                           />
                           <span>({maxCount} times)</span>
                           {idx < mostVisitedCountries.length - 1 && (

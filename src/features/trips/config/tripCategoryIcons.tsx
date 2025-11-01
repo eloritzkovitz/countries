@@ -34,7 +34,7 @@ import { FaPeopleGroup } from "react-icons/fa6";
 import { MdBackpack } from "react-icons/md";
 
 // Map of trip categories to their corresponding icons
-const TRIP_CATEGORY_ICONS: Record<string, JSX.Element> = {
+export const TRIP_CATEGORY_ICONS: Record<string, JSX.Element> = {
   solo: <FaUser />,
   couple: <FaHeart />,
   family: <FaUsers />,
@@ -67,20 +67,3 @@ const TRIP_CATEGORY_ICONS: Record<string, JSX.Element> = {
   cultural: <FaTheaterMasks />,
   other: <FaQuestion />,
 };
-
-// Utility to map options with icons for dropdowns
-export function mapCategoryOptionsWithIcons<T extends string>(
-  options: { value: T; label: string }[]
-): { value: T; label: JSX.Element }[] {
-  return options.map((opt) => ({
-    ...opt,
-    label: (
-      <span className="flex items-center gap-2">
-        {TRIP_CATEGORY_ICONS[opt.value] ?? null}
-        <span>
-          {typeof opt.label === "string" ? opt.label : String(opt.label)}
-        </span>
-      </span>
-    ),
-  }));
-}

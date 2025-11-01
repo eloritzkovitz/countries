@@ -1,6 +1,16 @@
 import type { Option } from "@types";
 import { Checkbox } from "./Checkbox";
 
+type OptionItemProps<T> = {
+  opt: Option<T>;
+  isSelected: (val: T) => boolean;
+  isMulti: boolean;
+  value: T | T[];
+  onChange: (v: T | T[]) => void;
+  setOpen: (v: boolean) => void;
+  renderOption?: (opt: Option<T>) => React.ReactNode;
+};
+
 export function OptionItem<T>({
   opt,
   isSelected,
@@ -8,14 +18,8 @@ export function OptionItem<T>({
   value,
   onChange,
   setOpen,
-}: {
-  opt: Option<T>;
-  isSelected: (val: T) => boolean;
-  isMulti: boolean;
-  value: T | T[];
-  onChange: (v: T | T[]) => void;
-  setOpen: (v: boolean) => void;
-}) {
+  renderOption,
+}: OptionItemProps<T>) {
   // Toggle handler
   function handleToggle() {
     if (isMulti && Array.isArray(value)) {
@@ -44,7 +48,7 @@ export function OptionItem<T>({
           onClick={(e) => e.stopPropagation()}
         />
       )}
-      {opt.label}
+      {renderOption ? renderOption(opt) : opt.label}
     </div>
   );
 }

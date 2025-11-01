@@ -1,6 +1,12 @@
 import type { JSX } from "react";
-import { Checkbox, DropdownSelectInput, SortableFilterHeader } from "@components";
+import {
+  Checkbox,
+  CountryWithFlag,
+  DropdownSelectInput,
+  SortableFilterHeader,
+} from "@components";
 import type { SortKey, TripCategory, TripFilters } from "@types";
+import { TRIP_CATEGORY_ICONS } from "../config/tripCategoryIcons";
 
 type TripsTableHeadersProps = {
   allSelected: boolean;
@@ -39,9 +45,7 @@ export function TripsTableHeaders({
     <thead>
       <tr>
         {showRowNumbers ? (
-          <th className="trips-th-unsortable">
-            #{renderResizeHandle("idx")}
-          </th>
+          <th className="trips-th-unsortable">#{renderResizeHandle("idx")}</th>
         ) : (
           <th className="trips-th-unsortable" />
         )}
@@ -81,6 +85,17 @@ export function TripsTableHeaders({
                 placeholder="All Countries"
                 isMulti
                 className="trips-filter-dropdown"
+                renderOption={(opt) =>
+                  opt.country ? (
+                    <CountryWithFlag
+                      isoCode={opt.value}
+                      name={opt.country.name}
+                      size="32x24"
+                    />
+                  ) : (
+                    opt.label
+                  )
+                }
               />
             }
           />
@@ -158,6 +173,12 @@ export function TripsTableHeaders({
                 placeholder="All Categories"
                 isMulti
                 className="trips-filter-dropdown"
+                renderOption={(opt) => (
+                  <span className="flex items-center gap-2">
+                    {TRIP_CATEGORY_ICONS[opt.value] ?? null}
+                    <span>{opt.label}</span>
+                  </span>
+                )}
               />
             }
           />

@@ -13,6 +13,7 @@ type DropdownSelectInputProps<T = string> = {
   placeholder?: string;
   className?: string;
   isMulti?: boolean;
+  renderOption?: (opt: any) => React.ReactNode;
 };
 
 export function DropdownSelectInput<T = string>({
@@ -22,6 +23,7 @@ export function DropdownSelectInput<T = string>({
   placeholder = "Select...",
   className = "",
   isMulti = false,
+  renderOption,
 }: DropdownSelectInputProps<T>) {
   const [open, setOpen] = useState(false);
   const [menuPos, setMenuPos] = useState<{
@@ -32,6 +34,7 @@ export function DropdownSelectInput<T = string>({
   const ref = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  // Close dropdown on outside click
   useClickOutside(
     [
       ref as React.RefObject<HTMLElement>,
@@ -100,6 +103,7 @@ export function DropdownSelectInput<T = string>({
                 value={value}
                 onChange={onChange}
                 setOpen={setOpen}
+                renderOption={renderOption}
               />
             ))}
           </div>,

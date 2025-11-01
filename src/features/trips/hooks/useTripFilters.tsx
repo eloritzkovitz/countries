@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { useSettings } from "@contexts/SettingsContext";
+import { getCountryByIsoCode } from "@features/countries";
 import {
   filterTrips,
   getCountryNames,
@@ -8,8 +10,6 @@ import {
   isCompletedTrip,
   isLocalTrip,
   isUpcomingTrip,
-  mapCategoryOptionsWithIcons,
-  mapCountryOptionsWithFlags,
 } from "@features/trips";
 import {
   getCountryDropdownOptions,
@@ -19,7 +19,6 @@ import {
   getTagDropdownOptions,
 } from "@features/trips/utils/dropdownOptions";
 import type { Trip, TripCategory, TripFilterState } from "@types";
-import { useSettings } from "@contexts/SettingsContext";
 
 // Default trip filters
 const defaultTripFilterState: TripFilterState = {
@@ -115,10 +114,15 @@ export function useTripFilters(
     countryData?.countries ?? [],
     usedCountryCodes
   );
-  const countryOptions = mapCountryOptionsWithFlags(
-    rawCountryOptions,
-    countryData
-  );
+  const countryOptions = rawCountryOptions.map((opt) => {
+    const country = getCountryByIsoCode(opt.value, countryData);
+    return opt.value
+      ? {
+          ...opt,
+          country,
+        }
+      : opt;
+  });
 
   // Year options
   const usedYears = getUsedYears(trips ?? []);
@@ -128,18 +132,15 @@ export function useTripFilters(
   let categoryOptions;
   if (!trips || trips.length === 0) {
     // For modal: show all categories
-    categoryOptions = mapCategoryOptionsWithIcons(
-      getCategoryDropdownOptions(null)
-    );
+    categoryOptions = getCategoryDropdownOptions(null);
   } else {
     // For table filters: show only used categories
     const usedCategories = Array.from(
       new Set(trips.flatMap((trip) => trip.categories ?? []))
     ) as TripCategory[];
-    const filteredOptions = getCategoryDropdownOptions(null).filter((opt) =>
+    categoryOptions = getCategoryDropdownOptions(null).filter((opt) =>
       usedCategories.includes(opt.value)
     );
-    categoryOptions = mapCategoryOptionsWithIcons(filteredOptions);
   }
 
   // Status and Tag options
