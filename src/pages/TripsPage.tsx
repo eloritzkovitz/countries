@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
-import { FloatingActionButton } from "@components";
+import { FloatingActionButton, SplashScreen } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useTrips } from "@contexts/TripsContext";
 import { TripModal, TripsTable, TripsToolbar } from "@features/trips";
@@ -114,7 +114,7 @@ export default function TripsPage() {
           isEditing={!!trip && !!trip.id}
         />
         {loading ? (
-          <div>Loading trips...</div>
+          <SplashScreen />
         ) : trips.length === 0 ? (
           <div>No trips yet.</div>
         ) : (
