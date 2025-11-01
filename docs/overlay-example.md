@@ -11,8 +11,11 @@
 }
 ```
 
-**Where to use:** Place your overlays in public/data/overlays.json.
-You can import/export overlays directly from the app UI for backup, sharing, or migration.
+**Instructions:**
+- Fill the countries array with ISO 3166 codes for the relevant countries.
+- You can also change the layer's color by changing the RGBA color.
+- Import the overlay through the application's UI.
 
-**Tip:** Copy and edit this JSON to create your own overlays.
+**Tips:**   
+Copy and edit this JSON to create your own overlays.
 For more details, see the [README](../README.md).
