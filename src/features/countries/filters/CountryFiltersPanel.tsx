@@ -14,7 +14,7 @@ import {
   getSubregionsForRegion,
   getAllSovereigntyTypes,
 } from "@features/countries";
-import { useKeyHandler } from "@hooks";
+import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Overlay } from "@types";
 import { CoreFilters } from "./CoreFilters";
 import { OverlayFilters } from "./OverlayFilters";

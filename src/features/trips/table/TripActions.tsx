@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { FaEllipsisV, FaEdit, FaTrash } from "react-icons/fa";
-import { useClickOutside, useKeyHandler } from "@hooks";
+import { useClickOutside } from "@hooks/useClickOutside";
+import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Trip } from "@types";
 import { ActionButton } from "@components";
 

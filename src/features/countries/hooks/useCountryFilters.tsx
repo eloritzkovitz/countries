@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDebounced } from "@hooks";
+import { useDebounced } from "@hooks/useDebounced";
 import type { Country, Overlay } from "@types";
 import { filterCountries, getFilteredIsoCodes } from "../utils/countryFilters";
 

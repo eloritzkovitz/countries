@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { useCountryData } from "@contexts/CountryDataContext";
-import { sortTrips } from "@features/trips";
+import {
+  DEFAULT_WIDTHS,
+  MIN_WIDTHS,
+  sortTrips,
+  type ColumnKey,
+} from "@features/trips";
+import { useResizableColumns } from "@hooks/useResizableColumns";
 import type { SortKey, Trip } from "@types";
 import { TripsTableHeaders } from "./TripsTableHeaders";
 import { TripsTableRows } from "./TripsTableRows";
 import { getTripRowClass } from "../utils/trips";
-import { useResizableColumns } from "../hooks/useResizableColumns";
 import "./TripsTable.css";
 
 type TripsTableProps = {
@@ -45,8 +50,11 @@ export function TripsTable({
 }: TripsTableProps) {
   const countryData = useCountryData();
 
-  // Use the resizing hook
-  const { colWidths, handleResizeStart } = useResizableColumns();
+  // Resizable columns
+  const { colWidths, handleResizeStart } = useResizableColumns<ColumnKey>(
+    DEFAULT_WIDTHS,
+    MIN_WIDTHS
+  );
 
   const [sortKey, setSortKey] = useState<SortKey>("startDate");
   const [sortAsc, setSortAsc] = useState(true);
@@ -128,7 +136,7 @@ export function TripsTable({
               handleResizeStart={handleResizeStart}
               onEdit={onEdit}
               onDelete={onDelete}
-              showRowNumbers={showRowNumbers}             
+              showRowNumbers={showRowNumbers}
             />
           </tbody>
         ))}
