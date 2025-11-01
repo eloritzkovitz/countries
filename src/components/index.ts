@@ -1,5 +1,4 @@
 export { Branding } from './Branding';
-export { ShortcutsModal } from './ShortcutsModal';
 
 // Action components
 export { ActionButton } from './action/ActionButton';
@@ -45,3 +44,4 @@ export { CardList } from './ui/CardList';
 export { CountryFlag } from './ui/CountryFlag';
 export { CountryWithFlag } from './ui/CountryWithFlag';
 export { HomeCard } from './ui/HomeCard';
+export { ShortcutsModal } from './ui/ShortcutsModal';
