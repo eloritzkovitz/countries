@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaGlobe } from "react-icons/fa6";
 import {
   Checkbox,
-  CountryFlag,
+  CountryWithFlag,
   FormButton,
   FormField,
   Modal,
@@ -90,16 +90,12 @@ export function CountrySelectModal({
                     }}
                   />
                   <span className="w-2" />
-                  <CountryFlag
-                    flag={{
-                      isoCode: country.isoCode,
-                      source: "svg",
-                      style: "flat",
-                      size: "32x24",
-                    }}
-                    style={{ marginRight: 8 }}
+                  <CountryWithFlag
+                    isoCode={country.isoCode}
+                    name={country.name}
+                    size="32x24"
+                    className="mr-2"
                   />
-                  {country.name}
                 </label>
               );
             })

@@ -1,4 +1,4 @@
-import { CountryFlag } from "@components";
+import { CountryWithFlag } from "@components";
 import type { SovereigntyType } from "@types";
 
 type SovereigntyBadgeProps = {
@@ -39,24 +39,16 @@ export function SovereigntyBadge({ type, sovereign }: SovereigntyBadgeProps) {
     label = (
       <>
         {labelPrefixes[type as keyof typeof labelPrefixes]}
-        {sovereign.isoCode && (
-          <CountryFlag
-            flag={{
-              isoCode: sovereign.isoCode,
-              source: "svg",
-              style: "flat",
-              size: "32x24",
-            }}
-            alt={`${sovereign.name} flag`}
-            style={{
-              marginLeft: 6,
-              marginRight: 6,
-              display: "inline-block",
-              verticalAlign: "middle",
-            }}
+        {sovereign.isoCode ? (
+          <CountryWithFlag
+            isoCode={sovereign.isoCode}
+            name={sovereign.name}
+            size="32x24"
+            className="mx-[3px] inline-block align-middle"
           />
+        ) : (
+          sovereign.name
         )}
-        {sovereign.name}
       </>
     );
   }

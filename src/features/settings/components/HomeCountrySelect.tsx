@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaHome, FaChevronDown } from "react-icons/fa";
-import { CollapsibleHeader, CountryFlag } from "@components";
+import { CollapsibleHeader, CountryWithFlag } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useSettings } from "@contexts/SettingsContext";
 import { CountrySelectModal } from "@features/countries";
@@ -32,20 +32,14 @@ export function HomeCountrySelect() {
           aria-label="Select home country"
         >
           {selectedCountry ? (
-            <CountryFlag
-              flag={{
-                isoCode: selectedCountry.isoCode,
-                source: "svg",
-                style: "flat",
-                size: "32x24",
-              }}
+            <CountryWithFlag
+              isoCode={selectedCountry.isoCode}
+              name={selectedCountry.name}
+              size="32x24"
             />
           ) : (
             <span className="opacity-50">No country selected</span>
-          )}
-          <span className="font-medium">
-            {selectedCountry?.name ?? "Select country"}
-          </span>
+          )}          
           <FaChevronDown className="ml-auto text-gray-400" />
         </button>
       )}

@@ -1,4 +1,4 @@
-import { CountryFlag } from "@components";
+import { CountryWithFlag } from "@components";
 import { FaTimes } from "react-icons/fa";
 
 type SelectedCountriesListProps = {
@@ -27,15 +27,11 @@ export function SelectedCountriesList({
             key={country.isoCode}
             className="flex items-center gap-1 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700"
           >
-            <CountryFlag
-              flag={{
-                isoCode: country.isoCode,
-                source: "svg",
-                style: "flat",
-                size: "32x24",
-              }}
+            <CountryWithFlag
+              isoCode={country.isoCode}
+              name={country.name}
+              size="32x24"
             />
-            <span className="text-sm">{country.name}</span>
             <button
               type="button"
               className="ml-auto text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"

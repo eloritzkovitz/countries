@@ -1,4 +1,4 @@
-import { CountryFlag } from "@components";
+import { CountryWithFlag } from "@components";
 
 export function CountryCell({
   code,
@@ -13,19 +13,7 @@ export function CountryCell({
       )
     : null;
   if (country) {
-    return (
-      <span className="trips-country-item">
-        <CountryFlag
-          flag={{
-            isoCode: country.isoCode,
-            source: "svg",
-            style: "flat",
-            size: "32x24",
-          }}
-        />
-        <span className="trips-country-name ml-1">{country.name}</span>
-      </span>
-    );
+    return <CountryWithFlag isoCode={country.isoCode} name={country.name} />;
   }
   if (code) return <span>{code}</span>;
   return <span className="text-gray-400 italic">No country</span>;
