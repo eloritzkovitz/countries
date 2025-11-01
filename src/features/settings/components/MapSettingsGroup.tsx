@@ -1,5 +1,5 @@
 import React from "react";
-import { FaGlobe } from "react-icons/fa";
+import { FaMap } from "react-icons/fa";
 import { CollapsibleHeader, SelectInput } from "@components";
 import { MAP_OPTIONS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
@@ -18,7 +18,7 @@ export function MapSettingsGroup() {
   return (
     <>
       <CollapsibleHeader
-        icon={<FaGlobe style={{ marginRight: 6 }} />}
+        icon={<FaMap style={{ marginRight: 6 }} />}
         label="Map"
         expanded={showMapSettings}
         onToggle={() => setShowMapSettings((v) => !v)}

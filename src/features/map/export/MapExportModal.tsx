@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { FaDownload, FaTimes, FaFileCode, FaFileImage } from "react-icons/fa";
-import { ActionButton, Modal, PanelHeader, Separator } from "@components";
+import {
+  ActionButton,
+  Checkbox,
+  Modal,
+  PanelHeader,
+  Separator,
+} from "@components";
 import { useUI } from "@contexts/UIContext";
 import { exportSvg, exportSvgAsPng } from "@features/map";
 
@@ -60,16 +66,9 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
       <div className="p-2">
         {/* SVG export section */}
         <div className="mb-3">
-          <div className="section-title">
-            SVG
-          </div>
+          <div className="section-title">SVG</div>
           <label className="flex items-center gap-2 mb-2 text-sm">
-            <input
-              type="checkbox"
-              checked={svgInlineStyles}
-              onChange={(e) => setSvgInlineStyles(e.target.checked)}
-              className="accent-blue-600"
-            />
+            <Checkbox checked={svgInlineStyles} onChange={setSvgInlineStyles} />
             <span className="text-gray-700 dark:text-gray-200 whitespace-nowrap">
               Inline styles
             </span>
@@ -91,9 +90,7 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
 
         {/* PNG export section */}
         <div>
-          <div className="section-title">
-            PNG
-          </div>
+          <div className="section-title">PNG</div>
           <div className="mb-2">
             <div className="text-xs mb-1 text-gray-500 dark:text-gray-400">
               Scale
@@ -101,7 +98,9 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
             <div className="flex gap-2">
               <ActionButton
                 onClick={() => setPngScale(1)}
-                className={`scale-btn ${pngScale === 1 ? "scale-btn-active" : ""}`}
+                className={`scale-btn ${
+                  pngScale === 1 ? "scale-btn-active" : ""
+                }`}
                 ariaLabel="Scale 1x"
                 title="1x"
               >
@@ -109,7 +108,9 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
               </ActionButton>
               <ActionButton
                 onClick={() => setPngScale(2)}
-                className={`scale-btn ${pngScale === 2 ? "scale-btn-active" : ""}`}
+                className={`scale-btn ${
+                  pngScale === 2 ? "scale-btn-active" : ""
+                }`}
                 ariaLabel="Scale 2x"
                 title="2x"
               >
@@ -117,7 +118,9 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
               </ActionButton>
               <ActionButton
                 onClick={() => setPngScale(4)}
-                className={`scale-btn ${pngScale === 4 ? "scale-btn-active" : ""}`}
+                className={`scale-btn ${
+                  pngScale === 4 ? "scale-btn-active" : ""
+                }`}
                 ariaLabel="Scale 4x"
                 title="4x"
               >
@@ -125,7 +128,9 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
               </ActionButton>
               <ActionButton
                 onClick={() => setPngScale(8)}
-                className={`scale-btn ${pngScale === 8 ? "scale-btn-active" : ""}`}
+                className={`scale-btn ${
+                  pngScale === 8 ? "scale-btn-active" : ""
+                }`}
                 ariaLabel="Scale 8x"
                 title="8x"
               >

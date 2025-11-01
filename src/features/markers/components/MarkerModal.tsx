@@ -1,6 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import { FaMapPin, FaTimes } from "react-icons/fa";
-import { ActionButton, FormButton, FormField, Modal, PanelHeader } from "@components";
+import { FaMapPin, FaSave, FaTimes } from "react-icons/fa";
+import {
+  ActionButton,
+  FormField,
+  Modal,
+  ModalActions,
+  PanelHeader,
+} from "@components";
 import type { Marker } from "@types";
 import "./Marker.css";
 
@@ -95,14 +101,17 @@ export const MarkerModal: React.FC<MarkerModalProps> = ({
             </div>
           )}
           <div className="flex justify-end gap-2 mt-4">
-            <div className="flex justify-end gap-2 mt-4">
-              <FormButton type="button" variant="secondary" onClick={onClose}>
-                Cancel
-              </FormButton>
-              <FormButton type="submit" variant="primary">
-                {marker ? "Save Changes" : "Add Marker"}
-              </FormButton>
-            </div>
+            <ModalActions
+              onCancel={onClose}
+              submitIcon={
+                marker ? (
+                  <FaSave className="inline" />
+                ) : (
+                  <FaMapPin className="inline" />
+                )
+              }
+              submitLabel={marker ? "Save Changes" : "Add Marker"}
+            />
           </div>
         </form>
       ) : null}

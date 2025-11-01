@@ -24,3 +24,7 @@
 .modal-custom {
   @apply fixed;
 }
+
+.modal-backdrop {
+  @apply fixed inset-0 z-[9999];
+}

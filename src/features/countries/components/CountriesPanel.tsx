@@ -136,7 +136,7 @@ export function CountriesPanel({
         </div>
 
         {/* Showing count */}
-        <div className="text-s text-left text-gray-500 font-semibold mb-2">
+        <div className="text-s text-left text-gray-500 font-semibold mb-2 mt-2">
           Showing {sortedCountries.length} countries
         </div>
 

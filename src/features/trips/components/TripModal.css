@@ -1,0 +1,21 @@
+/* Style for Chrome, Edge, Safari */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+/* Dark theme for Chrome, Edge, Safari */
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+}
+
+/* For Firefox */
+input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Dark theme for Firefox */
+.dark input[type="date"] {
+  color-scheme: light;
+}

@@ -1,4 +1,4 @@
-import { CountryFlag } from "@components";
+import { CountryWithFlag } from "@components";
 import type { Country } from "@types";
 
 type CountryListProps = {
@@ -56,15 +56,11 @@ export function CountryList({
                 ${isHighlighted ? "bg-blue-50 dark:bg-gray-500 font-bold" : ""}
               `}
               >
-                <CountryFlag
-                  flag={{
-                    isoCode: country.isoCode,
-                    source: "svg",
-                    style: "flat",
-                    size: "32x24",
-                  }}
+                <CountryWithFlag
+                  isoCode={country.isoCode}
+                  name={country.name}
+                  size="32x24"
                 />
-                <span>{country.name}</span>
               </li>
             );
           })

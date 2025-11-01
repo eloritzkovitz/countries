@@ -2,6 +2,7 @@ import { FaWikipediaW, FaCrosshairs, FaTimes } from "react-icons/fa";
 import {
   ActionButton,
   CountryFlag,
+  CountryWithFlag,
   ErrorMessage,
   LoadingSpinner,
   Modal,
@@ -60,17 +61,12 @@ export function CountryDetailsModal({
       <PanelHeader
         title={
           <span className="flex items-center gap-2">
-            <CountryFlag
-              flag={{
-                isoCode: country.isoCode,
-                source: "svg",
-                style: "flat",
-                size: "32x24",
-              }}
-              alt={`${country.name} flag`}
-              style={{ marginBottom: 0 }}
+            <CountryWithFlag
+              isoCode={country.isoCode}
+              name={country.name}
+              size="32x24"
+              className="font-bold text-lg"
             />
-            <span className="font-bold text-lg">{country.name}</span>
             <span className="text-gray-500 text-sm">({country.isoCode})</span>
           </span>
         }

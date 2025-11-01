@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { FaLayerGroup, FaEdit, FaTimes } from "react-icons/fa";
+import { FaLayerGroup, FaEdit, FaTimes, FaSave } from "react-icons/fa";
 import {
   ActionButton,
   FormButton,
   FormField,
   Modal,
+  ModalActions,
   PanelHeader,
 } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
+import { CountrySelectModal } from "@features/countries";
 import type { Overlay } from "@types";
-import CountrySelectModal from "./CountrySelectModal";
 import { ColorPickerModal } from "./ColorPickerModal";
 
 type OverlayModalProps = {
@@ -18,6 +19,7 @@ type OverlayModalProps = {
   onSave: () => void;
   onClose: () => void;
   isOpen: boolean;
+  isEditing: boolean;
 };
 
 export function OverlayModal({
@@ -26,6 +28,7 @@ export function OverlayModal({
   onSave,
   onClose,
   isOpen,
+  isEditing,
 }: OverlayModalProps) {
   const { countries } = useCountryData();
   const [countryModalOpen, setCountryModalOpen] = useState(false);
@@ -59,7 +62,7 @@ export function OverlayModal({
           title={
             <>
               <FaLayerGroup />
-              {overlay ? "Edit Overlay" : "Add Overlay"}
+              {isEditing ? "Edit Overlay" : "Add Overlay"}
             </>
           }
         >
@@ -77,7 +80,7 @@ export function OverlayModal({
             type="text"
             value={overlay.name}
             onChange={(e) => onChange({ ...overlay, name: e.target.value })}
-            className="w-full px-3 py-2 bg-gray-100 rounded border-none text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:focus:ring-blue-400"
+            className="form-field"
           />
         </FormField>
 
@@ -108,9 +111,24 @@ export function OverlayModal({
               selectedCountries.map((country) => (
                 <span
                   key={country.isoCode}
-                  className="bg-blue-100 text-blue-800 dark:bg-gray-500 dark:text-gray-200 px-2 py-1 rounded text-sm mr-1 mb-1"
+                  className="flex items-center gap-1 bg-blue-100 text-blue-800 dark:bg-gray-500 dark:text-gray-200 px-2 py-1 rounded text-sm mr-1 mb-1"
                 >
                   {country.name}
+                  <button
+                    type="button"
+                    className="ml-auto text-gray-400 hover:text-blue-500 dark:hover:text-gray-300"
+                    title="Remove"
+                    onClick={() =>
+                      onChange({
+                        ...overlay,
+                        countries: overlay.countries.filter(
+                          (code) => code !== country.isoCode
+                        ),
+                      })
+                    }
+                  >
+                    <FaTimes />
+                  </button>
                 </span>
               ))
             )}
@@ -130,19 +148,22 @@ export function OverlayModal({
             type="text"
             value={overlay.tooltip || ""}
             onChange={(e) => onChange({ ...overlay, tooltip: e.target.value })}
-            className="w-full px-3 py-2 bg-gray-100 rounded border-none text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:focus:ring-blue-400"
+            className="form-field"
           />
         </FormField>
-
-        {/* Buttons */}
-        <div className="flex justify-end gap-2 mt-4">
-          <FormButton type="button" variant="secondary" onClick={onClose}>
-            Cancel
-          </FormButton>
-          <FormButton type="button" variant="primary" onClick={onSave}>
-            {overlay ? "Save Changes" : "Add Overlay"}
-          </FormButton>
-        </div>
+        <ModalActions
+          onCancel={onClose}
+          onSubmit={onSave}
+          submitType="button"
+          submitIcon={
+            isEditing ? (
+              <FaSave className="inline" />
+            ) : (
+              <FaLayerGroup className="inline" />
+            )
+          }
+          submitLabel={isEditing ? "Save Changes" : "Add Overlay"}
+        />
       </Modal>
       {/* Color Picker Modal */}
       <ColorPickerModal

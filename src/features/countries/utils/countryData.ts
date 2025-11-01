@@ -24,6 +24,34 @@ export function getCountryIsoCode(properties: any): string | undefined {
   );
 }
 
+/** Finds a country by its ISO code from the provided country data.
+ * @param code - The ISO code of the country to find.
+ * @param countryData - An object containing an array of countries.
+ * @returns The country object if found, otherwise null.
+ */
+export function getCountryByIsoCode(
+  code: string,
+  countryData: { countries: any[] }
+): any | null {
+  if (!code || !countryData?.countries) return null;
+  return (
+    countryData.countries.find(
+      (c) => c.isoCode?.toLowerCase() === code.toLowerCase()
+    ) || null
+  );
+}
+
+/**
+ * Creates a lookup map of countries by their ISO codes.
+ * @param countries - Array of country objects.
+ * @returns A record mapping ISO codes to country objects.
+ */
+export function createCountryLookup(countries: any[]): Record<string, any> {
+  return Object.fromEntries(
+    countries.map((c) => [c.isoCode?.toLowerCase(), c])
+  );
+}
+
 /**
  * Gets the URL of a country's flag based on its ISO code, source, style, and size.
  * @param isoCode - The ISO code of the country.

@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import {
-  addOverlay as addOverlayUtil,
   editOverlay as editOverlayUtil,
   removeOverlay as removeOverlayUtil,
   updateOverlayVisibility,
 } from "@features/overlays";
 import type { Overlay } from "@types";
+import { appDb } from "@utils/db";
 
 export type OverlayContextType = {
   overlays: Overlay[];
@@ -17,6 +17,7 @@ export type OverlayContextType = {
   addOverlay: (overlay: Overlay) => void;
   editOverlay: (overlay: Overlay) => void;
   removeOverlay: (id: string) => void;
+  reorderOverlays: (newOrder: Overlay[]) => void;
   toggleOverlayVisibility: (id: string) => void;
   loading: boolean;
   error: string | null;
@@ -46,42 +47,47 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   const [editingOverlay, setEditingOverlay] = useState<Overlay | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
-  // Load overlays from localStorage or fetch from files
+  // Load overlays from IndexedDB on mount
   useEffect(() => {
-    const saved = localStorage.getItem("overlays");
-    if (saved) {
-      setOverlays(JSON.parse(saved));
-      setLoading(false);
-      return;
-    }
-    const overlaysConfigUrl =
-      import.meta.env.VITE_OVERLAYS_CONFIG_URL || "/data/overlays.json";
-
-    fetch(overlaysConfigUrl)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load overlays config");
-        return res.json();
-      })
-      .then((overlaysConfig) => {
-        setOverlays(overlaysConfig);
-        setLoading(false);
-      })
-      .catch((err) => {
+    let mounted = true;
+    const loadOverlays = async () => {
+      setLoading(true);
+      try {
+        let dbOverlays = await appDb.overlays.toArray();
+        // Sort overlays by order property
+        dbOverlays = dbOverlays.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        if (mounted) {
+          setOverlays(dbOverlays);
+          setLoading(false);
+        }
+      } catch (err: any) {
         setError(err.message);
         setLoading(false);
-      });
+      }
+    };
+    loadOverlays();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  // Persist overlays to localStorage whenever they change
+  // Persist overlays to IndexedDB whenever they change
   useEffect(() => {
     if (!loading) {
-      localStorage.setItem("overlays", JSON.stringify(overlays));
+      appDb.overlays.clear().then(() => {
+        if (overlays.length > 0) {
+          appDb.overlays.bulkAdd(overlays);
+        }
+      });
     }
   }, [overlays, loading]);
 
   // Add overlay
   function addOverlay(overlay: Overlay) {
-    setOverlays((prev) => addOverlayUtil(prev, overlay));
+    setOverlays((prev) => [
+      { ...overlay, order: 0 },
+      ...prev.map((o) => ({ ...o, order: (o.order ?? 0) + 1 })),
+    ]);
   }
 
   // Edit overlay
@@ -92,6 +98,15 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   // Remove overlay
   function removeOverlay(id: string) {
     setOverlays((prev) => removeOverlayUtil(prev, id));
+  }
+
+  // Reorder overlays
+  function reorderOverlays(newOrder: Overlay[]) {
+    const ordered = newOrder.map((overlay, idx) => ({
+      ...overlay,
+      order: idx,
+    }));
+    setOverlays(ordered);
   }
 
   // Toggle visibility
@@ -148,6 +163,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
         addOverlay,
         editOverlay,
         removeOverlay,
+        reorderOverlays,
         toggleOverlayVisibility,
         loading,
         error,

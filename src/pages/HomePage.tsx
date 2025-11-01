@@ -1,4 +1,5 @@
 import { Branding, HomeCard } from "@components";
+import { FaGlobeAmericas, FaFlag, FaSuitcaseRolling } from "react-icons/fa";
 
 export default function HomePage() {
   return (
@@ -13,20 +14,25 @@ export default function HomePage() {
       </p>
       <div className="flex flex-col md:flex-row gap-8 mt-4">
         <HomeCard
-          imageSrc="/images/map.png"
-          imageAlt="Interactive Country Map"
+          icon={<FaGlobeAmericas className="w-16 h-16 text-blue-500" />}
           title="Interactive Country Map"
           description="Browse, filter, and learn about countries. Create overlays to track places you've visited or want to visit."
           linkTo="/map"
           linkText="Explore Map"
         />
         <HomeCard
-          imageSrc="/images/game.png"
-          imageAlt="Flag Guessing Game"
+          icon={<FaFlag className="w-16 h-16 text-green-500" />}
           title="Flag Guessing Game"
           description="Challenge yourself to identify flags from around the world. Can you guess them all?"
           linkTo="/game"
           linkText="Play Game"
+        />
+        <HomeCard
+          icon={<FaSuitcaseRolling className="w-16 h-16 text-purple-500" />}
+          title="Trips Log"
+          description="Log your trips, see where you've been, and plan future adventures. Highlight visited countries and cities."
+          linkTo="/trips"
+          linkText="View Trips"
         />
       </div>
       <footer className="mt-12 text-gray-400 dark:text-gray-300 text-sm text-center">

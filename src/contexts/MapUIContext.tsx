@@ -1,11 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  type ReactNode,
-} from "react";
-import { MAP_OPTIONS, MAP_STYLE_CONFIG } from "@config/constants";
+import { createContext, useContext, type ReactNode } from "react";
+import { useSettings } from "./SettingsContext";
 
 type MapUIContextType = {
   projection: string;
@@ -19,30 +13,16 @@ type MapUIContextType = {
 const MapUIContext = createContext<MapUIContextType | undefined>(undefined);
 
 export function MapUIProvider({ children }: { children: ReactNode }) {
-  // Projection state with localStorage persistence
-  const [projection, setProjectionState] = useState<string>(() => {
-    return (
-      localStorage.getItem("projection") || MAP_OPTIONS.projection[0].value
-    );
-  });
+  const { settings, updateSettings } = useSettings();
 
-  // Persist projection in localStorage
-  useEffect(() => {
-    localStorage.setItem("projection", projection);
-  }, [projection]);
-  const setProjection = (v: string) => setProjectionState(v);
+  // Fallbacks if settings are not yet loaded
+  const projection = settings.projection ?? "geoNaturalEarth1";
+  const borderColor = settings.borderColor ?? "222";
+  const borderWidth = settings.borderWidth ?? 0.1;
 
-  // Border color state
-  const [borderColor, setBorderColorState] = useState<string>(
-    MAP_STYLE_CONFIG.default.stroke
-  );
-  const setBorderColor = (v: string) => setBorderColorState(v);
-
-  // Border width state
-  const [borderWidth, setBorderWidthState] = useState<number>(
-    MAP_STYLE_CONFIG.default.strokeWidth
-  );
-  const setBorderWidth = (v: number) => setBorderWidthState(v);
+  const setProjection = (v: string) => updateSettings({ projection: v });
+  const setBorderColor = (v: string) => updateSettings({ borderColor: v });
+  const setBorderWidth = (v: number) => updateSettings({ borderWidth: v });
 
   return (
     <MapUIContext.Provider
@@ -60,7 +40,7 @@ export function MapUIProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Custom hook for easy context access
+// Custom hook to use the MapUIContext
 export function useMapUI() {
   const context = useContext(MapUIContext);
   if (!context) {

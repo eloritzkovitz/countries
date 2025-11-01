@@ -7,13 +7,13 @@ import {
   FaDownload,
   FaCog,
 } from "react-icons/fa";
-import { ActionButton } from "@components";
+import { ActionButton, ActionsToolbar, ToolbarSeparator } from "@components";
 import { useUI } from "@contexts/UIContext";
 import { ZoomControls } from "./ZoomControls";
 import { MapExportModal } from "../export/MapExportModal";
 import "./Toolbar.css";
 
-export function Toolbar({
+export function MapToolbar({
   zoom,
   setZoom,
   svgRef,
@@ -50,15 +50,14 @@ export function Toolbar({
       >
         <ZoomControls zoom={zoom} setZoom={setZoom} />
       </div>
-      {/* Actions and toggle: aligned horizontally */}
       <div className="relative flex items-center" style={{ height: "40px" }}>
         {/* Actions: horizontal slide */}
-        <div
-          className={`toolbar-actions-row ${
+        <ActionsToolbar
+          className={
             visible
-              ? "toolbar-actions-row-visible"
-              : "toolbar-actions-row-hidden"
-          }`}
+              ? "toolbar-actions-row-bg toolbar-actions-row-visible"
+              : "toolbar-actions-row-bg toolbar-actions-row-hidden"
+          }
         >
           <ActionButton
             onClick={toggleMarkers}
@@ -82,7 +81,7 @@ export function Toolbar({
             icon={<FaDownload />}
           />
           <MapExportModal svgRef={svgRef} />
-          <div className="mx-2 w-px h-6 bg-gray-400/30" /> {/* Separator */}
+          <ToolbarSeparator />
           <ActionButton
             onClick={toggleSettings}
             ariaLabel="Settings"
@@ -91,7 +90,7 @@ export function Toolbar({
             icon={<FaCog />}
           />
           {children}
-        </div>
+        </ActionsToolbar>
         {/* Toggle button */}
         <ActionButton
           onClick={() => setVisible((v) => !v)}

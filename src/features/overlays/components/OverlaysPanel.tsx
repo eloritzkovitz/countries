@@ -39,6 +39,7 @@ export function OverlaysPanel({
   const {
     overlays,
     setOverlays,
+    reorderOverlays,
     toggleOverlayVisibility,
     removeOverlay,
     loading,
@@ -47,7 +48,7 @@ export function OverlaysPanel({
 
   // Drag state
   const { draggedIndex, handleDragStart, handleDragOver, handleDragEnd } =
-    useDragReorder(overlays, setOverlays);
+    useDragReorder(overlays, reorderOverlays);
 
   // File input reference for importing overlays
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -96,7 +97,7 @@ export function OverlaysPanel({
           style={{ display: "none" }}
         />
         <ActionButton
-          onClick={exportOverlaysToFile}
+          onClick={() => exportOverlaysToFile(overlays)}
           ariaLabel="Export Overlays"
           title="Export Overlays"
         >

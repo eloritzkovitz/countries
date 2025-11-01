@@ -1,5 +1,5 @@
 import { ActionButton } from "@components";
-import { useKeyHandler } from "@hooks";
+import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Country } from "@types";
 
 export function ResultMessage({
