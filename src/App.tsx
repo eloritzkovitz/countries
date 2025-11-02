@@ -6,9 +6,8 @@ import { OverlayProvider } from "@contexts/OverlayContext";
 import { SettingsProvider } from "@contexts/SettingsContext";
 import { TripsProvider } from "@contexts/TripsContext";
 import { UIProvider } from "@contexts/UIContext";
-import CountryMapPage from "./pages/CountryMapPage";
-import FlagGuessGamePage from "./pages/FlagGuessGamePage";
-import HomePage from "./pages/HomePage";
+import AtlasPage from "./pages/AtlasPage";
+import GamesPage from "./pages/GamesPage";
 import TripsPage from "./pages/TripsPage";
 
 function App() {
@@ -19,20 +18,19 @@ function App() {
           <UIProvider>
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/game" element={<FlagGuessGamePage />} />
                 <Route
-                  path="/map"
+                  path="/"
                   element={
                     <OverlayProvider>
                       <MapUIProvider>
                         <MarkersProvider>
-                          <CountryMapPage />
+                          <AtlasPage />
                         </MarkersProvider>
                       </MapUIProvider>
                     </OverlayProvider>
                   }
                 />
+                <Route path="/game" element={<GamesPage />} />
                 <Route path="/trips" element={<TripsPage />} />
               </Routes>
             </BrowserRouter>

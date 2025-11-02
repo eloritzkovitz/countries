@@ -6,7 +6,7 @@ import { GuessForm, ResultMessage, Scoreboard } from "@features/game";
 import { useCountryData } from "@contexts/CountryDataContext";
 import type { Country } from "../types/country";
 
-export default function FlagGuessGamePage() {
+export default function GamesPage() {
   const { countries, loading, error } = useCountryData();
   // Only use countries whose flag matches their own ISO code
   const flagCountries = getCountriesWithOwnFlag(countries);

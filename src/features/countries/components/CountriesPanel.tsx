@@ -1,8 +1,7 @@
 import { useCallback } from "react";
-import { FaFilter, FaTimes } from "react-icons/fa";
+import { FaFilter, FaGlobe, FaXmark } from "react-icons/fa6";
 import {
   ActionButton,
-  Branding,
   ErrorMessage,
   LoadingSpinner,
   Panel,
@@ -73,7 +72,7 @@ export function CountriesPanel({
     sortBy,
     setSortBy,
     sortedItems: sortedCountries,
-  } = useSort(filteredCountries, sortCountries, "name-asc");  
+  } = useSort(filteredCountries, sortCountries, "name-asc");
 
   // Keyboard navigation within country list
   useCountryListNavigation({
@@ -101,7 +100,12 @@ export function CountriesPanel({
   return (
     <div className="fixed top-0 left-0 h-screen z-40 group relative">
       <Panel
-        title={<Branding title="Countries" />}
+        title={
+          <>
+            <FaGlobe />
+            Countries
+          </>
+        }
         show={uiVisible && showCountries}
         showSeparator={false}
         headerActions={
@@ -116,7 +120,7 @@ export function CountriesPanel({
               onClick={() => setShowCountries(false)}
               ariaLabel="Hide countries panel"
               title="Hide"
-              icon={<FaTimes />}
+              icon={<FaXmark />}
             />
           </>
         }

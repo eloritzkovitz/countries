@@ -19,7 +19,7 @@ import { OverlayModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
 import type { Country, Marker } from "@types";
 
-export default function CountryMapPage() {
+export default function AtlasPage() {
   // UI state
   const [mapReady, setMapReady] = useState(false);
   const { uiVisible, setUiVisible } = useUI();
@@ -62,7 +62,8 @@ export default function CountryMapPage() {
   } = useOverlayContext();
 
   // Determine if currently editing an existing overlay
-  const isEditing = !!editingOverlay && overlays.some(o => o.id === editingOverlay.id);
+  const isEditing =
+    !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
 
   // Marker creation state
   const {
@@ -138,7 +139,7 @@ export default function CountryMapPage() {
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <>
+    <>      
       {uiHint}
       <div className="flex h-screen bg-gray-100 relative">
         {/* Sidebar Panel */}
