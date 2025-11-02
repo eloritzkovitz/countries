@@ -87,9 +87,7 @@ export default function TripsPage() {
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col bg-white">
-      <title>Trips | Countries</title>
-      
+    <div className="min-h-screen w-full flex flex-col bg-white">      
       {/* Toolbar */}
       <TripsToolbar
         trips={filteredTrips}
