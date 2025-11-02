@@ -1,5 +1,5 @@
 import React from "react";
-import { FaFilter, FaTimes, FaUndo } from "react-icons/fa";
+import { FaFilter, FaArrowRotateLeft, FaXmark } from "react-icons/fa6";
 import {
   ActionButton,
   ErrorMessage,
@@ -118,14 +118,14 @@ export function CountryFiltersPanel({
             ariaLabel="Reset all filters"
             title="Reset filters"
           >
-            <FaUndo />
+            <FaArrowRotateLeft />
           </ActionButton>
           <ActionButton
             onClick={onHide}
             ariaLabel="Close filters panel"
             title="Close"
           >
-            <FaTimes />
+            <FaXmark />
           </ActionButton>
         </>
       }
