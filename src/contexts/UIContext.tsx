@@ -4,8 +4,10 @@ import { useKeyHandler } from "@hooks/useKeyHandler";
 type UIContextType = {
   uiVisible: boolean;
   setUiVisible: (v: boolean | ((prev: boolean) => boolean)) => void;
-  showCountries: boolean;
-  setShowCountries: (v: boolean) => void;
+  showMenu: boolean;
+  setShowMenu: (v: boolean) => void;
+  showCountries: boolean;  
+  toggleCountries: () => void;
   showFilters: boolean;
   toggleFilters: () => void;
   showMarkers: boolean;
@@ -28,9 +30,9 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const [uiVisible, setUiVisible] = useState(true);
 
   // State for which panel is open; null means no panel is open
-  const [showCountries, setShowCountries] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   const [openPanel, setOpenPanel] = useState<
-    "filters" | "markers" | "overlays" | "export" | "settings" | null
+    "countries" | "filters" | "markers" | "overlays" | "export" | "settings" | null
   >(null);
 
   // Shortcuts modal state
@@ -39,6 +41,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const closeShortcuts = () => setShowShortcuts(false);
 
   // Derived states for individual panels
+  const showCountries = openPanel === "countries";
   const showFilters = openPanel === "filters";
   const showMarkers = openPanel === "markers";
   const showOverlays = openPanel === "overlays";
@@ -46,6 +49,8 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const showSettings = openPanel === "settings";
 
   const toggleUiVisible = () => setUiVisible((prev) => !prev);
+  const toggleCountries = () =>
+    setOpenPanel((prev) => (prev === "countries" ? null : "countries"));
   const toggleFilters = () =>
     setOpenPanel((prev) => (prev === "filters" ? null : "filters"));
   const toggleMarkers = () =>
@@ -91,8 +96,10 @@ export function UIProvider({ children }: { children: ReactNode }) {
       value={{
         uiVisible,
         setUiVisible,
+        showMenu,
+        setShowMenu,
         showCountries,
-        setShowCountries,        
+        toggleCountries,
         showFilters,
         toggleFilters,
         showMarkers,

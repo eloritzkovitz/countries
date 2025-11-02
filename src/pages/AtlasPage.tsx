@@ -1,5 +1,10 @@
 import { useCallback, useRef, useState } from "react";
-import { ErrorMessage, ShortcutsModal, SplashScreen } from "@components";
+import {
+  ErrorMessage,
+  MenuPanel,
+  ShortcutsModal,  
+  SplashScreen,
+} from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
@@ -139,10 +144,13 @@ export default function AtlasPage() {
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <>      
+    <>
       {uiHint}
       <div className="flex h-screen bg-gray-100 relative">
-        {/* Sidebar Panel */}
+        {/* Menu Panel */}
+        <MenuPanel />
+
+        {/* Countries Panel */}
         <CountriesPanel
           selectedIsoCode={selectedIsoCode}
           hoveredIsoCode={hoveredIsoCode}

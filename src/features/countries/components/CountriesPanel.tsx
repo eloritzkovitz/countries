@@ -14,7 +14,6 @@ import { useUI } from "@contexts/UIContext";
 import { sortCountries } from "@features/countries";
 import { useSort } from "@hooks/useSort";
 import type { Country } from "@types";
-import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
 import { CountrySortSelect } from "./CountrySortSelect";
 import { CountryFiltersPanel } from "../filters/CountryFiltersPanel";
@@ -44,7 +43,7 @@ export function CountriesPanel({
   const {
     uiVisible,
     showCountries,
-    setShowCountries,
+    toggleCountries,
     showFilters,
     toggleFilters,
     closePanel,
@@ -117,7 +116,7 @@ export function CountriesPanel({
               icon={<FaFilter />}
             />
             <ActionButton
-              onClick={() => setShowCountries(false)}
+              onClick={toggleCountries}
               ariaLabel="Hide countries panel"
               title="Hide"
               icon={<FaXmark />}
@@ -155,15 +154,7 @@ export function CountriesPanel({
           onCountryInfo={handleCountryInfo}
         />
         <Separator />
-      </Panel>
-
-      {/* Collapsed action button */}
-      {uiVisible && (
-        <CollapsedPanelButton
-          onClick={() => setShowCountries(true)}
-          visible={!showCountries}
-        />
-      )}
+      </Panel>      
 
       {/* Filters panel */}
       {showCountries && showFilters && (
