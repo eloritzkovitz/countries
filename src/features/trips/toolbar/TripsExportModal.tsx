@@ -19,14 +19,14 @@ export function TripsExportModal({
       <div className="bg-white p-6 rounded shadow min-w-[260px]">
         <h3 className="text-lg font-bold mb-4">Export Trips</h3>
         <button
-          className="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100 rounded mb-2"
+          className="toolbar-btn-export-option mb-2"
           onClick={onExportCSV}
         >
           <FaFileCsv className="text-blue-600" />
           <span>Export as CSV</span>
         </button>
         <button
-          className="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100 rounded"
+          className="toolbar-btn-export-option"
           onClick={onExportJSON}
         >
           <FaFileAlt className="text-green-600" />

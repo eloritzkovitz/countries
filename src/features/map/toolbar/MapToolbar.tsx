@@ -12,7 +12,7 @@ import { ActionButton, ActionsToolbar, ToolbarSeparator } from "@components";
 import { useUI } from "@contexts/UIContext";
 import { ZoomControls } from "./ZoomControls";
 import { MapExportModal } from "../export/MapExportModal";
-import "./Toolbar.css";
+import "./MapToolbar.css";
 
 export function MapToolbar({
   zoom,
