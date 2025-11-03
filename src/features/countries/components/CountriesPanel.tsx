@@ -46,7 +46,6 @@ export function CountriesPanel({
     toggleCountries,
     showFilters,
     toggleFilters,
-    closePanel,
   } = useUI();
 
   // Filter state
@@ -154,7 +153,7 @@ export function CountriesPanel({
           onCountryInfo={handleCountryInfo}
         />
         <Separator />
-      </Panel>      
+      </Panel>
 
       {/* Filters panel */}
       {showCountries && showFilters && (
@@ -171,7 +170,7 @@ export function CountriesPanel({
           overlays={overlays}
           overlaySelections={overlaySelections}
           setOverlaySelections={setOverlaySelections}
-          onHide={closePanel}
+          onHide={toggleFilters}
         />
       )}
     </div>

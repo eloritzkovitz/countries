@@ -19,9 +19,11 @@ export { SelectInput } from "./form/SelectInput";
 
 // Layout components
 export { CollapsibleHeader } from "./layout/CollapsibleHeader";
-export { MenuPanel } from "./layout/MenuPanel";
 export { Separator } from "./layout/Separator";
 export { SeparatorRow } from "./layout/SeparatorRow";
+
+// Menu components
+export { MenuPanel } from "./layout/Menu/MenuPanel";
 
 // Modal components
 export { ConfirmModal } from "./layout/Modal/ConfirmModal";

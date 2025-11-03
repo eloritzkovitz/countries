@@ -6,7 +6,7 @@ type UIContextType = {
   setUiVisible: (v: boolean | ((prev: boolean) => boolean)) => void;
   showMenu: boolean;
   setShowMenu: (v: boolean) => void;
-  showCountries: boolean;  
+  showCountries: boolean;
   toggleCountries: () => void;
   showFilters: boolean;
   toggleFilters: () => void;
@@ -32,8 +32,14 @@ export function UIProvider({ children }: { children: ReactNode }) {
   // State for which panel is open; null means no panel is open
   const [showMenu, setShowMenu] = useState(false);
   const [openPanel, setOpenPanel] = useState<
-    "countries" | "filters" | "markers" | "overlays" | "export" | "settings" | null
-  >(null);
+    "countries" | "markers" | "overlays" | "export" | "settings" | null
+  >("countries");
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Filters toggle: only works if countries panel is open
+  const toggleFilters = () => {
+    if (openPanel === "countries") setShowFilters((prev) => !prev);
+  };
 
   // Shortcuts modal state
   const [showShortcuts, setShowShortcuts] = useState(false);
@@ -42,7 +48,6 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // Derived states for individual panels
   const showCountries = openPanel === "countries";
-  const showFilters = openPanel === "filters";
   const showMarkers = openPanel === "markers";
   const showOverlays = openPanel === "overlays";
   const showExport = openPanel === "export";
@@ -51,8 +56,6 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const toggleUiVisible = () => setUiVisible((prev) => !prev);
   const toggleCountries = () =>
     setOpenPanel((prev) => (prev === "countries" ? null : "countries"));
-  const toggleFilters = () =>
-    setOpenPanel((prev) => (prev === "filters" ? null : "filters"));
   const toggleMarkers = () =>
     setOpenPanel((prev) => (prev === "markers" ? null : "markers"));
   const toggleOverlays = () =>
@@ -64,7 +67,10 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const closePanel = () => setOpenPanel(null);
 
   // Toggle UI visibility with "U"
-  useKeyHandler(toggleUiVisible, ["u", "U"], true);  
+  useKeyHandler(toggleUiVisible, ["u", "U"], true);
+
+  // Toggle Countries panel with "C"
+  useKeyHandler(toggleCountries, ["c", "C"], true);
 
   // Toggle Filters panel with "F"
   useKeyHandler(toggleFilters, ["f", "F"], true);

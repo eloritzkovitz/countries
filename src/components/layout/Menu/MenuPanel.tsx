@@ -7,15 +7,16 @@ import {
 import { NavLink } from "react-router-dom";
 import { Branding, CollapsedPanelButton, Panel } from "@components";
 import { useUI } from "@contexts/UIContext";
+import "./MenuPanel.css";
 
 export function MenuPanel() {
   const { showMenu, setShowMenu } = useUI();
 
   return (
-    <div className="fixed top-0 left-0 h-screen z-40 group relative">
+    <div className="menu-panel-container">
       <Panel
         title={
-          <div className="flex items-center gap-2">
+          <div className="menu-panel-title">
             <Branding size={40} title="Atlaset" />
           </div>
         }
@@ -27,7 +28,7 @@ export function MenuPanel() {
               onClick={() => setShowMenu(false)}
               aria-label="Hide sidebar"
               title="Hide sidebar"
-              className="ml-2 p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+              className="menu-panel-header-action"
             >
               <FaXmark />
             </button>
@@ -35,15 +36,11 @@ export function MenuPanel() {
         }
       >
         {/* Navigation */}
-        <nav className="flex flex-col gap-2 mt-4">
+        <nav className="menu-panel-nav">
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `flex items-center gap-2 px-4 py-2 rounded font-semibold transition ${
-                isActive
-                  ? "bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
-                  : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-              }`
+              `menu-panel-link${isActive ? " menu-panel-link-active" : ""}`
             }
             end
           >
@@ -53,11 +50,7 @@ export function MenuPanel() {
           <NavLink
             to="/game"
             className={({ isActive }) =>
-              `flex items-center gap-2 px-4 py-2 rounded font-semibold transition ${
-                isActive
-                  ? "bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
-                  : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-              }`
+              `menu-panel-link${isActive ? " menu-panel-link-active" : ""}`
             }
           >
             <FaGamepad />
@@ -66,17 +59,13 @@ export function MenuPanel() {
           <NavLink
             to="/trips"
             className={({ isActive }) =>
-              `flex items-center gap-2 px-4 py-2 rounded font-semibold transition ${
-                isActive
-                  ? "bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
-                  : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-              }`
+              `menu-panel-link${isActive ? " menu-panel-link-active" : ""}`
             }
           >
             <FaSuitcaseRolling />
             Trips
           </NavLink>
-        </nav>        
+        </nav>
       </Panel>
       {/* Collapsed action button */}
       <CollapsedPanelButton
