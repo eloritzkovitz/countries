@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
 import { ActionButton, SearchInput } from "@components";
 
@@ -6,16 +7,17 @@ type ToolbarNavigationSearchProps = {
   setGlobalSearch: (search: string) => void;
 };
 
-export function ToolbarNavigationSearch({  
+export function ToolbarNavigationSearch({
   globalSearch,
   setGlobalSearch,
 }: ToolbarNavigationSearchProps) {
-  
-  // Return button handler 
+  const navigate = useNavigate();
+
+  // Return button handler
   const handleReturn = () => {
-    window.history.back();
+    navigate("/");
   };
-  
+
   return (
     <>
       <ActionButton
