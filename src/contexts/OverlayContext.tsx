@@ -4,12 +4,12 @@ import {
   removeOverlay as removeOverlayUtil,
   updateOverlayVisibility,
 } from "@features/overlays";
-import type { Overlay } from "@types";
+import type { AnyOverlay, Overlay, TimelineOverlay } from "@types";
 import { appDb } from "@utils/db";
 
 export type OverlayContextType = {
-  overlays: Overlay[];
-  setOverlays: React.Dispatch<React.SetStateAction<Overlay[]>>;
+  overlays: AnyOverlay[];
+  setOverlays: React.Dispatch<React.SetStateAction<AnyOverlay[]>>;
   overlaySelections: Record<string, string>;
   setOverlaySelections: React.Dispatch<
     React.SetStateAction<Record<string, string>>
@@ -34,7 +34,7 @@ const OverlayContext = createContext<OverlayContextType | undefined>(undefined);
 
 export function OverlayProvider({ children }: { children: React.ReactNode }) {
   // Overlay state
-  const [overlays, setOverlays] = useState<Overlay[]>([]);
+  const [overlays, setOverlays] = useState<AnyOverlay[]>([]);
   const [overlaySelections, setOverlaySelections] = useState<
     Record<string, string>
   >({});
@@ -56,6 +56,22 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
         let dbOverlays = await appDb.overlays.toArray();
         // Sort overlays by order property
         dbOverlays = dbOverlays.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+        // Ensure visited countries overlay exists
+        const visitedOverlayId = "visited-countries";
+        if (!dbOverlays.some((o) => o.id === visitedOverlayId)) {
+          dbOverlays.unshift({
+            id: visitedOverlayId,
+            name: "Visited Countries",
+            color: "#00bfff",
+            countries: [],
+            visible: true,
+            tooltip: "Countries visited (synced with trips)",
+            timelineEnabled: true,
+            timelineSnapshot: true,
+          } as TimelineOverlay);
+        }
+
         if (mounted) {
           setOverlays(dbOverlays);
           setLoading(false);

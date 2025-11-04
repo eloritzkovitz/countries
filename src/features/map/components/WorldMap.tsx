@@ -35,6 +35,7 @@ type WorldMapProps = {
   isAddingMarker?: boolean;
   onMapClickForMarker?: (coords: [number, number]) => void;
   onMarkerDetails?: (marker: Marker) => void;
+  selectedYear: number;
 };
 
 export function WorldMap({
@@ -50,6 +51,7 @@ export function WorldMap({
   isAddingMarker,
   onMapClickForMarker,
   onMarkerDetails,
+  selectedYear,
 }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
@@ -69,7 +71,7 @@ export function WorldMap({
   } = useOverlayContext();
 
   // Merge all visible overlays into a single ordered array
-  const overlayItems = useOverlayItems(overlays);
+  const { overlayItems } = useOverlayItems(overlays, selectedYear);
 
   // UI hint for adding marker
   const addMarkerHint = useUiHint(

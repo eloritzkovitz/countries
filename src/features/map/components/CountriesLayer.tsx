@@ -48,6 +48,7 @@ export function CountriesLayer({
 
             // Overlay logic: blend all overlays for this country
             const overlays = overlayGroups[isoA2] || [];
+            console.log("Overlay group for", isoA2, overlayGroups[isoA2]);
             const blendedFill = getBlendedOverlayColor(
               overlays,
               geographyStyle.default.fill
@@ -57,10 +58,12 @@ export function CountriesLayer({
             let style = geographyStyle.default;
             let tooltip = geo.properties.name;
 
-            if (isSelected || isHovered) {
+            if (isHovered) {
               style = geographyStyle.hover;
             } else if (blendedFill) {
               style = { ...geographyStyle.default, fill: blendedFill };
+            } else if (isSelected) {
+              style = geographyStyle.hover;
             }
 
             return (

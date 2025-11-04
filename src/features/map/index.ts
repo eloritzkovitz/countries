@@ -1,5 +1,6 @@
 // Components
 export { MapToolbar } from "./toolbar/MapToolbar";
+export { TimelinePicker } from "./components/TimelinePicker";
 export { WorldMap } from "./components/WorldMap";
 
 // Hooks
