@@ -2,7 +2,7 @@
  * Utility functions for managing overlays.
  */
 
-import type { Overlay } from "@types";
+import type { AnyOverlay, Overlay, TimelineOverlay } from "@types";
 
 /**
  * Adds a new overlay to the overlays array.
@@ -43,4 +43,13 @@ export function updateOverlayVisibility(
   visible: boolean
 ): Overlay[] {
   return overlays.map((o) => (o.id === id ? { ...o, visible } : o));
+}
+
+/**
+ * Type guard to check if an overlay is a TimelineOverlay.
+ * @param overlay - The overlay to check.
+ * @returns True if the overlay is a TimelineOverlay, false otherwise.
+ */
+export function isTimelineOverlay(overlay: AnyOverlay): overlay is TimelineOverlay {
+  return (overlay as TimelineOverlay).timelineEnabled === true;
 }

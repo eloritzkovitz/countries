@@ -28,7 +28,7 @@ import { useVisitedCountriesTimeline } from "@features/trips/hooks/useVisitedCou
 export default function AtlasPage() {
   // UI state
   const [mapReady, setMapReady] = useState(false);
-  const { uiVisible, setUiVisible } = useUI();
+  const { uiVisible, setUiVisible, timelineMode, setTimelineMode } = useUI();
   const [hintMessage, setHintMessage] = useState<React.ReactNode>("");
   const [hintKey, setHintKey] = useState(0);
   const uiHint = useUiHint(hintMessage, 4000, { key: hintKey });
@@ -190,12 +190,14 @@ export default function AtlasPage() {
           />
 
           {/* Toolbar & UI Overlays */}
-          <MapToolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />          
-          <TimelinePicker
-            years={years}
-            selectedYear={selectedYear}
-            setSelectedYear={setSelectedYear}
-          />
+          <MapToolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} setSnapshotMode={setTimelineMode} />
+          {uiVisible && timelineMode && (
+            <TimelinePicker
+              years={years}
+              selectedYear={selectedYear}
+              setSelectedYear={setSelectedYear}
+            />
+          )}
           <CountryDetailsModal
             country={modalCountry}
             isOpen={!!modalCountry}
