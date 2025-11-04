@@ -105,6 +105,7 @@ export function CountriesPanel({
           </>
         }
         show={uiVisible && showCountries}
+        onHide={toggleCountries}
         showSeparator={false}
         headerActions={
           <>

@@ -1,11 +1,17 @@
 import {
+  FaRotateRight,
   FaXmark,
-  FaGlobe,
+  FaEarthAmericas,
   FaGamepad,
   FaSuitcaseRolling,
 } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
-import { Branding, CollapsedPanelButton, Panel } from "@components";
+import {
+  ActionButton,
+  Branding,
+  CollapsedPanelButton,
+  Panel,
+} from "@components";
 import { useUI } from "@contexts/UIContext";
 import "./MenuPanel.css";
 
@@ -17,21 +23,28 @@ export function MenuPanel() {
       <Panel
         title={
           <div className="menu-panel-title">
-            <Branding size={40} title="Atlaset" />
+            <Branding size={42} />
+            <span className="font-bold text-3xl">Atlaset</span>
           </div>
         }
         show={showMenu}
         showSeparator={false}
         headerActions={
           <>
-            <button
+            <ActionButton
+              onClick={() => window.location.reload()}
+              aria-label="Reload application"
+              title="Reload application"
+            >
+              <FaRotateRight />
+            </ActionButton>
+            <ActionButton
               onClick={() => setShowMenu(false)}
               aria-label="Hide sidebar"
               title="Hide sidebar"
-              className="menu-panel-header-action"
             >
               <FaXmark />
-            </button>
+            </ActionButton>
           </>
         }
       >
@@ -44,7 +57,7 @@ export function MenuPanel() {
             }
             end
           >
-            <FaGlobe />
+            <FaEarthAmericas />
             Atlas
           </NavLink>
           <NavLink
@@ -63,7 +76,7 @@ export function MenuPanel() {
             }
           >
             <FaSuitcaseRolling />
-            Trips
+            My Trips
           </NavLink>
         </nav>
       </Panel>
@@ -71,6 +84,7 @@ export function MenuPanel() {
       <CollapsedPanelButton
         onClick={() => setShowMenu(true)}
         visible={!showMenu}
+        className="fixed top-4 right-4 z-[9999]"
       />
     </div>
   );

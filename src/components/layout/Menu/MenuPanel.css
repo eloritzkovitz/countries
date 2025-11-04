@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 .menu-panel-container {
-  @apply fixed top-0 left-0 h-screen z-40 relative;
+  @apply fixed top-0 left-0 h-screen z-80 relative;
 }
 
 .menu-panel-title {
@@ -19,7 +19,7 @@
 }
 
 .menu-panel-link {
-  @apply flex items-center gap-2 px-4 py-2 rounded font-semibold transition text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-500;
+  @apply flex items-center gap-2 px-4 py-2 rounded text-xl font-semibold transition hover:bg-gray-100 dark:hover:bg-gray-500;
 }
 
 .menu-panel-link-active {
