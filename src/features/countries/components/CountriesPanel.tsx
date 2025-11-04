@@ -1,8 +1,7 @@
 import { useCallback } from "react";
-import { FaFilter, FaTimes } from "react-icons/fa";
+import { FaFilter, FaGlobe, FaXmark } from "react-icons/fa6";
 import {
   ActionButton,
-  Branding,
   ErrorMessage,
   LoadingSpinner,
   Panel,
@@ -15,7 +14,6 @@ import { useUI } from "@contexts/UIContext";
 import { sortCountries } from "@features/countries";
 import { useSort } from "@hooks/useSort";
 import type { Country } from "@types";
-import { CollapsedPanelButton } from "./CollapsedPanelButton";
 import { CountryList } from "./CountryList";
 import { CountrySortSelect } from "./CountrySortSelect";
 import { CountryFiltersPanel } from "../filters/CountryFiltersPanel";
@@ -45,10 +43,9 @@ export function CountriesPanel({
   const {
     uiVisible,
     showCountries,
-    setShowCountries,
+    toggleCountries,
     showFilters,
     toggleFilters,
-    closePanel,
   } = useUI();
 
   // Filter state
@@ -73,7 +70,7 @@ export function CountriesPanel({
     sortBy,
     setSortBy,
     sortedItems: sortedCountries,
-  } = useSort(filteredCountries, sortCountries, "name-asc");  
+  } = useSort(filteredCountries, sortCountries, "name-asc");
 
   // Keyboard navigation within country list
   useCountryListNavigation({
@@ -101,8 +98,14 @@ export function CountriesPanel({
   return (
     <div className="fixed top-0 left-0 h-screen z-40 group relative">
       <Panel
-        title={<Branding title="Countries" />}
+        title={
+          <>
+            <FaGlobe />
+            Countries
+          </>
+        }
         show={uiVisible && showCountries}
+        onHide={toggleCountries}
         showSeparator={false}
         headerActions={
           <>
@@ -113,10 +116,10 @@ export function CountriesPanel({
               icon={<FaFilter />}
             />
             <ActionButton
-              onClick={() => setShowCountries(false)}
+              onClick={toggleCountries}
               ariaLabel="Hide countries panel"
               title="Hide"
-              icon={<FaTimes />}
+              icon={<FaXmark />}
             />
           </>
         }
@@ -153,14 +156,6 @@ export function CountriesPanel({
         <Separator />
       </Panel>
 
-      {/* Collapsed action button */}
-      {uiVisible && (
-        <CollapsedPanelButton
-          onClick={() => setShowCountries(true)}
-          visible={!showCountries}
-        />
-      )}
-
       {/* Filters panel */}
       {showCountries && showFilters && (
         <CountryFiltersPanel
@@ -176,7 +171,7 @@ export function CountriesPanel({
           overlays={overlays}
           overlaySelections={overlaySelections}
           setOverlaySelections={setOverlaySelections}
-          onHide={closePanel}
+          onHide={toggleFilters}
         />
       )}
     </div>

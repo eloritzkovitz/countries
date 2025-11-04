@@ -28,68 +28,35 @@
 /* Zoom controls */
 
 .toolbar-zoom-controls {
-  transition: transform 0.3s, opacity 0.3s;
-  margin-bottom: 0.5rem;
+  @apply transition-transform transition-opacity duration-300 mb-3;
 }
 
 .toolbar-zoom-controls-hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(40px);
+  @apply opacity-0 pointer-events-none translate-y-10;
 }
 
 .toolbar-zoom-controls-visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
+  @apply opacity-100 pointer-events-auto translate-y-0;
 }
 
 /* Toolbar actions row */
 
-.toolbar-actions-row {
-  @apply absolute flex flex-row items-center;
-}
-
 .toolbar-actions-row-bg {
-  @apply right-12 bg-gray-200 dark:bg-gray-800 rounded-full shadow border border-gray-300 dark:border-gray-700 px-2 transition-all duration-300;
+  @apply right-14 bg-gray-200 dark:bg-gray-800 rounded-full shadow border border-gray-300 dark:border-gray-700 px-2 transition-all duration-300;
 }
 
 .toolbar-actions-row-hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(40px);
+  @apply opacity-0 pointer-events-none translate-x-10;
 }
 
 .toolbar-actions-row-visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
+  @apply opacity-100 pointer-events-auto translate-x-0;
 }
 
 /* Toolbar buttons */
 
-.toolbar-btn {
-  @apply w-10 h-10 flex items-center justify-center p-0 bg-gray-200 dark:bg-gray-800 text-blue-800 dark:text-gray-200 hover:text-blue-900 dark:hover:text-white;
-}
-
-.toolbar-btn-menu {
-  @apply w-8 h-8 px-2 flex items-center justify-center p-0 bg-transparent text-blue-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 border-none rounded transition-colors duration-200;
-}
-
 .toolbar-btn-action {
   @apply rounded-t-lg hover:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white border-none;
-}
-
-.toolbar-btn-toggle {
-  @apply w-8 h-8 px-2 flex items-center justify-center bg-transparent border-none transition-colors duration-200;
-}
-
-.toolbar-btn-toggle-active {
-  @apply text-blue-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600;
-}
-
-.toolbar-btn-toggle-inactive {
-  @apply text-gray-400 bg-transparent;
 }
 
 /* Export button */

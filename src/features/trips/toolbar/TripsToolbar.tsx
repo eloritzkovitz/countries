@@ -6,6 +6,7 @@ import { ToolbarFilters } from "./ToolbarFilters";
 import { ToolbarImportExport } from "./ToolbarImportExport";
 import { ToolbarStatistics } from "./ToolbarStatistics";
 import { ToolbarActions } from "./ToolbarActions";
+import "./TripsToolbar.css";
 
 type ToolbarProps = {
   trips: Trip[];
@@ -35,7 +36,7 @@ export function TripsToolbar({
   onBulkDelete,
 }: ToolbarProps) {
   return (
-    <div className="w-full px-3 flex items-center justify-between h-[7vh] bg-white border-b border-gray-300 dark:border-gray-600">
+    <div className="trips-toolbar-container">
       <ActionsToolbar>
         <div className="flex items-center">
           {/* Navigation & Search */}

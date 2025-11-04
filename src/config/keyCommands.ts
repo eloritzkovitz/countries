@@ -17,8 +17,9 @@ export const keyCommands: KeyCommand[] = [
   
   // Filters
   { key: "r", modifiers: [], action: "Reset Filters", category: "Filters" },  
-  
-  // Toolbar  
+
+  // Toolbar
+  { key: "c", modifiers: [], action: "Toggle Countries Panel", category: "Toolbar" },
   { key: "e", modifiers: [], action: "Toggle Export Panel", category: "Toolbar" },
   { key: "f", modifiers: [], action: "Toggle Filters Panel", category: "Toolbar" },
   { key: "m", modifiers: [], action: "Toggle Markers Panel", category: "Toolbar" },
@@ -30,7 +31,7 @@ export const keyCommands: KeyCommand[] = [
   { key: "+", modifiers: [], action: "Zoom In", category: "Map" },
   { key: "-", modifiers: [], action: "Zoom Out", category: "Map" },
   { key: "0", modifiers: [], action: "Reset Zoom", category: "Map" },
-  { key: "c", modifiers: [], action: "Center Map on Country", category: "Map" },
+  { key: "x", modifiers: [], action: "Center Map on Country", category: "Map" },
 
   // Country list
   { key: "ArrowUp", modifiers: [], action: "Scroll Up", category: "Country List" },

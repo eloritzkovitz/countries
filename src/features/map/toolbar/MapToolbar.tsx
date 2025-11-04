@@ -5,13 +5,14 @@ import {
   FaChevronRight,
   FaMapPin,
   FaDownload,
-  FaCog,
-} from "react-icons/fa";
+  FaGear,
+  FaGlobe,
+} from "react-icons/fa6";
 import { ActionButton, ActionsToolbar, ToolbarSeparator } from "@components";
 import { useUI } from "@contexts/UIContext";
 import { ZoomControls } from "./ZoomControls";
 import { MapExportModal } from "../export/MapExportModal";
-import "./Toolbar.css";
+import "./MapToolbar.css";
 
 export function MapToolbar({
   zoom,
@@ -27,6 +28,7 @@ export function MapToolbar({
   // UI state
   const {
     uiVisible,
+    toggleCountries,
     toggleMarkers,
     toggleOverlays,
     toggleExport,
@@ -60,6 +62,13 @@ export function MapToolbar({
           }
         >
           <ActionButton
+            onClick={toggleCountries}
+            ariaLabel="Countries"
+            title="Countries"
+            className="toolbar-btn"
+            icon={<FaGlobe />}
+          />
+          <ActionButton
             onClick={toggleMarkers}
             ariaLabel="Markers"
             title="Markers"
@@ -87,7 +96,7 @@ export function MapToolbar({
             ariaLabel="Settings"
             title="Settings"
             className="toolbar-btn"
-            icon={<FaCog />}
+            icon={<FaGear />}
           />
           {children}
         </ActionsToolbar>
