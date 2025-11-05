@@ -3,14 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 .toolbar-container {
-  position: absolute;
-  right: 2rem;
-  bottom: 2rem;
-  z-index: 101;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  transition: transform 0.3s, opacity 0.3s;
+  @apply absolute right-8 bottom-8 z-[101] flex flex-col items-end transition-transform transition-opacity duration-300;
 }
 
 .toolbar-container-hidden {
