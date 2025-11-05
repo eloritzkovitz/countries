@@ -4,7 +4,6 @@ import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
-import { getGeoCoordsFromMouseEvent } from "@features/map";
 import { MapMarkersLayer } from "@features/markers";
 import {
   isTimelineOverlay,
@@ -21,6 +20,7 @@ import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
 import { useMapStatus } from "../hooks/useMapStatus";
 import { useUI } from "@contexts/UIContext";
+import { useMapEventHandler } from "../hooks/useMapEventHandler";
 
 type WorldMapProps = {
   zoom: number;
@@ -66,7 +66,7 @@ export function WorldMap({
   const { geoData, geoError, loading: geoLoading } = useGeoData();
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(
     null
-  );  
+  );
 
   // Load overlays data
   const {
@@ -120,23 +120,15 @@ export function WorldMap({
   }
 
   // Handle map event for mouse move or click
-  const handleMapEvent = (event: React.MouseEvent<SVGSVGElement>) => {
-    const coords = getGeoCoordsFromMouseEvent(
-      event,
-      projection || DEFAULT_MAP_SETTINGS.projection,
-      dimensions.width,
-      dimensions.height,
-      DEFAULT_MAP_SETTINGS.scaleDivisor,
-      zoom,
-      center
-    );
-    if (coords) {
-      setSelectedCoords([coords[0], coords[1]]);
-      if (isAddingMarker && onMapClickForMarker && event.type === "click") {
-        onMapClickForMarker([coords[1], coords[0]]);
-      }
-    }
-  };
+  const handleMapEvent = useMapEventHandler({
+    projection,
+    dimensions,
+    zoom,
+    center,
+    isAddingMarker,
+    setSelectedCoords,
+    onMapClickForMarker,
+  });
 
   return (
     <div
