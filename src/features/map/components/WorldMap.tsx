@@ -5,11 +5,6 @@ import { DEFAULT_MAP_SETTINGS } from "@config/constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { MapMarkersLayer } from "@features/markers";
-import {
-  isTimelineOverlay,
-  useOverlayItems,
-  useTimelineOverlayItems,
-} from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import type { Marker } from "@types";
@@ -19,8 +14,8 @@ import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
 import { useMapStatus } from "../hooks/useMapStatus";
-import { useUI } from "@contexts/UIContext";
 import { useMapEventHandler } from "../hooks/useMapEventHandler";
+import { useMapOverlayItems } from "../hooks/useMapOverlayItems";
 
 type WorldMapProps = {
   zoom: number;
@@ -75,14 +70,8 @@ export function WorldMap({
     error: overlaysError,
   } = useOverlayContext();
 
-  // Determine if timeline mode is active
-  const { timelineMode } = useUI();
-  const timelineOverlays = overlays.filter(isTimelineOverlay);
-
   // Get overlay items based on mode
-  const overlayItems = timelineMode
-    ? useTimelineOverlayItems(timelineOverlays, selectedYear)
-    : useOverlayItems(overlays);
+  const overlayItems = useMapOverlayItems(overlays, selectedYear);
 
   // UI hint for adding marker
   const addMarkerHint = useUiHint(
