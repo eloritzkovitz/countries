@@ -13,9 +13,10 @@ export function useMapOverlayItems(
   const { timelineMode } = useUI();
   const timelineOverlays = overlays.filter(isTimelineOverlay);
 
-  // Get static items for non-timeline overlays
+  // Get static and timeline overlay items
   const staticItems = useOverlayItems(overlays);
   const timelineItems = useTimelineOverlayItems(timelineOverlays, selectedYear);
 
+  // Return items based on timeline mode
   return timelineMode ? timelineItems : staticItems;
 }
