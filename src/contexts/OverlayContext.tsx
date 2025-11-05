@@ -3,12 +3,10 @@ import { useTrips } from "@contexts/TripsContext";
 import {
   editOverlay as editOverlayUtil,
   removeOverlay as removeOverlayUtil,
+  persistOverlays,
   updateOverlayVisibility,
 } from "@features/overlays";
-import {
-  computeVisitedCountriesFromTrips,
-  persistOverlays,
-} from "@features/overlays";
+import { computeVisitedCountriesFromTrips } from "@features/trips";
 import type { AnyOverlay, TimelineOverlay } from "@types";
 import { appDb } from "@utils/db";
 

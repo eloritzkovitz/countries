@@ -2,7 +2,7 @@
  * Utility functions for managing overlays.
  */
 
-import type { AnyOverlay, Overlay, TimelineOverlay, Trip } from "@types";
+import type { AnyOverlay, Overlay, TimelineOverlay } from "@types";
 import { appDb } from "@utils/db";
 
 /**
@@ -23,6 +23,14 @@ export function editOverlay(
   updatedOverlay: Overlay
 ): Overlay[] {
   return overlays.map((o) => (o.id === updatedOverlay.id ? updatedOverlay : o));
+}
+
+/**
+ * Persists an array of overlays to the database.
+ * @param overlays - The array of overlays to persist.
+ */
+export async function persistOverlays(overlays: AnyOverlay[]) {
+  await Promise.all(overlays.map((o) => appDb.overlays.put(o)));
 }
 
 /**
@@ -52,28 +60,4 @@ export function isTimelineOverlay(
   overlay: AnyOverlay
 ): overlay is TimelineOverlay {
   return (overlay as TimelineOverlay).timelineEnabled === true;
-}
-
-/**
- * Computes a list of unique visited country codes from an array of trips.
- * @param trips - The array of trips.
- * @returns A list of unique visited country codes.
- */
-export function computeVisitedCountriesFromTrips(trips: Trip[]) {
-  const now = new Date();
-  return Array.from(
-    new Set(
-      trips
-        .filter((trip) => new Date(trip.startDate) <= now)
-        .flatMap((trip) => trip.countryCodes || [])
-    )
-  );
-}
-
-/**
- * Persists an array of overlays to the database.
- * @param overlays - The array of overlays to persist.
- */
-export async function persistOverlays(overlays: AnyOverlay[]) {
-  await Promise.all(overlays.map((o) => appDb.overlays.put(o)));
 }
