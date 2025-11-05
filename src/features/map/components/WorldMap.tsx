@@ -6,7 +6,11 @@ import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { getGeoCoordsFromMouseEvent } from "@features/map";
 import { MapMarkersLayer } from "@features/markers";
-import { useOverlayItems } from "@features/overlays";
+import {
+  isTimelineOverlay,
+  useOverlayItems,
+  useTimelineOverlayItems,
+} from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import type { Marker } from "@types";
@@ -16,6 +20,7 @@ import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
 import { useMapStatus } from "../hooks/useMapStatus";
+import { useUI } from "@contexts/UIContext";
 
 type WorldMapProps = {
   zoom: number;
@@ -55,13 +60,13 @@ export function WorldMap({
 }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
-  
+
   // Map projection and data
   const { projection } = useMapUI();
-  const { geoData, geoError, loading: geoLoading } = useGeoData();  
+  const { geoData, geoError, loading: geoLoading } = useGeoData();
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(
     null
-  );
+  );  
 
   // Load overlays data
   const {
@@ -70,8 +75,14 @@ export function WorldMap({
     error: overlaysError,
   } = useOverlayContext();
 
-  // Merge all visible overlays into a single ordered array
-  const { overlayItems } = useOverlayItems(overlays, selectedYear);
+  // Determine if timeline mode is active
+  const { timelineMode } = useUI();
+  const timelineOverlays = overlays.filter(isTimelineOverlay);
+
+  // Get overlay items based on mode
+  const overlayItems = timelineMode
+    ? useTimelineOverlayItems(timelineOverlays, selectedYear)
+    : useOverlayItems(overlays);
 
   // UI hint for adding marker
   const addMarkerHint = useUiHint(

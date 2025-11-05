@@ -1,8 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useTrips } from "@contexts/TripsContext";
 import {
   editOverlay as editOverlayUtil,
   removeOverlay as removeOverlayUtil,
   updateOverlayVisibility,
+} from "@features/overlays";
+import {
+  computeVisitedCountriesFromTrips,
+  persistOverlays,
 } from "@features/overlays";
 import type { AnyOverlay, TimelineOverlay } from "@types";
 import { appDb } from "@utils/db";
@@ -39,6 +44,9 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
     Record<string, string>
   >({});
 
+  // Trips context for syncing visited countries overlay
+  const { trips } = useTrips();
+
   // Loading and error state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +62,6 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       try {
         let dbOverlays = await appDb.overlays.toArray();
-        // Sort overlays by order property
         dbOverlays = dbOverlays.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
         // Ensure visited countries overlay exists
@@ -87,16 +94,29 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Persist overlays to IndexedDB whenever they change
+  // Sync visited countries overlay with trips
   useEffect(() => {
-    if (!loading) {
-      appDb.overlays.clear().then(() => {
-        if (overlays.length > 0) {
-          appDb.overlays.bulkAdd(overlays);
-        }
-      });
+    if (!loading && overlays.length > 0) {
+      const visitedOverlayId = "visited-countries";
+      const visitedCountries = computeVisitedCountriesFromTrips(trips);
+
+      const prevCountries =
+        overlays.find((o) => o.id === visitedOverlayId)?.countries || [];
+      const hasChanged =
+        prevCountries.length !== visitedCountries.length ||
+        prevCountries.some((c, i) => visitedCountries[i] !== c);
+
+      if (hasChanged) {
+        const updated = overlays.map((overlay) =>
+          overlay.id === visitedOverlayId
+            ? { ...overlay, countries: visitedCountries }
+            : overlay
+        );
+        setOverlays(updated);
+        persistOverlays(updated); // Persist all overlays
+      }
     }
-  }, [overlays, loading]);
+  }, [trips, loading, overlays]);
 
   // Add overlay
   function addOverlay(overlay: AnyOverlay) {

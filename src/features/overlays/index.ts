@@ -4,6 +4,7 @@ export { OverlaysPanel } from "./components/OverlaysPanel";
 
 // Hooks
 export { useOverlayItems } from "./hooks/useOverlayItems";
+export { useTimelineOverlayItems } from "./hooks/useTimelineOverlayItems";
 
 // Utils
 export * from "./utils/overlay";
