@@ -118,6 +118,13 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
     }
   }, [trips, loading, overlays]);
 
+  // Persist overlays on change
+  useEffect(() => {
+    if (!loading && overlays.length > 0) {
+      persistOverlays(overlays);
+    }
+  }, [overlays, loading]);
+
   // Add overlay
   function addOverlay(overlay: AnyOverlay) {
     setOverlays((prev) => [

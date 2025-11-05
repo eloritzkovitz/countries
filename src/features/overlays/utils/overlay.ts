@@ -60,7 +60,14 @@ export function isTimelineOverlay(
  * @returns A list of unique visited country codes.
  */
 export function computeVisitedCountriesFromTrips(trips: Trip[]) {
-  return Array.from(new Set(trips.flatMap((trip) => trip.countryCodes || [])));
+  const now = new Date();
+  return Array.from(
+    new Set(
+      trips
+        .filter((trip) => new Date(trip.startDate) <= now)
+        .flatMap((trip) => trip.countryCodes || [])
+    )
+  );
 }
 
 /**
