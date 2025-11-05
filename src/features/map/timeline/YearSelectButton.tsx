@@ -19,7 +19,7 @@ export function YearSelectButton({
       <select
         value={selectedYear}
         onChange={(e) => setSelectedYear(Number(e.target.value))}
-        className="w-full h-full text-center bg-gray-700 border border-gray-600 rounded appearance-none text-white"
+        className="w-full h-full text-center bg-gray-700 border border-gray-600 rounded appearance-none text-white outline-none"
         style={{
           width: "100%",
           height: "100%",
