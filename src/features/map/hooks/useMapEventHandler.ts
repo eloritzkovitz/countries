@@ -1,4 +1,4 @@
-import { DEFAULT_MAP_SETTINGS } from "@config/constants";
+import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { getGeoCoordsFromMouseEvent } from "@features/map";
 
 type UseMapEventHandlerProps = {

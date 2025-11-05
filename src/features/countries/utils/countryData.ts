@@ -2,8 +2,8 @@
  * Utility functions for handling country data.
  */
 
-import { EXCLUDED_ISO_CODES, SOVEREIGN_FLAG_MAP } from "@config";
-import { SOVEREIGN_DEPENDENCIES } from "@config/sovereignties";
+import { EXCLUDED_ISO_CODES, SOVEREIGN_FLAG_MAP } from "@constants";
+import { SOVEREIGN_DEPENDENCIES } from "@features/countries";
 import type {
   Country,
   SovereigntyType,

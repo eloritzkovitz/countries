@@ -1,6 +1,6 @@
 import { FaCog, FaTimes } from "react-icons/fa";
 import { ActionButton, Panel, Separator } from "@components";
-import { DEFAULT_PANEL_WIDTH } from "@config/constants";
+import { DEFAULT_PANEL_WIDTH } from "@constants";
 import { useUI } from "@contexts/UIContext";
 import { HomeCountrySelect } from "./HomeCountrySelect";
 import { ThemeSettingsGroup } from "./ThemeSettingsGroup";

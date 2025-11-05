@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { KeyHandler, ModifierKeys } from "../types/keyCommand";
+import type { KeyHandler, ModifierKeys } from "@types";
 
 /**
  * Generic hook for handling keyboard events with optional modifier keys.

@@ -10,13 +10,13 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@components': path.resolve(__dirname, 'src/components'),
-      '@config': path.resolve(__dirname, 'src/config'),
+      '@components': path.resolve(__dirname, 'src/shared/components'),
+      '@constants': path.resolve(__dirname, 'src/shared/constants'),
       '@contexts': path.resolve(__dirname, 'src/contexts'),
       '@features': path.resolve(__dirname, 'src/features'), 
-      '@hooks': path.resolve(__dirname, 'src/hooks'),
-      '@types': path.resolve(__dirname, 'src/types'),
-      '@utils': path.resolve(__dirname, 'src/utils'),
+      '@hooks': path.resolve(__dirname, 'src/shared/hooks'),
+      '@types': path.resolve(__dirname, 'src/shared/types'),
+      '@utils': path.resolve(__dirname, 'src/shared/utils'),
     },
   },
 })

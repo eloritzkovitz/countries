@@ -1,7 +1,7 @@
 import React from "react";
 import { FaTimes, FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { ActionButton, Modal, PanelHeader } from "@components";
-import { categoryColumns, keyCommands } from "@config/keyCommands";
+import { categoryColumns, keyCommands } from "@constants/keyCommands";
 import { useUI } from "@contexts/UIContext";
 import type { KeyCommand } from "@types";
 

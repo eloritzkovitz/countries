@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DEFAULT_MAP_SETTINGS } from "@config/constants";
+import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { getCountryCenterAndZoom } from "@features/map";
 
 export function useMapView(

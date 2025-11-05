@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { FaMapPin } from "react-icons/fa";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
-import { DEFAULT_MAP_SETTINGS } from "@config/constants";
+import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { MapMarkersLayer } from "@features/markers";

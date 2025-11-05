@@ -1,4 +1,4 @@
-import { MAP_STYLE_CONFIG } from "@config/constants";
+import { MAP_STYLE_CONFIG } from "@constants";
 import { useMapUI } from "@contexts/MapUIContext";
 
 export function useMapGeographyStyle(isAddingMarker?: boolean) {

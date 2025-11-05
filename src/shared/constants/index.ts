@@ -44,11 +44,12 @@ export const MAP_OPTIONS = {
     { value: 0.1, label: "Thin" },
     { value: 0.5, label: "Medium" },
     { value: 1, label: "Thick" },
-  ],  
+  ],
 };
 
 // Data
-export const EXCLUDED_ISO_CODES = [ // List of country codes that do not have their own flags
+export const EXCLUDED_ISO_CODES = [
+  // List of country codes that do not have their own flags
   "BV", // Bouvet Island
   "HM", // Heard Island and McDonald Islands
   "MF", // Saint Martin
@@ -57,11 +58,11 @@ export const EXCLUDED_ISO_CODES = [ // List of country codes that do not have th
 ];
 
 export const SOVEREIGN_FLAG_MAP: Record<string, string> = {
-  "AK": "GB", // Akrotiri and Dhekelia → United Kingdom
-  "BV": "NO", // Bouvet Island → Norway
-  "GF": "FR", // French Guiana → France  
-  "HM": "AU", // Heard Island and McDonald Islands → Australia
-  "MF": "FR", // Saint Martin → France
-  "SJ": "NO", // Svalbard and Jan Mayen → Norway  
-  "UM": "US", // United States Minor Outlying Islands → United States
+  AK: "GB", // Akrotiri and Dhekelia → United Kingdom
+  BV: "NO", // Bouvet Island → Norway
+  GF: "FR", // French Guiana → France
+  HM: "AU", // Heard Island and McDonald Islands → Australia
+  MF: "FR", // Saint Martin → France
+  SJ: "NO", // Svalbard and Jan Mayen → Norway
+  UM: "US", // United States Minor Outlying Islands → United States
 };

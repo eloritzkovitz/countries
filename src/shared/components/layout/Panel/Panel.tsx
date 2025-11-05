@@ -1,6 +1,6 @@
 import React from "react";
 import type { ReactNode } from "react";
-import { DEFAULT_PANEL_WIDTH } from "@config/constants";
+import { DEFAULT_PANEL_WIDTH } from "@constants";
 import { usePanelHide } from "@hooks/usePanelHide";
 import { PanelHeader } from "./PanelHeader";
 import "./Panel.css";

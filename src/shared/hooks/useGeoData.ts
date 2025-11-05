@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DEFAULT_MAP_SETTINGS } from "@config/constants";
+import { DEFAULT_MAP_SETTINGS } from "@constants";
 
 export function useGeoData() {
   const [geoData, setGeoData] = useState<any | null>(null);

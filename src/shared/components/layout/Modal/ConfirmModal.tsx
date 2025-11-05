@@ -1,5 +1,5 @@
-import { Modal, ModalActions } from "@components";
 import type { ReactNode } from "react";
+import { Modal, ModalActions } from "@components";
 
 type ConfirmModalProps = {
   isOpen?: boolean;

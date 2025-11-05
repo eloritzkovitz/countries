@@ -5,8 +5,8 @@
  * This script generates a Markdown table of keyboard shortcuts from the keyCommands config.
  */
 
-import { keyCommands } from "../src/config/keyCommands.ts";
-import type { KeyCommand } from "../src/types/keyCommand.ts";
+import { keyCommands } from "../src/shared/constants/keyCommands.ts";
+import type { KeyCommand } from "../src/shared/types/keyCommand.ts";
 
 /**
  * Generate a Markdown table of keyboard shortcuts from the keyCommands config.

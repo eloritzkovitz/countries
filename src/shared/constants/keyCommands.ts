@@ -1,4 +1,4 @@
-import type { KeyCommand } from "../types/keyCommand";
+import type { KeyCommand } from "@types";
 
 export const categoryColumns = [
   ["General", "Search", "Filters"],

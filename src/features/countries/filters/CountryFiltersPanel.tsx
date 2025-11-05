@@ -7,10 +7,10 @@ import {
   Panel,
   Separator,
 } from "@components";
-import { DEFAULT_PANEL_WIDTH } from "@config/constants";
-import { coreFiltersConfig } from "@config/filtersConfig";
+import { DEFAULT_PANEL_WIDTH } from "@constants";
 import { useCountryData } from "@contexts/CountryDataContext";
 import {
+  coreFiltersConfig,
   getSubregionsForRegion,
   getAllSovereigntyTypes,
 } from "@features/countries";

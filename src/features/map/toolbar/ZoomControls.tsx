@@ -1,6 +1,6 @@
 import { FaPlus, FaMinus, FaCrosshairs } from "react-icons/fa";
 import { useRef } from "react";
-import { DEFAULT_MAP_SETTINGS } from "@config/constants";
+import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import { ZoomButton } from "./ZoomButton";
 

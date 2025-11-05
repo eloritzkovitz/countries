@@ -1,4 +1,4 @@
-import { ALL_TRIP_CATEGORIES, ALL_TRIP_STATUSES, ALL_TRIP_TAGS } from "@config/tripsConfig";
+import { ALL_TRIP_CATEGORIES, ALL_TRIP_STATUSES, ALL_TRIP_TAGS } from "@features/trips";
 
 export type Trip = {
   id: string;
