@@ -1,6 +1,6 @@
-# Countries Explorer
+# Atlaset
 
-A fully-configurable country explorer built with React, Vite, and TypeScript.  
+A fully-configurable country explorer built with React, Vite, and TypeScript. Atlaset supports user-defined overlays, flexible filters, trip management and marker placement, allowing users to manage travel logs or create custom maps.
 All map, country and currency data sources are **generic, config-driven and environment-configurable**, loaded from JSON files.  
 Supports user-defined overlays, flexible filters, and easy data extension for any dataset.
 
@@ -65,24 +65,14 @@ See [Keyboard Shortcuts](docs/keyboard-shortcuts.md) for a full list of keyboard
 ```
 countries/
 |
-├── public/              # Static assets (favicon, images, etc.) 
-|   ├── data             # All JSON data sources 
-|   └── images           # Images
+├── public/                    # Static assets
+|   ├── data                   # All JSON data sources 
+|   └── images                 # Images
 |
-├── scripts/             # Data-related scripts 
-|
+├── scripts/                   # Data-related scripts 
+│ 
 ├── src/
-│   ├── components/      # Reusable UI and layout components
-│   │   ├── action
-│   │   ├── feedback
-│   │   ├── form
-│   │   ├── layout
-│   │   ├── table
-│   │   └── ui
-│   │  
-│   ├── config/          # Constants and configuration files
-│   ├── contexts/        # Custom React contexts
-│   ├── components/      # Reusable UI and layout components
+│   ├── features/              # Feature modules
 │   │   ├── countries
 │   │   ├── game
 │   │   ├── map
@@ -91,13 +81,18 @@ countries/
 │   │   ├── settings
 │   │   └── trips
 │   │
-│   ├── hooks/           # Custom React hooks
-│   ├── pages/           # Page components
-│   ├── styles/          # Global and component styles
-│   ├── types/           # Custom types
-│   ├── utils/           # Utilities
-│   ├── App.tsx          # Main app component
-│   └── main.tsx         # Entry point
+│   ├── shared/                # Reusable files
+│   │   ├── components/        # UI/layout components
+│   │   ├── constants/         # Global constants
+│   │   ├── hooks/             # Reusable hooks
+│   │   ├── types/             # Global types/interfaces
+│   │   └── utils/             # Generic utilities
+│   │  
+│   ├── contexts/              # Custom React contexts
+│   ├── pages/                 # Page components
+│   ├── styles/                # Global and component styles
+│   ├── App.tsx                # Main app component
+│   └── main.tsx               # Entry point
 ```
 
 ## Tips & Customization
