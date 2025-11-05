@@ -24,6 +24,8 @@ export function OverlayPanelItem({
   onToggleVisibility,
   onRemove,
 }: OverlayPanelItemProps) {
+  const isVisited = overlay.id === "visited-countries";
+
   return (
     <PanelListItem
       color={overlay.color}
@@ -32,10 +34,11 @@ export function OverlayPanelItem({
       onToggleVisibility={() => onToggleVisibility(overlay.id)}
       onEdit={() => onEdit(overlay)}
       onRemove={() => onRemove(overlay.id)}
-      dragged={dragged}
-      onDragStart={onDragStart}
-      handleDragOver={handleDragOver}
-      handleDragEnd={handleDragEnd}      
+      removeDisabled={isVisited}
+      dragged={isVisited ? false : dragged}
+      onDragStart={isVisited ? undefined : onDragStart}
+      handleDragOver={isVisited ? undefined : handleDragOver}
+      handleDragEnd={isVisited ? undefined : handleDragEnd}      
     />
   );
 }

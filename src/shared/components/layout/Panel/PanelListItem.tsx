@@ -16,6 +16,7 @@ export interface PanelListItemProps {
   onCenter?: () => void;
   onEdit?: () => void;
   onRemove?: () => void;
+  removeDisabled?: boolean;
   dragged?: boolean;
   onDragStart?: () => void;
   handleDragOver?: (e: DragEvent<HTMLLIElement>) => void;
@@ -30,6 +31,7 @@ export function PanelListItem({
   onCenter,
   onEdit,
   onRemove,
+  removeDisabled = false,
   dragged,
   onDragStart,
   handleDragOver,
@@ -84,8 +86,9 @@ export function PanelListItem({
           onClick={onRemove}
           ariaLabel="Remove"
           title="Remove"
-          className="mx-1 text-lg text-red-600 hover:text-red-800"
+          className={`mx-1 text-lg text-red-600 hover:text-red-800 ${removeDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           icon={<FaTrash />}
+          disabled={removeDisabled}
         />
       )}
     </li>

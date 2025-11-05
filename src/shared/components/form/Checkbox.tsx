@@ -1,11 +1,12 @@
 type CheckboxProps = {
   checked: boolean;
+  disabled?: boolean;
   onChange: (checked: boolean) => void;
   label?: string;
   onClick?: React.MouseEventHandler<HTMLInputElement>;
 };
 
-export function Checkbox({ checked, onChange, label }: CheckboxProps) {
+export function Checkbox({ checked, disabled, onChange, label }: CheckboxProps) {
   return (
     <label
       className="inline-flex items-center cursor-pointer relative"
@@ -14,6 +15,7 @@ export function Checkbox({ checked, onChange, label }: CheckboxProps) {
       <input
         type="checkbox"
         checked={checked}
+        disabled={disabled}
         onChange={(e) => onChange(e.target.checked)}
         className="peer sr-only"
       />

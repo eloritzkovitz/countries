@@ -19,6 +19,7 @@ interface CountrySelectModalProps {
   onChange: (newCountries: string[]) => void;
   onClose: () => void;
   multiple?: boolean;
+  disabled?: boolean;
 }
 
 export function CountrySelectModal({
@@ -28,6 +29,7 @@ export function CountrySelectModal({
   onChange,
   onClose,
   multiple = true,
+  disabled = false,
 }: CountrySelectModalProps) {
   const [search, setSearch] = useState("");
 
@@ -78,6 +80,7 @@ export function CountrySelectModal({
                 >
                   <Checkbox
                     checked={checked}
+                    disabled={disabled}
                     onChange={(checked) => {
                       if (multiple) {
                         const newSelected = checked
