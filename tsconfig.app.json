@@ -9,20 +9,20 @@
     "skipLibCheck": true,
     "baseUrl": "src",
     "paths": {
-      "@components": ["components/index.ts"],
-      "@components/*": ["components/*"],  
-      "@config": ["config/index.ts"],
-      "@config/*": ["config/*"],         
+      "@components": ["shared/components/index.ts"],
+      "@components/*": ["shared/components/*"],      
+      "@constants": ["shared/constants/index.ts"],
+      "@constants/*": ["shared/constants/*"],    
       "@contexts": ["contexts/index.ts"],
       "@contexts/*": ["contexts/*"],
       "@features": ["features/index.ts"],
       "@features/*": ["features/*"],
-      "@hooks": ["hooks/index.ts"],
-      "@hooks/*": ["hooks/*"],
-      "@types": ["types/index.ts"],
-      "@types/*": ["types/*"],
-      "@utils": ["utils/index.ts"],
-      "@utils/*": ["utils/*"]
+      "@hooks": ["shared/hooks/index.ts"],
+      "@hooks/*": ["shared/hooks/*"],
+      "@types": ["shared/types/index.ts"],
+      "@types/*": ["shared/types/*"],
+      "@utils": ["shared/utils/index.ts"],
+      "@utils/*": ["shared/utils/*"]
     },
 
     /* Bundler mode */

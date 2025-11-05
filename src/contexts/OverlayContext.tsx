@@ -1,50 +1,56 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useTrips } from "@contexts/TripsContext";
 import {
   editOverlay as editOverlayUtil,
   removeOverlay as removeOverlayUtil,
+  persistOverlays,
   updateOverlayVisibility,
 } from "@features/overlays";
-import type { Overlay } from "@types";
+import { computeVisitedCountriesFromTrips } from "@features/trips";
+import type { AnyOverlay, TimelineOverlay } from "@types";
 import { appDb } from "@utils/db";
 
 export type OverlayContextType = {
-  overlays: Overlay[];
-  setOverlays: React.Dispatch<React.SetStateAction<Overlay[]>>;
+  overlays: AnyOverlay[];
+  setOverlays: React.Dispatch<React.SetStateAction<AnyOverlay[]>>;
   overlaySelections: Record<string, string>;
   setOverlaySelections: React.Dispatch<
     React.SetStateAction<Record<string, string>>
   >;
-  addOverlay: (overlay: Overlay) => void;
-  editOverlay: (overlay: Overlay) => void;
+  addOverlay: (overlay: AnyOverlay) => void;
+  editOverlay: (overlay: AnyOverlay) => void;
   removeOverlay: (id: string) => void;
-  reorderOverlays: (newOrder: Overlay[]) => void;
+  reorderOverlays: (newOrder: AnyOverlay[]) => void;
   toggleOverlayVisibility: (id: string) => void;
   loading: boolean;
   error: string | null;
-  editingOverlay: Overlay | null;
+  editingOverlay: AnyOverlay | null;
   isEditModalOpen: boolean;
   openAddOverlay: () => void;
-  openEditOverlay: (overlay: Overlay) => void;
+  openEditOverlay: (overlay: AnyOverlay) => void;
   saveOverlay: () => void;
   closeOverlayModal: () => void;
-  setEditingOverlay: React.Dispatch<React.SetStateAction<Overlay | null>>;
+  setEditingOverlay: React.Dispatch<React.SetStateAction<AnyOverlay | null>>;
 };
 
 const OverlayContext = createContext<OverlayContextType | undefined>(undefined);
 
 export function OverlayProvider({ children }: { children: React.ReactNode }) {
   // Overlay state
-  const [overlays, setOverlays] = useState<Overlay[]>([]);
+  const [overlays, setOverlays] = useState<AnyOverlay[]>([]);
   const [overlaySelections, setOverlaySelections] = useState<
     Record<string, string>
   >({});
+
+  // Trips context for syncing visited countries overlay
+  const { trips } = useTrips();
 
   // Loading and error state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Modal state
-  const [editingOverlay, setEditingOverlay] = useState<Overlay | null>(null);
+  const [editingOverlay, setEditingOverlay] = useState<AnyOverlay | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   // Load overlays from IndexedDB on mount
@@ -54,8 +60,23 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       try {
         let dbOverlays = await appDb.overlays.toArray();
-        // Sort overlays by order property
         dbOverlays = dbOverlays.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+        // Ensure visited countries overlay exists
+        const visitedOverlayId = "visited-countries";
+        if (!dbOverlays.some((o) => o.id === visitedOverlayId)) {
+          dbOverlays.unshift({
+            id: visitedOverlayId,
+            name: "Visited Countries",
+            color: "#00bfff",
+            countries: [],
+            visible: true,
+            tooltip: "Countries visited (synced with trips)",
+            timelineEnabled: true,
+            timelineSnapshot: true,
+          } as TimelineOverlay);
+        }
+
         if (mounted) {
           setOverlays(dbOverlays);
           setLoading(false);
@@ -71,19 +92,39 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Persist overlays to IndexedDB whenever they change
+  // Sync visited countries overlay with trips
   useEffect(() => {
-    if (!loading) {
-      appDb.overlays.clear().then(() => {
-        if (overlays.length > 0) {
-          appDb.overlays.bulkAdd(overlays);
-        }
-      });
+    if (!loading && overlays.length > 0) {
+      const visitedOverlayId = "visited-countries";
+      const visitedCountries = computeVisitedCountriesFromTrips(trips);
+
+      const prevCountries =
+        overlays.find((o) => o.id === visitedOverlayId)?.countries || [];
+      const hasChanged =
+        prevCountries.length !== visitedCountries.length ||
+        prevCountries.some((c, i) => visitedCountries[i] !== c);
+
+      if (hasChanged) {
+        const updated = overlays.map((overlay) =>
+          overlay.id === visitedOverlayId
+            ? { ...overlay, countries: visitedCountries }
+            : overlay
+        );
+        setOverlays(updated);
+        persistOverlays(updated); // Persist all overlays
+      }
+    }
+  }, [trips, loading, overlays]);
+
+  // Persist overlays on change
+  useEffect(() => {
+    if (!loading && overlays.length > 0) {
+      persistOverlays(overlays);
     }
   }, [overlays, loading]);
 
   // Add overlay
-  function addOverlay(overlay: Overlay) {
+  function addOverlay(overlay: AnyOverlay) {
     setOverlays((prev) => [
       { ...overlay, order: 0 },
       ...prev.map((o) => ({ ...o, order: (o.order ?? 0) + 1 })),
@@ -91,7 +132,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Edit overlay
-  function editOverlay(overlay: Overlay) {
+  function editOverlay(overlay: AnyOverlay) {
     setOverlays((prev) => editOverlayUtil(prev, overlay));
   }
 
@@ -101,7 +142,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Reorder overlays
-  function reorderOverlays(newOrder: Overlay[]) {
+  function reorderOverlays(newOrder: AnyOverlay[]) {
     const ordered = newOrder.map((overlay, idx) => ({
       ...overlay,
       order: idx,
@@ -130,7 +171,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   }
 
   // Open edit modal with selected overlay
-  function openEditOverlay(overlay: Overlay) {
+  function openEditOverlay(overlay: AnyOverlay) {
     setEditingOverlay({ ...overlay });
     setEditModalOpen(true);
   }

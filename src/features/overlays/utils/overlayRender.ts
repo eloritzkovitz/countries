@@ -14,6 +14,7 @@ export function getOverlayItems(overlay: Overlay): OverlayItem[] {
   return overlay.countries.map((isoCode) => ({
     isoCode,
     color: overlay.color,
+    overlayId: overlay.id,
     tooltip: overlay.tooltip || overlay.name,
   }));
 }
@@ -43,11 +44,18 @@ export function getBlendedOverlayColor(
   overlays: OverlayItem[] = [],
   fallbackColor?: string
 ) {
+  // Prioritize visited-countries overlay
+  const visited = overlays.find(o => o.overlayId === "visited-countries");
+  if (visited) return visited.color;
+
+  // Otherwise, blend or pick the top-most overlay
   const overlayColors = overlays
     .map((o) => o.color)
     .filter((c): c is string => typeof c === "string" && c.length > 0);
 
   if (overlayColors.length === 0) return fallbackColor;
+  if (overlayColors.length === 1) return overlayColors[0];
+
   // preserve stacking order by reversing
   return blendColors([...overlayColors].reverse());
 }

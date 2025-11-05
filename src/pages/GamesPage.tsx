@@ -4,7 +4,7 @@ import { CountryFlag, ErrorMessage, LoadingSpinner } from "@components";
 import { getRandomCountry, getCountriesWithOwnFlag } from "@features/countries";
 import { GuessForm, ResultMessage, Scoreboard } from "@features/game";
 import { useCountryData } from "@contexts/CountryDataContext";
-import type { Country } from "../types/country";
+import type { Country } from "@types";
 
 export default function GamesPage() {
   const { countries, loading, error } = useCountryData();

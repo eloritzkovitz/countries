@@ -5,8 +5,8 @@ import {
   DropdownSelectInput,
   SortableFilterHeader,
 } from "@components";
+import { TRIP_CATEGORY_ICONS } from "@features/trips";
 import type { SortKey, TripCategory, TripFilters } from "@types";
-import { TRIP_CATEGORY_ICONS } from "../config/tripCategoryIcons";
 
 type TripsTableHeadersProps = {
   allSelected: boolean;

@@ -6,6 +6,9 @@ export { WorldMap } from "./components/WorldMap";
 export { useMapGeographyStyle } from "./hooks/useMapGeographyStyle";
 export { useMapView } from "./hooks/useMapView";
 
+// Timeline
+export { TimelinePicker } from "./timeline/TimelinePicker";
+
 // Utils
 export * from "./utils/map";
 export * from "./utils/mapExport";

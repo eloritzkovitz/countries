@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import {
   ErrorMessage,
   MenuPanel,
-  ShortcutsModal,  
+  ShortcutsModal,
   SplashScreen,
 } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
@@ -12,7 +12,7 @@ import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import { useUiToggleHint } from "@hooks/useUiToggleHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
-import { MapToolbar, WorldMap } from "@features/map";
+import { MapToolbar, TimelinePicker, WorldMap } from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
 import {
   MarkerDetailsModal,
@@ -23,11 +23,12 @@ import {
 import { OverlayModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
 import type { Country, Marker } from "@types";
+import { useVisitedCountriesTimeline } from "@features/trips/hooks/useVisitedCountriesTimeline";
 
 export default function AtlasPage() {
   // UI state
   const [mapReady, setMapReady] = useState(false);
-  const { uiVisible, setUiVisible } = useUI();
+  const { uiVisible, setUiVisible, timelineMode, setTimelineMode } = useUI();
   const [hintMessage, setHintMessage] = useState<React.ReactNode>("");
   const [hintKey, setHintKey] = useState(0);
   const uiHint = useUiHint(hintMessage, 4000, { key: hintKey });
@@ -69,6 +70,15 @@ export default function AtlasPage() {
   // Determine if currently editing an existing overlay
   const isEditing =
     !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
+
+  // Timeline state
+  const visitedByYear = useVisitedCountriesTimeline();
+  const years = Object.keys(visitedByYear)
+    .map(Number)
+    .sort((a, b) => a - b);
+  const [selectedYear, setSelectedYear] = useState<number>(
+    years[years.length - 1] || new Date().getFullYear()
+  );
 
   // Marker creation state
   const {
@@ -176,10 +186,18 @@ export default function AtlasPage() {
             isAddingMarker={isAddingMarker}
             onMapClickForMarker={handleMapClickForMarker}
             onMarkerDetails={handleMarkerDetails}
+            selectedYear={selectedYear}
           />
 
           {/* Toolbar & UI Overlays */}
-          <MapToolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} />
+          <MapToolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} setSnapshotMode={setTimelineMode} />
+          {uiVisible && timelineMode && (
+            <TimelinePicker
+              years={years}
+              selectedYear={selectedYear}
+              setSelectedYear={setSelectedYear}
+            />
+          )}
           <CountryDetailsModal
             country={modalCountry}
             isOpen={!!modalCountry}

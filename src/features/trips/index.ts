@@ -1,9 +1,10 @@
 // Components
 export * from "./components/TripModal";
 
-// Config
-export * from "./config/columnConfig";
-export * from "./config/tripCategoryIcons";
+// Constants
+export * from "./constants/columns";
+export * from "./constants/tripCategoryIcons";
+export * from "./constants/trips";
 
 // Table
 export * from "./table/TripsTable";

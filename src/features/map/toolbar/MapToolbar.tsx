@@ -1,15 +1,18 @@
 import { useState } from "react";
 import {
-  FaLayerGroup,
-  FaChevronLeft,
-  FaChevronRight,
+  FaGlobe,
   FaMapPin,
+  FaLayerGroup,
   FaDownload,
   FaGear,
-  FaGlobe,
+  FaClockRotateLeft,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa6";
 import { ActionButton, ActionsToolbar, ToolbarSeparator } from "@components";
+import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
+import { isTimelineOverlay } from "@features/overlays";
 import { ZoomControls } from "./ZoomControls";
 import { MapExportModal } from "../export/MapExportModal";
 import "./MapToolbar.css";
@@ -17,11 +20,13 @@ import "./MapToolbar.css";
 export function MapToolbar({
   zoom,
   setZoom,
+  setSnapshotMode,
   svgRef,
   children,
 }: {
   zoom: number;
   setZoom: React.Dispatch<React.SetStateAction<number>>;
+  setSnapshotMode: React.Dispatch<React.SetStateAction<boolean>>;
   svgRef: React.RefObject<SVGSVGElement | null>;
   children?: React.ReactNode;
 }) {
@@ -35,6 +40,10 @@ export function MapToolbar({
     toggleSettings,
   } = useUI();
   const [visible, setVisible] = useState(true);
+
+  // Overlay context
+  const { overlays } = useOverlayContext();
+  const visitedOverlay = overlays.find((o) => o.id === "visited-countries");
 
   return (
     <div
@@ -82,6 +91,16 @@ export function MapToolbar({
             className="toolbar-btn"
             icon={<FaLayerGroup />}
           />
+          {/* Snapshot toggle button */}
+          {visitedOverlay && isTimelineOverlay(visitedOverlay) && (
+            <ActionButton
+              onClick={() => setSnapshotMode((prev) => !prev)}
+              ariaLabel="Timeline"
+              title="Timeline"
+              className="toolbar-btn"
+              icon={<FaClockRotateLeft />}
+            />
+          )}
           <ActionButton
             onClick={toggleExport}
             ariaLabel="Export"

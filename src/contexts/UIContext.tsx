@@ -22,12 +22,15 @@ type UIContextType = {
   showShortcuts: boolean;
   openShortcuts: () => void;
   closeShortcuts: () => void;
+  timelineMode: boolean;
+  setTimelineMode: (v: boolean | ((prev: boolean) => boolean)) => void;
 };
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: { children: ReactNode }) {
   const [uiVisible, setUiVisible] = useState(true);
+  const [timelineMode, setTimelineMode] = useState(false);
 
   // State for which panel is open; null means no panel is open
   const [showMenu, setShowMenu] = useState(false);
@@ -81,6 +84,9 @@ export function UIProvider({ children }: { children: ReactNode }) {
   // Toggle Overlays panel with "O"
   useKeyHandler(toggleOverlays, ["o", "O"], true);
 
+  // Toggle Timeline panel with "T"
+  useKeyHandler(() => setTimelineMode((prev) => !prev), ["t", "T"], true);
+
   // Toggle Export panel with "E"
   useKeyHandler(toggleExport, ["e", "E"], true);
 
@@ -120,6 +126,8 @@ export function UIProvider({ children }: { children: ReactNode }) {
         showShortcuts,
         openShortcuts,
         closeShortcuts,
+        timelineMode,
+        setTimelineMode,
       }}
     >
       {children}

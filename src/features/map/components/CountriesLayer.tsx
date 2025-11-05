@@ -57,10 +57,12 @@ export function CountriesLayer({
             let style = geographyStyle.default;
             let tooltip = geo.properties.name;
 
-            if (isSelected || isHovered) {
+            if (isHovered) {
               style = geographyStyle.hover;
             } else if (blendedFill) {
               style = { ...geographyStyle.default, fill: blendedFill };
+            } else if (isSelected) {
+              style = geographyStyle.hover;
             }
 
             return (

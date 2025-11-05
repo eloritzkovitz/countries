@@ -5,8 +5,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { appDb } from "../utils/db";
 import type { Settings } from "@types";
+import { appDb } from "@utils/db";
 
 const SettingsContext = createContext<{
   settings: Settings;

@@ -1,12 +1,11 @@
 import { useRef, useState } from "react";
-import { FaMapPin } from "react-icons/fa";
+import { FaClockRotateLeft, FaMapPin } from "react-icons/fa6";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
-import { DEFAULT_MAP_SETTINGS } from "@config/constants";
+import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
-import { getGeoCoordsFromMouseEvent } from "@features/map";
+import { useUI } from "@contexts/UIContext";
 import { MapMarkersLayer } from "@features/markers";
-import { useOverlayItems } from "@features/overlays";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import type { Marker } from "@types";
@@ -16,6 +15,8 @@ import { MapStatus } from "./MapStatus";
 import { MapSvgContainer } from "../export/MapSvgContainer";
 import { useContainerDimensions } from "../hooks/useContainerDimensions";
 import { useMapStatus } from "../hooks/useMapStatus";
+import { useMapEventHandler } from "../hooks/useMapEventHandler";
+import { useMapOverlayItems } from "../hooks/useMapOverlayItems";
 
 type WorldMapProps = {
   zoom: number;
@@ -35,6 +36,7 @@ type WorldMapProps = {
   isAddingMarker?: boolean;
   onMapClickForMarker?: (coords: [number, number]) => void;
   onMarkerDetails?: (marker: Marker) => void;
+  selectedYear: number;
 };
 
 export function WorldMap({
@@ -50,13 +52,14 @@ export function WorldMap({
   isAddingMarker,
   onMapClickForMarker,
   onMarkerDetails,
+  selectedYear,
 }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
-  
+
   // Map projection and data
   const { projection } = useMapUI();
-  const { geoData, geoError, loading: geoLoading } = useGeoData();  
+  const { geoData, geoError, loading: geoLoading } = useGeoData();
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(
     null
   );
@@ -68,8 +71,8 @@ export function WorldMap({
     error: overlaysError,
   } = useOverlayContext();
 
-  // Merge all visible overlays into a single ordered array
-  const overlayItems = useOverlayItems(overlays);
+  // Get overlay items based on mode
+  const overlayItems = useMapOverlayItems(overlays, selectedYear);
 
   // UI hint for adding marker
   const addMarkerHint = useUiHint(
@@ -82,6 +85,20 @@ export function WorldMap({
       ""
     ),
     isAddingMarker ? 0 : 1
+  );
+
+  // UI hint for timeline mode
+  const { uiVisible, timelineMode } = useUI();
+  const timelineHint = useUiHint(
+    timelineMode ? (
+      <span>
+        <FaClockRotateLeft className="inline mr-2" />
+        Timeline mode enabled. Press T to toggle off. 
+      </span>
+    ) : (
+      ""
+    ),
+    0
   );
 
   // Determine map status
@@ -107,23 +124,15 @@ export function WorldMap({
   }
 
   // Handle map event for mouse move or click
-  const handleMapEvent = (event: React.MouseEvent<SVGSVGElement>) => {
-    const coords = getGeoCoordsFromMouseEvent(
-      event,
-      projection || DEFAULT_MAP_SETTINGS.projection,
-      dimensions.width,
-      dimensions.height,
-      DEFAULT_MAP_SETTINGS.scaleDivisor,
-      zoom,
-      center
-    );
-    if (coords) {
-      setSelectedCoords([coords[0], coords[1]]);
-      if (isAddingMarker && onMapClickForMarker && event.type === "click") {
-        onMapClickForMarker([coords[1], coords[0]]);
-      }
-    }
-  };
+  const handleMapEvent = useMapEventHandler({
+    projection,
+    dimensions,
+    zoom,
+    center,
+    isAddingMarker,
+    setSelectedCoords,
+    onMapClickForMarker,
+  });
 
   return (
     <div
@@ -183,6 +192,8 @@ export function WorldMap({
       </MapSvgContainer>
       {/* UI hint for adding marker */}
       {addMarkerHint}
+      {/* UI hint for timeline mode */}
+      {uiVisible && timelineHint}
       {/* Display selected coordinates */}
       {selectedCoords && <MapCoordinatesDisplay coords={selectedCoords} />}
     </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaMapPin, FaPlus, FaTimes } from "react-icons/fa";
 import { ActionButton, Panel } from "@components";
-import { DEFAULT_PANEL_WIDTH } from "@config/constants";
+import { DEFAULT_PANEL_WIDTH } from "@constants";
 import { useMarkers } from "@contexts/MarkersContext";
 import { useUI } from "@contexts/UIContext";
 import { useDragReorder } from "@hooks/useDragReorder";
