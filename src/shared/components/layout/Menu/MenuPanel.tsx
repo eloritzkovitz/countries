@@ -16,7 +16,7 @@ import { useUI } from "@contexts/UIContext";
 import "./MenuPanel.css";
 
 export function MenuPanel() {
-  const { showMenu, setShowMenu } = useUI();
+  const { uiVisible, showMenu, setShowMenu } = useUI();
 
   return (
     <div className="menu-panel-container">
@@ -27,7 +27,7 @@ export function MenuPanel() {
             <span className="font-bold text-3xl">Atlaset</span>
           </div>
         }
-        show={showMenu}
+        show={uiVisible && showMenu}
         showSeparator={false}
         headerActions={
           <>
@@ -83,7 +83,7 @@ export function MenuPanel() {
       {/* Collapsed action button */}
       <CollapsedPanelButton
         onClick={() => setShowMenu(true)}
-        visible={!showMenu}
+        visible={uiVisible && !showMenu}
         className="fixed top-4 right-4 z-[9999]"
       />
     </div>
