@@ -23,19 +23,23 @@ export function TimelinePicker({
   const canGoBack = currentIndex > 0;
   const canGoForward = currentIndex < years.length - 1;
 
+  // Go to previous year
   const handleBack = () => {
     if (canGoBack) setSelectedYear(years[currentIndex - 1]);
   };
 
+  // Go to next year
   const handleForward = () => {
     if (canGoForward) setSelectedYear(years[currentIndex + 1]);
   };
 
+  // Go to first year
   const handleFirst = () => {
     if (years.length > 0 && selectedYear !== years[0])
       setSelectedYear(years[0]);
   };
 
+  // Go to last year
   const handleLast = () => {
     if (years.length > 0 && selectedYear !== years[years.length - 1])
       setSelectedYear(years[years.length - 1]);

@@ -48,7 +48,6 @@ export function CountriesLayer({
 
             // Overlay logic: blend all overlays for this country
             const overlays = overlayGroups[isoA2] || [];
-            console.log("Overlay group for", isoA2, overlayGroups[isoA2]);
             const blendedFill = getBlendedOverlayColor(
               overlays,
               geographyStyle.default.fill

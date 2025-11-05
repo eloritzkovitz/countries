@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
-import { FaMapPin } from "react-icons/fa";
+import { FaClockRotateLeft, FaMapPin } from "react-icons/fa6";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
+import { useUI } from "@contexts/UIContext";
 import { MapMarkersLayer } from "@features/markers";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
@@ -84,6 +85,20 @@ export function WorldMap({
       ""
     ),
     isAddingMarker ? 0 : 1
+  );
+
+  // UI hint for timeline mode
+  const { uiVisible, timelineMode } = useUI();
+  const timelineHint = useUiHint(
+    timelineMode ? (
+      <span>
+        <FaClockRotateLeft className="inline mr-2" />
+        Timeline mode enabled. Press T to toggle off. 
+      </span>
+    ) : (
+      ""
+    ),
+    0
   );
 
   // Determine map status
@@ -177,6 +192,8 @@ export function WorldMap({
       </MapSvgContainer>
       {/* UI hint for adding marker */}
       {addMarkerHint}
+      {/* UI hint for timeline mode */}
+      {uiVisible && timelineHint}
       {/* Display selected coordinates */}
       {selectedCoords && <MapCoordinatesDisplay coords={selectedCoords} />}
     </div>
