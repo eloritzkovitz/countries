@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import { SplashScreen } from "@components";
+import { PwaUpdateUiHint, SplashScreen } from "@components";
 import { CountryDataProvider } from "@contexts/CountryDataContext";
 import { MapUIProvider } from "@contexts/MapUIContext";
 import { MarkersProvider } from "@contexts/MarkersContext";
@@ -26,6 +26,7 @@ function App() {
     <CountryDataProvider>
       <TripsProvider>
         <UIProvider>
+          <PwaUpdateUiHint />
           <Routes>
             <Route
               path="/"
