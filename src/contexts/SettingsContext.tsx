@@ -6,7 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import type { Settings } from "@types";
-import { appDb } from "@utils/db";
+import { settingsService } from "@services/settingsService";
 
 const SettingsContext = createContext<{
   settings: Settings;
@@ -31,9 +31,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     let mounted = true;
     const load = async () => {
       setLoading(true);
-      const s = await appDb.settings.get("main");
+      const s = await settingsService.load();
       if (mounted) {
-        setSettings(s || { id: "main", theme: "light" });
+        setSettings(s);
         setLoading(false);
       }
     };
@@ -54,9 +54,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   // Update settings in IndexedDB
   const updateSettings = async (updates: Partial<Settings>) => {
     const newSettings = { ...settings, ...updates, id: "main" };
-    await appDb.settings.put(newSettings);
+    await settingsService.save(newSettings);
     setSettings(newSettings);
-  };  
+  };
 
   return (
     <SettingsContext.Provider value={{ settings, updateSettings, loading }}>

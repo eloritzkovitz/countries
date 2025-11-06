@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { markersService } from "@services/markersService";
 import type { Marker } from "@types";
-import { appDb } from "@utils/db";
 
 interface MarkersContextType {
   markers: Marker[];
@@ -22,53 +22,60 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
   // Load markers from IndexedDB on mount
   useEffect(() => {
     let mounted = true;
-    const loadMarkers = async () => {
-      const dbMarkers = await appDb.markers.toArray();
+    markersService.load().then((dbMarkers) => {
       if (mounted) setMarkers(dbMarkers);
       setInitialized(true);
-    };
-    loadMarkers();
+    });
     return () => { mounted = false; };
   }, []);
 
   // Save markers to IndexedDB whenever they change
   useEffect(() => {
     if (initialized) {
-      appDb.markers.clear().then(() => {
-        if (markers.length > 0) {
-          appDb.markers.bulkAdd(markers);
-        }
-      });
+      markersService.save(markers);
     }
   }, [markers, initialized]);
 
   // Add a new marker
-  const addMarker = (marker: Marker) => setMarkers((prev) => [...prev, marker]);
+  const addMarker = async (marker: Marker) => {
+    setMarkers((prev) => [...prev, marker]);
+    await markersService.add(marker);
+  };
 
   // Edit marker by id
-  const editMarker = (updated: Marker) => {
-    setMarkers((markers) =>
-      markers.map((marker) =>
+  const editMarker = async (updated: Marker) => {
+    setMarkers((prev) =>
+      prev.map((marker) =>
         marker.id === updated.id ? { ...marker, ...updated } : marker
       )
     );
+    await markersService.edit(updated);
   };
   
   // Remove marker by id
-  const removeMarker = (id: string) =>
+  const removeMarker = async (id: string) => {
     setMarkers((prev) => prev.filter((m) => m.id !== id));
+    await markersService.remove(id);
+  };
   
   // Toggle marker visibility by id
-  const toggleMarkerVisibility = (id: string) => {
-    setMarkers((markers) =>
-      markers.map((marker) =>
+  const toggleMarkerVisibility = async (id: string) => {
+    setMarkers((prev) =>
+      prev.map((marker) =>
         marker.id === id ? { ...marker, visible: !marker.visible } : marker
       )
     );
+    const updated = markers.find((m) => m.id === id);
+    if (updated) {
+      await markersService.edit({ ...updated, visible: !updated.visible });
+    }
   };
 
   // Reorder markers
-  const reorderMarkers = (newOrder: Marker[]) => setMarkers(newOrder);
+  const reorderMarkers = async (newOrder: Marker[]) => {
+    setMarkers(newOrder);
+    await markersService.save(newOrder);
+  };
 
   return (
     <MarkersContext.Provider
