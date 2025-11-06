@@ -49,3 +49,4 @@ export { CountryFlag } from "./ui/CountryFlag";
 export { CountryWithFlag } from "./ui/CountryWithFlag";
 export { HomeCard } from "./ui/HomeCard";
 export { ShortcutsModal } from "./ui/ShortcutsModal";
+export { PwaUpdateUiHint } from "./ui/PwaUpdateUiHint";
