@@ -6,17 +6,29 @@ Supports user-defined overlays, flexible filters, and easy data extension for an
 
 ## Features
 
+### **Map & Data**
 - **Interactive map:** Explore a cuztomizable world map
 - **Country details:** View detailed country information
 - **Configurable filters:** Filter by region, subregion, sovereignty and overlays
 - **Config-driven data:** All sources loaded from JSON files via environment variables
-- **Overlay import/export:** Backup, share, or migrate overlays directly from the UI
 - **Export maps:** Export your maps as SVG or PNG images
+
+### **Overlays & Markers**
+- **User=defined overlays:** Create and manage custom map overlays
+- **Overlay import/export:** Backup, share, or migrate overlays directly from the UI
 - **Markers:** Add, edit, and remove markers on the map for any location
+
+### **Trips**
 - **Trip management:** Plan, track, and analyze your travels with flexible trip records
+- **Timeline mode:** Track your travels showing visited countries on the map
+
+### **Games**
+- **Flag guessing game:** Test your knowledge with an interactive flag quiz
+
+### **User Experience**
 - **Accessible design:** All major actions and navigation are keyboard-friendly
 - **Modern UI:** Responsive design with Tailwind CSS and icons
-- **Flag guessing game:** Test your knowledge with an interactive flag quiz
+- **PWA support:** Install the application as an app on desktop or mobile and use it offline
 
 ## Getting Started
 
