@@ -3,7 +3,6 @@
  */
 
 import type { AnyOverlay, Overlay, TimelineOverlay } from "@types";
-import { appDb } from "@utils/db";
 
 /**
  * Adds a new overlay to the overlays array.
@@ -23,14 +22,6 @@ export function editOverlay(
   updatedOverlay: Overlay
 ): Overlay[] {
   return overlays.map((o) => (o.id === updatedOverlay.id ? updatedOverlay : o));
-}
-
-/**
- * Persists an array of overlays to the database.
- * @param overlays - The array of overlays to persist.
- */
-export async function persistOverlays(overlays: AnyOverlay[]) {
-  await Promise.all(overlays.map((o) => appDb.overlays.put(o)));
 }
 
 /**

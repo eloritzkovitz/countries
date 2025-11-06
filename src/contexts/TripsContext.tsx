@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import type { Trip } from "@types";
-import { appDb } from "@utils/db";
 import { getAutoTripStatus } from "@features/trips/utils/trips";
+import { tripsService } from "@services/tripsService";
 
 type TripsContextType = {
   trips: Trip[];
@@ -25,7 +25,7 @@ export const TripsProvider: React.FC<{ children: React.ReactNode }> = ({
     let mounted = true;
     const fetchTrips = async () => {
       setLoading(true);
-      const allTrips = await appDb.trips.toArray();
+      const allTrips = await tripsService.load();
       if (mounted) {
         loadTrips(allTrips);
         setLoading(false);
@@ -48,34 +48,34 @@ export const TripsProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   // Add a trip
-  function addTrip(trip: Trip) {
+  async function addTrip(trip: Trip) {
     const updatedTrip = { ...trip, status: getAutoTripStatus(trip) };
-    appDb.trips.add(updatedTrip);
+    await tripsService.add(updatedTrip);
     setTrips((prev) => [...prev, updatedTrip]);
   }
 
   // Update a trip
-  function updateTrip(trip: Trip) {
+  async function updateTrip(trip: Trip) {
     const updatedTrip = { ...trip, status: getAutoTripStatus(trip) };
-    appDb.trips.put(updatedTrip);
+    await tripsService.update(updatedTrip);
     setTrips((prev) => prev.map((t) => (t.id === trip.id ? updatedTrip : t)));
   }
 
   // Remove a trip
-  const removeTrip = async (id: string) => {
-    await appDb.trips.delete(id);
+  async function removeTrip(id: string) {
+    await tripsService.remove(id);
     setTrips((prev) => prev.filter((t) => t.id !== id));
-  };
+  }
 
   // Duplicate a trip
-  function duplicateTrip(trip: Trip) {
+  async function duplicateTrip(trip: Trip) {
     const newTrip = {
       ...trip,
       id: crypto.randomUUID(),
       name: trip.name + " (Copy)",
       status: getAutoTripStatus(trip),
     };
-    appDb.trips.add(newTrip);
+    await tripsService.add(newTrip);
     setTrips((prev) => [...prev, newTrip]);
   }
 

@@ -3,12 +3,11 @@ import { useTrips } from "@contexts/TripsContext";
 import {
   editOverlay as editOverlayUtil,
   removeOverlay as removeOverlayUtil,
-  persistOverlays,
   updateOverlayVisibility,
 } from "@features/overlays";
 import { computeVisitedCountriesFromTrips } from "@features/trips";
-import type { AnyOverlay, TimelineOverlay } from "@types";
-import { appDb } from "@utils/db";
+import type { AnyOverlay } from "@types";
+import { overlaysService } from "@services/overlaysService";
 
 export type OverlayContextType = {
   overlays: AnyOverlay[];
@@ -53,40 +52,21 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   const [editingOverlay, setEditingOverlay] = useState<AnyOverlay | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
-  // Load overlays from IndexedDB on mount
+  // Load overlays from service on mount
   useEffect(() => {
     let mounted = true;
-    const loadOverlays = async () => {
-      setLoading(true);
-      try {
-        let dbOverlays = await appDb.overlays.toArray();
-        dbOverlays = dbOverlays.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-        // Ensure visited countries overlay exists
-        const visitedOverlayId = "visited-countries";
-        if (!dbOverlays.some((o) => o.id === visitedOverlayId)) {
-          dbOverlays.unshift({
-            id: visitedOverlayId,
-            name: "Visited Countries",
-            color: "#00bfff",
-            countries: [],
-            visible: true,
-            tooltip: "Countries visited (synced with trips)",
-            timelineEnabled: true,
-            timelineSnapshot: true,
-          } as TimelineOverlay);
-        }
-
+    overlaysService
+      .load()
+      .then((dbOverlays) => {
         if (mounted) {
           setOverlays(dbOverlays);
           setLoading(false);
         }
-      } catch (err: any) {
+      })
+      .catch((err) => {
         setError(err.message);
         setLoading(false);
-      }
-    };
-    loadOverlays();
+      });
     return () => {
       mounted = false;
     };
@@ -111,7 +91,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
             : overlay
         );
         setOverlays(updated);
-        persistOverlays(updated); // Persist all overlays
+        overlaysService.save(updated); // Persist all overlays
       }
     }
   }, [trips, loading, overlays]);
@@ -119,42 +99,53 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   // Persist overlays on change
   useEffect(() => {
     if (!loading && overlays.length > 0) {
-      persistOverlays(overlays);
+      overlaysService.save(overlays);
     }
   }, [overlays, loading]);
 
   // Add overlay
-  function addOverlay(overlay: AnyOverlay) {
-    setOverlays((prev) => [
+  async function addOverlay(overlay: AnyOverlay) {
+    const newOverlays = [
       { ...overlay, order: 0 },
-      ...prev.map((o) => ({ ...o, order: (o.order ?? 0) + 1 })),
-    ]);
+      ...overlays.map((o) => ({ ...o, order: (o.order ?? 0) + 1 })),
+    ];
+    setOverlays(newOverlays);
+    await overlaysService.add(overlay);
   }
 
   // Edit overlay
-  function editOverlay(overlay: AnyOverlay) {
-    setOverlays((prev) => editOverlayUtil(prev, overlay));
+  async function editOverlay(overlay: AnyOverlay) {
+    const newOverlays = editOverlayUtil(overlays, overlay);
+    setOverlays(newOverlays);
+    await overlaysService.edit(overlay);
   }
 
   // Remove overlay
-  function removeOverlay(id: string) {
-    setOverlays((prev) => removeOverlayUtil(prev, id));
+  async function removeOverlay(id: string) {
+    const newOverlays = removeOverlayUtil(overlays, id);
+    setOverlays(newOverlays);
+    await overlaysService.remove(id);
   }
 
   // Reorder overlays
-  function reorderOverlays(newOrder: AnyOverlay[]) {
+  async function reorderOverlays(newOrder: AnyOverlay[]) {
     const ordered = newOrder.map((overlay, idx) => ({
       ...overlay,
       order: idx,
     }));
     setOverlays(ordered);
+    await overlaysService.save(ordered);
   }
 
   // Toggle visibility
-  function toggleOverlayVisibility(id: string) {
-    setOverlays((prev) =>
-      updateOverlayVisibility(prev, id, !prev.find((o) => o.id === id)?.visible)
+  async function toggleOverlayVisibility(id: string) {
+    const newOverlays = updateOverlayVisibility(
+      overlays,
+      id,
+      !overlays.find((o) => o.id === id)?.visible
     );
+    setOverlays(newOverlays);
+    await overlaysService.save(newOverlays);
   }
 
   // Modal handlers
