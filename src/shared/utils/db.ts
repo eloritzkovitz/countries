@@ -9,8 +9,8 @@ export class AppDB extends Dexie {
   overlays!: Table<Overlay, string>;
   settings!: Table<any, string>;
 
-  constructor() {
-    super("AppDB");
+  constructor(dbName = "AppDB") {
+    super(dbName);
     this.version(1).stores({
       trips: "id",
       markers: "id",
