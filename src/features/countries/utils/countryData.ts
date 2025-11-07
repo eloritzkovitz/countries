@@ -83,7 +83,7 @@ export function getFlagUrl(
     case "flagcdn":
     default:
       // FlagCDN: https://flagcdn.com/:size/:country_code.png
-      return `https://flagcdn.com/${size}/${normalizedIso.toLowerCase()}.png`;
+      return `https://flagcdn.com/${size}/${flagIso.toLowerCase()}.png`;
   }
 }
 

@@ -4,7 +4,7 @@
  * - remove background rects (class 'background' or data-export-ignore)
  * - inline computed styles (basic) so exported image matches on-screen appearance
  */
-function prepareSvgClone(original: SVGSVGElement, inlineStyles = true) {
+export function prepareSvgClone(original: SVGSVGElement, inlineStyles = true) {
   const clone = original.cloneNode(true) as SVGSVGElement;
 
   if (!clone.getAttribute("xmlns")) {
@@ -86,34 +86,32 @@ function prepareSvgClone(original: SVGSVGElement, inlineStyles = true) {
  * Attempt to map a cloned element to its original sibling by index.
  * This is a best-effort helper used when inlining computed styles.
  */
-function getCorrespondingOriginal(
-  clonedEl: Element,
-  originalRoot: SVGSVGElement,
-  cloneRoot: SVGSVGElement
-): Element | null {
-  // Walk up to find a unique selector path: fall back to using index mapping
+export function getCorrespondingOriginal(node: any, originalRoot: any, cloneRoot: any): any {
+  // Walk up from node to root, collecting indices
   const path: number[] = [];
-  let node: Element | null = clonedEl;
-  while (node && node !== cloneRoot) {
-    const parent: Element | null = node.parentElement;
-    if (!parent) break;
-    const idx = Array.prototype.indexOf.call(parent.children, node);
+  let current = node;
+  while (current && current !== cloneRoot) {
+    if (!current.parentNode) return null; // Not in the tree
+    const idx = Array.prototype.indexOf.call(current.parentNode.children, current);
+    if (idx === -1) return null; // Not found among parent's children
     path.unshift(idx);
-    node = parent;
+    current = current.parentNode;
   }
-  // Walk original using path
-  let cur: Element | null = originalRoot;
-  for (const i of path) {
-    if (!cur || !cur.children || cur.children.length <= i) return null;
-    cur = cur.children[i] as Element;
+  if (current !== cloneRoot) return null; // Not in the clone tree
+
+  // Walk down the same path from originalRoot
+  let original = originalRoot;
+  for (const idx of path) {
+    if (!original.children || !original.children[idx]) return null;
+    original = original.children[idx];
   }
-  return cur;
+  return original;
 }
 
 /**
  * Trigger a download for a blob.
  */
-function downloadBlob(blob: Blob, filename: string) {
+export function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

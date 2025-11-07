@@ -2,13 +2,7 @@
  * Map utility functions using D3.js for projections and geographical calculations.
  */
 
-import {
-  geoBounds,
-  geoCentroid,
-  geoMercator,
-  geoNaturalEarth1,
-  geoEquirectangular,
-} from "d3-geo";
+import * as d3geo from "d3-geo";
 import type { GeoProjection } from "d3-geo";
 
 /**
@@ -21,14 +15,28 @@ import type { GeoProjection } from "d3-geo";
  * @param center - Center coordinates [longitude, latitude] (default is [0, 0]).
  * @returns A configured D3 GeoProjection instance.
  */
+/**
+ * Returns a D3 projection instance based on type and map dimensions.
+ */
 export function getProjection(
   projectionType: string,
   width: number,
   height: number,
   scaleDivisor: number,
   zoom: number = 1,
-  center: [number, number] = [0, 0]
+  center: [number, number] = [0, 0],
+  geoFns: {
+    geoNaturalEarth1?: typeof d3geo.geoNaturalEarth1;
+    geoEquirectangular?: typeof d3geo.geoEquirectangular;
+    geoMercator?: typeof d3geo.geoMercator;
+  } = {}
 ): GeoProjection {
+  const {
+    geoNaturalEarth1 = d3geo.geoNaturalEarth1,
+    geoEquirectangular = d3geo.geoEquirectangular,
+    geoMercator = d3geo.geoMercator,
+  } = geoFns;
+
   const baseScale = Math.min(width, height) / scaleDivisor;
   const scale = baseScale * zoom;
 
@@ -59,6 +67,7 @@ export function getProjection(
  * @param scaleDivisor - Scale divisor for projection.
  * @param zoom - Zoom level.
  * @param center - Center coordinates [longitude, latitude].
+ * @param getProjectionFn - Function to get the projection (default is the local getProjection function).
  * @returns The [longitude, latitude] coordinates corresponding to the mouse event, or null if conversion fails.
  */
 export function getGeoCoordsFromMouseEvent(
@@ -68,14 +77,15 @@ export function getGeoCoordsFromMouseEvent(
   height: number,
   scaleDivisor: number,
   zoom: number,
-  center: [number, number]
+  center: [number, number],
+  getProjectionFn: typeof getProjection = getProjection
 ): [number, number] | null {
   const svg = event.currentTarget;
   const rect = svg.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
 
-  const proj = getProjection(
+  const proj = getProjectionFn(
     projectionType,
     width,
     height,
@@ -91,8 +101,11 @@ export function getGeoCoordsFromMouseEvent(
  * @param feature - The GeoJSON feature.
  * @returns = The [longitude, latitude] coordinates of the centroid.
  */
-export function getFeatureCentroid(feature: any): [number, number] {
-  return geoCentroid(feature);
+export function getFeatureCentroid(
+  feature: any,
+  geoCentroidFn: typeof d3geo.geoCentroid = d3geo.geoCentroid
+) {
+  return geoCentroidFn(feature);
 }
 
 /** Get the center coordinates and appropriate zoom level for a given country ISO code.
@@ -102,7 +115,9 @@ export function getFeatureCentroid(feature: any): [number, number] {
  */
 export function getCountryCenterAndZoom(
   geoData: { features: any[] },
-  isoCode: any
+  isoCode: any,
+  geoCentroidFn: typeof d3geo.geoCentroid = d3geo.geoCentroid,
+  geoBoundsFn: typeof d3geo.geoBounds = d3geo.geoBounds
 ) {
   const country = geoData.features.find(
     (feature) =>
@@ -111,8 +126,8 @@ export function getCountryCenterAndZoom(
   );
   if (!country) return null;
 
-  const centroid = geoCentroid(country);
-  const bounds = geoBounds(country);
+  const centroid = geoCentroidFn(country);
+  const bounds = geoBoundsFn(country);
   const [[minLng, minLat], [maxLng, maxLat]] = bounds;
   const latDiff = Math.abs(maxLat - minLat);
   const lngDiff = Math.abs(maxLng - minLng);
