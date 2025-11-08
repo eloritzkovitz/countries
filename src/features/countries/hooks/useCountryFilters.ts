@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDebounced } from "@hooks/useDebounced";
+import { useDebounce } from "@hooks/useDebounce";
 import type { Country, Overlay } from "@types";
 import { filterCountries, getFilteredIsoCodes } from "../utils/countryFilters";
 
@@ -20,7 +20,7 @@ export function useCountryFilters({
   const [selectedSubregion, setSelectedSubregion] = useState<string>("");
   const [selectedSovereignty, setSelectedSovereignty] = useState<string>("");
   const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounced(search, 250);
+  const debouncedSearch = useDebounce(search, 250);
 
   // Getting filtered ISO codes based on overlay selections
   const filteredIsoCodes = getFilteredIsoCodes(countries, overlays, overlaySelections);
