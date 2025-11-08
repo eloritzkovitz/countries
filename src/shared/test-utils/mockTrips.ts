@@ -1,0 +1,40 @@
+import type { Trip } from "../types/trip";
+
+export const mockTrips: Trip[] = [
+  {
+    id: "t1",
+    name: "Local Trip",
+    countryCodes: ["US"],
+    startDate: "2023-01-01",
+    endDate: "2023-01-05",
+    status: "completed",
+    fullDays: 0,
+  },
+  {
+    id: "t2",
+    name: "Abroad Trip",
+    countryCodes: ["FR", "DE"],
+    startDate: "2023-06-10",
+    endDate: "2023-06-20",
+    status: "planned",
+    fullDays: 0,
+  },
+  {
+    id: "t3",
+    name: "Upcoming Trip",
+    countryCodes: ["JP"],
+    startDate: "2099-12-01",
+    endDate: "2099-12-10",
+    status: "planned",
+    fullDays: 0,
+  },
+  {
+    id: "t4",
+    name: "Past Trip",
+    countryCodes: ["CA"],
+    startDate: "2022-03-15",
+    endDate: "2022-03-20",
+    status: "completed",
+    fullDays: 0,
+  },
+];

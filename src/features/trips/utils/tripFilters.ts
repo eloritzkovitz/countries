@@ -2,7 +2,7 @@
  * Utilities for filtering and sorting trips.
  */
 
-import { getCountryNames } from "@features/trips";
+import { getCountryNames } from "@features/trips/utils/tripData";
 import type { SortKey, Trip, TripFilters } from "@types";
 
 /**

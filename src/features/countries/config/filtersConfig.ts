@@ -1,4 +1,5 @@
-import { createSelectFilter, mapOptions } from "@features/countries";
+import { createSelectFilter } from "@features/countries/utils/countryFilters";
+import { mapOptions } from "@features/countries/utils/countryList";
 import type { FilterConfig, FilterOption, Overlay, SovereigntyType } from "@types";
 import { capitalize } from "@utils/string";
 
