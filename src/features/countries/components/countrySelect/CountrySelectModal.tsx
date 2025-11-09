@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import { FaGlobe } from "react-icons/fa6";
 import {
   Checkbox,
-  CountryWithFlag,
   FormButton,
   FormField,
   Modal,
   PanelHeader,
   SearchInput,
 } from "@components";
-import { filterCountriesBySearch } from "@features/countries";
+import { CountryWithFlag, filterCountriesBySearch } from "@features/countries";
 import type { Country } from "@types";
 
 interface CountrySelectModalProps {

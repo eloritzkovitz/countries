@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { FaHome, FaChevronDown } from "react-icons/fa";
-import { CollapsibleHeader, CountryWithFlag } from "@components";
+import { CollapsibleHeader } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useSettings } from "@contexts/SettingsContext";
-import { CountrySelectModal } from "@features/countries";
+import { CountrySelectModal, CountryWithFlag } from "@features/countries";
 
 export function HomeCountrySelect() {
   const { settings, updateSettings } = useSettings();

@@ -1,10 +1,10 @@
 import type { JSX } from "react";
 import {
   Checkbox,
-  CountryWithFlag,
   DropdownSelectInput,
   SortableFilterHeader,
 } from "@components";
+import { CountryWithFlag } from "@features/countries";
 import { TRIP_CATEGORY_ICONS } from "@features/trips";
 import type { SortKey, TripCategory, TripFilters } from "@types";
 

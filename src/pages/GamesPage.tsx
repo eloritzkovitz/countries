@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CountryFlag, ErrorMessage, LoadingSpinner } from "@components";
-import { getRandomCountry, getCountriesWithOwnFlag } from "@features/countries";
-import { GuessForm, ResultMessage, Scoreboard } from "@features/game";
+import { ErrorMessage, LoadingSpinner } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
+import { CountryFlag, getRandomCountry, getCountriesWithOwnFlag } from "@features/countries";
+import { GuessForm, ResultMessage, Scoreboard } from "@features/game";
 import type { Country } from "@types";
 
 export default function GamesPage() {

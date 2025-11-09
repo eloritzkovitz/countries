@@ -1,5 +1,5 @@
-import { CardList, Checkbox, CountryWithFlag } from "@components";
-import { createCountryLookup } from "@features/countries";
+import { CardList, Checkbox } from "@components";
+import { CountryWithFlag, createCountryLookup } from "@features/countries";
 import { type ColumnKey, TRIP_CATEGORY_ICONS } from "@features/trips";
 import type { Trip } from "@types";
 import { formatDate } from "@utils/date";

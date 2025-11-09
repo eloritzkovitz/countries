@@ -1,4 +1,4 @@
-import { CountryWithFlag } from "@components";
+import { CountryWithFlag } from "@features/countries";
 import type { Country } from "@types";
 
 type CountryListProps = {

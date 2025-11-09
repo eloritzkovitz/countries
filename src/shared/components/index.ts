@@ -45,8 +45,6 @@ export { SortableFilterHeader } from "./table/SortableFilterHeader";
 
 // UI components
 export { CardList } from "./ui/CardList";
-export { CountryFlag } from "./ui/CountryFlag";
-export { CountryWithFlag } from "./ui/CountryWithFlag";
 export { HomeCard } from "./ui/HomeCard";
 export { ShortcutsModal } from "./ui/ShortcutsModal";
 export { PwaUpdateUiHint } from "./ui/PwaUpdateUiHint";

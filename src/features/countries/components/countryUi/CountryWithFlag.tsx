@@ -1,4 +1,4 @@
-import { CountryFlag } from "@components";
+import { CountryFlag } from "@features/countries";
 import type { FlagSize } from "@types";
 
 type CountryWithFlagProps = {

@@ -1,21 +1,21 @@
 import { FaWikipediaW, FaCrosshairs, FaTimes } from "react-icons/fa";
 import {
   ActionButton,
-  CountryFlag,
-  CountryWithFlag,
   ErrorMessage,
   LoadingSpinner,
   Modal,
   PanelHeader,
 } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
+import {
+  CountryFlag,
+  CountryWithFlag,
+  getLanguagesDisplay,
+  getSovereigntyInfoForTerritory,
+} from "@features/countries";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Country } from "@types";
 import { SovereigntyBadge } from "./SovereigntyBadge";
-import {
-  getLanguagesDisplay,
-  getSovereigntyInfoForTerritory,
-} from "../utils/countryData";
 
 type CountryDetailsModalProps = {
   country: Country | null;

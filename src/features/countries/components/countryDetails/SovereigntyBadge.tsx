@@ -1,4 +1,4 @@
-import { CountryWithFlag } from "@components";
+import { CountryWithFlag } from "@features/countries";
 import type { SovereigntyType } from "@types";
 
 type SovereigntyBadgeProps = {

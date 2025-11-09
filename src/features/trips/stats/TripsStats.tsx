@@ -9,10 +9,10 @@ import {
   FaXmark,
   FaSuitcaseRolling,
 } from "react-icons/fa6";
-import { ActionButton, CountryWithFlag, Modal, PanelHeader } from "@components";
-import { SeparatorRow } from "@components/layout/SeparatorRow";
+import { ActionButton, Modal, PanelHeader, SeparatorRow } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useSettings } from "@contexts/SettingsContext";
+import { CountryWithFlag } from "@features/countries";
 import {
   getCompletedTrips,
   getLocalTrips,

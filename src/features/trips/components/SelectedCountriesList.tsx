@@ -1,5 +1,5 @@
-import { CountryWithFlag } from "@components";
-import { FaTimes } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
+import { CountryWithFlag } from "@features/countries";
 
 type SelectedCountriesListProps = {
   selectedCountries: {
@@ -38,7 +38,7 @@ export function SelectedCountriesList({
               title="Remove"
               onClick={() => onRemove(country.isoCode)}
             >
-              <FaTimes />
+              <FaXmark />
             </button>
           </span>
         ))}

@@ -11,14 +11,13 @@ import {
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
-import { sortCountries } from "@features/countries";
+import { sortCountries, useCountryFilters } from "@features/countries";
 import { useListNavigation } from "@hooks/useListNavigation";
 import { useSort } from "@hooks/useSort";
 import type { Country } from "@types";
 import { CountryList } from "./CountryList";
 import { CountrySortSelect } from "./CountrySortSelect";
-import { CountryFiltersPanel } from "../filters/CountryFiltersPanel";
-import { useCountryFilters } from "../hooks/useCountryFilters";
+import { CountryFiltersPanel } from "../countryFilters/CountryFiltersPanel";
 
 interface CountriesPanelProps {
   selectedIsoCode: string | null;
@@ -110,7 +109,7 @@ export function CountriesPanel({
         show={uiVisible && showCountries}
         onHide={toggleCountries}
         escEnabled={!modalCountry}
-        showSeparator={false}        
+        showSeparator={false}
         headerActions={
           <>
             <ActionButton
