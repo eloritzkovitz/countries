@@ -9,11 +9,11 @@ import {
 } from "@components";
 import { DEFAULT_PANEL_WIDTH } from "@constants";
 import { useCountryData } from "@contexts/CountryDataContext";
+import { coreFiltersConfig } from "@features/countries/config/filtersConfig";
 import {
-  coreFiltersConfig,
-  getSubregionsForRegion,
   getAllSovereigntyTypes,
-} from "@features/countries";
+  getSubregionsForRegion,
+} from "@features/countries/utils/countryList";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Overlay } from "@types";
 import { CoreFilters } from "./CoreFilters";

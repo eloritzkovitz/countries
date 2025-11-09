@@ -8,7 +8,7 @@ import {
   Separator,
 } from "@components";
 import { useUI } from "@contexts/UIContext";
-import { exportSvg, exportSvgAsPng } from "@features/map";
+import { exportSvg, exportSvgAsPng } from "@features/map/utils/mapExport";
 
 interface MapExportModalProps {
   svgRef: React.RefObject<SVGSVGElement | null>;

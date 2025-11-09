@@ -11,7 +11,8 @@ import {
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
-import { sortCountries, useCountryFilters } from "@features/countries";
+import { useCountryFilters } from "@features/countries/hooks/useCountryFilters";
+import { sortCountries } from "@features/countries/utils/countryList";
 import { useListNavigation } from "@hooks/useListNavigation";
 import { useSort } from "@hooks/useSort";
 import type { Country } from "@types";

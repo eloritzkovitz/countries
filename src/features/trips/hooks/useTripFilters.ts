@@ -2,22 +2,24 @@ import { useMemo, useState } from "react";
 import { useSettings } from "@contexts/SettingsContext";
 import { getCountryByIsoCode } from "@features/countries";
 import {
-  filterTrips,
-  getCountryNames,
-  getUsedCountryCodes,
-  getUsedYears,
-  isAbroadTrip,
-  isCompletedTrip,
-  isLocalTrip,
-  isUpcomingTrip,
-} from "@features/trips";
-import {
   getCountryDropdownOptions,
   getYearDropdownOptions,
   getCategoryDropdownOptions,
   getStatusDropdownOptions,
   getTagDropdownOptions,
 } from "@features/trips/utils/dropdownOptions";
+import {
+  getCountryNames,
+  getUsedCountryCodes,
+  getUsedYears,
+} from "@features/trips/utils/tripData";
+import { filterTrips } from "@features/trips/utils/tripFilters";
+import {
+  isAbroadTrip,
+  isCompletedTrip,
+  isLocalTrip,
+  isUpcomingTrip,
+} from "@features/trips/utils/trips";
 import type { Trip, TripCategory, TripFilterState } from "@types";
 
 // Default trip filters

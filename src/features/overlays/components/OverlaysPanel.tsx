@@ -18,7 +18,7 @@ import { useUI } from "@contexts/UIContext";
 import {
   importOverlaysFromFile,
   exportOverlaysToFile,
-} from "@features/overlays";
+} from "@features/overlays/utils/overlayFile";
 import { useDragReorder } from "@hooks/useDragReorder";
 import type { Overlay } from "@types";
 import { OverlayPanelItem } from "./OverlayPanelItem";

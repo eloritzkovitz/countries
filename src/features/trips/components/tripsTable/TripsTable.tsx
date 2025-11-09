@@ -3,10 +3,10 @@ import { useCountryData } from "@contexts/CountryDataContext";
 import {
   DEFAULT_WIDTHS,
   MIN_WIDTHS,
-  sortTrips,
-  getTripRowClass,
   type ColumnKey,
-} from "@features/trips";
+} from "@features/trips/constants/columns";
+import { sortTrips } from "@features/trips/utils/tripFilters";
+import { getTripRowClass } from "@features/trips/utils/trips";
 import { useResizableColumns } from "@hooks/useResizableColumns";
 import type { SortKey, Trip } from "@types";
 import { TripsTableHeaders } from "./TripsTableHeaders";

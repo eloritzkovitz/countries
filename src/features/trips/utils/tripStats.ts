@@ -2,7 +2,7 @@
  * @fileoverview Utility functions for trip statistics.
  */
 
-import { getTripDays } from "@features/trips";
+import { getTripDays } from "@features/trips/utils/trips";
 import type { Trip } from "@types";
 
 /**

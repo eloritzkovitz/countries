@@ -1,5 +1,5 @@
 import { useTrips } from "@contexts/TripsContext";
-import { getVisitedCountriesByYear, getVisitedCountriesUpToYear } from "@features/trips";
+import { getVisitedCountriesByYear, getVisitedCountriesUpToYear } from "@features/trips/utils/trips";
 import type { Trip } from "@types";
 
 // Returns a mapping of years to visited countries based on trips

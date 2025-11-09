@@ -7,6 +7,13 @@ export { useOverlayItems } from "./hooks/useOverlayItems";
 export { useTimelineOverlayItems } from "./hooks/useTimelineOverlayItems";
 
 // Utils
-export * from "./utils/overlay";
-export * from "./utils/overlayFile";
-export * from "./utils/overlayRender";
+export {
+  editOverlay,
+  removeOverlay,
+  updateOverlayVisibility,
+  isTimelineOverlay,
+} from "./utils/overlay";
+export {
+  groupOverlayItemsByIsoCode,
+  getBlendedOverlayColor,
+} from "./utils/overlayRender";

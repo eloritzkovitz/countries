@@ -5,16 +5,18 @@ export { CountrySelectModal } from "./components/countrySelect/CountrySelectModa
 export { CountryWithFlag } from "./components/countryUi/CountryWithFlag";
 export { CountryFlag } from "./components/countryUi/CountryFlag";
 
-// Config
-export * from "./config/filtersConfig";
-
-// Constants
-export * from "./constants/sovereignties";
-
-// Hooks
-export { useCountryFilters } from "./hooks/useCountryFilters";
-
 // Utils
-export * from "./utils/countryData";
-export * from "./utils/countryFilters";
-export * from "./utils/countryList";
+export {
+  getRandomCountry,
+  getCountriesWithOwnFlag,
+  getCountryIsoCode,
+  getCountryByIsoCode,
+  createCountryLookup,
+  getLanguagesDisplay,
+  getSovereigntyInfoForTerritory,
+} from "./utils/countryData";
+export {
+  getAllRegions,
+  getAllSubregions,
+  getAllSovereigntyTypes,
+} from "./utils/countryList";

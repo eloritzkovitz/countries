@@ -6,8 +6,8 @@ import {
   updateOverlayVisibility,
 } from "@features/overlays";
 import { computeVisitedCountriesFromTrips } from "@features/trips";
-import type { AnyOverlay } from "@types";
 import { overlaysService } from "@services/overlaysService";
+import type { AnyOverlay } from "@types";
 
 export type OverlayContextType = {
   overlays: AnyOverlay[];

@@ -8,8 +8,9 @@ import {
   PanelHeader,
   SearchInput,
 } from "@components";
-import { CountryWithFlag, filterCountriesBySearch } from "@features/countries";
+import { CountryWithFlag } from "@features/countries";
 import type { Country } from "@types";
+import { filterCountriesBySearch } from "../../utils/countryFilters";
 
 interface CountrySelectModalProps {
   isOpen: boolean;

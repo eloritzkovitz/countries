@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { getOverlayItems } from "@features/overlays";
+import { getOverlayItems } from "@features/overlays/utils/overlayRender";
 import type { Overlay } from "@types";
 
 export function useOverlayItems(overlays: Overlay[]) {

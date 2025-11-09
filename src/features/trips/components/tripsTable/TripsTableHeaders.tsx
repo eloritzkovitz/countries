@@ -5,7 +5,7 @@ import {
   SortableFilterHeader,
 } from "@components";
 import { CountryWithFlag } from "@features/countries";
-import { TRIP_CATEGORY_ICONS } from "@features/trips";
+import { TRIP_CATEGORY_ICONS } from "@features/trips/constants/tripCategoryIcons";
 import type { SortKey, TripCategory, TripFilters } from "@types";
 
 type TripsTableHeadersProps = {

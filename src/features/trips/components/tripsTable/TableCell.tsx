@@ -1,4 +1,4 @@
-import type { ColumnKey } from "@features/trips";
+import type { ColumnKey } from "@features/trips/constants/columns";
 
 type TableCellProps = {
   children: React.ReactNode;
