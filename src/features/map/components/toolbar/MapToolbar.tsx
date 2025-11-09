@@ -14,7 +14,7 @@ import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import { isTimelineOverlay } from "@features/overlays";
 import { ZoomControls } from "./ZoomControls";
-import { MapExportModal } from "../export/MapExportModal";
+import { MapExportModal } from "../mapExport/MapExportModal";
 import "./MapToolbar.css";
 
 export function MapToolbar({

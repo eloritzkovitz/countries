@@ -13,7 +13,7 @@ import type { Marker } from "@types";
 import { CountriesLayer } from "./CountriesLayer";
 import { MapCoordinatesDisplay } from "./MapCoordinatesDisplay";
 import { MapStatus } from "./MapStatus";
-import { MapSvgContainer } from "../export/MapSvgContainer";
+import { MapSvgContainer } from "./mapExport/MapSvgContainer";
 import { useMapStatus } from "../hooks/useMapStatus";
 import { useMapEventHandler } from "../hooks/useMapEventHandler";
 import { useMapOverlayItems } from "../hooks/useMapOverlayItems";

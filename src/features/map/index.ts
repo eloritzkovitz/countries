@@ -1,13 +1,11 @@
 // Components
-export { MapToolbar } from "./toolbar/MapToolbar";
+export { MapToolbar } from "./components/toolbar/MapToolbar";
 export { WorldMap } from "./components/WorldMap";
+export { TimelinePicker } from "./components/timeline/TimelinePicker";
 
 // Hooks
 export { useMapGeographyStyle } from "./hooks/useMapGeographyStyle";
 export { useMapView } from "./hooks/useMapView";
-
-// Timeline
-export { TimelinePicker } from "./timeline/TimelinePicker";
 
 // Utils
 export * from "./utils/map";
