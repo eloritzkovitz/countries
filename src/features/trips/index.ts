@@ -1,16 +1,16 @@
 // Components
-export * from "./components/TripModal";
+export { TripModal } from "./components/TripModal";
+export { TripsTable } from "./components/tripsTable/TripsTable";
+export { TripsToolbar } from "./components/tripsToolbar/TripsToolbar";
 
 // Constants
 export * from "./constants/columns";
 export * from "./constants/tripCategoryIcons";
 export * from "./constants/trips";
 
-// Table
-export * from "./table/TripsTable";
-
-// Toolbar
-export { TripsToolbar } from "./toolbar/TripsToolbar";
+// Hooks
+export * from "./hooks/useTripFilters";
+export * from "./hooks/useTripsIO";
 
 // Utils
 export * from "./utils/tripData";

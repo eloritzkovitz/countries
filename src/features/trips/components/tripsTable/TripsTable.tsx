@@ -4,13 +4,13 @@ import {
   DEFAULT_WIDTHS,
   MIN_WIDTHS,
   sortTrips,
+  getTripRowClass,
   type ColumnKey,
 } from "@features/trips";
 import { useResizableColumns } from "@hooks/useResizableColumns";
 import type { SortKey, Trip } from "@types";
 import { TripsTableHeaders } from "./TripsTableHeaders";
 import { TripsTableRows } from "./TripsTableRows";
-import { getTripRowClass } from "../utils/trips";
 import "./TripsTable.css";
 
 type TripsTableProps = {

@@ -1,7 +1,7 @@
 import { FaChartSimple } from "react-icons/fa6";
 import { ActionButton } from "@components";
 import type { Trip } from "@types";
-import { TripsStats } from "../stats/TripsStats";
+import { TripsStats } from "../tripStats/TripsStats";
 import React from "react";
 
 type ToolbarStatisticsProps = {

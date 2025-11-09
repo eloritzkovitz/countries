@@ -24,8 +24,8 @@ import {
   getLongestTrip,
   getShortestTrip,
 } from "@features/trips/utils/tripStats";
-import { TripStatRow } from "@features/trips/stats/TripStatRow";
 import type { Trip } from "@types";
+import { TripStatRow } from "./TripStatRow";
 
 type TripsStatsProps = {
   isOpen: boolean;
