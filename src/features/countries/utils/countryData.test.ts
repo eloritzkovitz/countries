@@ -7,6 +7,7 @@ import {
   getRandomCountry,
   getLanguagesDisplay,
   getSovereigntyInfoForTerritory,
+  getVisitedCountries,
 } from "./countryData";
 
 // Mock constants
@@ -14,7 +15,7 @@ vi.mock("@constants", () => ({
   EXCLUDED_ISO_CODES: ["XX"],
   SOVEREIGN_FLAG_MAP: { YY: "US" },
 }));
-vi.mock("@features/countries", () => ({
+vi.mock("@features/countries/constants/sovereignties", () => ({
   SOVEREIGN_DEPENDENCIES: {
     US: {
       name: "United States",
@@ -134,6 +135,50 @@ describe("countryData utils", () => {
     });
     it("returns undefined type for empty input", () => {
       expect(getSovereigntyInfoForTerritory("")).toEqual({ type: undefined });
+    });
+  });
+
+  describe("getVisitedCountries", () => {
+    const countries = [
+      { isoCode: "US", name: "United States" },
+      { isoCode: "FR", name: "France" },
+      { isoCode: "DE", name: "Germany" },
+    ];
+
+    it("returns only countries whose isoCode is in the visited overlay", () => {
+      const overlays = [
+        { id: "visited-countries", countries: ["US", "DE"] },
+        { id: "other-overlay", countries: ["FR"] },
+      ];
+      const result = getVisitedCountries(countries as any, overlays as any);
+      expect(result).toEqual([
+        { isoCode: "US", name: "United States" },
+        { isoCode: "DE", name: "Germany" },
+      ]);
+    });
+
+    it("returns an empty array if no visited overlay is present", () => {
+      const overlays = [{ id: "other-overlay", countries: ["FR"] }];
+      const result = getVisitedCountries(countries as any, overlays as any);
+      expect(result).toEqual([]);
+    });
+
+    it("returns an empty array if visited overlay has no countries", () => {
+      const overlays = [{ id: "visited-countries", countries: [] }];
+      const result = getVisitedCountries(countries as any, overlays as any);
+      expect(result).toEqual([]);
+    });
+
+    it("returns an empty array if overlays is empty", () => {
+      const overlays: any[] = [];
+      const result = getVisitedCountries(countries as any, overlays);
+      expect(result).toEqual([]);
+    });
+
+    it("returns an empty array if countries is empty", () => {
+      const overlays = [{ id: "visited-countries", countries: ["US"] }];
+      const result = getVisitedCountries([], overlays as any);
+      expect(result).toEqual([]);
     });
   });
 });

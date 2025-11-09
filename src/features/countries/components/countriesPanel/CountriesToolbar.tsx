@@ -8,19 +8,28 @@ interface CountriesToolbarProps {
     React.SetStateAction<Record<string, string>>
   >;
   visitedOverlayId: string;
+  allCount: number;
+  visitedCount: number;
 }
 
 export function CountriesToolbar({
   isVisitedOnly,
   setOverlaySelections,
   visitedOverlayId,
+  allCount,
+  visitedCount,
 }: CountriesToolbarProps) {
   const options: ToolbarToggleOption[] = [
     {
       value: "all",
-      icon: <FaList />,
+      icon: (
+        <span className="flex items-center gap-1">
+          <FaList />
+          <span className="text-xs font-semibold">{allCount}</span>
+        </span>
+      ),
       label: "All Countries",
-      ariaLabel: "Show all countries",
+      ariaLabel: `Show all countries (${allCount})`,
       checked: !isVisitedOnly,
       onClick: () =>
         setOverlaySelections((prev) => ({
@@ -30,9 +39,14 @@ export function CountriesToolbar({
     },
     {
       value: "visited",
-      icon: <FaListCheck />,
+      icon: (
+        <span className="flex items-center gap-1 ml-2">
+          <FaListCheck />
+          <span className="text-xs font-semibold">{visitedCount}</span>
+        </span>
+      ),
       label: "Visited",
-      ariaLabel: "Show visited countries",
+      ariaLabel: `Show visited countries (${visitedCount})`,
       checked: isVisitedOnly,
       onClick: () =>
         setOverlaySelections((prev) => ({

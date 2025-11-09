@@ -10,6 +10,7 @@ import type {
   FlagSource,
   FlagStyle,
   FlagSize,
+  Overlay,
 } from "@types";
 
 /**
@@ -167,4 +168,20 @@ export function getSovereigntyInfoForTerritory(territoryIsoCode: string): {
   if (regionMap[territoryIsoCode]) return regionMap[territoryIsoCode];
   if (disputeMap[territoryIsoCode]) return disputeMap[territoryIsoCode];
   return { type: "Sovereign" };
+}
+
+/** Filters and returns the list of visited countries based on overlays.
+ * @param countries - Array of country objects.
+ * @param overlays - Array of overlay objects containing visited countries data.
+ * @returns Array of visited country objects.
+ */
+export function getVisitedCountries(
+  countries: Country[],
+  overlays: Overlay[]
+): Country[] {
+  const visitedOverlay = overlays.find((o) => o.id === "visited-countries");
+  const visitedIsoCodes =
+    (visitedOverlay as { countries?: string[] } | undefined)
+      ?.countries ?? [];
+  return countries.filter((c) => visitedIsoCodes.includes(c.isoCode));
 }

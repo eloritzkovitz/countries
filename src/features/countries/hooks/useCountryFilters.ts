@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDebounce } from "@hooks/useDebounce";
 import type { Country, Overlay } from "@types";
+import { getVisitedCountries } from "../utils/countryData";
 import { filterCountries, getFilteredIsoCodes } from "../utils/countryFilters";
 
 type OverlaySelections = Record<string, string>;
@@ -22,10 +23,8 @@ export function useCountryFilters({
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 250);
 
-  // Getting filtered ISO codes based on overlay selections
+  // With overlays applied
   const filteredIsoCodes = getFilteredIsoCodes(countries, overlays, overlaySelections);
-
-  // Filtering countries based on current filters and search
   const filteredCountries = filterCountries(countries, {
     search: debouncedSearch,
     selectedRegion,
@@ -33,6 +32,20 @@ export function useCountryFilters({
     selectedSovereignty,
     overlayCountries: filteredIsoCodes,
   });
+
+  // Without overlays for counts
+  const filteredCountriesNoOverlay = filterCountries(countries, {
+    search: debouncedSearch,
+    selectedRegion,
+    selectedSubregion,
+    selectedSovereignty,
+    overlayCountries: undefined,
+  });
+
+  // Counts
+  const allCount = filteredCountriesNoOverlay.length;
+  const visitedCountries = getVisitedCountries(filteredCountriesNoOverlay, overlays);
+  const visitedCount = visitedCountries.length;
 
   return {
     selectedRegion,
@@ -46,5 +59,7 @@ export function useCountryFilters({
     debouncedSearch,
     filteredIsoCodes,
     filteredCountries,
+    allCount,
+    visitedCount,
   };
 }

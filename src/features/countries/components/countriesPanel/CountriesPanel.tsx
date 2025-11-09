@@ -64,6 +64,8 @@ export function CountriesPanel({
     search,
     setSearch,
     filteredCountries,
+    allCount,
+    visitedCount,    
   } = useCountryFilters({
     countries,
     overlays,
@@ -71,7 +73,7 @@ export function CountriesPanel({
   });
 
   // Quick toggles state
-  const isVisitedOnly = overlaySelections[visitedOverlayId] === "only";
+  const isVisitedOnly = overlaySelections[visitedOverlayId] === "only";  
 
   // Sort state
   const {
@@ -175,6 +177,8 @@ export function CountriesPanel({
             isVisitedOnly={isVisitedOnly}
             setOverlaySelections={setOverlaySelections}
             visitedOverlayId={visitedOverlayId}
+            allCount={allCount}
+            visitedCount={visitedCount}
           />
         </div>
       </Panel>
