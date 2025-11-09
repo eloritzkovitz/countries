@@ -15,6 +15,7 @@ import { sortCountries, useCountryFilters } from "@features/countries";
 import { useListNavigation } from "@hooks/useListNavigation";
 import { useSort } from "@hooks/useSort";
 import type { Country } from "@types";
+import { CountriesToolbar } from "./CountriesToolbar";
 import { CountryList } from "./CountryList";
 import { CountrySortSelect } from "./CountrySortSelect";
 import { CountryFiltersPanel } from "../countryFilters/CountryFiltersPanel";
@@ -41,6 +42,8 @@ export function CountriesPanel({
     useCountryData();
   const { overlays, overlaySelections, setOverlaySelections } =
     useOverlayContext();
+  const visitedOverlayId = "visited-countries";
+
   const {
     uiVisible,
     showCountries,
@@ -65,6 +68,9 @@ export function CountriesPanel({
     overlays,
     overlaySelections,
   });
+
+  // Quick toggles state
+  const isVisitedOnly = overlaySelections[visitedOverlayId] === "only";
 
   // Sort state
   const {
@@ -127,36 +133,49 @@ export function CountriesPanel({
           </>
         }
       >
-        {/* Search input and sort button */}
-        <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 flex items-stretch">
-          <SearchInput
-            value={search}
-            onChange={setSearch}
-            placeholder="Search countries..."
-            className="flex-1 h-10"
-          />
-          <CountrySortSelect
-            value={sortBy}
-            onChange={(v) => setSortBy(v as any)}
+        <div className="flex flex-col h-full">
+          {/* Search and sort bar */}
+          <div className="flex gap-2 items-stretch pb-0">
+            <SearchInput
+              value={search}
+              onChange={setSearch}
+              placeholder="Search countries..."
+              className="flex-1 h-10"
+            />
+            <CountrySortSelect
+              value={sortBy}
+              onChange={(v) => setSortBy(v as any)}
+            />
+          </div>
+
+          {/* Showing count */}
+          <div className="text-s text-left text-gray-500 font-semibold mb-2 mt-2 px-2">
+            Showing {sortedCountries.length} countries
+          </div>
+
+          <Separator className="mx-2" />
+
+          {/* Country list */}
+          <div className="flex-1 min-h-0 overflow-y-auto -mx-4">
+            <CountryList
+              countries={sortedCountries}
+              selectedIsoCode={selectedIsoCode}
+              hoveredIsoCode={hoveredIsoCode}
+              onSelect={onSelect}
+              onHover={onHover}
+              onCountryInfo={handleCountryInfo}
+            />
+          </div>
+
+          <Separator className="mx-2" />
+
+          {/* Toolbar */}
+          <CountriesToolbar
+            isVisitedOnly={isVisitedOnly}
+            setOverlaySelections={setOverlaySelections}
+            visitedOverlayId={visitedOverlayId}
           />
         </div>
-
-        {/* Showing count */}
-        <div className="text-s text-left text-gray-500 font-semibold mb-2 mt-2">
-          Showing {sortedCountries.length} countries
-        </div>
-
-        {/* Country list */}
-        <Separator />
-        <CountryList
-          countries={sortedCountries}
-          selectedIsoCode={selectedIsoCode}
-          hoveredIsoCode={hoveredIsoCode}
-          onSelect={onSelect}
-          onHover={onHover}
-          onCountryInfo={handleCountryInfo}
-        />
-        <Separator />
       </Panel>
 
       {/* Filters panel */}

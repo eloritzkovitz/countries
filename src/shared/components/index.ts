@@ -39,6 +39,7 @@ export { PanelListItem } from "./layout/Panel/PanelListItem";
 // Toolbar components
 export { ActionsToolbar } from "./layout/Toolbar/ActionsToolbar";
 export { ToolbarSeparator } from "./layout/Toolbar/ToolbarSeparator";
+export { type ToolbarToggleOption, ToolbarToggleGroup } from "./layout/Toolbar/ToolbarToggleGroup";
 
 // Table components
 export { SortableFilterHeader } from "./table/SortableFilterHeader";
