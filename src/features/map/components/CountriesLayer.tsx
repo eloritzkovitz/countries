@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Geographies, Geography } from "react-simple-maps";
 import { getCountryIsoCode } from "@features/countries";
 import { useMapGeographyStyle } from "@features/map/hooks/useMapGeographyStyle";
@@ -30,7 +31,10 @@ export function CountriesLayer({
   const geographyStyle = useMapGeographyStyle(isAddingMarker);
 
   // Group overlay items by isoCode for stacking/blending
-  const overlayGroups = groupOverlayItemsByIsoCode(overlayItems);
+  const overlayGroups = useMemo(
+    () => groupOverlayItemsByIsoCode(overlayItems),
+    [overlayItems]
+  );
 
   return (
     <g style={isAddingMarker ? { pointerEvents: "none" } : undefined}>
