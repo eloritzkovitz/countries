@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 
 export type UIContextType = {
@@ -34,6 +34,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // State for which panel is open; null means no panel is open
   const [showMenu, setShowMenu] = useState(false);
+  const prevShowMenu = useRef(showMenu); // To track previous showMenu state
   const [openPanel, setOpenPanel] = useState<
     "countries" | "markers" | "overlays" | "export" | "settings" | null
   >("countries");
@@ -102,6 +103,15 @@ export function UIProvider({ children }: { children: ReactNode }) {
     ["?"],
     true
   );
+
+  // Effect to open countries panel when menu closes
+  useEffect(() => {
+    // Only open countries panel if menu just transitioned from open to closed
+    if (prevShowMenu.current && !showMenu && openPanel === null) {
+      setOpenPanel("countries");
+    }
+    prevShowMenu.current = showMenu;
+  }, [showMenu, openPanel]);
 
   return (
     <UIContext.Provider
