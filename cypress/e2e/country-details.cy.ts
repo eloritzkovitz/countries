@@ -26,13 +26,13 @@ describe("Atlaset: View France Details", () => {
 
   it("finds Germany, shows details, and closes the details modal with keyboard", () => {
     // Search for Germany
-    cy.get('input[placeholder*="Search"]').type("Germany"); 
-    
+    cy.get('input[placeholder*="Search"]').type("Germany");
+
     // Hover over the Germany list item, then press Enter
-    cy.contains('li', 'Germany')
-      .should('be.visible')
-      .trigger('mouseover')      
-      .trigger('keydown', { key: 'Enter', code: 'Enter', which: 13 });
+    cy.contains("li", "Germany")
+      .should("be.visible")
+      .trigger("mouseover")
+      .trigger("keydown", { key: "Enter", code: "Enter", which: 13 });
 
     // Assert that the country details modal appears
     cy.contains(/Germany|Country Details/i).should("be.visible");
@@ -42,5 +42,8 @@ describe("Atlaset: View France Details", () => {
 
     // Assert that the country details modal is closed (not visible)
     cy.get('button[aria-label="Close country details"]').should("not.exist");
+
+    // Assert that the countries panel is closed (not visible)
+    cy.get('input[placeholder*="Search"]').should("be.hidden");
   });
 });

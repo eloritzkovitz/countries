@@ -9,28 +9,31 @@ type PanelProps = {
   title: ReactNode;
   children: ReactNode;
   show?: boolean;
+  onHide?: () => void;
+  escEnabled?: boolean;
   width?: number | string;
   style?: React.CSSProperties;
-  className?: string;
-  onHide?: () => void;
+  className?: string;  
   headerActions?: ReactNode;
   showSeparator?: boolean;
   scrollable?: boolean;
+  
 };
 
 export function Panel({
   title,
   children,
   show = true,
+  onHide,
+  escEnabled = true,
   width = DEFAULT_PANEL_WIDTH,
   style = {},
-  className = "",
-  onHide,
+  className = "",  
   headerActions,
   showSeparator = true,
-  scrollable = true,
+  scrollable = true,  
 }: PanelProps) {
-  usePanelHide({ show, onHide, escEnabled: true });
+  usePanelHide({ show, onHide, escEnabled });
 
   return (
     <div

@@ -164,6 +164,7 @@ export default function AtlasPage() {
         <CountriesPanel
           selectedIsoCode={selectedIsoCode}
           hoveredIsoCode={hoveredIsoCode}
+          modalCountry={modalCountry}
           onSelect={setSelectedIsoCode}
           onHover={setHoveredIsoCode}
           onCountryInfo={setModalCountry}
