@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
   ErrorMessage,
   MenuPanel,
@@ -73,10 +73,14 @@ export default function AtlasPage() {
 
   // Timeline state
   const visitedByYear = useVisitedCountriesTimeline();
-  const years = Object.keys(visitedByYear)
-    .map(Number)
-    .sort((a, b) => a - b);
-  const [selectedYear, setSelectedYear] = useState<number>(
+  const years = useMemo(
+    () =>
+      Object.keys(visitedByYear)
+        .map(Number)
+        .sort((a, b) => a - b),
+    [visitedByYear]
+  );
+  const [selectedYear, setSelectedYear] = useState(
     years[years.length - 1] || new Date().getFullYear()
   );
 
@@ -191,7 +195,12 @@ export default function AtlasPage() {
           />
 
           {/* Toolbar & UI Overlays */}
-          <MapToolbar zoom={zoom} setZoom={setZoom} svgRef={svgRef} setSnapshotMode={setTimelineMode} />
+          <MapToolbar
+            zoom={zoom}
+            setZoom={setZoom}
+            svgRef={svgRef}
+            setSnapshotMode={setTimelineMode}
+          />
           {uiVisible && timelineMode && (
             <TimelinePicker
               years={years}
