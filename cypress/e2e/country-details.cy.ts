@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("Atlaset: View France Details", () => {
+describe("View Country Details", () => {
   beforeEach(() => {
     cy.visit("/");
   });
