@@ -20,7 +20,6 @@ export { SelectInput } from "./form/SelectInput";
 // Layout components
 export { CollapsibleHeader } from "./layout/CollapsibleHeader";
 export { Separator } from "./layout/Separator";
-export { SeparatorRow } from "./layout/SeparatorRow";
 
 // Menu components
 export { MenuPanel } from "./layout/Menu/MenuPanel";
@@ -42,6 +41,7 @@ export { ToolbarSeparator } from "./layout/Toolbar/ToolbarSeparator";
 export { type ToolbarToggleOption, ToolbarToggleGroup } from "./layout/Toolbar/ToolbarToggleGroup";
 
 // Table components
+export { SeparatorRow } from "./table/SeparatorRow";
 export { SortableFilterHeader } from "./table/SortableFilterHeader";
 
 // UI components
