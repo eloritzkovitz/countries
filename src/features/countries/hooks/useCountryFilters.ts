@@ -47,6 +47,9 @@ export function useCountryFilters({
   const visitedCountries = getVisitedCountries(filteredCountriesNoOverlay, overlays);
   const visitedCount = visitedCountries.length;
 
+  // Visited only state
+  const isVisitedOnly = overlaySelections["visited-countries"] === "only";
+
   return {
     selectedRegion,
     setSelectedRegion,
@@ -61,5 +64,6 @@ export function useCountryFilters({
     filteredCountries,
     allCount,
     visitedCount,
+    isVisitedOnly,
   };
 }

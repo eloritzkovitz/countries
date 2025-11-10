@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { getAllRegions, getAllSubregions, getAllSovereigntyTypes } from "@features/countries";
 
 export type CountryDataContextType = {
@@ -9,6 +9,7 @@ export type CountryDataContextType = {
   allSovereigntyTypes: string[];
   loading: boolean;
   error: string | null;
+  refreshData?: () => void;
 };
 
 export const CountryDataContext = createContext<CountryDataContextType>({
@@ -19,6 +20,7 @@ export const CountryDataContext = createContext<CountryDataContextType>({
   allSovereigntyTypes: [], 
   loading: true,
   error: null,
+  refreshData: undefined,
 });
 
 // Custom hook for easy context access
@@ -40,9 +42,10 @@ export function CountryDataProvider({
   const [allSubregions, setAllSubregions] = useState<string[]>([]);  
   const [allSovereigntyTypes, setAllSovereigntyTypes] = useState<string[]>([]);
 
-  // Dynamically import country data to optimize initial load time
-  useEffect(() => {
-    let mounted = true;
+  // Function to fetch country and currency data
+  const fetchData = useCallback(() => {
+    setLoading(true);
+    setError(null);
     const countryDataUrl = import.meta.env.VITE_COUNTRY_DATA_URL || "/data/countries.json";
     const currencyDataUrl = import.meta.env.VITE_CURRENCY_DATA_URL || "/data/currencies.json";
 
@@ -57,30 +60,30 @@ export function CountryDataProvider({
       }),
     ])
       .then(([countryData, currencyData]) => {
-        if (mounted) {
-          setCountries(countryData);
-          setAllRegions(getAllRegions(countryData));
-          setAllSubregions(getAllSubregions(countryData));
-          setAllSovereigntyTypes(getAllSovereigntyTypes(countryData));
-          setCurrencies(currencyData);
-          setLoading(false);
-        }
+        setCountries(countryData);
+        setAllRegions(getAllRegions(countryData));
+        setAllSubregions(getAllSubregions(countryData));
+        setAllSovereigntyTypes(getAllSovereigntyTypes(countryData));
+        setCurrencies(currencyData);
+        setLoading(false);
       })
       .catch((err) => {
-        if (mounted) {
-          setError(err.message);
-          setLoading(false);
-        }
+        setError(err.message);
+        setLoading(false);
       });
-
-    return () => {
-      mounted = false;
-    };
   }, []);
+
+  // Initial load
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  // Provide a method to refresh data
+  const refreshData = fetchData;
 
   return (
     <CountryDataContext.Provider
-      value={{ countries, currencies, allRegions, allSubregions, allSovereigntyTypes, loading, error }}
+      value={{ countries, currencies, allRegions, allSubregions, allSovereigntyTypes, loading, error, refreshData }}
     >
       {children}
     </CountryDataContext.Provider>

@@ -1,24 +1,29 @@
 import React from "react";
-import { FaList, FaListCheck } from "react-icons/fa6";
-import { ToolbarToggleGroup, type ToolbarToggleOption } from "@components";
+import { FaArrowsRotate, FaList, FaListCheck } from "react-icons/fa6";
+import {
+  ActionButton,
+  ToolbarToggleGroup,
+  type ToolbarToggleOption,
+} from "@components";
 
 interface CountriesToolbarProps {
+  onRefresh?: () => void;
   isVisitedOnly: boolean;
   setOverlaySelections: React.Dispatch<
     React.SetStateAction<Record<string, string>>
-  >;
-  visitedOverlayId: string;
+  >; 
   allCount: number;
   visitedCount: number;
 }
 
 export function CountriesToolbar({
+  onRefresh,
   isVisitedOnly,
   setOverlaySelections,
-  visitedOverlayId,
   allCount,
   visitedCount,
 }: CountriesToolbarProps) {
+  const visitedOverlayId = "visited-countries";  
   const options: ToolbarToggleOption[] = [
     {
       value: "all",
@@ -56,5 +61,16 @@ export function CountriesToolbar({
     },
   ];
 
-  return <ToolbarToggleGroup options={options} />;
+  return (
+    <div className="flex items-center gap-2 -mx-4">
+      <ActionButton
+        onClick={onRefresh}
+        ariaLabel="Refresh country data"
+        title="Refresh country data"
+        icon={<FaArrowsRotate />}
+        className="toolbar-btn-menu"
+      />
+      <ToolbarToggleGroup options={options} />
+    </div>
+  );
 }
