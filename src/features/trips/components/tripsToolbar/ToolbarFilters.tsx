@@ -105,7 +105,7 @@ export function ToolbarFilters({
         className="toolbar-btn-menu"
         icon={<FaRotateLeft />}
       />
-      <ToolbarToggleGroup options={filterToggles} />
+      <ToolbarToggleGroup options={filterToggles} buttonClassName="h-8 w-8" />
     </>
   );
 }

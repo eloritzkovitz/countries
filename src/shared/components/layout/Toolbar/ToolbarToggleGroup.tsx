@@ -14,16 +14,16 @@ export interface ToolbarToggleOption {
 interface ToolbarToggleGroupProps {
   options: ToolbarToggleOption[];
   className?: string;
+  buttonClassName?: string;
 }
 
 export function ToolbarToggleGroup({
   options,
   className = "",
+  buttonClassName = "",
 }: ToolbarToggleGroupProps) {
   return (
-    <div
-      className={`toolbar-toggle-group flex items-center gap-2 ${className}`}
-    >
+    <div className={`flex items-center ${className}`}>
       {options.map((opt) => (
         <ActionButton
           key={opt.value}
@@ -34,7 +34,7 @@ export function ToolbarToggleGroup({
             opt.checked
               ? "toolbar-btn-toggle-active"
               : "toolbar-btn-toggle-inactive"
-          }`}
+          } ${buttonClassName}`}
           icon={opt.icon}
         />
       ))}
