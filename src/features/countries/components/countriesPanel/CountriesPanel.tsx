@@ -113,7 +113,7 @@ export function CountriesPanel({
         }
         show={uiVisible && showCountries}
         onHide={toggleCountries}
-        escEnabled={!modalCountry}
+        escEnabled={!showFilters && !modalCountry}
         showSeparator={false}
         headerActions={
           <>
@@ -163,7 +163,7 @@ export function CountriesPanel({
       {/* Filters panel */}
       {showCountries && showFilters && (
         <CountryFiltersPanel
-          show={showFilters}
+          show={showFilters && !modalCountry}
           allRegions={allRegions}
           allSubregions={allSubregions}
           selectedRegion={selectedRegion}
