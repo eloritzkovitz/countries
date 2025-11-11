@@ -1,9 +1,5 @@
-import {
-  useState,
-  type ReactNode,
-  type ReactElement,
-  isValidElement,
-} from "react";
+import { type ReactNode, type ReactElement, isValidElement } from "react";
+import { useFloatingHover as useFloatingHoverHook } from "@hooks/useFloatingHover";
 import { usePanelHide } from "@hooks/usePanelHide";
 import "./Modal.css";
 import React from "react";
@@ -42,8 +38,9 @@ export function Modal({
   disableClose = false,
   containerRef,
 }: ModalProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isButtonHovered, setIsButtonHovered] = useState(false);
+  // Handle floating hover logic
+  const { hoverHandlers, floatingHandlers, shouldShowFloating } =
+    useFloatingHoverHook(useFloatingHover);
 
   // Handle panel hide logic
   usePanelHide({
@@ -68,8 +65,7 @@ export function Modal({
       >
         <div
           ref={containerRef}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          {...hoverHandlers}
           className={
             "group " +
             (position === "center" ? "modal-center " : "modal-custom ") +
@@ -89,11 +85,8 @@ export function Modal({
         floatingChildren &&
         isValidElement(floatingChildren) &&
         (useFloatingHover
-          ? (isHovered || isButtonHovered) &&
-            React.cloneElement(floatingChildren, {
-              onMouseEnter: () => setIsButtonHovered(true),
-              onMouseLeave: () => setIsButtonHovered(false),
-            })
+          ? shouldShowFloating &&
+            React.cloneElement(floatingChildren, floatingHandlers)
           : floatingChildren)}
     </>
   );
