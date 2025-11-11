@@ -32,7 +32,7 @@ export function FloatingChevronButton({
   const [style, setStyle] = useState<React.CSSProperties>({});
 
   const BUTTON_SIZE = 48;
-  const baseClass = "toolbar-btn z-[10000] transition-colors";
+  const baseClass = "toolbar-btn rounded-full z-[10000] transition-colors";
 
   // Update position when targetRef or position changes
   useLayoutEffect(() => {

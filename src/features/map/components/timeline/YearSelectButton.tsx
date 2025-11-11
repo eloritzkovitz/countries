@@ -13,7 +13,7 @@ export function YearSelectButton({
 }: YearSelectButtonProps) {
   return (
     <div
-      className="toolbar-btn flex items-center justify-center relative"
+      className="toolbar-btn rounded-lg flex items-center justify-center relative"
       style={{ width: "90px", height: "48px", padding: 0 }}
     >
       <select

@@ -55,7 +55,7 @@ export function TimelinePicker({
           <FaAnglesLeft className={currentIndex === 0 ? "opacity-50" : ""} />
         }
         disabled={currentIndex === 0}
-        className="toolbar-btn transition"
+        className="toolbar-btn rounded-full transition"
       />
       <ActionButton
         onClick={handleBack}
@@ -63,7 +63,7 @@ export function TimelinePicker({
         title="Previous year"
         icon={<FaChevronLeft className={!canGoBack ? "opacity-50" : ""} />}
         disabled={!canGoBack}
-        className="toolbar-btn transition"
+        className="toolbar-btn rounded-full transition"
       />
       <YearSelectButton
         years={years}
@@ -76,7 +76,7 @@ export function TimelinePicker({
         title="Next year"
         icon={<FaChevronRight className={!canGoForward ? "opacity-50" : ""} />}
         disabled={!canGoForward}
-        className="toolbar-btn transition"
+        className="toolbar-btn rounded-full transition"
       />
       <ActionButton
         onClick={handleLast}
@@ -88,7 +88,7 @@ export function TimelinePicker({
           />
         }
         disabled={currentIndex === years.length - 1}
-        className="toolbar-btn transition"
+        className="toolbar-btn rounded-full transition"
       />
     </div>
   );

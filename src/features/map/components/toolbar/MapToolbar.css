@@ -49,7 +49,7 @@
 /* Toolbar buttons */
 
 .toolbar-btn-action {
-  @apply hover:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white border-none;
+  @apply rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white border-none;
 }
 
 /* Export button */

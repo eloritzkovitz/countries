@@ -74,21 +74,21 @@ export function MapToolbar({
             onClick={toggleCountries}
             ariaLabel="Countries"
             title="Countries"
-            className="toolbar-btn"
+            className="toolbar-btn rounded-full"
             icon={<FaGlobe />}
           />
           <ActionButton
             onClick={toggleMarkers}
             ariaLabel="Markers"
             title="Markers"
-            className="toolbar-btn"
+            className="toolbar-btn rounded-full"
             icon={<FaMapPin />}
           />
           <ActionButton
             onClick={toggleOverlays}
             ariaLabel="Overlays"
             title="Overlays"
-            className="toolbar-btn"
+            className="toolbar-btn rounded-full"
             icon={<FaLayerGroup />}
           />
           {/* Snapshot toggle button */}
@@ -97,7 +97,7 @@ export function MapToolbar({
               onClick={() => setSnapshotMode((prev) => !prev)}
               ariaLabel="Timeline"
               title="Timeline"
-              className="toolbar-btn"
+              className="toolbar-btn rounded-full"
               icon={<FaClockRotateLeft />}
             />
           )}
@@ -105,7 +105,7 @@ export function MapToolbar({
             onClick={toggleExport}
             ariaLabel="Export"
             title="Export"
-            className="toolbar-btn"
+            className="toolbar-btn rounded-full"
             icon={<FaDownload />}
           />
           <MapExportModal svgRef={svgRef} />
@@ -114,7 +114,7 @@ export function MapToolbar({
             onClick={toggleSettings}
             ariaLabel="Settings"
             title="Settings"
-            className="toolbar-btn"
+            className="toolbar-btn rounded-full"
             icon={<FaGear />}
           />
           {children}
