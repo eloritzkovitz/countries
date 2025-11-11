@@ -1,8 +1,9 @@
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { FaEllipsisV, FaEdit, FaTrash } from "react-icons/fa";
 import { useClickOutside } from "@hooks/useClickOutside";
 import { useKeyHandler } from "@hooks/useKeyHandler";
+import { useMenuPosition } from "@hooks/useMenuPosition";
 import type { Trip } from "@types";
 import { ActionButton } from "@components";
 
@@ -14,16 +15,12 @@ type TripActionsProps = {
 
 export function TripActions({ trip, onEdit, onDelete }: TripActionsProps) {
   const [open, setOpen] = useState(false);
-  const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
   const btnRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
   useClickOutside(
-    [
-      menuRef as React.RefObject<HTMLElement>,
-      btnRef as React.RefObject<HTMLElement>,
-    ],
+    [menuRef as React.RefObject<HTMLElement>, btnRef as React.RefObject<HTMLElement>],
     () => setOpen(false),
     open
   );
@@ -32,29 +29,7 @@ export function TripActions({ trip, onEdit, onDelete }: TripActionsProps) {
   useKeyHandler(() => setOpen(false), ["Escape"], open);
 
   // Position the menu when open
-  useLayoutEffect(() => {
-    if (open && btnRef.current && menuRef.current) {
-      const btnRect = btnRef.current.getBoundingClientRect();
-      const menuRect = menuRef.current.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - btnRect.bottom;
-      const spaceAbove = btnRect.top;
-
-      let top = btnRect.bottom + window.scrollY;
-      let left = btnRect.right - menuRect.width + window.scrollX;
-
-      // Flip above if not enough space below
-      if (spaceBelow < menuRect.height && spaceAbove > menuRect.height) {
-        top = btnRect.top - menuRect.height + window.scrollY;
-      }
-
-      setMenuStyle({
-        position: "absolute",
-        top,
-        left,
-        zIndex: 1000,
-      });
-    }
-  }, [open]);
+  const menuStyle = useMenuPosition(open, btnRef, menuRef);
 
   return (
     <>
