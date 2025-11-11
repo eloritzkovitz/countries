@@ -16,6 +16,8 @@ import {
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Country } from "@types";
 import { SovereigntyBadge } from "./SovereigntyBadge";
+import { VisitedStatusIndicator } from "./VisitedStatusIndicator";
+import { useVisitedCountries } from "../../hooks/useVisitedCountries";
 
 type CountryDetailsModalProps = {
   country: Country | null;
@@ -31,6 +33,8 @@ export function CountryDetailsModal({
   onClose,
 }: CountryDetailsModalProps) {
   const { currencies, loading, error } = useCountryData();
+  const { isCountryVisited } = useVisitedCountries();
+  const isVisited = country ? isCountryVisited(country.isoCode) : false;
 
   // Center map handler
   useKeyHandler(
@@ -60,7 +64,7 @@ export function CountryDetailsModal({
     >
       <PanelHeader
         title={
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-2">            
             <CountryWithFlag
               isoCode={country.isoCode}
               name={country.name}
@@ -68,6 +72,7 @@ export function CountryDetailsModal({
               className="font-bold text-lg"
             />
             <span className="text-gray-500 text-sm">({country.isoCode})</span>
+            <VisitedStatusIndicator visited={isVisited} />
           </span>
         }
       >
