@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { FaFileImport, FaFileExport, FaGlobe, FaCheck } from "react-icons/fa6";
+import { FaFileImport, FaFileExport, FaCheck } from "react-icons/fa6";
 import { ActionButton, ConfirmModal } from "@components";
 import { useTrips } from "@contexts/TripsContext";
 import { useTripIO } from "@features/trips/hooks/useTripsIO";
@@ -25,7 +25,6 @@ export function ToolbarImportExport({
     handleFileChange,
     handleExportCSV,
     handleExportJSON,
-    handleExportVisitedOverlay,
   } = useTripIO(trips, addTrip);
 
   // Close export menu on outside click
@@ -86,14 +85,7 @@ export function ToolbarImportExport({
             onExportJSON={handleExportJSON}
           />
         )}
-      </div>
-      <ActionButton
-        onClick={handleExportVisitedOverlay}
-        ariaLabel="Export Visited Countries"
-        title="Export Visited Countries"
-        className="toolbar-btn-menu"
-        icon={<FaGlobe />}
-      />
+      </div>      
     </>
   );
 }

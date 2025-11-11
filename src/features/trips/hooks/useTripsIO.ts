@@ -3,7 +3,6 @@ import type { Trip } from "@types";
 import {
   exportTripsToCSV,
   exportTripsToJSON,
-  exportVisitedOverlay,
   importTripsFromFile,
 } from "../utils/tripsIO";
 
@@ -29,18 +28,12 @@ export function useTripIO(trips: Trip[], addTrip: (trip: Trip) => void) {
   // Export to JSON handler
   function handleExportJSON() {
     exportTripsToJSON(trips);
-  }
-
-  // Export visited overlay handler
-  function handleExportVisitedOverlay() {
-    exportVisitedOverlay(trips);
-  }
+  }  
 
   return {    
     fileInputRef,
     handleFileChange,    
     handleExportCSV,
     handleExportJSON,
-    handleExportVisitedOverlay,
   };
 }
