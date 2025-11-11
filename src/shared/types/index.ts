@@ -7,3 +7,4 @@ export * from "./option";
 export * from "./overlay";
 export * from "./settings";
 export * from "./trip";
+export * from "./visit";

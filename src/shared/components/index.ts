@@ -3,6 +3,7 @@ export { Branding } from "./Branding";
 // Action components
 export { ActionButton } from "./action/ActionButton";
 export { FloatingActionButton } from "./action/FloatingActionButton";
+export { FloatingChevronButton } from "./action/FloatingChevronButton";
 
 // Feedback components
 export { ErrorMessage } from "./feedback/ErrorMessage";

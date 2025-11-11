@@ -15,8 +15,7 @@ export function CollapsedPanelButton({
       onClick={onClick}
       ariaLabel="Show menu"
       title="Show menu"
-      className={`toolbar-btn toolbar-btn-action shadow-lg p-0
-        transform transition-transform duration-300
+      className={`right-10 hover:text-gray-500 dark:hover:text-gray-300 transform transition-transform duration-300
         ${
           visible
             ? "translate-x-0 opacity-100"
