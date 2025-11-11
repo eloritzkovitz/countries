@@ -4,14 +4,13 @@ import {
   FaPlus,
   FaFileImport,
   FaFileExport,
-  FaTimes,
-} from "react-icons/fa";
+  FaXmark,
+} from "react-icons/fa6";
 import {
   ActionButton,
   ErrorMessage,
   LoadingSpinner,
-  Modal,
-  PanelHeader,
+  Panel,
 } from "@components";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
@@ -58,59 +57,57 @@ export function OverlaysPanel({
   if (error) return <ErrorMessage error={error} />;
 
   return (
-    <Modal
-      isOpen={showOverlays}
-      onClose={closePanel}
-      disableClose={overlayModalOpen}
-      position="custom"
-      containerClassName="right-40 bottom-[80px]"
-      className="modal min-w-[340px] max-w-[600px] max-h-[90vh]"
+    <Panel
+      title={
+        <>
+          <FaLayerGroup />
+          Overlays
+        </>
+      }
+      show={showOverlays}
+      onHide={closePanel}
+      escEnabled={!overlayModalOpen}
+      headerActions={
+        <>
+          {/* Action buttons */}
+          <ActionButton
+            onClick={onAddOverlay}
+            ariaLabel="Add Overlay"
+            title="Add Overlay"
+          >
+            <FaPlus />
+          </ActionButton>
+          <ActionButton
+            onClick={() => fileInputRef.current?.click()}
+            ariaLabel="Import Overlays"
+            title="Import Overlays"
+          >
+            <FaFileImport />
+          </ActionButton>
+          <input
+            type="file"
+            accept="application/json"
+            ref={fileInputRef}
+            onChange={(e) => importOverlaysFromFile(e, setOverlays)}
+            style={{ display: "none" }}
+          />
+          <ActionButton
+            onClick={() => exportOverlaysToFile(overlays)}
+            ariaLabel="Export Overlays"
+            title="Export Overlays"
+          >
+            <FaFileExport />
+          </ActionButton>
+          <ActionButton
+            onClick={closePanel}
+            ariaLabel="Close Overlay Manager"
+            title="Close"
+          >
+            <FaXmark />
+          </ActionButton>
+        </>
+      }
     >
-      <PanelHeader
-        title={
-          <>
-            <FaLayerGroup />
-            Overlays
-          </>
-        }
-      >
-        {/* Action buttons */}
-        <ActionButton
-          onClick={onAddOverlay}
-          ariaLabel="Add Overlay"
-          title="Add Overlay"
-        >
-          <FaPlus />
-        </ActionButton>
-        <ActionButton
-          onClick={() => fileInputRef.current?.click()}
-          ariaLabel="Import Overlays"
-          title="Import Overlays"
-        >
-          <FaFileImport />
-        </ActionButton>
-        <input
-          type="file"
-          accept="application/json"
-          ref={fileInputRef}
-          onChange={(e) => importOverlaysFromFile(e, setOverlays)}
-          style={{ display: "none" }}
-        />
-        <ActionButton
-          onClick={() => exportOverlaysToFile(overlays)}
-          ariaLabel="Export Overlays"
-          title="Export Overlays"
-        >
-          <FaFileExport />
-        </ActionButton>
-        <ActionButton
-          onClick={closePanel}
-          ariaLabel="Close Overlay Manager"
-          title="Close"
-        >
-          <FaTimes />
-        </ActionButton>
-      </PanelHeader>
       <ul className="list-none p-0">
         {overlays.map((overlay, index) => (
           <OverlayPanelItem
@@ -128,6 +125,6 @@ export function OverlaysPanel({
           />
         ))}
       </ul>
-    </Modal>
+    </Panel>
   );
 }
