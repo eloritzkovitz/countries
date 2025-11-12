@@ -65,7 +65,7 @@ describe("countryData utils", () => {
       expect(getFlagUrl("us")).toBe("https://flagcdn.com/32x24/us.png");
     });
     it("returns flagsapi url", () => {
-      expect(getFlagUrl("us", "64x48", "flagsapi", "shiny")).toBe(
+      expect(getFlagUrl("us", "64", "flagsapi", "shiny")).toBe(
         "https://flagsapi.com/US/shiny/64.png"
       );
     });

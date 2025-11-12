@@ -52,7 +52,7 @@ export function CountryFlag({ flag, alt, style, className }: CountryFlagProps) {
       alt={alt || `${flag.isoCode} flag`}
       width={width}
       height={height}
-      className={`rounded ${className ?? ""}`}
+      className={`${className ?? ""}`}
       style={style}
     />
   );

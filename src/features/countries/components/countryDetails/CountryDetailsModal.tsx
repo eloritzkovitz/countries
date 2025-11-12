@@ -107,7 +107,7 @@ export function CountryDetailsModal({
                 <CountryWithFlag
                   isoCode={country.isoCode}
                   name={country.name}
-                  size="32x24"
+                  size="32"
                   className="font-bold text-lg"
                 />
                 <span className="text-gray-500 text-sm">
@@ -158,10 +158,10 @@ export function CountryDetailsModal({
               isoCode: country.isoCode,
               source: "flagcdn",
               style: "flat",
-              size: "64x48",
+              size: "64",
             }}
             alt={`${country.name} flag`}
-            className="block mx-auto mb-4"            
+            className="block mx-auto mb-4 h-16 w-auto"            
           />
           <CountryInfoTable country={country} currencies={currencies} />
         </div>

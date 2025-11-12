@@ -105,10 +105,10 @@ export default function GamesPage() {
             isoCode: currentCountry.isoCode,
             source: "flagcdn",
             style: "flat",
-            size: "96x72",
+            size: "64",
           }}
           alt={currentCountry.name}
-          className="block mx-auto my-8 w-24 h-auto"
+          className="block mx-auto mb-8 h-20 w-auto"
         />
         <GuessForm
           guess={guess}

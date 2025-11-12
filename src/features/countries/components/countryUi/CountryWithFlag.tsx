@@ -11,7 +11,7 @@ type CountryWithFlagProps = {
 export function CountryWithFlag({
   isoCode,
   name,
-  size = "32x24",
+  size = "32",
   className = "",
 }: CountryWithFlagProps) {
   return (

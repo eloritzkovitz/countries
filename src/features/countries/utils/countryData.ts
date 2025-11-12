@@ -63,7 +63,7 @@ export function createCountryLookup(countries: any[]): Record<string, any> {
  */
 export function getFlagUrl(
   isoCode: string,
-  size: FlagSize = "32x24",
+  size: FlagSize = "32",
   source: FlagSource = "flagcdn",
   style: FlagStyle = "flat"
 ): string {
@@ -83,8 +83,8 @@ export function getFlagUrl(
       }.png`;
     case "flagcdn":
     default:
-      // FlagCDN: https://flagcdn.com/:size/:country_code.png
-      return `https://flagcdn.com/${size}/${flagIso.toLowerCase()}.png`;
+      // FlagCDN: https://flagcdn.com/:country_code.svg
+      return `https://flagcdn.com/${flagIso.toLowerCase()}.svg`;
   }
 }
 
