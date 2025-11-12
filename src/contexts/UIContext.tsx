@@ -120,8 +120,12 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // Effect to open countries panel when menu closes
   useEffect(() => {
-    // If any panel just closed (openPanel transitioned from non-null to null), open countries panel
-    if (prevOpenPanel.current !== null && openPanel === null) {
+    // Only reopen countries if a different panel (not countries) was just closed
+    if (
+      prevOpenPanel.current !== null &&
+      prevOpenPanel.current !== "countries" &&
+      openPanel === null
+    ) {
       setOpenPanel("countries");
     }
     prevOpenPanel.current = openPanel;
