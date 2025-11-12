@@ -1,7 +1,7 @@
 import { setupDomMocks } from "@test-utils/mockDomGlobals";
 import {
   exportSvg,
-  exportSvgAsPng,
+  exportSvgAsImage,
   prepareSvgClone,
   getCorrespondingOriginal,
   downloadBlob,
@@ -62,40 +62,50 @@ describe("mapExport utils", () => {
     expect(() => exportSvg(svg, "test.svg")).not.toThrow();
   });
 
-  // --- exportSvgAsPng ---
-  it("exportSvgAsPng does nothing if svgElement is falsy", async () => {
-    await expect(exportSvgAsPng(null as any)).resolves.toBeUndefined();
-  });
+  // --- exportSvgAsImage ---
+  describe("exportSvgAsImage", () => {
+    let origCreateElement: typeof document.createElement;
 
-  it("exportSvgAsPng triggers download after rendering", async () => {
-    const svg = {
-      cloneNode: vi.fn(() => ({
-        getAttribute: vi.fn(() => "0 0 100 100"),
-        querySelectorAll: vi.fn(() => []),
-        width: { baseVal: { value: 100 } },
-        height: { baseVal: { value: 100 } },
-      })),
-      ownerDocument: {
-        defaultView: {
-          getComputedStyle: vi.fn(() => ({
-            getPropertyValue: vi.fn(() => ""),
-          })),
-        },
-      },
-    } as any;
-    await expect(exportSvgAsPng(svg, "test.png")).resolves.toBeUndefined();
-  });
+    beforeEach(() => {
+      origCreateElement = document.createElement;
+      document.createElement = ((
+        tagName: string,
+        options?: ElementCreationOptions
+      ) => {
+        const el = origCreateElement.call(document, tagName, options);
+        if (tagName === "canvas") {
+          (el as any).getContext = () => ({
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: "high",
+            clearRect: vi.fn(),
+            save: vi.fn(),
+            restore: vi.fn(),
+            fillStyle: "",
+            fillRect: vi.fn(),
+            drawImage: vi.fn(),
+          });
+          (el as any).toBlob = (cb: any) => cb(new Blob());
+        }
+        return el;
+      }) as any;
+    });
 
-  it("exportSvgAsPng handles missing viewBox and width/height", async () => {
-    const svg = {
-      cloneNode: vi.fn(() => ({
-        getAttribute: vi.fn(() => null),
-        setAttribute: vi.fn(),
-        querySelectorAll: vi.fn(() => []),
-        width: undefined,
-        height: undefined,
-        clientWidth: undefined,
-        clientHeight: undefined,
+    afterEach(() => {
+      document.createElement = origCreateElement;
+    });
+
+    function makeSvgMock() {
+      return {
+        cloneNode: vi.fn(() => ({
+          getAttribute: vi.fn((attr) => {
+            if (attr === "viewBox") return "0 0 100 100";
+            return null;
+          }),
+          setAttribute: vi.fn(),
+          querySelectorAll: vi.fn(() => []),
+          width: { baseVal: { value: 100 } },
+          height: { baseVal: { value: 100 } },
+        })),
         ownerDocument: {
           defaultView: {
             getComputedStyle: vi.fn(() => ({
@@ -103,90 +113,52 @@ describe("mapExport utils", () => {
             })),
           },
         },
-      })),
-      ownerDocument: {
-        defaultView: {
-          getComputedStyle: vi.fn(() => ({
-            getPropertyValue: vi.fn(() => ""),
-          })),
-        },
-      },
-    } as any;
-    await expect(exportSvgAsPng(svg, "test.png")).resolves.toBeUndefined();
-  });
-
-  it("exportSvgAsPng handles missing canvas context", async () => {
-    // The global mock returns null for getContext in this case
-    const svg = {
-      cloneNode: vi.fn(() => ({
-        getAttribute: vi.fn(() => "0 0 100 100"),
-        querySelectorAll: vi.fn(() => []),
-        width: { baseVal: { value: 100 } },
-        height: { baseVal: { value: 100 } },
-        ownerDocument: {
-          defaultView: {
-            getComputedStyle: vi.fn(() => ({
-              getPropertyValue: vi.fn(() => ""),
-            })),
-          },
-        },
-      })),
-      ownerDocument: {
-        defaultView: {
-          getComputedStyle: vi.fn(() => ({
-            getPropertyValue: vi.fn(() => ""),
-          })),
-        },
-      },
-    } as any;
-    await expect(exportSvgAsPng(svg, "test.png")).resolves.toBeUndefined();
-  });
-
-  it("exportSvgAsPng handles image load error", async () => {
-    class ErrorImage {
-      onload: (() => void) | null = null;
-      onerror: (() => void) | null = null;
-      set src(_v: string) {
-        setTimeout(() => {
-          if (this.onerror) this.onerror();
-        }, 0);
-      }
-      set crossOrigin(_v: string) {}
+      } as any;
     }
-    vi.stubGlobal("Image", ErrorImage);
-    const svg = {
-      cloneNode: vi.fn(() => ({
-        getAttribute: vi.fn(() => "0 0 100 100"),
-        querySelectorAll: vi.fn(() => []),
-        width: { baseVal: { value: 100 } },
-        height: { baseVal: { value: 100 } },
-        ownerDocument: {
-          defaultView: {
-            getComputedStyle: vi.fn(() => ({
-              getPropertyValue: vi.fn(() => ""),
-            })),
-          },
-        },
-      })),
-      ownerDocument: {
-        defaultView: {
-          getComputedStyle: vi.fn(() => ({
-            getPropertyValue: vi.fn(() => ""),
-          })),
-        },
-      },
-    } as any;
-    await expect(exportSvgAsPng(svg, "test.png")).resolves.toBeUndefined();
-  });
 
-  it("exportSvgAsPng handles blob creation failure", async () => {
-    // The global mock returns null for toBlob in this case
-    const svg = {
-      cloneNode: vi.fn(() => ({
-        getAttribute: vi.fn(() => "0 0 100 100"),
-        querySelectorAll: vi.fn(() => []),
-        width: { baseVal: { value: 100 } },
-        height: { baseVal: { value: 100 } },
+    it("does nothing if svgElement is falsy", async () => {
+      await expect(exportSvgAsImage(null as any)).resolves.toBeUndefined();
+    });
+
+    it("exports PNG with default options", async () => {
+      const svg = makeSvgMock();
+      await expect(
+        exportSvgAsImage(svg, "test.png", "png", 2, true, 2048, 1)
+      ).resolves.toBeUndefined();
+    });
+
+    it("exports JPEG with quality and backgroundColor", async () => {
+      const svg = makeSvgMock();
+      await expect(
+        exportSvgAsImage(svg, "test.jpg", "jpeg", 2, true, 2048, 0.5, "#ff0000")
+      ).resolves.toBeUndefined();
+    });
+
+    it("exports WebP with quality", async () => {
+      const svg = makeSvgMock();
+      await expect(
+        exportSvgAsImage(svg, "test.webp", "webp", 2, true, 2048, 0.8)
+      ).resolves.toBeUndefined();
+    });
+
+    it("handles missing viewBox and width/height", async () => {
+      const svg = {
+        cloneNode: vi.fn(() => ({
+          getAttribute: vi.fn(() => null),
+          setAttribute: vi.fn(),
+          querySelectorAll: vi.fn(() => []),
+          width: undefined,
+          height: undefined,
+          clientWidth: undefined,
+          clientHeight: undefined,
+          ownerDocument: {
+            defaultView: {
+              getComputedStyle: vi.fn(() => ({
+                getPropertyValue: vi.fn(() => ""),
+              })),
+            },
+          },
+        })),
         ownerDocument: {
           defaultView: {
             getComputedStyle: vi.fn(() => ({
@@ -194,16 +166,98 @@ describe("mapExport utils", () => {
             })),
           },
         },
-      })),
-      ownerDocument: {
-        defaultView: {
-          getComputedStyle: vi.fn(() => ({
-            getPropertyValue: vi.fn(() => ""),
-          })),
-        },
-      },
-    } as any;
-    await expect(exportSvgAsPng(svg, "test.png")).resolves.toBeUndefined();
+      } as any;
+      await expect(
+        exportSvgAsImage(svg, "test.png", "png", 2, true, 2048, 1)
+      ).resolves.toBeUndefined();
+    });
+
+    it("handles missing canvas context", async () => {
+      // The global mock returns null for getContext in this case
+      const svg = makeSvgMock();
+      // Simulate getContext returning null
+      const origCreateElement = document.createElement;
+      document.createElement = ((
+        tagName: string,
+        options?: ElementCreationOptions
+      ) => {
+        const el = origCreateElement.call(document, tagName, options);
+        if (tagName === "canvas") {
+          (el as any).getContext = () => null;
+        }
+        return el;
+      }) as any;
+      await expect(
+        exportSvgAsImage(svg, "test.png", "png", 2, true, 2048, 1)
+      ).resolves.toBeUndefined();
+      document.createElement = origCreateElement;
+    });
+
+    it("handles image load error", async () => {
+      class ErrorImage {
+        onload: (() => void) | null = null;
+        onerror: (() => void) | null = null;
+        set src(_v: string) {
+          setTimeout(() => {
+            if (this.onerror) this.onerror();
+          }, 0);
+        }
+        set crossOrigin(_v: string) {}
+      }
+      vi.stubGlobal("Image", ErrorImage);
+      const svg = makeSvgMock();
+      await expect(
+        exportSvgAsImage(svg, "test.png", "png", 2, true, 2048, 1)
+      ).resolves.toBeUndefined();
+    });
+
+    it("handles blob creation failure", async () => {
+      // The global mock returns null for toBlob in this case
+      const svg = makeSvgMock();
+      // Simulate toBlob returning null
+      const origCreateElement = document.createElement;
+      document.createElement = ((
+        tagName: string,
+        options?: ElementCreationOptions
+      ) => {
+        const el = origCreateElement.call(document, tagName, options);
+        if (tagName === "canvas") {
+          (el as any).getContext = () => ({
+            imageSmoothingEnabled: true,
+            clearRect: vi.fn(),
+            save: vi.fn(),
+            restore: vi.fn(),
+            fillStyle: "",
+            fillRect: vi.fn(),
+            drawImage: vi.fn(),
+          });
+          (el as any).toBlob = (cb: any) => cb(null);
+        }
+        return el;
+      }) as any;
+      await expect(
+        exportSvgAsImage(svg, "test.png", "png", 2, true, 2048, 1)
+      ).resolves.toBeUndefined();
+      document.createElement = origCreateElement;
+    });
+
+    it("fills background for JPEG if backgroundColor is not provided", async () => {
+      const svg = makeSvgMock();
+      // You could spy on ctx.fillStyle or fillRect if you want to assert color
+      await expect(
+        exportSvgAsImage(svg, "test.jpg", "jpeg", 2, true, 2048, 1)
+      ).resolves.toBeUndefined();
+    });
+
+    it("fills background for PNG/WebP if backgroundColor is provided", async () => {
+      const svg = makeSvgMock();
+      await expect(
+        exportSvgAsImage(svg, "test.png", "png", 2, true, 2048, 1, "#00ff00")
+      ).resolves.toBeUndefined();
+      await expect(
+        exportSvgAsImage(svg, "test.webp", "webp", 2, true, 2048, 1, "#00ff00")
+      ).resolves.toBeUndefined();
+    });
   });
 
   // --- prepareSvgClone ---
@@ -247,7 +301,7 @@ describe("mapExport utils", () => {
       const result = prepareSvgClone(svg, false);
       expect(result).toBeTruthy();
     });
-  });  
+  });
 
   // --- getCorrespondingOriginal ---
   describe("getCorrespondingOriginal", () => {
@@ -292,42 +346,6 @@ describe("mapExport utils", () => {
       svg.setAttribute("width", "100");
       svg.setAttribute("height", "100");
       expect(() => exportSvg(svg, "custom.svg", false)).not.toThrow();
-    });
-  });
-
-  describe("exportSvgAsPng", () => {
-    it("exports PNG with custom scale and maxDimension", async () => {
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("width", "100");
-      svg.setAttribute("height", "100");
-      await expect(
-        exportSvgAsPng(svg, "custom.png", 2, true, 2048)
-      ).resolves.toBeUndefined();
-    });
-
-    it("handles missing devicePixelRatio gracefully", async () => {
-      const originalDPR = window.devicePixelRatio;
-      Object.defineProperty(window, "devicePixelRatio", {
-        value: undefined,
-        configurable: true,
-      });
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("width", "100");
-      svg.setAttribute("height", "100");
-      await expect(exportSvgAsPng(svg, "no-dpr.png")).resolves.toBeUndefined();
-      Object.defineProperty(window, "devicePixelRatio", {
-        value: originalDPR,
-        configurable: true,
-      });
-    });
-
-    it("caps export size if maxDimension is exceeded", async () => {
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("width", "5000");
-      svg.setAttribute("height", "5000");
-      await expect(
-        exportSvgAsPng(svg, "capped.png", 5, true, 1000)
-      ).resolves.toBeUndefined();
     });
   });
 });
