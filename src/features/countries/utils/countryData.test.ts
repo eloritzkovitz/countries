@@ -62,7 +62,7 @@ describe("countryData utils", () => {
 
   describe("getFlagUrl", () => {
     it("returns flagcdn url by default", () => {
-      expect(getFlagUrl("us")).toBe("https://flagcdn.com/32x24/us.png");
+      expect(getFlagUrl("us")).toBe("https://flagcdn.com/us.svg");
     });
     it("returns flagsapi url", () => {
       expect(getFlagUrl("us", "64", "flagsapi", "shiny")).toBe(
@@ -73,7 +73,7 @@ describe("countryData utils", () => {
       expect(getFlagUrl("")).toBe("");
     });
     it("uses SOVEREIGN_FLAG_MAP for borrowed flags", () => {
-      expect(getFlagUrl("yy")).toBe("https://flagcdn.com/32x24/us.png");
+      expect(getFlagUrl("yy")).toBe("https://flagcdn.com/us.svg");
     });
   });
 
