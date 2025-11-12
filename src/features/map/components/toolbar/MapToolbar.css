@@ -51,22 +51,3 @@
 .toolbar-btn-action {
   @apply rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white border-none;
 }
-
-/* Export button */
-
-.export-btn {
-  @apply flex items-center gap-2 w-full justify-start px-3 py-2 whitespace-nowrap text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800;
-}
-
-.section-title {
-  @apply text-xs font-semibold mb-1 text-gray-600 dark:text-gray-300;
-}
-
-/* Scale button */
-
-.scale-btn {
-  @apply px-2 py-1 bg-transparent text-gray-700 dark:text-gray-200;
-}
-.scale-btn-active {
-  @apply bg-gray-200 dark:bg-gray-800;
-}

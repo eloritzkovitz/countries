@@ -1,8 +1,9 @@
+import type { ImageFormat } from "../components/export/types";
+
 /**
- * Normalize an SVG clone for export:
- * - ensure xmlns and viewBox
- * - remove background rects (class 'background' or data-export-ignore)
- * - inline computed styles (basic) so exported image matches on-screen appearance
+ * Prepare an SVG clone for export by normalizing attributes and inlining styles.
+ * @param original: source SVG element
+ * @param inlineStyles: whether to inline computed styles into the clone
  */
 export function prepareSvgClone(original: SVGSVGElement, inlineStyles = true) {
   const clone = original.cloneNode(true) as SVGSVGElement;
@@ -83,16 +84,26 @@ export function prepareSvgClone(original: SVGSVGElement, inlineStyles = true) {
 }
 
 /**
- * Attempt to map a cloned element to its original sibling by index.
- * This is a best-effort helper used when inlining computed styles.
+ * Given a node in a cloned tree, find the corresponding node in the original tree.
+ * @param node: node in the cloned tree
+ * @param originalRoot: root of the original tree
+ * @param cloneRoot: root of the cloned tree
+ * @returns corresponding node in the original tree, or null if not found
  */
-export function getCorrespondingOriginal(node: any, originalRoot: any, cloneRoot: any): any {
+export function getCorrespondingOriginal(
+  node: any,
+  originalRoot: any,
+  cloneRoot: any
+): any {
   // Walk up from node to root, collecting indices
   const path: number[] = [];
   let current = node;
   while (current && current !== cloneRoot) {
     if (!current.parentNode) return null; // Not in the tree
-    const idx = Array.prototype.indexOf.call(current.parentNode.children, current);
+    const idx = Array.prototype.indexOf.call(
+      current.parentNode.children,
+      current
+    );
     if (idx === -1) return null; // Not found among parent's children
     path.unshift(idx);
     current = current.parentNode;
@@ -110,6 +121,8 @@ export function getCorrespondingOriginal(node: any, originalRoot: any, cloneRoot
 
 /**
  * Trigger a download for a blob.
+ * @param blob: data blob
+ * @param filename: output filename
  */
 export function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
@@ -122,9 +135,11 @@ export function downloadBlob(blob: Blob, filename: string) {
   URL.revokeObjectURL(url);
 }
 
-/** 
+/**
  * Export SVG as normalized SVG file.
- * inlineStyles: optional, inlines computed styles into exported SVG (default true)
+ * @param svgElement: source SVG element
+ * @param filename: output filename
+ * @param inlineStyles: whether to inline computed styles into the clone
  */
 export function exportSvg(
   svgElement: SVGSVGElement,
@@ -140,18 +155,26 @@ export function exportSvg(
   downloadBlob(blob, filename);
 }
 
-/** 
- * Export SVG as high-quality PNG.
- * - scale: integer multiplier (1,2,4...), devicePixelRatio is applied automatically
- * - inlineStyles: whether to inline computed styles into the clone before rasterizing
- * - maxDimension: cap for largest canvas side to protect memory (default 8192)
+/**
+ * Export SVG as high-quality image.
+ * @param svgElement: source SVG element
+ * @param filename: output filename
+ * @param format: image format ("png", "jpeg", "webp")
+ * @param scale: integer multiplier (1,2,4...), devicePixelRatio is applied automatically
+ * @param inlineStyles: whether to inline computed styles into the clone before rasterizing
+ * @param maxDimension: cap for largest canvas side to protect memory (default 8192)
+ * @param quality: image quality (0 to 1; ignored for png)
+ * @param backgroundColor: background color to apply (default white)
  */
-export async function exportSvgAsPng(
+export async function exportSvgAsImage(
   svgElement: SVGSVGElement,
-  filename = "map.png",
-  scale = 3,
-  inlineStyles = true,
-  maxDimension = 8192
+  filename: string = "map.png",
+  format: ImageFormat = "png",
+  scale: number = 3,
+  inlineStyles: boolean = true,
+  maxDimension: number = 8192,
+  quality: number = 1,
+  backgroundColor?: string
 ) {
   if (!svgElement) return;
 
@@ -163,6 +186,8 @@ export async function exportSvgAsPng(
   const vb = clone.getAttribute("viewBox");
   let vw = 0;
   let vh = 0;
+
+  // Parse viewBox if present
   if (vb) {
     const parts = vb
       .split(/\s+|,/)
@@ -173,6 +198,8 @@ export async function exportSvgAsPng(
       vh = parts[3];
     }
   }
+
+  // Fallback to width/height attributes or client dimensions
   if (!vw || !vh) {
     vw =
       (clone.width && clone.width.baseVal && clone.width.baseVal.value) ||
@@ -184,6 +211,7 @@ export async function exportSvgAsPng(
       800;
   }
 
+  // Calculate canvas dimensions
   const DPR = window.devicePixelRatio || 1;
   let canvasW = Math.round(vw * DPR * scale);
   let canvasH = Math.round(vh * DPR * scale);
@@ -201,18 +229,35 @@ export async function exportSvgAsPng(
     );
   }
 
+  // Create canvas and context
   const canvas = document.createElement("canvas");
   canvas.width = canvasW;
   canvas.height = canvasH;
   const ctx = canvas.getContext("2d");
 
+  // Clear canvas before drawing
   if (ctx) {
     ctx.imageSmoothingEnabled = true;
-    // @ts-ignore: imageSmoothingQuality may exist
     if (ctx.imageSmoothingQuality) ctx.imageSmoothingQuality = "high";
     ctx.clearRect(0, 0, canvasW, canvasH);
+    // Always fill for JPEG, or use provided background for others
+    if (format === "jpeg" || backgroundColor) {
+      ctx.save();
+      ctx.fillStyle = backgroundColor || "#fff";
+      ctx.fillRect(0, 0, canvasW, canvasH);
+      ctx.restore();
+    }
   }
 
+  // Fill background if specified
+  if (ctx && backgroundColor) {
+    ctx.save();
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0, 0, canvasW, canvasH);
+    ctx.restore();
+  }
+
+  // Render SVG data to canvas
   const svgBlob = new Blob([svgString], {
     type: "image/svg+xml;charset=utf-8",
   });
@@ -235,8 +280,8 @@ export async function exportSvgAsPng(
               downloadBlob(blob, filename);
               resolve();
             },
-            "image/png",
-            1
+            `image/${format}`,
+            quality
           );
         } catch (err) {
           reject(err);

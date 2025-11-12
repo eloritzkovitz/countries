@@ -1,33 +1,63 @@
-import { useState } from "react";
-import { FaDownload, FaTimes, FaFileCode, FaFileImage } from "react-icons/fa";
-import { ActionButton, Checkbox, Panel, Separator } from "@components";
+import { useRef, useState } from "react";
+import { FaDownload, FaTimes, FaFileImage } from "react-icons/fa";
+import {
+  ActionButton,
+  FormButton,
+  Panel,
+  SelectInput,
+  Separator,
+} from "@components";
 import { useUI } from "@contexts/UIContext";
-import { exportSvg, exportSvgAsPng } from "@features/map/utils/mapExport";
+import { exportSvg, exportSvgAsImage } from "@features/map/utils/mapExport";
+import { SvgOptions } from "./SvgOptions";
+import { ImageOptions } from "./ImageOptions";
+import type {
+  ExportFormat,
+  ImageExportOptions,
+  SvgExportOptions,
+} from "./types";
+import {
+  EXPORT_FORMAT_OPTIONS,
+  PNG_SCALE_OPTIONS,
+} from "../../constants/exportOptions";
+import "./MapExportPanel.css";
 
-interface MapExportModalProps {
+type MapExportModalProps = {
   svgRef: React.RefObject<SVGSVGElement | null>;
-}
+};
 
 export function MapExportPanel({ svgRef }: MapExportModalProps) {
   const { showExport, closePanel } = useUI();
 
   // Export options state
-  const [svgInlineStyles, setSvgInlineStyles] = useState<boolean>(true);
-  const [pngScale, setPngScale] = useState<number>(2);
+  const [format, setFormat] = useState<ExportFormat>("svg");
+  const svgOptions = useRef<SvgExportOptions>({ svgInlineStyles: true });
+  const imageOptions = useRef<ImageExportOptions>({
+    scale: 2,
+    quality: 1,
+    backgroundColor: "#ffffff",
+  });
 
-  // Export SVG handler
-  const handleExportSvg = () => {
+  // Export handler
+  const handleExport = () => {
     if (!svgRef?.current) return;
-    exportSvg(svgRef.current, "map.svg", svgInlineStyles);
+    if (format === "svg") {
+      exportSvg(svgRef.current, "map.svg", svgOptions.current.svgInlineStyles);
+    } else {
+      const ext = format === "jpeg" ? "jpg" : format;
+      exportSvgAsImage(
+        svgRef.current,
+        `map@${imageOptions.current.scale}x.${ext}`,
+        format,
+        imageOptions.current.scale,
+        true,
+        8192,
+        imageOptions.current.quality,
+        imageOptions.current.backgroundColor
+      );
+    }
     closePanel();
   };
-
-  // Export PNG handler
-  const handleExportPng = (s = pngScale) => {
-    if (!svgRef?.current) return;
-    exportSvgAsPng(svgRef.current, `map@${s}x.png`, s);
-    closePanel();
-  };  
 
   return (
     <Panel
@@ -38,103 +68,72 @@ export function MapExportPanel({ svgRef }: MapExportModalProps) {
         </>
       }
       show={showExport}
-      onHide={() => closePanel()}
+      onHide={closePanel}
       headerActions={
         <ActionButton
-          onClick={() => closePanel()}
+          onClick={closePanel}
           ariaLabel="Close export menu"
           title="Close"
         >
           <FaTimes />
         </ActionButton>
       }
+      className="relative"
     >
-      <div className="p-2">
-        {/* SVG export section */}
-        <div className="mb-3">
-          <div className="section-title">SVG</div>
-          <label className="flex items-center gap-2 mb-2 text-sm">
-            <Checkbox checked={svgInlineStyles} onChange={setSvgInlineStyles} />
-            <span className="text-gray-700 dark:text-gray-200 whitespace-nowrap">
-              Inline styles
-            </span>
-          </label>
-          <div>
-            <ActionButton
-              onClick={handleExportSvg}
-              className="export-btn"
-              ariaLabel="Export as SVG"
-              title="Export as SVG"
-            >
-              <FaFileCode className="mr-2" />
-              Export as SVG
-            </ActionButton>
+      <div className="pb-20">
+        {/* Format selector */}
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-sm font-medium">Format:</span>
+          <div className="export-format-select">
+            <SelectInput
+              label=" "
+              value={format}
+              onChange={(val) => setFormat(val as ExportFormat)}
+              options={EXPORT_FORMAT_OPTIONS}
+            />
           </div>
         </div>
 
         <Separator className="mb-4" />
 
-        {/* PNG export section */}
-        <div>
-          <div className="section-title">PNG</div>
-          <div className="mb-2">
-            <div className="text-xs mb-1 text-gray-500 dark:text-gray-400">
-              Scale
-            </div>
-            <div className="flex gap-2">
-              <ActionButton
-                onClick={() => setPngScale(1)}
-                className={`scale-btn ${
-                  pngScale === 1 ? "scale-btn-active" : ""
-                }`}
-                ariaLabel="Scale 1x"
-                title="1x"
-              >
-                1x
-              </ActionButton>
-              <ActionButton
-                onClick={() => setPngScale(2)}
-                className={`scale-btn ${
-                  pngScale === 2 ? "scale-btn-active" : ""
-                }`}
-                ariaLabel="Scale 2x"
-                title="2x"
-              >
-                2x
-              </ActionButton>
-              <ActionButton
-                onClick={() => setPngScale(4)}
-                className={`scale-btn ${
-                  pngScale === 4 ? "scale-btn-active" : ""
-                }`}
-                ariaLabel="Scale 4x"
-                title="4x"
-              >
-                4x
-              </ActionButton>
-              <ActionButton
-                onClick={() => setPngScale(8)}
-                className={`scale-btn ${
-                  pngScale === 8 ? "scale-btn-active" : ""
-                }`}
-                ariaLabel="Scale 8x"
-                title="8x"
-              >
-                8x
-              </ActionButton>
-            </div>
-          </div>
-
-          <ActionButton
-            onClick={() => handleExportPng(pngScale)}
-            className="export-btn"
-            ariaLabel={`Export as PNG ${pngScale}x`}
-            title={`Export as PNG (${pngScale}x)`}
-          >
-            <FaFileImage className="mr-2" />
-            Export as PNG
-          </ActionButton>
+        {/* Options section header */}
+        <div className="mb-4 mt-1 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+          Options
         </div>
+
+        {/* SVG options */}
+        {format === "svg" && (
+          <SvgOptions
+            onOptionsChange={(opts) => {
+              svgOptions.current = opts;
+            }}
+          />
+        )}
+
+        {/* Image options */}
+        {format !== "svg" && (
+          <ImageOptions
+            format={format}
+            scaleOptions={PNG_SCALE_OPTIONS}
+            onOptionsChange={(opts) => {
+              imageOptions.current = opts;
+            }}
+          />
+        )}
+      </div>
+
+      {/* Export button */}
+      <div className="absolute bottom-0 left-0 w-full px-4 pb-4 bg-white dark:bg-gray-900">
+        <FormButton
+          onClick={handleExport}
+          className="w-full"
+          aria-label={"Export"}
+          title={"Export"}
+          disabled={!svgRef?.current}
+        >
+          <FaFileImage className="inline mr-2" />
+          Export
+        </FormButton>
       </div>
     </Panel>
   );

@@ -24,6 +24,8 @@
 
 .select-input:focus {
   @apply bg-gray-200;
+  outline: none;
+  box-shadow: none;
 }
 
 .dark .select-input:hover {
