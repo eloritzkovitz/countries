@@ -40,7 +40,9 @@ export function importOverlaysFromFile(
  */
 export function exportOverlaysToFile(overlays: Overlay[]) {
   if (!overlays) return;
-  const pretty = JSON.stringify(overlays, null, 2);
+  // Remove the id property from each overlay
+  const overlaysWithoutId = overlays.map(({ id, ...rest }) => rest);
+  const pretty = JSON.stringify(overlaysWithoutId, null, 2);
   const blob = new Blob([pretty], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

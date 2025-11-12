@@ -151,7 +151,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   // Modal handlers
   function openAddOverlay() {
     setEditingOverlay({
-      id: `overlay-${Date.now()}`,
+      id: crypto.randomUUID(),
       name: "",
       color: "#2563eb",
       countries: [],
