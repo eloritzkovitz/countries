@@ -28,7 +28,7 @@ export function CountryFlag({ flag, alt, style, className }: CountryFlagProps) {
         />
       );
     }
-    // fallback: white flag
+    // Fallback: white flag
     return (
       <div
         style={{
@@ -54,6 +54,8 @@ export function CountryFlag({ flag, alt, style, className }: CountryFlagProps) {
       height={height}
       className={`${className ?? ""}`}
       style={style}
+      loading="lazy"
+      decoding="async"
     />
   );
 }
