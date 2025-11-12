@@ -108,7 +108,7 @@ export default function GamesPage() {
             size: "96x72",
           }}
           alt={currentCountry.name}
-          style={{ width: "5rem", height: "auto", margin: "1rem 0" }}
+          className="block mx-auto my-8 w-24 h-auto"
         />
         <GuessForm
           guess={guess}

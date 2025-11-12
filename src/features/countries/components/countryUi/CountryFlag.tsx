@@ -4,26 +4,27 @@ import { SOVEREIGN_FLAG_MAP } from "@constants";
 import { getFlagUrl } from "@features/countries/utils/countryData";
 import type { Flag } from "@types";
 
-export function CountryFlag({
-  flag,
-  alt,
-  style,
-}: {
+type CountryFlagProps = {
   flag: Flag;
   alt?: string;
   style?: React.CSSProperties;
-}) {
+  className?: string;
+};
+
+export function CountryFlag({ flag, alt, style, className }: CountryFlagProps) {
   const [width, height] = flag.size.split("x").map(Number);
 
   if (flag.source === "svg") {
     const mappedIso =
-      SOVEREIGN_FLAG_MAP?.[flag.isoCode.toUpperCase()] || flag.isoCode.toUpperCase();
+      SOVEREIGN_FLAG_MAP?.[flag.isoCode.toUpperCase()] ||
+      flag.isoCode.toUpperCase();
     const FlagSvg = Flags[mappedIso as keyof typeof Flags];
     if (FlagSvg) {
       return (
         <FlagSvg
           title={alt || `${flag.isoCode} flag`}
           style={{ width, height, borderRadius: 4, ...style }}
+          className={className}
         />
       );
     }
@@ -38,6 +39,7 @@ export function CountryFlag({
           display: "inline-block",
           ...style,
         }}
+        className={className}
         title={alt || `${flag.isoCode} flag`}
       />
     );
@@ -50,7 +52,7 @@ export function CountryFlag({
       alt={alt || `${flag.isoCode} flag`}
       width={width}
       height={height}
-      className="inline-block rounded"
+      className={`rounded ${className ?? ""}`}
       style={style}
     />
   );

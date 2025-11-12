@@ -161,12 +161,7 @@ export function CountryDetailsModal({
               size: "64x48",
             }}
             alt={`${country.name} flag`}
-            style={{
-              display: "block",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginBottom: "16px",
-            }}
+            className="block mx-auto mb-4"            
           />
           <CountryInfoTable country={country} currencies={currencies} />
         </div>
