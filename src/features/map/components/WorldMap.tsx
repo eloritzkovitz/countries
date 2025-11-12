@@ -147,6 +147,7 @@ export function WorldMap({
         ref={svgRef}
         width={dimensions.width}
         height={dimensions.height}
+        className="map-container"
       >
         <ComposableMap
           projection={projection || DEFAULT_MAP_SETTINGS.projection}
