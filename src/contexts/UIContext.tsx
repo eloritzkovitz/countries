@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 
 export type UIContextType = {
@@ -26,6 +33,15 @@ export type UIContextType = {
   setTimelineMode: (v: boolean | ((prev: boolean) => boolean)) => void;
 };
 
+// Type for panel selection
+type PanelSelection =
+  | "countries"
+  | "markers"
+  | "overlays"
+  | "export"
+  | "settings"
+  | null;
+
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: { children: ReactNode }) {
@@ -34,10 +50,8 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // State for which panel is open; null means no panel is open
   const [showMenu, setShowMenu] = useState(false);
-  const prevShowMenu = useRef(showMenu); // To track previous showMenu state
-  const [openPanel, setOpenPanel] = useState<
-    "countries" | "markers" | "overlays" | "export" | "settings" | null
-  >("countries");
+  const [openPanel, setOpenPanel] = useState<PanelSelection>("countries");
+  const prevOpenPanel = useRef<PanelSelection>(openPanel);
   const [showFilters, setShowFilters] = useState(false);
 
   // Filters toggle: only works if countries panel is open
@@ -106,12 +120,12 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // Effect to open countries panel when menu closes
   useEffect(() => {
-    // Only open countries panel if menu just transitioned from open to closed
-    if (prevShowMenu.current && !showMenu && openPanel === null) {
+    // If any panel just closed (openPanel transitioned from non-null to null), open countries panel
+    if (prevOpenPanel.current !== null && openPanel === null) {
       setOpenPanel("countries");
     }
-    prevShowMenu.current = showMenu;
-  }, [showMenu, openPanel]);
+    prevOpenPanel.current = openPanel;
+  }, [openPanel]);
 
   return (
     <UIContext.Provider
