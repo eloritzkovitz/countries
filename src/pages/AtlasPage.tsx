@@ -12,7 +12,12 @@ import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import { useUiToggleHint } from "@hooks/useUiToggleHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
-import { MapToolbar, TimelinePicker, WorldMap } from "@features/map";
+import {
+  MapExportPanel,
+  MapToolbar,
+  TimelinePicker,
+  WorldMap,
+} from "@features/map";
 import { useMapView } from "@features/map/hooks/useMapView";
 import {
   MarkerDetailsModal,
@@ -22,8 +27,8 @@ import {
 } from "@features/markers";
 import { OverlayModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
-import type { Country, Marker } from "@types";
 import { useVisitedCountriesTimeline } from "@features/trips/hooks/useVisitedCountriesTimeline";
+import type { Country, Marker } from "@types";
 
 export default function AtlasPage() {
   // UI state
@@ -198,7 +203,6 @@ export default function AtlasPage() {
           <MapToolbar
             zoom={zoom}
             setZoom={setZoom}
-            svgRef={svgRef}
             setSnapshotMode={setTimelineMode}
           />
           {uiVisible && timelineMode && (
@@ -247,6 +251,7 @@ export default function AtlasPage() {
             onAddOverlay={openAddOverlay}
             overlayModalOpen={isEditModalOpen}
           />
+          <MapExportPanel svgRef={svgRef} />
           <SettingsPanel />
         </div>
         <ShortcutsModal />

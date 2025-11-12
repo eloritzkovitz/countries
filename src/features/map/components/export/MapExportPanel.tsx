@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { FaDownload, FaTimes, FaFileCode, FaFileImage } from "react-icons/fa";
-import {
-  ActionButton,
-  Checkbox,
-  Modal,
-  PanelHeader,
-  Separator,
-} from "@components";
+import { ActionButton, Checkbox, Panel, Separator } from "@components";
 import { useUI } from "@contexts/UIContext";
 import { exportSvg, exportSvgAsPng } from "@features/map/utils/mapExport";
 
@@ -14,7 +8,7 @@ interface MapExportModalProps {
   svgRef: React.RefObject<SVGSVGElement | null>;
 }
 
-export function MapExportModal({ svgRef }: MapExportModalProps) {
+export function MapExportPanel({ svgRef }: MapExportModalProps) {
   const { showExport, closePanel } = useUI();
 
   // Export options state
@@ -33,27 +27,19 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
     if (!svgRef?.current) return;
     exportSvgAsPng(svgRef.current, `map@${s}x.png`, s);
     closePanel();
-  };
-
-  // Don't render if not visible
-  if (!showExport) return null;
+  };  
 
   return (
-    <Modal
-      isOpen={showExport}
-      onClose={() => closePanel()}
-      position="custom"
-      containerClassName="right-30 bottom-[80px]"
-      className="modal min-w-[220px] max-w-[600px] max-h-[90vh]"
-    >
-      <PanelHeader
-        title={
-          <>
-            <FaDownload />
-            Export
-          </>
-        }
-      >
+    <Panel
+      title={
+        <>
+          <FaDownload />
+          Export
+        </>
+      }
+      show={showExport}
+      onHide={() => closePanel()}
+      headerActions={
         <ActionButton
           onClick={() => closePanel()}
           ariaLabel="Close export menu"
@@ -61,8 +47,8 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
         >
           <FaTimes />
         </ActionButton>
-      </PanelHeader>
-
+      }
+    >
       <div className="p-2">
         {/* SVG export section */}
         <div className="mb-3">
@@ -150,6 +136,6 @@ export function MapExportModal({ svgRef }: MapExportModalProps) {
           </ActionButton>
         </div>
       </div>
-    </Modal>
+    </Panel>
   );
 }

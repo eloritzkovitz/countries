@@ -14,20 +14,17 @@ import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import { isTimelineOverlay } from "@features/overlays";
 import { ZoomControls } from "./ZoomControls";
-import { MapExportModal } from "../mapExport/MapExportModal";
 import "./MapToolbar.css";
 
 export function MapToolbar({
   zoom,
   setZoom,
   setSnapshotMode,
-  svgRef,
   children,
 }: {
   zoom: number;
   setZoom: React.Dispatch<React.SetStateAction<number>>;
   setSnapshotMode: React.Dispatch<React.SetStateAction<boolean>>;
-  svgRef: React.RefObject<SVGSVGElement | null>;
   children?: React.ReactNode;
 }) {
   // UI state
@@ -108,7 +105,6 @@ export function MapToolbar({
             className="toolbar-btn rounded-full"
             icon={<FaDownload />}
           />
-          <MapExportModal svgRef={svgRef} />
           <ToolbarSeparator />
           <ActionButton
             onClick={toggleSettings}
