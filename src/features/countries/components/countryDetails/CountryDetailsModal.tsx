@@ -21,6 +21,7 @@ import { CountryInfoTable } from "./CountryInfoTable";
 import { CountryVisitsDrawer } from "./CountryVisitsDrawer";
 import { SovereigntyBadge } from "./SovereigntyBadge";
 import { VisitedStatusIndicator } from "./VisitedStatusIndicator";
+import { useSettings } from "@contexts/SettingsContext";
 
 type CountryDetailsModalProps = {
   country: Country | null;
@@ -40,6 +41,10 @@ export function CountryDetailsModal({
   const isVisited = country ? isCountryVisited(country.isoCode) : false;
   const visits = country ? getCountryVisits(country.isoCode) : [];
   const [showVisitsDrawer, setShowVisitsDrawer] = useState(false);
+
+  // Get home country from settings
+  const { settings } = useSettings();
+  const homeCountry = settings?.homeCountry;
 
   // For positioning the drawer and chevron
   const modalRef = useRef<HTMLDivElement>(null);
@@ -113,7 +118,10 @@ export function CountryDetailsModal({
                 <span className="text-gray-500 text-sm">
                   ({country.isoCode})
                 </span>
-                <VisitedStatusIndicator visited={isVisited} />
+                <VisitedStatusIndicator
+                  visited={isVisited}
+                  isHome={homeCountry === country.isoCode}
+                />
               </span>
             }
           >
@@ -161,7 +169,7 @@ export function CountryDetailsModal({
               size: "64",
             }}
             alt={`${country.name} flag`}
-            className="block mx-auto mb-4 h-16 w-auto"            
+            className="block mx-auto mb-4 h-16 w-auto"
           />
           <CountryInfoTable country={country} currencies={currencies} />
         </div>
