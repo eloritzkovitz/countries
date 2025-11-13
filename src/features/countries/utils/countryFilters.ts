@@ -2,13 +2,7 @@
  * Utility functions for filtering countries based on various criteria.
  */
 
-import type {
-  Country,
-  FilterConfig,
-  FilterKey,
-  FilterOption,
-  Overlay,
-} from "@types";
+import type { Country, Overlay } from "@types";
 import { normalizeString } from "@utils/string";
 
 /**
@@ -91,29 +85,4 @@ export function getFilteredIsoCodes(
     }
     return accIsoCodes; // "all"
   }, base as string[]);
-}
-
-/** Creates a select filter configuration.
- * @param key - The key for the filter (region, subregion, sovereignty).
- * @param label - The label for the filter.
- * @param getOptions - Function to get options for the filter.
- * @param getValue - Function to get the current value of the filter.
- * @param setValue - Function to set the value of the filter.
- * @returns A FilterConfig object for the select filter.
- */
-export function createSelectFilter<T extends string>(
-  key: FilterKey,
-  label: string,
-  getOptions: (options: T[]) => FilterOption[],
-  getValue: (props: any) => string,
-  setValue: (props: any, val: string) => void
-): FilterConfig {
-  return {
-    key,
-    label,
-    type: "select",
-    getOptions,
-    getValue,
-    setValue,
-  } as FilterConfig;
 }

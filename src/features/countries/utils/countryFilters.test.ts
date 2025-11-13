@@ -3,7 +3,6 @@ import {
   filterCountries,
   filterCountriesBySearch,
   getFilteredIsoCodes,
-  createSelectFilter,
 } from "./countryFilters";
 
 describe("countryFilters utils", () => {
@@ -82,27 +81,5 @@ describe("countryFilters utils", () => {
         getFilteredIsoCodes(countries, overlays as any, { o2: "exclude" })
       ).toEqual(["FR", "DE"]);
     });
-  });
-
-  describe("createSelectFilter", () => {
-    it("creates a select filter config", () => {
-      const filter = createSelectFilter(
-        "region",
-        "Region",
-        (opts) => opts.map((o) => ({ value: o, label: o })),
-        (props) => props.value,
-        (props, val) => {
-          props.value = val;
-        }
-      );
-      expect(filter.key).toBe("region");
-      expect(filter.label).toBe("Region");
-      expect(filter.type).toBe("select");
-      // Test getOptions
-      expect(filter.getOptions(["A", "B"])).toEqual([
-        { value: "A", label: "A" },
-        { value: "B", label: "B" },
-      ]);
-    });
-  });
+  });  
 });

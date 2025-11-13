@@ -5,7 +5,7 @@
 import { EXCLUDED_ISO_CODES, SOVEREIGN_FLAG_MAP } from "@constants";
 import { SOVEREIGN_DEPENDENCIES } from "@features/countries/constants/sovereignties";
 import type { Country, SovereigntyType, Overlay } from "@types";
-import type { FlagSource, FlagStyle, FlagSize } from "../types";
+import type { FlagSource, FlagStyle, FlagSize } from "../types/countryFlag";
 
 /**
  * Extracts the ISO country code from various possible property names.

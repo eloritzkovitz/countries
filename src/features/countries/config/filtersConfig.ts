@@ -1,22 +1,15 @@
-import { createSelectFilter } from "@features/countries/utils/countryFilters";
 import { mapOptions } from "@features/countries/utils/countryList";
 import type { FilterConfig, FilterOption, Overlay, SovereigntyType } from "@types";
+import { createSelectFilter } from "@utils/filter";
 import { capitalize } from "@utils/string";
-
-// Predefined sovereignty order for consistent dropdown ordering
-const SOVEREIGNTY_ORDER: SovereigntyType[] = [
-  "Sovereign",
-  "Dependency",
-  "Overseas Region",
-  "Disputed",
-  "Unrecognized",  
-];
+import { SOVEREIGNTY_ORDER } from "../constants/sovereignties";
+import type { CountryFilterConfig } from "../types/countryFilters";
 
 // "All" option constant
 const allOption: FilterOption = { value: "", label: "All" };
 
 // Core filters configuration array
-export const coreFiltersConfig: FilterConfig[] = [
+export const coreFiltersConfig: CountryFilterConfig[] = [
   createSelectFilter(
     "region",
     "Region",
