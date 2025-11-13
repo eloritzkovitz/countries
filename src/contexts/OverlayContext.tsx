@@ -1,11 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useTrips } from "@contexts/TripsContext";
-import {
-  editOverlay as editOverlayUtil,
-  removeOverlay as removeOverlayUtil,
-  updateOverlayVisibility,
-} from "@features/overlays";
-import { computeVisitedCountriesFromTrips } from "@features/trips";
+import { useSyncVisitedCountriesOverlay } from "@features/overlays";
 import { overlaysService } from "@services/overlaysService";
 import type { AnyOverlay } from "@types";
 
@@ -73,28 +68,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Sync visited countries overlay with trips
-  useEffect(() => {
-    if (!loading && overlays.length > 0) {
-      const visitedOverlayId = "visited-countries";
-      const visitedCountries = computeVisitedCountriesFromTrips(trips);
-
-      const prevCountries =
-        overlays.find((o) => o.id === visitedOverlayId)?.countries || [];
-      const hasChanged =
-        prevCountries.length !== visitedCountries.length ||
-        prevCountries.some((c, i) => visitedCountries[i] !== c);
-
-      if (hasChanged) {
-        const updated = overlays.map((overlay) =>
-          overlay.id === visitedOverlayId
-            ? { ...overlay, countries: visitedCountries }
-            : overlay
-        );
-        setOverlays(updated);
-        overlaysService.save(updated); // Persist all overlays
-      }
-    }
-  }, [trips, loading, overlays]);
+  useSyncVisitedCountriesOverlay(trips, overlays, setOverlays, loading);
 
   // Persist overlays on change
   useEffect(() => {
@@ -115,14 +89,16 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
 
   // Edit overlay
   async function editOverlay(overlay: AnyOverlay) {
-    const newOverlays = editOverlayUtil(overlays, overlay);
+    const newOverlays = overlays.map((o) =>
+      o.id === overlay.id ? overlay : o
+    );
     setOverlays(newOverlays);
     await overlaysService.edit(overlay);
   }
 
   // Remove overlay
   async function removeOverlay(id: string) {
-    const newOverlays = removeOverlayUtil(overlays, id);
+    const newOverlays = overlays.filter((o) => o.id !== id);
     setOverlays(newOverlays);
     await overlaysService.remove(id);
   }
@@ -139,10 +115,8 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
 
   // Toggle visibility
   async function toggleOverlayVisibility(id: string) {
-    const newOverlays = updateOverlayVisibility(
-      overlays,
-      id,
-      !overlays.find((o) => o.id === id)?.visible
+    const newOverlays = overlays.map((o) =>
+      o.id === id ? { ...o, visible: !o.visible } : o
     );
     setOverlays(newOverlays);
     await overlaysService.save(newOverlays);
