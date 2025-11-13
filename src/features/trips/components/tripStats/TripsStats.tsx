@@ -35,7 +35,7 @@ type TripsStatsProps = {
 
 export function TripsStats({ isOpen, onClose, trips }: TripsStatsProps) {
   const { countries } = useCountryData();
-  const homeCountry = useHomeCountry();
+  const { homeCountry } = useHomeCountry();
 
   // Trip counts
   const totalTrips = trips.length;

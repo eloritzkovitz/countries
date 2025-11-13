@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { useSettings } from "@contexts/SettingsContext";
 import { getCountryByIsoCode } from "@features/countries";
+import { useHomeCountry } from "@features/settings";
 import type { TripFilterState } from "@features/trips/types";
 import {
   getCountryDropdownOptions,
@@ -43,8 +43,7 @@ export function useTripFilters(
   initialFilters?: Partial<TripFilterState>,
   globalSearch?: string
 ) {
-  const settings = useSettings();
-  const homeCountry = settings.settings.homeCountry;
+  const { homeCountry } = useHomeCountry();
 
   // Unified filter state
   const [filters, setFilters] = useState<TripFilterState>({

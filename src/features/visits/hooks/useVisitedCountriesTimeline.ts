@@ -7,7 +7,7 @@ import {
 
 export function useVisitedCountriesTimeline() {
   const { trips } = useTrips();
-  const homeCountry = useHomeCountry();
+  const { homeCountry } = useHomeCountry();
 
   return {
     getVisitedCountriesForYear: (year: number) =>

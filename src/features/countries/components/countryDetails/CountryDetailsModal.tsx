@@ -43,7 +43,7 @@ export function CountryDetailsModal({
   const [showVisitsDrawer, setShowVisitsDrawer] = useState(false);
 
   // Get home country from settings
-  const homeCountry = useHomeCountry();
+  const { homeCountry } = useHomeCountry();
 
   // For positioning the drawer and chevron
   const modalRef = useRef<HTMLDivElement>(null);

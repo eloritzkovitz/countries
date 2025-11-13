@@ -2,19 +2,18 @@ import { useState } from "react";
 import { FaHome, FaChevronDown } from "react-icons/fa";
 import { CollapsibleHeader } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import { useSettings } from "@contexts/SettingsContext";
 import { CountrySelectModal, CountryWithFlag } from "@features/countries";
+import { useHomeCountry } from "@features/settings";
 
 export function HomeCountrySelect() {
-  const { settings, updateSettings } = useSettings();
   const { countries } = useCountryData();
+  const { homeCountry, setHomeCountry } = useHomeCountry();
   const [modalOpen, setModalOpen] = useState(false);
   const [expanded, setExpanded] = useState(true);
 
   // Find the currently selected country object
-  const selectedCountry = countries.find(
-    (c) => c.isoCode === settings.homeCountry
-  );
+
+  const selectedCountry = countries.find((c) => c.isoCode === homeCountry);
 
   return (
     <div className="settings-group">
@@ -39,18 +38,18 @@ export function HomeCountrySelect() {
             />
           ) : (
             <span className="opacity-50">No country selected</span>
-          )}          
+          )}
           <FaChevronDown className="ml-auto text-gray-400" />
         </button>
       )}
       {/* Country selection modal */}
       <CountrySelectModal
         isOpen={modalOpen}
-        selected={[settings.homeCountry]}
+        selected={[homeCountry]}
         options={countries}
         onChange={(newCountries) => {
           if (newCountries.length > 0) {
-            updateSettings({ homeCountry: newCountries[0] });
+            setHomeCountry(newCountries[0]);
             setModalOpen(false);
           }
         }}
