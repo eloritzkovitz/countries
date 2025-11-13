@@ -1,4 +1,4 @@
-import type { SovereigntyGroup } from "@types";
+import type { SovereigntyGroup } from "../types";
 
 export const SOVEREIGN_DEPENDENCIES: Record<string, SovereigntyGroup> = {
   AU: {
