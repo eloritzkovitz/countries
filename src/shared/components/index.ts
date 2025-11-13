@@ -39,7 +39,7 @@ export { PanelListItem } from "./layout/Panel/PanelListItem";
 // Toolbar components
 export { ActionsToolbar } from "./layout/Toolbar/ActionsToolbar";
 export { ToolbarSeparator } from "./layout/Toolbar/ToolbarSeparator";
-export { type ToolbarToggleOption, ToolbarToggleGroup } from "./layout/Toolbar/ToolbarToggleGroup";
+export { ToolbarToggleGroup } from "./layout/Toolbar/ToolbarToggleGroup";
 
 // Table components
 export { SeparatorRow } from "./table/SeparatorRow";

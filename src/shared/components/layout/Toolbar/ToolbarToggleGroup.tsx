@@ -1,17 +1,7 @@
-import React from "react";
 import { ActionButton } from "@components";
+import type { ToolbarToggleOption } from "@types";
 
-export interface ToolbarToggleOption {
-  value: string;
-  icon: React.ReactNode;
-  label: string;
-  ariaLabel?: string;
-  title?: string;
-  checked: boolean;
-  onClick: () => void;
-}
-
-interface ToolbarToggleGroupProps {
+type ToolbarToggleGroupProps = {
   options: ToolbarToggleOption[];
   className?: string;
   buttonClassName?: string;

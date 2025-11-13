@@ -7,9 +7,9 @@ import {
   FaCalendar,
   FaHashtag,
 } from "react-icons/fa6";
-import { ActionButton } from "@components";
-import { ToolbarToggleGroup, type ToolbarToggleOption } from "@components";
+import { ActionButton, ToolbarToggleGroup } from "@components";
 import type { TripFilterState } from "@features/trips/types";
+import type { ToolbarToggleOption } from "@types";
 
 type ToolbarFiltersProps = {
   filters: TripFilterState;

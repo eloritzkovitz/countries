@@ -6,5 +6,6 @@ export * from "./option";
 export * from "./overlay";
 export * from "./settings";
 export * from "./sort";
+export * from "./toolbar";
 export * from "./trip";
 export * from "./visit";

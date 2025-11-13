@@ -1,10 +1,7 @@
 import React from "react";
 import { FaArrowsRotate, FaList, FaListCheck } from "react-icons/fa6";
-import {
-  ActionButton,
-  ToolbarToggleGroup,
-  type ToolbarToggleOption,
-} from "@components";
+import { ActionButton, ToolbarToggleGroup } from "@components";
+import type { ToolbarToggleOption } from "@types";
 
 interface CountriesToolbarProps {
   onRefresh?: () => void;
