@@ -2,6 +2,33 @@ import type { Trip } from "@types";
 import { getYearNumber } from "@utils/date";
 
 /**
+ * Adds a given home country to a set of country codes.
+ * @param codes - Set of country codes.
+ * @param homeCountry - Optional home country code to add.
+ * @returns The updated set of country codes.
+ */
+function addHomeCountry(codes: Set<string>, homeCountry?: string) {
+  if (homeCountry) codes.add(homeCountry);
+  return codes;
+}
+
+/**
+ * Helper to collect unique country codes from trips matching a filter.
+ */
+function collectCountryCodes(
+  trips: Trip[],
+  filter: (trip: Trip) => boolean,
+  homeCountry?: string
+) {
+  const codes = new Set<string>();
+  trips.filter(filter).forEach((trip) => {
+    trip.countryCodes?.forEach((code) => codes.add(code));
+  });
+  addHomeCountry(codes, homeCountry);
+  return Array.from(codes);
+}
+
+/**
  * Gets all years from trips.
  * @param trips - Array of trips to analyze.
  * @returns Array of unique years sorted in ascending order.
@@ -14,67 +41,66 @@ export function getYearsFromTrips(trips: Trip[]) {
 }
 
 /**
- * Computes a list of unique visited country codes from an array of trips.
+ * Computes a list of unique visited country codes from an array of trips, including home country if provided.
  * @param trips - The array of trips.
+ * @param homeCountry - Optional home country code to include.
  * @returns A list of unique visited country codes.
  */
-export function computeVisitedCountriesFromTrips(trips: Trip[]) {
+export function computeVisitedCountriesFromTrips(trips: Trip[], homeCountry?: string) {
   const now = new Date();
-  return Array.from(
-    new Set(
-      trips
-        .filter((trip) => {
-          const start = trip.startDate && new Date(trip.startDate);
-          return start && !isNaN(start.getTime()) && start <= now;
-        })
-        .flatMap((trip) => trip.countryCodes || [])
-    )
+  return collectCountryCodes(
+    trips,
+    (trip) => {
+      const start = trip.startDate ? new Date(trip.startDate) : undefined;
+      return !!(start && !isNaN(start.getTime()) && start <= now);
+    },
+    homeCountry
   );
 }
 
 /**
- * Gets all visited country codes for a specific year.
+ * Gets all visited country codes for a specific year, including home country if provided.
  * @param trips - Array of trips to analyze.
  * @param year - The year for which to get visited countries.
+ * @param homeCountry - Optional home country code to include.
  * @returns Array of unique country codes visited in the specified year.
  */
-export function getVisitedCountriesForYear(trips: Trip[], year: number) {
-  const codes = new Set<string>();
-  trips.forEach((trip) => {
-    const start = getYearNumber(trip.startDate);
-    const end = getYearNumber(trip.endDate) ?? start;
-    if (
-      start !== undefined &&
-      end !== undefined &&
-      year >= start &&
-      year <= end
-    ) {
-      trip.countryCodes?.forEach((code) => codes.add(code));
-    }
-  });
-  return Array.from(codes);
+export function getVisitedCountriesForYear(trips: Trip[], year: number, homeCountry?: string) {
+  return collectCountryCodes(
+    trips,
+    (trip) => {
+      const start = getYearNumber(trip.startDate);
+      const end = getYearNumber(trip.endDate) ?? start;
+      return (
+        start !== undefined &&
+        end !== undefined &&
+        year >= start &&
+        year <= end
+      );
+    },
+    homeCountry
+  );
 }
 
 /**
- * Gets all visited country codes up to and including a specific year.
+ * Gets all visited country codes up to and including a specific year, including home country if provided.
  * @param trips - Array of trips to analyze.
  * @param year - The year up to which to include trips.
+ * @param homeCountry - Optional home country code to include.
  * @returns Array of unique country codes visited up to the specified year.
  */
-export function getVisitedCountriesUpToYear(trips: Trip[], year: number) {
-  const codes = new Set<string>();
+export function getVisitedCountriesUpToYear(trips: Trip[], year: number, homeCountry?: string) {
   const now = new Date();
-
-  trips.forEach((trip) => {
-    const start = getYearNumber(trip.startDate);
-    // Only include trips that have started as of today
-    if (
-      start !== undefined &&
-      start <= year &&
-      new Date(trip.startDate) <= now
-    ) {
-      trip.countryCodes?.forEach((code) => codes.add(code));
-    }
-  });
-  return Array.from(codes);
+  return collectCountryCodes(
+    trips,
+    (trip) => {
+      const start = getYearNumber(trip.startDate);
+      return (
+        start !== undefined &&
+        start <= year &&
+        new Date(trip.startDate) <= now
+      );
+    },
+    homeCountry
+  );
 }

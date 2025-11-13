@@ -7,6 +7,8 @@ import {
 } from "./visits";
 
 describe("visits utils", () => {
+  const homeCountry = "GB";
+
   describe("getYearsFromTrips", () => {
     it("returns unique sorted years from trips", () => {
       const years = getYearsFromTrips(mockTrips);
@@ -29,13 +31,23 @@ describe("visits utils", () => {
   describe("computeVisitedCountriesFromTrips", () => {
     it("returns unique visited country codes for past and current trips", () => {
       const visited = computeVisitedCountriesFromTrips(mockTrips);
-      // Should not include JP (future trip in mockTrips)
       expect(visited).toEqual(expect.arrayContaining(["US", "CA", "FR", "DE"]));
       expect(visited).not.toContain("JP");
     });
 
+    it("includes home country if provided and not already present", () => {
+      const visited = computeVisitedCountriesFromTrips(mockTrips, homeCountry);
+      expect(visited).toContain(homeCountry);
+    });
+
     it("returns empty array for empty trips", () => {
       expect(computeVisitedCountriesFromTrips([])).toEqual([]);
+    });
+
+    it("returns only home country if no trips and homeCountry is set", () => {
+      expect(computeVisitedCountriesFromTrips([], homeCountry)).toEqual([
+        homeCountry,
+      ]);
     });
   });
 
@@ -47,6 +59,11 @@ describe("visits utils", () => {
       expect(result).not.toContain("JP");
     });
 
+    it("includes home country if provided and not already present", () => {
+      const result = getVisitedCountriesForYear(mockTrips, 2023, homeCountry);
+      expect(result).toContain(homeCountry);
+    });
+
     it("returns all countries visited in a year with overlapping trips", () => {
       const result = getVisitedCountriesForYear(mockTrips, 2022);
       expect(result).toEqual(expect.arrayContaining(["CA"]));
@@ -54,6 +71,12 @@ describe("visits utils", () => {
       expect(result).not.toContain("FR");
       expect(result).not.toContain("DE");
       expect(result).not.toContain("JP");
+    });
+
+    it("returns only home country if no trips in the year and homeCountry is set", () => {
+      expect(getVisitedCountriesForYear(mockTrips, 1999, homeCountry)).toEqual([
+        homeCountry,
+      ]);
     });
 
     it("returns an empty array if no trips in the year", () => {
@@ -73,12 +96,11 @@ describe("visits utils", () => {
     it("returns all countries visited up to and including a year (excluding future trips)", () => {
       const thisYear = new Date().getFullYear();
       const result = getVisitedCountriesUpToYear(mockTrips, thisYear);
-      // Only include trips that have started as of today
       if (thisYear >= 2023) {
         expect(result).toEqual(
           expect.arrayContaining(["US", "FR", "DE", "CA"])
         );
-        expect(result).not.toContain("JP"); // Future trip
+        expect(result).not.toContain("JP");
       } else if (thisYear === 2022) {
         expect(result).toEqual(expect.arrayContaining(["CA"]));
         expect(result).not.toContain("US");
@@ -90,6 +112,16 @@ describe("visits utils", () => {
       }
     });
 
+    it("includes home country if provided and not already present", () => {
+      const thisYear = new Date().getFullYear();
+      const result = getVisitedCountriesUpToYear(
+        mockTrips,
+        thisYear,
+        homeCountry
+      );
+      expect(result).toContain(homeCountry);
+    });
+
     it("returns only countries visited up to a specific past year", () => {
       const result = getVisitedCountriesUpToYear(mockTrips, 2022);
       expect(result).toEqual(expect.arrayContaining(["CA"]));
@@ -97,6 +129,12 @@ describe("visits utils", () => {
       expect(result).not.toContain("FR");
       expect(result).not.toContain("DE");
       expect(result).not.toContain("JP");
+    });
+
+    it("returns only home country if no trips up to the year and homeCountry is set", () => {
+      expect(getVisitedCountriesUpToYear(mockTrips, 1999, homeCountry)).toEqual(
+        [homeCountry]
+      );
     });
 
     it("returns an empty array if no trips up to the year", () => {
