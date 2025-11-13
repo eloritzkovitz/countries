@@ -12,12 +12,8 @@ import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import { useUiToggleHint } from "@hooks/useUiToggleHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
-import {
-  MapExportPanel,
-  MapToolbar,
-  TimelinePicker,
-  WorldMap,
-} from "@features/map";
+import { MapExportPanel, MapToolbar, WorldMap } from "@features/map";
+import { TimelinePicker } from "@features/timeline";
 import { useMapView } from "@features/map/hooks/useMapView";
 import {
   MarkerDetailsModal,
@@ -27,7 +23,7 @@ import {
 } from "@features/markers";
 import { OverlayModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
-import { useVisitedCountriesTimeline } from "@features/visits";
+import { useTimelineState } from "@features/timeline";
 import type { Country, Marker } from "@types";
 
 export default function AtlasPage() {
@@ -88,10 +84,7 @@ export default function AtlasPage() {
     !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
 
   // Timeline state
-  const { years } = useVisitedCountriesTimeline();
-  const [selectedYear, setSelectedYear] = useState(
-    years[years.length - 1] || new Date().getFullYear()
-  );
+  const { years, selectedYear, setSelectedYear } = useTimelineState();
 
   // Derived state
   const isLoading = countriesLoading || overlaysLoading || !mapReady;

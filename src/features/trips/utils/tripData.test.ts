@@ -3,7 +3,6 @@ import {
   getCountryNames,
   getUsedCountryCodes,
   getUsedYears,
-  computeVisitedCountriesFromTrips,
 } from "./tripData";
 
 const mockCountries = [
@@ -57,18 +56,5 @@ describe("tripData utils", () => {
     it("returns empty array for empty trips", () => {
       expect(getUsedYears([])).toEqual([]);
     });
-  });
-
-  describe("computeVisitedCountriesFromTrips", () => {
-    it("returns unique visited country codes for past and current trips", () => {
-      const visited = computeVisitedCountriesFromTrips(mockTrips);
-      // Should not include JP (future trip in mockTrips)
-      expect(visited).toEqual(expect.arrayContaining(["US", "CA", "FR", "DE"]));
-      expect(visited).not.toContain("JP");
-    });
-
-    it("returns empty array for empty trips", () => {
-      expect(computeVisitedCountriesFromTrips([])).toEqual([]);
-    });
-  });
+  });  
 });

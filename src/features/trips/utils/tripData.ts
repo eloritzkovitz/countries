@@ -47,19 +47,3 @@ export function getUsedYears(trips: Trip[]): number[] {
     )
   ).sort((a, b) => b - a);
 }
-
-/**
- * Computes a list of unique visited country codes from an array of trips.
- * @param trips - The array of trips.
- * @returns A list of unique visited country codes.
- */
-export function computeVisitedCountriesFromTrips(trips: Trip[]) {
-  const now = new Date();
-  return Array.from(
-    new Set(
-      trips
-        .filter((trip) => new Date(trip.startDate) <= now)
-        .flatMap((trip) => trip.countryCodes || [])
-    )
-  );
-}

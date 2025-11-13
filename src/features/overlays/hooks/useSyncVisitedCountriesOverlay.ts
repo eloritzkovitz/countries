@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { computeVisitedCountriesFromTrips } from "@features/trips";
+import { computeVisitedCountriesFromTrips } from "@features/visits";
 import { overlaysService } from "@services/overlaysService";
 import type { AnyOverlay, Trip } from "@types";
 

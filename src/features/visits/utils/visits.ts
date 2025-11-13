@@ -14,6 +14,25 @@ export function getYearsFromTrips(trips: Trip[]) {
 }
 
 /**
+ * Computes a list of unique visited country codes from an array of trips.
+ * @param trips - The array of trips.
+ * @returns A list of unique visited country codes.
+ */
+export function computeVisitedCountriesFromTrips(trips: Trip[]) {
+  const now = new Date();
+  return Array.from(
+    new Set(
+      trips
+        .filter((trip) => {
+          const start = trip.startDate && new Date(trip.startDate);
+          return start && !isNaN(start.getTime()) && start <= now;
+        })
+        .flatMap((trip) => trip.countryCodes || [])
+    )
+  );
+}
+
+/**
  * Gets all visited country codes for a specific year.
  * @param trips - Array of trips to analyze.
  * @param year - The year for which to get visited countries.

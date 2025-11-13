@@ -1,6 +1,7 @@
 import { mockTrips } from "@test-utils/mockTrips";
 import {
   getYearsFromTrips,
+  computeVisitedCountriesFromTrips,
   getVisitedCountriesForYear,
   getVisitedCountriesUpToYear,
 } from "./visits";
@@ -22,6 +23,19 @@ describe("visits utils", () => {
         { ...mockTrips[1], startDate: undefined } as any,
       ];
       expect(getYearsFromTrips(trips)).toEqual([]);
+    });
+  });
+
+  describe("computeVisitedCountriesFromTrips", () => {
+    it("returns unique visited country codes for past and current trips", () => {
+      const visited = computeVisitedCountriesFromTrips(mockTrips);
+      // Should not include JP (future trip in mockTrips)
+      expect(visited).toEqual(expect.arrayContaining(["US", "CA", "FR", "DE"]));
+      expect(visited).not.toContain("JP");
+    });
+
+    it("returns empty array for empty trips", () => {
+      expect(computeVisitedCountriesFromTrips([])).toEqual([]);
     });
   });
 
