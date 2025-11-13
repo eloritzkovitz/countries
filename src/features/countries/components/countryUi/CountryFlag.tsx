@@ -2,7 +2,7 @@ import React from "react";
 import * as Flags from "country-flag-icons/react/3x2";
 import { SOVEREIGN_FLAG_MAP } from "@constants";
 import { getFlagUrl } from "@features/countries/utils/countryData";
-import type { Flag } from "@types";
+import type { Flag } from "../../types";
 
 type CountryFlagProps = {
   flag: Flag;
@@ -12,7 +12,11 @@ type CountryFlagProps = {
 };
 
 export function CountryFlag({ flag, alt, style, className }: CountryFlagProps) {
-  const [width, height] = flag.size.split("x").map(Number);
+  // Convert flag.size (string | undefined) to number, default to 32
+  const size = flag.size ? Number(flag.size) : 32;
+  // For SVG, use a 4:3 aspect ratio (e.g., 32x24)
+  const width = size;
+  const height = Math.round(size * 0.75);
 
   if (flag.source === "svg") {
     const mappedIso =
@@ -48,7 +52,7 @@ export function CountryFlag({ flag, alt, style, className }: CountryFlagProps) {
   // Default: use URL-based flag
   return (
     <img
-      src={getFlagUrl(flag.isoCode, flag.size, flag.source, flag.style)}
+      src={getFlagUrl(flag.isoCode, flag.source, flag.style, flag.size)}
       alt={alt || `${flag.isoCode} flag`}
       width={width}
       height={height}

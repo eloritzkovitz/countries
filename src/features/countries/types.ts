@@ -3,7 +3,7 @@ export type Flag = {
   isoCode: string;
   source: FlagSource;
   style: FlagStyle;
-  size: FlagSize;
+  size?: FlagSize;
 };
 
 // Flag property types

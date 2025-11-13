@@ -4,14 +4,8 @@
 
 import { EXCLUDED_ISO_CODES, SOVEREIGN_FLAG_MAP } from "@constants";
 import { SOVEREIGN_DEPENDENCIES } from "@features/countries/constants/sovereignties";
-import type {
-  Country,
-  SovereigntyType,
-  FlagSource,
-  FlagStyle,
-  FlagSize,
-  Overlay,
-} from "@types";
+import type { Country, SovereigntyType, Overlay } from "@types";
+import type { FlagSource, FlagStyle, FlagSize } from "../types";
 
 /**
  * Extracts the ISO country code from various possible property names.
@@ -55,17 +49,17 @@ export function createCountryLookup(countries: any[]): Record<string, any> {
 
 /**
  * Gets the URL of a country's flag based on its ISO code, source, style, and size.
- * @param isoCode - The ISO code of the country.
- * @param size - The size of the flag image.
  * @param source - The flag provider ("flagcdn" or "flagsapi").
  * @param style - The style of the flag ("flat" or "shiny").
+ * @param isoCode - The ISO code of the country.
+ * @param size - The size of the flag image.
  * @returns The URL of the country's flag image.
  */
 export function getFlagUrl(
   isoCode: string,
-  size: FlagSize = "32",
   source: FlagSource = "flagcdn",
-  style: FlagStyle = "flat"
+  style: FlagStyle = "flat",
+  size?: FlagSize
 ): string {
   if (!isoCode) return "";
 
@@ -77,10 +71,10 @@ export function getFlagUrl(
   switch (source) {
     case "flagsapi":
       if (!flagIso || flagIso.length !== 2) return "";
+      // Use default size if not provided
+      const flagsApiSize = size ? size.split("x")[0] : "32";
       // FlagsAPI: https://flagsapi.com/:country_code/:style/:size.png
-      return `https://flagsapi.com/${flagIso}/${style}/${
-        size.split("x")[0]
-      }.png`;
+      return `https://flagsapi.com/${flagIso}/${style}/${flagsApiSize}.png`;
     case "flagcdn":
     default:
       // FlagCDN: https://flagcdn.com/:country_code.svg
@@ -181,7 +175,6 @@ export function getVisitedCountries(
 ): Country[] {
   const visitedOverlay = overlays.find((o) => o.id === "visited-countries");
   const visitedIsoCodes =
-    (visitedOverlay as { countries?: string[] } | undefined)
-      ?.countries ?? [];
+    (visitedOverlay as { countries?: string[] } | undefined)?.countries ?? [];
   return countries.filter((c) => visitedIsoCodes.includes(c.isoCode));
 }

@@ -43,7 +43,6 @@ export function SovereigntyBadge({ type, sovereign }: SovereigntyBadgeProps) {
           <CountryWithFlag
             isoCode={sovereign.isoCode}
             name={sovereign.name}
-            size="32x24"
             className="mx-[3px] inline-block align-middle"
           />
         ) : (

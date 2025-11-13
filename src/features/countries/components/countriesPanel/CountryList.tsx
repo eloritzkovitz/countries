@@ -53,8 +53,7 @@ export function CountryList({
                 >
                   <CountryWithFlag
                     isoCode={country.isoCode}
-                    name={country.name}
-                    size="32x24"
+                    name={country.name}                    
                   />
                 </li>
               );
