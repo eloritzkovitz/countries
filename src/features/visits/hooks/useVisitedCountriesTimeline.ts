@@ -1,5 +1,5 @@
 import { useTrips } from "@contexts/TripsContext";
-import { useSettings } from "@contexts/SettingsContext";
+import { useHomeCountry } from "@features/settings";
 import {
   getVisitedCountriesForYear,
   getVisitedCountriesUpToYear,
@@ -7,8 +7,7 @@ import {
 
 export function useVisitedCountriesTimeline() {
   const { trips } = useTrips();
-  const { settings } = useSettings();
-  const homeCountry = settings?.homeCountry;
+  const homeCountry = useHomeCountry();
 
   return {
     getVisitedCountriesForYear: (year: number) =>

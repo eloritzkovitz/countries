@@ -1,7 +1,7 @@
 import React from "react";
 import { FaPalette } from "react-icons/fa";
 import { CollapsibleHeader } from "@components";
-import { useTheme } from "@contexts/SettingsContext";
+import { useTheme } from "@features/settings";
 import { ThemeToggle } from "./ThemeToggle";
 
 export function ThemeSettingsGroup() {

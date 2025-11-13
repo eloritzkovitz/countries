@@ -14,6 +14,7 @@ import {
   CountryWithFlag,
   getSovereigntyInfoForTerritory,
 } from "@features/countries";
+import { useHomeCountry } from "@features/settings";
 import { useVisitedCountries } from "@features/visits";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Country } from "@types";
@@ -21,7 +22,6 @@ import { CountryInfoTable } from "./CountryInfoTable";
 import { CountryVisitsDrawer } from "./CountryVisitsDrawer";
 import { SovereigntyBadge } from "./SovereigntyBadge";
 import { VisitedStatusIndicator } from "./VisitedStatusIndicator";
-import { useSettings } from "@contexts/SettingsContext";
 
 type CountryDetailsModalProps = {
   country: Country | null;
@@ -43,8 +43,7 @@ export function CountryDetailsModal({
   const [showVisitsDrawer, setShowVisitsDrawer] = useState(false);
 
   // Get home country from settings
-  const { settings } = useSettings();
-  const homeCountry = settings?.homeCountry;
+  const homeCountry = useHomeCountry();
 
   // For positioning the drawer and chevron
   const modalRef = useRef<HTMLDivElement>(null);

@@ -1,4 +1,4 @@
-import { useTheme } from "@contexts/SettingsContext";
+import { useTheme } from "@features/settings";
 
 interface MarkerProps {
   x: number;

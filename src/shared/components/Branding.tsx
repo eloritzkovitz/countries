@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useTheme } from "@contexts/SettingsContext";
+import { useTheme } from "@features/settings";
 
 export function Branding({
   title,

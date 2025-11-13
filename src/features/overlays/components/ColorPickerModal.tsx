@@ -1,7 +1,7 @@
 import { SketchPicker } from "react-color";
-import { FaPalette } from "react-icons/fa";
+import { FaPalette } from "react-icons/fa6";
 import { Modal, FormButton, PanelHeader } from "@components";
-import { useTheme } from "@contexts/SettingsContext";
+import { useTheme } from "@features/settings";
 
 interface ColorPickerModalProps {
   isOpen: boolean;

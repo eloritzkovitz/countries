@@ -11,8 +11,8 @@ import {
 } from "react-icons/fa6";
 import { ActionButton, Modal, PanelHeader, SeparatorRow } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import { useSettings } from "@contexts/SettingsContext";
 import { CountryWithFlag } from "@features/countries";
+import { useHomeCountry } from "@features/settings";
 import {
   getCompletedTrips,
   getLocalTrips,
@@ -35,8 +35,7 @@ type TripsStatsProps = {
 
 export function TripsStats({ isOpen, onClose, trips }: TripsStatsProps) {
   const { countries } = useCountryData();
-  const { settings } = useSettings();
-  const homeCountry = settings.homeCountry;
+  const homeCountry = useHomeCountry();
 
   // Trip counts
   const totalTrips = trips.length;
