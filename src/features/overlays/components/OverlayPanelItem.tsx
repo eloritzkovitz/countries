@@ -35,10 +35,10 @@ export function OverlayPanelItem({
       onEdit={() => onEdit(overlay)}
       onRemove={() => onRemove(overlay.id)}
       removeDisabled={isVisited}
-      dragged={isVisited ? false : dragged}
-      onDragStart={isVisited ? undefined : onDragStart}
-      handleDragOver={isVisited ? undefined : handleDragOver}
-      handleDragEnd={isVisited ? undefined : handleDragEnd}      
+      dragged={dragged}
+      onDragStart={onDragStart}
+      handleDragOver={handleDragOver}
+      handleDragEnd={handleDragEnd}      
     />
   );
 }
