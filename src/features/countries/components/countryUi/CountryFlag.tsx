@@ -13,10 +13,11 @@ type CountryFlagProps = {
 
 export function CountryFlag({ flag, alt, style, className }: CountryFlagProps) {
   // Convert flag.size (string | undefined) to number, default to 32
-  const size = flag.size ? Number(flag.size) : 32;
+  const size = Number(flag.size);
   // For SVG, use a 4:3 aspect ratio (e.g., 32x24)
-  const width = size;
-  const height = Math.round(size * 0.75);
+  const validSize = Number.isFinite(size) && size > 0 ? size : 32;
+  const width = validSize;
+  const height = Math.round(validSize * 0.75);
 
   if (flag.source === "svg") {
     const mappedIso =
