@@ -6,14 +6,15 @@ import {
 } from "@components";
 import { CountryWithFlag } from "@features/countries";
 import { TRIP_CATEGORY_ICONS } from "@features/trips/constants/tripCategoryIcons";
-import type { SortKey, TripCategory, TripFilters } from "@types";
+import type { TripFilters, TripsSortKey } from "@features/trips/types";
+import type { TripCategory } from "@types";
 
 type TripsTableHeadersProps = {
   allSelected: boolean;
   handleSelectAll: () => void;
-  sortKey: SortKey;
+  sortKey: TripsSortKey;
   sortAsc: boolean;
-  handleSort: (key: SortKey) => void;
+  handleSort: (key: TripsSortKey) => void;
   filters: TripFilters;
   updateFilter: (key: string, value: any) => void;
   countryOptions: any[];
@@ -90,7 +91,6 @@ export function TripsTableHeaders({
                     <CountryWithFlag
                       isoCode={opt.value}
                       name={opt.country.name}
-                      size="32x24"
                     />
                   ) : (
                     opt.label

@@ -1,6 +1,7 @@
 import React from "react";
 import { ActionsToolbar, ToolbarSeparator } from "@components";
-import type { Trip, TripFilterState } from "@types";
+import type { TripFilterState } from "@features/trips/types";
+import type { Trip } from "@types";
 import { ToolbarNavigationSearch } from "./ToolbarNavigationSearch";
 import { ToolbarFilters } from "./ToolbarFilters";
 import { ToolbarImportExport } from "./ToolbarImportExport";

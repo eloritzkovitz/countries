@@ -3,7 +3,8 @@
  */
 
 import { getCountryNames } from "@features/trips/utils/tripData";
-import type { SortKey, Trip, TripFilters } from "@types";
+import type { TripFilters, TripsSortKey } from "@features/trips/types";
+import type { Trip } from "@types";
 
 /**
  * Sorts trips based on a given key and order.
@@ -15,7 +16,7 @@ import type { SortKey, Trip, TripFilters } from "@types";
  */
 export function sortTrips(
   trips: Trip[],
-  sortKey: SortKey,
+  sortKey: TripsSortKey,
   sortAsc: boolean,
   countries: { isoCode: string; name: string }[]
 ): Trip[] {

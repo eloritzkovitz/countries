@@ -8,11 +8,8 @@ import {
   FaHashtag,
 } from "react-icons/fa6";
 import { ActionButton } from "@components";
-import {
-  ToolbarToggleGroup,
-  type ToolbarToggleOption,
-} from "@components";
-import type { TripFilterState } from "@types";
+import { ToolbarToggleGroup, type ToolbarToggleOption } from "@components";
+import type { TripFilterState } from "@features/trips/types";
 
 type ToolbarFiltersProps = {
   filters: TripFilterState;

@@ -5,5 +5,6 @@ export * from "./marker";
 export * from "./option";
 export * from "./overlay";
 export * from "./settings";
+export * from "./sort";
 export * from "./trip";
 export * from "./visit";

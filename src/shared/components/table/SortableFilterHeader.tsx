@@ -1,13 +1,13 @@
-import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa";
+import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa6";
 import { SearchInput } from "@components";
 import type { SortKey } from "@types";
 
-type SortableFilterHeaderProps = {
+type SortableFilterHeaderProps<T> = {
   label: string;
-  sortKey: SortKey;
-  currentSortKey: SortKey;
+  sortKey: SortKey<T>;
+  currentSortKey: SortKey<T>;
   sortAsc: boolean;
-  onSort: (key: SortKey) => void;
+  onSort: (key: SortKey<T>) => void;
   filterValue?: string;
   onFilterChange?: (v: string) => void;
   placeholder?: string;
@@ -15,7 +15,7 @@ type SortableFilterHeaderProps = {
   children?: React.ReactNode;
 };
 
-export function SortableFilterHeader({
+export function SortableFilterHeader<T>({
   label,
   sortKey,
   currentSortKey,
@@ -25,7 +25,7 @@ export function SortableFilterHeader({
   onFilterChange,
   placeholder = "Filter",
   filterElement,
-}: SortableFilterHeaderProps) {
+}: SortableFilterHeaderProps<T>) {
   return (
     <div className="flex flex-col items-stretch h-full min-w-[10px]">
       <button

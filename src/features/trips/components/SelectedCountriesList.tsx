@@ -30,7 +30,6 @@ export function SelectedCountriesList({
             <CountryWithFlag
               isoCode={country.isoCode}
               name={country.name}
-              size="32x24"
             />
             <button
               type="button"

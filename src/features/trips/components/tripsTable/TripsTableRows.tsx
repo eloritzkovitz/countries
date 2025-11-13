@@ -94,11 +94,7 @@ export function TripsTableRows({
           handleResizeStart={handleResizeStart}
         >
           {country ? (
-            <CountryWithFlag
-              isoCode={country.isoCode}
-              name={country.name}
-              size="32x24"
-            />
+            <CountryWithFlag isoCode={country.isoCode} name={country.name} />
           ) : code ? (
             <span>{code}</span>
           ) : (

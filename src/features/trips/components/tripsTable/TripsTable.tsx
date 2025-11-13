@@ -5,10 +5,11 @@ import {
   MIN_WIDTHS,
   type ColumnKey,
 } from "@features/trips/constants/columns";
+import type { TripsSortKey } from "@features/trips/types";
 import { sortTrips } from "@features/trips/utils/tripFilters";
 import { getTripRowClass } from "@features/trips/utils/trips";
 import { useResizableColumns } from "@hooks/useResizableColumns";
-import type { SortKey, Trip } from "@types";
+import type { Trip } from "@types";
 import { TripsTableHeaders } from "./TripsTableHeaders";
 import { TripsTableRows } from "./TripsTableRows";
 import "./TripsTable.css";
@@ -56,7 +57,7 @@ export function TripsTable({
     MIN_WIDTHS
   );
 
-  const [sortKey, setSortKey] = useState<SortKey>("startDate");
+  const [sortKey, setSortKey] = useState<TripsSortKey>("startDate");
   const [sortAsc, setSortAsc] = useState(true);
 
   // Sorted state
@@ -68,7 +69,7 @@ export function TripsTable({
   );
 
   // Header click handler
-  const handleSort = (key: SortKey) => {
+  const handleSort = (key: TripsSortKey) => {
     if (sortKey === key) {
       setSortAsc(!sortAsc);
     } else {
