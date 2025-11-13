@@ -68,8 +68,8 @@ describe("overlayFile utils", () => {
       );
     });
 
-    it("calls setOverlays with imported overlays array", () => {
-      const setOverlays = vi.fn();
+    it("calls importOverlays with imported overlays array", () => {
+      const importOverlays = vi.fn();
       const overlays: Overlay[] = [
         {
           id: "1",
@@ -99,8 +99,8 @@ describe("overlayFile utils", () => {
         this.readAsText = readAsText;
       };
 
-      importOverlaysFromFile(event, setOverlays);
-      expect(setOverlays).toHaveBeenCalledWith(expect.any(Function));
+      importOverlaysFromFile(event, importOverlays);
+      expect(importOverlays).toHaveBeenCalledWith(overlays);
     });
   });
 

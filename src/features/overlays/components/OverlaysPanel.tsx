@@ -6,12 +6,7 @@ import {
   FaFileExport,
   FaXmark,
 } from "react-icons/fa6";
-import {
-  ActionButton,
-  ErrorMessage,
-  LoadingSpinner,
-  Panel,
-} from "@components";
+import { ActionButton, ErrorMessage, LoadingSpinner, Panel } from "@components";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import {
@@ -37,7 +32,7 @@ export function OverlaysPanel({
 
   const {
     overlays,
-    setOverlays,
+    importOverlays,
     reorderOverlays,
     toggleOverlayVisibility,
     removeOverlay,
@@ -88,7 +83,7 @@ export function OverlaysPanel({
             type="file"
             accept="application/json"
             ref={fileInputRef}
-            onChange={(e) => importOverlaysFromFile(e, setOverlays)}
+            onChange={(e) => importOverlaysFromFile(e, importOverlays)}
             style={{ display: "none" }}
           />
           <ActionButton

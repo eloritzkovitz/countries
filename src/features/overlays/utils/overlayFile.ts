@@ -10,9 +10,15 @@ import type { Overlay } from "@types";
  * @param setOverlays The function to update the overlays state.
  * @returns void
  */
+/**
+ * Imports overlays from a JSON file.
+ * @param event The file input change event.
+ * @param importOverlays The function to merge and persist overlays.
+ * @returns void
+ */
 export function importOverlaysFromFile(
   event: React.ChangeEvent<HTMLInputElement>,
-  setOverlays: React.Dispatch<React.SetStateAction<Overlay[]>>
+  importOverlays: (overlays: Overlay[]) => void
 ) {
   const file = event.target.files?.[0];
   if (!file) return;
@@ -21,7 +27,7 @@ export function importOverlaysFromFile(
     try {
       const imported = JSON.parse(e.target?.result as string);
       if (Array.isArray(imported)) {
-        setOverlays((prev: any) => [...prev, ...imported]);
+        importOverlays(imported);
       } else {
         alert("Invalid overlays file format.");
       }
