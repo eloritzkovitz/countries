@@ -1,12 +1,13 @@
 import { useMemo } from "react";
-import { useVisitedCountriesSnapshot } from "@features/trips/hooks/useVisitedCountriesTimeline";
+import { useVisitedCountriesTimeline } from "@features/visits";
 import type { TimelineOverlay } from "@types";
 
 export function useTimelineOverlayItems(
   overlays: TimelineOverlay[],
   selectedYear: number
-) {
-  const snapshotCountries = useVisitedCountriesSnapshot(selectedYear);
+) {  
+  const { getVisitedCountriesUpToYear } = useVisitedCountriesTimeline();
+  const snapshotCountries = getVisitedCountriesUpToYear(selectedYear);
 
   return useMemo(() => {
     return overlays

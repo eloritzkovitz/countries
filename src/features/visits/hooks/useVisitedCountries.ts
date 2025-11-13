@@ -1,5 +1,6 @@
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useTrips } from "@contexts/TripsContext";
+import { getYear } from "@utils/date";
 
 export function useVisitedCountries() {
   const { overlays } = useOverlayContext();
@@ -12,12 +13,7 @@ export function useVisitedCountries() {
   // Check if a country is visited
   function isCountryVisited(isoCode: string) {
     return visitedCountryCodes.includes(isoCode);
-  }
-
-  // Get year from date string
-  function getYear(date?: string) {
-    return date ? new Date(date).getFullYear().toString() : "";
-  }
+  } 
 
   // Get all visits for a country (from trips)
   function getCountryVisits(isoCode: string) {

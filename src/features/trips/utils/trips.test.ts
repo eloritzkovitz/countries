@@ -11,9 +11,7 @@ import {
   getUpcomingTrips,
   getCompletedTrips,
   getAutoTripStatus,
-  getTripDays,
-  getVisitedCountriesByYear,
-  getVisitedCountriesUpToYear,
+  getTripDays,  
 } from "./trips";
 
 const now = new Date();
@@ -141,41 +139,6 @@ describe("trips utils", () => {
         endDate: "2023-01-03",
       };
       expect(getTripDays(trip)).toBe(3);
-    });    
-  });
-
-  describe("getVisitedCountriesByYear", () => {
-    it("groups visited countries by year", () => {
-      const trips = [
-        {
-          ...mockTrips[0],
-          startDate: "2022-01-01",
-          countryCodes: ["US", "CA"],
-        },
-        { ...mockTrips[1], startDate: "2023-01-01", countryCodes: ["FR"] },
-      ];
-      const result = getVisitedCountriesByYear(trips);
-      expect(result[2022]).toBeInstanceOf(Set);
-      expect(result[2022].has("US")).toBe(true);
-      expect(result[2022].has("CA")).toBe(true);
-      expect(result[2023].has("FR")).toBe(true);
-    });    
-  });
-
-  describe("getVisitedCountriesUpToYear", () => {
-    it("returns all visited countries up to and including year", () => {
-      const trips = [
-        {
-          ...mockTrips[0],
-          startDate: "2022-01-01",
-          countryCodes: ["US", "CA"],
-        },
-        { ...mockTrips[1], startDate: "2023-01-01", countryCodes: ["FR"] },
-      ];
-      const result = getVisitedCountriesUpToYear(trips, 2022);
-      expect(result.has("US")).toBe(true);
-      expect(result.has("CA")).toBe(true);
-      expect(result.has("FR")).toBe(false);
     });    
   });
 });

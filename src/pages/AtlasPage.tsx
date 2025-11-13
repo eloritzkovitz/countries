@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   ErrorMessage,
   MenuPanel,
@@ -27,7 +27,7 @@ import {
 } from "@features/markers";
 import { OverlayModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
-import { useVisitedCountriesTimeline } from "@features/trips/hooks/useVisitedCountriesTimeline";
+import { useVisitedCountriesTimeline } from "@features/visits";
 import type { Country, Marker } from "@types";
 
 export default function AtlasPage() {
@@ -60,6 +60,17 @@ export default function AtlasPage() {
   const [hoveredIsoCode, setHoveredIsoCode] = useState<string | null>(null);
   const [modalCountry, setModalCountry] = useState<Country | null>(null);
 
+  // Marker creation state
+  const {
+    isAddingMarker,
+    modalOpen,
+    markerCoords,
+    startAddingMarker,
+    handleMapClickForMarker,
+    handleCreateMarker,
+    cancelMarkerCreation,
+  } = useMarkerCreation();
+
   // Overlay state
   const {
     overlays,
@@ -77,28 +88,10 @@ export default function AtlasPage() {
     !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
 
   // Timeline state
-  const visitedByYear = useVisitedCountriesTimeline();
-  const years = useMemo(
-    () =>
-      Object.keys(visitedByYear)
-        .map(Number)
-        .sort((a, b) => a - b),
-    [visitedByYear]
-  );
+  const { years } = useVisitedCountriesTimeline();
   const [selectedYear, setSelectedYear] = useState(
     years[years.length - 1] || new Date().getFullYear()
   );
-
-  // Marker creation state
-  const {
-    isAddingMarker,
-    modalOpen,
-    markerCoords,
-    startAddingMarker,
-    handleMapClickForMarker,
-    handleCreateMarker,
-    cancelMarkerCreation,
-  } = useMarkerCreation();
 
   // Derived state
   const isLoading = countriesLoading || overlaysLoading || !mapReady;

@@ -14,13 +14,13 @@ import {
   CountryWithFlag,
   getSovereigntyInfoForTerritory,
 } from "@features/countries";
+import { useVisitedCountries } from "@features/visits";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import type { Country } from "@types";
+import { CountryInfoTable } from "./CountryInfoTable";
 import { CountryVisitsDrawer } from "./CountryVisitsDrawer";
 import { SovereigntyBadge } from "./SovereigntyBadge";
 import { VisitedStatusIndicator } from "./VisitedStatusIndicator";
-import { useVisitedCountries } from "../../hooks/useVisitedCountries";
-import { CountryInfoTable } from "./CountryInfoTable";
 
 type CountryDetailsModalProps = {
   country: Country | null;
