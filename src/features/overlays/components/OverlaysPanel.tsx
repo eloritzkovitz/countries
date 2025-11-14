@@ -17,7 +17,7 @@ import { useDragReorder } from "@hooks/useDragReorder";
 import type { Overlay } from "@types";
 import { OverlayPanelItem } from "./OverlayPanelItem";
 
-type OverlaysPanelProps = {
+interface OverlaysPanelProps {
   onEditOverlay: (overlay: Overlay) => void;
   onAddOverlay: () => void;
   overlayModalOpen: boolean;

@@ -1,7 +1,7 @@
 import { PanelListItem } from "@components";
 import type { Overlay } from "@types";
 
-type OverlayPanelItemProps = {
+interface OverlayPanelItemProps {
   overlay: Overlay;
   dragged?: boolean;
   onDragStart?: () => void;

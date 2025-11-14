@@ -19,7 +19,7 @@ import { CountrySelectModal } from "@features/countries";
 import type { Overlay } from "@types";
 import { ColorPickerModal } from "./ColorPickerModal";
 
-type OverlayModalProps = {
+interface OverlayModalProps {
   overlay: Overlay | null;
   onChange: (overlay: Overlay) => void;
   onSave: () => void;

@@ -8,7 +8,7 @@ import {
   PanelHeader,
 } from "@components";
 import type { Marker } from "@types";
-import "./Marker.css";
+import "./MarkerModal.css";
 
 interface MarkerModalProps {
   open: boolean;

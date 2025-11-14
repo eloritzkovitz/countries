@@ -1,6 +1,6 @@
 import { FaSun, FaMoon } from "react-icons/fa";
 
-type ThemeToggleProps = {
+interface ThemeToggleProps {
   theme: "light" | "dark";
   toggleTheme: () => void;
 };
