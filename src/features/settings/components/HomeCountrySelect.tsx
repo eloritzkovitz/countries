@@ -34,7 +34,6 @@ export function HomeCountrySelect() {
             <CountryWithFlag
               isoCode={selectedCountry.isoCode}
               name={selectedCountry.name}
-              size="32x24"
             />
           ) : (
             <span className="opacity-50">No country selected</span>

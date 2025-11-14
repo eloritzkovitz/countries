@@ -111,7 +111,6 @@ export function CountryDetailsModal({
                 <CountryWithFlag
                   isoCode={country.isoCode}
                   name={country.name}
-                  size="32"
                   className="font-bold text-lg"
                 />
                 <span className="text-gray-500 text-sm">

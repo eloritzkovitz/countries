@@ -96,7 +96,6 @@ export function CountrySelectModal({
                   <CountryWithFlag
                     isoCode={country.isoCode}
                     name={country.name}
-                    size="32x24"
                     className="mr-2"
                   />
                 </label>

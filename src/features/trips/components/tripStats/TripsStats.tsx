@@ -123,7 +123,6 @@ export function TripsStats({ isOpen, onClose, trips }: TripsStatsProps) {
                           <CountryWithFlag
                             isoCode={country.isoCode}
                             name={country.name}
-                            size="32x24"
                           />
                           <span>({maxCount} times)</span>
                           {idx < mostVisitedCountries.length - 1 && (
