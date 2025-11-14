@@ -11,7 +11,7 @@ import { ActionButton, ToolbarToggleGroup } from "@components";
 import type { TripFilterState } from "@features/trips/types";
 import type { ToolbarToggleOption } from "@types";
 
-type ToolbarFiltersProps = {
+interface ToolbarFiltersProps {
   filters: TripFilterState;
   setFilters: React.Dispatch<React.SetStateAction<TripFilterState>>;
   setGlobalSearch: (search: string) => void;

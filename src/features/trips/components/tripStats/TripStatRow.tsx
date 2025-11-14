@@ -1,13 +1,18 @@
 import type { ReactNode } from "react";
 
-type TripStatRowProps = {
+interface TripStatRowProps {
   icon: ReactNode;
   label: ReactNode;
   value: ReactNode;
   align?: "left" | "center" | "right";
-};
+}
 
-export function TripStatRow({ icon, label, value, align = "right" }: TripStatRowProps) {
+export function TripStatRow({
+  icon,
+  label,
+  value,
+  align = "right",
+}: TripStatRowProps) {
   return (
     <tr>
       <td className="font-semibold flex items-center gap-2">

@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { ActionButton } from "./ActionButton";
 
-type FloatingChevronButtonProps = {
+interface FloatingChevronButtonProps {
   targetRef: React.RefObject<HTMLElement | null>;
   position: "left" | "right";
   chevronDirection: "left" | "right";

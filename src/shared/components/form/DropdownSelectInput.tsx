@@ -6,7 +6,7 @@ import type { Option } from "@types";
 import { OptionItem } from "./OptionItem";
 import { SelectedOptions } from "./SelectedOptions";
 
-type DropdownSelectInputProps<T = string> = {
+interface DropdownSelectInputProps<T = string> {
   value: T | T[];
   onChange: (value: T | T[]) => void;
   options: Option<T>[];

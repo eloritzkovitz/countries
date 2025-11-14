@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
 import { ActionButton, SearchInput } from "@components";
 
-type ToolbarNavigationSearchProps = {
+interface ToolbarNavigationSearchProps {
   globalSearch: string;
   setGlobalSearch: (search: string) => void;
 };

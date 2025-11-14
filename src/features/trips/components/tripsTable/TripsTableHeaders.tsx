@@ -9,7 +9,7 @@ import { TRIP_CATEGORY_ICONS } from "@features/trips/constants/tripCategoryIcons
 import type { TripFilters, TripsSortKey } from "@features/trips/types";
 import type { TripCategory } from "@types";
 
-type TripsTableHeadersProps = {
+interface TripsTableHeadersProps {
   allSelected: boolean;
   handleSelectAll: () => void;
   sortKey: TripsSortKey;

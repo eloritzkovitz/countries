@@ -1,15 +1,17 @@
 import { FaBars } from "react-icons/fa";
 import { ActionButton } from "@components";
 
+interface CollapsedPanelButtonProps {
+  onClick: () => void;
+  visible: boolean;
+  className?: string;
+}
+
 export function CollapsedPanelButton({
   onClick,
   visible,
   className = "",
-}: {
-  onClick: () => void;
-  visible: boolean;
-  className?: string;
-}) {
+}: CollapsedPanelButtonProps ) {
   return (
     <ActionButton
       onClick={onClick}

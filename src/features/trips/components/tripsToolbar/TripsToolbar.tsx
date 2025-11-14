@@ -9,7 +9,7 @@ import { ToolbarStatistics } from "./ToolbarStatistics";
 import { ToolbarActions } from "./ToolbarActions";
 import "./TripsToolbar.css";
 
-type ToolbarProps = {
+interface ToolbarProps {
   trips: Trip[];
   filters: TripFilterState;
   setFilters: React.Dispatch<React.SetStateAction<TripFilterState>>;

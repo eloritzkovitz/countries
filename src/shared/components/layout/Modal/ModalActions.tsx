@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { FaTimes } from "react-icons/fa";
 import { FormButton } from "@components";
 
-type ModalActionsProps = {
+interface ModalActionsProps {
   onCancel: () => void;
   onSubmit?: () => void;
   submitType?: "submit" | "button";

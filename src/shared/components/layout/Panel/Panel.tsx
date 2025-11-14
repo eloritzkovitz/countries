@@ -5,7 +5,7 @@ import { usePanelHide } from "@hooks/usePanelHide";
 import { PanelHeader } from "./PanelHeader";
 import "./Panel.css";
 
-type PanelProps = {
+interface PanelProps {
   title: ReactNode;
   children: ReactNode;
   show?: boolean;
@@ -13,12 +13,11 @@ type PanelProps = {
   escEnabled?: boolean;
   width?: number | string;
   style?: React.CSSProperties;
-  className?: string;  
+  className?: string;
   headerActions?: ReactNode;
   showSeparator?: boolean;
   scrollable?: boolean;
-  
-};
+}
 
 export function Panel({
   title,
@@ -28,10 +27,10 @@ export function Panel({
   escEnabled = true,
   width = DEFAULT_PANEL_WIDTH,
   style = {},
-  className = "",  
+  className = "",
   headerActions,
   showSeparator = true,
-  scrollable = true,  
+  scrollable = true,
 }: PanelProps) {
   usePanelHide({ show, onHide, escEnabled });
 

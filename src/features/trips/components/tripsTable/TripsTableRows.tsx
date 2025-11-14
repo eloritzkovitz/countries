@@ -8,7 +8,7 @@ import { StatusCell } from "./StatusCell";
 import { TableCell } from "./TableCell";
 import { TripActions } from "./TripActions";
 
-type TripsTableRowsProps = {
+interface TripsTableRowsProps {
   trip: Trip;
   tripIdx: number;
   countryData: any;

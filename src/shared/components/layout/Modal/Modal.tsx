@@ -9,7 +9,7 @@ type FloatingButtonProps = {
   onMouseLeave?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-type ModalProps = {
+interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;

@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-type ActionButtonProps = {
+interface ActionButtonProps {
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];  
   onMouseEnter?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLButtonElement>;

@@ -2,7 +2,7 @@ import type { FilterOption } from "@types";
 import "./Form.css";
 import { FaChevronDown } from "react-icons/fa6";
 
-type SelectInputProps = {
+interface SelectInputProps {
   label: string;
   value: string | number;
   onChange: (value: string | number) => void;

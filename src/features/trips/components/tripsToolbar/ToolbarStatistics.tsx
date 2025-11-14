@@ -4,7 +4,7 @@ import type { Trip } from "@types";
 import { TripsStats } from "../tripStats/TripsStats";
 import React from "react";
 
-type ToolbarStatisticsProps = {
+interface ToolbarStatisticsProps {
   trips: Trip[];
 };
 

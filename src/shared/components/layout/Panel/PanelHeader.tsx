@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Separator } from "@components";
 
-type PanelHeaderProps = {
+interface PanelHeaderProps {
   title: ReactNode;
   children?: ReactNode;
   className?: string;

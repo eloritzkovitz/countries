@@ -14,7 +14,7 @@ import { TripsTableHeaders } from "./TripsTableHeaders";
 import { TripsTableRows } from "./TripsTableRows";
 import "./TripsTable.css";
 
-type TripsTableProps = {
+interface TripsTableProps {
   trips: Trip[];
   onEdit: (trip: Trip) => void;
   onDelete: (trip: Trip) => void;

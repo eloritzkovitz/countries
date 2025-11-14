@@ -1,7 +1,7 @@
 import type { Option } from "@types";
 import { Checkbox } from "./Checkbox";
 
-type OptionItemProps<T> = {
+interface OptionItemProps<T> {
   opt: Option<T>;
   isSelected: (val: T) => boolean;
   isMulti: boolean;
@@ -9,7 +9,7 @@ type OptionItemProps<T> = {
   onChange: (v: T | T[]) => void;
   setOpen: (v: boolean) => void;
   renderOption?: (opt: Option<T>) => React.ReactNode;
-};
+}
 
 export function OptionItem<T>({
   opt,

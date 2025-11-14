@@ -1,6 +1,6 @@
 import { FaFileCsv, FaFileAlt } from "react-icons/fa";
 
-type TripsExportModalProps = {
+interface TripsExportModalProps {
   isOpen: boolean;
   onClose: () => void;
   onExportCSV: () => void;

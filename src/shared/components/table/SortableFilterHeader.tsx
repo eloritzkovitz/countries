@@ -2,7 +2,7 @@ import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa6";
 import { SearchInput } from "@components";
 import type { SortKey } from "@types";
 
-type SortableFilterHeaderProps<T> = {
+interface SortableFilterHeaderProps<T> {
   label: string;
   sortKey: SortKey<T>;
   currentSortKey: SortKey<T>;

@@ -2,13 +2,13 @@ import React from "react";
 import { FaCopy, FaTrash } from "react-icons/fa6";
 import { ActionButton, ConfirmModal } from "@components";
 
-type ToolbarActionsProps = {
+interface ToolbarActionsProps {
   selectedTripIds: string[];
   onBulkDuplicate: () => void;
   onBulkDelete: () => void;
   onBulkArchive?: () => void;
   onBulkFavorite?: () => void;
-};
+}
 
 export function ToolbarActions({
   selectedTripIds,

@@ -9,7 +9,7 @@ import {
 import type { DragEvent } from "react";
 import { ActionButton } from "@components";
 
-export interface PanelListItemProps {
+interface PanelListItemProps {
   color: string;
   name: string;
   visible: boolean;

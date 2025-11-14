@@ -7,7 +7,7 @@ import { useMenuPosition } from "@hooks/useMenuPosition";
 import type { Trip } from "@types";
 import { ActionButton } from "@components";
 
-type TripActionsProps = {
+interface TripActionsProps {
   trip: Trip;
   onEdit: (t: Trip) => void;
   onDelete: (t: Trip) => void;

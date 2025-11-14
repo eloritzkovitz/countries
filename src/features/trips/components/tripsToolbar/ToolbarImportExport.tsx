@@ -7,7 +7,7 @@ import { useClickOutside } from "@hooks/useClickOutside";
 import type { Trip } from "@types";
 import { ExportMenu } from "./ExportMenu";
 
-type ToolbarImportExportProps = {
+interface ToolbarImportExportProps {
   trips: Trip[];
 };
 

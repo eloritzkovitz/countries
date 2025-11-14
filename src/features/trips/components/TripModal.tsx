@@ -14,7 +14,7 @@ import { SelectedCountriesList } from "./SelectedCountriesList";
 import "./TripModal.css";
 import { useTripFilters } from "../hooks/useTripFilters";
 
-type TripModalProps = {
+interface TripModalProps {
   isOpen: boolean;
   trip: Trip | null;
   onChange: (trip: Trip) => void;

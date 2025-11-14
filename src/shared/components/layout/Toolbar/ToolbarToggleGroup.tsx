@@ -1,7 +1,7 @@
 import { ActionButton } from "@components";
 import type { ToolbarToggleOption } from "@types";
 
-type ToolbarToggleGroupProps = {
+interface ToolbarToggleGroupProps {
   options: ToolbarToggleOption[];
   className?: string;
   buttonClassName?: string;

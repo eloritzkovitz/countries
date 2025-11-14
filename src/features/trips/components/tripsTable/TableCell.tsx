@@ -1,6 +1,6 @@
 import type { ColumnKey } from "@features/trips/constants/columns";
 
-type TableCellProps = {
+interface TableCellProps {
   children: React.ReactNode;
   columnKey: ColumnKey;
   rowSpan?: number;

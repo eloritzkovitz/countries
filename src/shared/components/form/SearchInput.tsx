@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 
-type SearchInputProps = {
+interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;

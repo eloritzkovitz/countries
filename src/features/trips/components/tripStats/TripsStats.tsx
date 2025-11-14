@@ -27,7 +27,7 @@ import {
 import type { Trip } from "@types";
 import { TripStatRow } from "./TripStatRow";
 
-type TripsStatsProps = {
+interface TripsStatsProps {
   isOpen: boolean;
   onClose: () => void;
   trips: Trip[];

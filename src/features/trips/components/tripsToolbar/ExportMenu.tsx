@@ -1,9 +1,9 @@
 import { FaFileCsv, FaFileAlt } from "react-icons/fa";
 
-type ExportMenuProps = {
+interface ExportMenuProps {
   onExportCSV: () => void;
   onExportJSON: () => void;
-};
+}
 
 export function ExportMenu({ onExportCSV, onExportJSON }: ExportMenuProps) {
   return (
