@@ -21,6 +21,8 @@ export type UIContextType = {
   toggleMarkers: () => void;
   showOverlays: boolean;
   toggleOverlays: () => void;
+  showLegend: boolean;
+  toggleLegend: () => void;
   showExport: boolean;
   toggleExport: () => void;
   showSettings: boolean;
@@ -58,6 +60,10 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const toggleFilters = () => {
     if (openPanel === "countries") setShowFilters((prev) => !prev);
   };
+
+  // Legend modal state
+  const [showLegend, setShowLegend] = useState(false);
+  const toggleLegend = () => setShowLegend((prev) => !prev);
 
   // Shortcuts modal state
   const [showShortcuts, setShowShortcuts] = useState(false);
@@ -98,6 +104,9 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // Toggle Overlays panel with "O"
   useKeyHandler(toggleOverlays, ["o", "O"], true);
+
+  // Toggle Legend with "L"
+  useKeyHandler(toggleLegend, ["l", "L"], true);
 
   // Toggle Timeline panel with "T"
   useKeyHandler(() => setTimelineMode((prev) => !prev), ["t", "T"], true);
@@ -146,6 +155,8 @@ export function UIProvider({ children }: { children: ReactNode }) {
         toggleMarkers,
         showOverlays,
         toggleOverlays,
+        showLegend,
+        toggleLegend,
         showExport,
         toggleExport,
         showSettings,

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-type ZoomButtonProps = {
+interface ZoomButtonProps {
   onContinuousStart?: () => void;
   onContinuousStop?: () => void;
   onClick?: () => void;
@@ -9,7 +9,7 @@ type ZoomButtonProps = {
   className?: string;
   icon?: ReactNode;
   disabled?: boolean;
-};
+}
 
 export function ZoomButton({
   onClick,

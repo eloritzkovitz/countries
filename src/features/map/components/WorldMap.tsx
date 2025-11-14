@@ -5,6 +5,7 @@ import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
+import { MapCoordinatesDisplay, MapStatus } from "@features/mapUi";
 import { MapMarkersLayer } from "@features/markers";
 import { useContainerDimensions } from "@hooks/useContainerDimensions";
 import { useGeoData } from "@hooks/useGeoData";
@@ -12,13 +13,11 @@ import { useUiHint } from "@hooks/useUiHint";
 import type { Marker } from "@types";
 import { MapSvgContainer } from "./export/MapSvgContainer";
 import { CountriesLayer } from "./layers/CountriesLayer";
-import { MapCoordinatesDisplay } from "./status//MapCoordinatesDisplay";
-import { MapStatus } from "./status/MapStatus";
 import { useMapStatus } from "../hooks/useMapStatus";
 import { useMapEventHandler } from "../hooks/useMapEventHandler";
 import { useMapOverlayItems } from "../hooks/useMapOverlayItems";
 
-type WorldMapProps = {
+interface WorldMapProps {
   zoom: number;
   center: [number, number];
   setZoom: (zoom: number) => void;

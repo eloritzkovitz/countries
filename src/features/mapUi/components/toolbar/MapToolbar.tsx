@@ -8,6 +8,7 @@ import {
   FaClockRotateLeft,
   FaChevronLeft,
   FaChevronRight,
+  FaMap,
 } from "react-icons/fa6";
 import { ActionButton, ActionsToolbar, ToolbarSeparator } from "@components";
 import { useOverlayContext } from "@contexts/OverlayContext";
@@ -16,23 +17,26 @@ import { isTimelineOverlay } from "@features/overlays";
 import { ZoomControls } from "./ZoomControls";
 import "./MapToolbar.css";
 
+interface MapToolbarProps {
+  zoom: number;
+  setZoom: React.Dispatch<React.SetStateAction<number>>;
+  setTimelineMode: React.Dispatch<React.SetStateAction<boolean>>;
+  children?: React.ReactNode;
+}
+
 export function MapToolbar({
   zoom,
   setZoom,
-  setSnapshotMode,
+  setTimelineMode,
   children,
-}: {
-  zoom: number;
-  setZoom: React.Dispatch<React.SetStateAction<number>>;
-  setSnapshotMode: React.Dispatch<React.SetStateAction<boolean>>;
-  children?: React.ReactNode;
-}) {
+}: MapToolbarProps) {
   // UI state
   const {
     uiVisible,
     toggleCountries,
     toggleMarkers,
     toggleOverlays,
+    toggleLegend,
     toggleExport,
     toggleSettings,
   } = useUI();
@@ -88,10 +92,16 @@ export function MapToolbar({
             className="toolbar-btn rounded-full"
             icon={<FaLayerGroup />}
           />
-          {/* Snapshot toggle button */}
+          <ActionButton
+            onClick={toggleLegend}
+            ariaLabel="Legend"
+            title="Legend"
+            className="toolbar-btn rounded-full"
+            icon={<FaMap />}
+          />
           {visitedOverlay && isTimelineOverlay(visitedOverlay) && (
             <ActionButton
-              onClick={() => setSnapshotMode((prev) => !prev)}
+              onClick={() => setTimelineMode((prev) => !prev)}
               ariaLabel="Timeline"
               title="Timeline"
               className="toolbar-btn rounded-full"

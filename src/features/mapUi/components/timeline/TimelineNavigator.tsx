@@ -7,19 +7,20 @@ import {
 import { ActionButton } from "@components";
 import { YearSelectButton } from "./YearSelectButton";
 
-interface TimelinePickerProps {
+interface TimelineNavigatorProps {
   years: number[];
   selectedYear: number;
   setSelectedYear: (year: number) => void;
 }
 
-export function TimelinePicker({
+export function TimelineNavigator({
   years,
   selectedYear,
   setSelectedYear,
-}: TimelinePickerProps) {
-  const currentIndex = years.indexOf(selectedYear);
+}: TimelineNavigatorProps) {
 
+  // Determine navigation availability
+  const currentIndex = years.indexOf(selectedYear);
   const canGoBack = currentIndex > 0;
   const canGoForward = currentIndex < years.length - 1;
 
@@ -89,7 +90,7 @@ export function TimelinePicker({
         }
         disabled={currentIndex === years.length - 1}
         className="toolbar-btn rounded-full transition"
-      />
+      />      
     </div>
   );
 }

@@ -4,13 +4,12 @@ import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 import { ZoomButton } from "./ZoomButton";
 
-export function ZoomControls({
-  zoom,
-  setZoom,
-}: {
+interface ZoomControlsProps {
   zoom: number;
   setZoom: React.Dispatch<React.SetStateAction<number>>;
-}) {
+}
+
+export function ZoomControls({ zoom, setZoom }: ZoomControlsProps) {
   const zoomInInterval = useRef<ReturnType<typeof setTimeout> | null>(null);
   const zoomOutInterval = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -56,11 +55,7 @@ export function ZoomControls({
   );
 
   // Reset zoom
-  useKeyHandler(
-    () => setZoom(DEFAULT_MAP_SETTINGS.minZoom),
-    ["0"],
-    true
-  );
+  useKeyHandler(() => setZoom(DEFAULT_MAP_SETTINGS.minZoom), ["0"], true);
 
   return (
     <div className="flex flex-col items-center space-y-0.5">

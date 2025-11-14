@@ -2,7 +2,7 @@ import React from "react";
 import { ErrorMessage, LoadingSpinner } from "@components";
 import { DEFAULT_MAP_SETTINGS } from "@constants";
 
-type MapStatusProps = {
+interface MapStatusProps {
   loading: boolean;
   error?: string;
   containerRef: React.RefObject<HTMLDivElement | null>;

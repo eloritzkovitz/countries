@@ -12,8 +12,8 @@ import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import { useUiToggleHint } from "@hooks/useUiToggleHint";
 import { CountryDetailsModal, CountriesPanel } from "@features/countries";
-import { MapExportPanel, MapToolbar, WorldMap } from "@features/map";
-import { TimelinePicker } from "@features/timeline";
+import { MapExportPanel, WorldMap } from "@features/map";
+import { MapUiContainer, useTimelineState } from "@features/mapUi";
 import { useMapView } from "@features/map/hooks/useMapView";
 import {
   MarkerDetailsModal,
@@ -23,13 +23,16 @@ import {
 } from "@features/markers";
 import { OverlayModal, OverlaysPanel } from "@features/overlays";
 import { SettingsPanel } from "@features/settings";
-import { useTimelineState } from "@features/timeline";
 import type { Country, Marker } from "@types";
 
 export default function AtlasPage() {
   // UI state
   const [mapReady, setMapReady] = useState(false);
-  const { uiVisible, setUiVisible, timelineMode, setTimelineMode } = useUI();
+  const {
+    uiVisible,
+    setUiVisible, 
+    setTimelineMode,
+  } = useUI();
   const [hintMessage, setHintMessage] = useState<React.ReactNode>("");
   const [hintKey, setHintKey] = useState(0);
   const uiHint = useUiHint(hintMessage, 4000, { key: hintKey });
@@ -81,7 +84,7 @@ export default function AtlasPage() {
 
   // Determine if currently editing an existing overlay
   const isEditing =
-    !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
+    !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);  
 
   // Timeline state
   const { years, selectedYear, setSelectedYear } = useTimelineState();
@@ -183,21 +186,16 @@ export default function AtlasPage() {
             onMapClickForMarker={handleMapClickForMarker}
             onMarkerDetails={handleMarkerDetails}
             selectedYear={selectedYear}
-          />
-
-          {/* Toolbar & UI Overlays */}
-          <MapToolbar
+          />          
+          <MapUiContainer
             zoom={zoom}
             setZoom={setZoom}
-            setSnapshotMode={setTimelineMode}
+            setTimelineMode={setTimelineMode}
+            years={years}
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+            overlays={overlays}
           />
-          {uiVisible && timelineMode && (
-            <TimelinePicker
-              years={years}
-              selectedYear={selectedYear}
-              setSelectedYear={setSelectedYear}
-            />
-          )}
           <CountryDetailsModal
             country={modalCountry}
             isOpen={!!modalCountry}
