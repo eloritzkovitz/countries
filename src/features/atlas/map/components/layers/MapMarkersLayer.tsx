@@ -1,6 +1,6 @@
 import { useMarkers } from "@contexts/MarkersContext";
 import { getProjection } from "@features/atlas/map";
-import { Marker } from "./Marker";
+import { Marker } from "@features/atlas/markers";
 import type { Marker as MarkerType } from "@types";
 
 interface MapMarkersLayerProps {

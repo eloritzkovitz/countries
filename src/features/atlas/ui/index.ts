@@ -1,8 +1,9 @@
 // Components
 export { MapUiContainer } from "./components/MapUiContainer";
-export { ShortcutsModal } from "./components/shortcuts/ShortcutsModal";
+export { MapExportPanel } from "./export/MapExportPanel";
+export { ShortcutsModal } from "./shortcuts/ShortcutsModal";
 
 // Hooks
-export { useMapLegendItems } from "./hooks/useMapLegendItems";
-export { useTimelineState } from "./hooks/useTimelineState";
 export { useUiToggleHint } from "./hooks/useUiToggleHint";
+export { useMapLegendItems } from "./legend/useMapLegendItems";
+export { useTimelineState } from "./timeline/useTimelineState";

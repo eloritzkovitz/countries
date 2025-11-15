@@ -1,4 +1,4 @@
-import type { ImageFormat } from "../components/export/types";
+import type { ImageFormat } from "../types";
 
 /**
  * Prepare an SVG clone for export by normalizing attributes and inlining styles.

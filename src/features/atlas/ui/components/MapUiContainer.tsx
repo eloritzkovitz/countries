@@ -1,11 +1,11 @@
 import { FaClockRotateLeft, FaMapPin } from "react-icons/fa6";
 import { useUI } from "@contexts/UIContext";
 import { useUiHint } from "@hooks/useUiHint";
-import { MapLegendModal } from "./legend/MapLegendModal";
-import { MapCoordinatesDisplay } from "./controls/MapCoordinatesDisplay";
-import { MapToolbar } from "./toolbar/MapToolbar";
-import { TimelineNavigator } from "./timeline/TimelineNavigator";
-import { useMapLegendItems } from "../hooks/useMapLegendItems";
+import { MapCoordinatesDisplay } from "../controls/MapCoordinatesDisplay";
+import { MapLegendModal } from "../legend/MapLegendModal";
+import { useMapLegendItems } from "../legend/useMapLegendItems";
+import { MapToolbar } from "../toolbar/MapToolbar";
+import { TimelineNavigator } from "../timeline/TimelineNavigator";
 
 interface MapUiContainerProps {
   zoom: number;

@@ -10,12 +10,7 @@ import {
   CountriesPanel,
   useCountrySelection,
 } from "@features/atlas/countries";
-import {
-  MapExportPanel,
-  WorldMap,
-  useMapReady,
-  useMapView,
-} from "@features/atlas/map";
+import { WorldMap, useMapReady, useMapView } from "@features/atlas/map";
 import {
   MarkerDetailsModal,
   MarkerModal,
@@ -25,6 +20,7 @@ import {
 } from "@features/atlas/markers";
 import { OverlayModal, OverlaysPanel } from "@features/atlas/overlays";
 import {
+  MapExportPanel,
   MapUiContainer,
   ShortcutsModal,
   useTimelineState,

@@ -8,7 +8,6 @@ import {
   Separator,
 } from "@components";
 import { useUI } from "@contexts/UIContext";
-import { exportSvg, exportSvgAsImage } from "@features/atlas/map/utils/mapExport";
 import { SvgOptions } from "./SvgOptions";
 import { ImageOptions } from "./ImageOptions";
 import type {
@@ -19,7 +18,8 @@ import type {
 import {
   EXPORT_FORMAT_OPTIONS,
   PNG_SCALE_OPTIONS,
-} from "../../constants/exportOptions";
+} from "./constants/exportOptions";
+import { exportSvg, exportSvgAsImage } from "./utils/mapExport";
 import "./MapExportPanel.css";
 
 type MapExportModalProps = {

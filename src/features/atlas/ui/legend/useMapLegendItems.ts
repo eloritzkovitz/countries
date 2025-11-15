@@ -1,5 +1,5 @@
 import { MAP_STYLE_CONFIG } from "@constants";
-import { VISIT_COLORS, HOME_COUNTRY_COLOR } from "../constants/colors";
+import { VISIT_COLORS, HOME_COUNTRY_COLOR } from "./constants/colors";
 
 export function useMapLegendItems(overlays: any[], timelineMode: boolean) {
   // Legend items for static overlays

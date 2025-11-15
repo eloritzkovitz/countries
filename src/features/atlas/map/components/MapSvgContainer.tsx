@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 
-type MapSvgContainerProps = {
+interface MapSvgContainerProps {
   width: number;
   height: number;
   children: React.ReactNode;

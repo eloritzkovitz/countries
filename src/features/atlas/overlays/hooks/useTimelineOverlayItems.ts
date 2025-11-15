@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { MAP_STYLE_CONFIG } from "@constants";
 import { useHomeCountry } from "@features/settings";
-import { getVisitColor } from "@features/atlas/ui/constants/colors";
+import { getVisitColor } from "@features/atlas/ui/legend/constants/colors";
 import { useVisitedCountriesTimeline } from "@features/visits";
 import type { TimelineOverlay } from "@types";
 
