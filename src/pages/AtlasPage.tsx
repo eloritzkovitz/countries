@@ -1,18 +1,27 @@
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ErrorMessage, MenuPanel, SplashScreen } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
-import { CountryDetailsModal, CountriesPanel } from "@features/atlas/countries";
-import { MapExportPanel, WorldMap } from "@features/atlas/map";
-import { useMapView } from "@features/atlas/map/hooks/useMapView";
+import {
+  CountryDetailsModal,
+  CountriesPanel,
+  useCountrySelection,
+} from "@features/atlas/countries";
+import {
+  MapExportPanel,
+  WorldMap,
+  useMapReady,
+  useMapView,
+} from "@features/atlas/map";
 import {
   MarkerDetailsModal,
   MarkerModal,
   MarkersPanel,
   useMarkerCreation,
+  useMarkerDetailsModal,
 } from "@features/atlas/markers";
 import { OverlayModal, OverlaysPanel } from "@features/atlas/overlays";
 import {
@@ -22,20 +31,22 @@ import {
   useUiToggleHint,
 } from "@features/atlas/ui";
 import { SettingsPanel } from "@features/settings";
-import type { Country, Marker } from "@types";
+import type { Marker } from "@types";
 
 export default function AtlasPage() {
   // UI state
-  const [mapReady, setMapReady] = useState(false);
   const { uiVisible, setUiVisible, setTimelineMode } = useUI();
   const [hintMessage, setHintMessage] = useState<React.ReactNode>("");
   const [hintKey, setHintKey] = useState(0);
   const uiHint = useUiHint(hintMessage, 4000, { key: hintKey });
 
+  // Toggle UI visibility with hint
+  useUiToggleHint(uiVisible, setUiVisible, setHintKey, setHintMessage);
+
   // Data state
+  const { geoData } = useGeoData();
   const { countries, loading: countriesLoading, error } = useCountryData();
   const { loading: overlaysLoading } = useOverlayContext();
-  const { geoData } = useGeoData();
 
   // Map state
   const {
@@ -51,13 +62,21 @@ export default function AtlasPage() {
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(
     null
   );
+  const { mapReady, handleMapReady } = useMapReady();
 
-  // Selection state
-  const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);
-  const [hoveredIsoCode, setHoveredIsoCode] = useState<string | null>(null);
-  const [modalCountry, setModalCountry] = useState<Country | null>(null);
+  // Country selection state
+  const {
+    selectedIsoCode,
+    setSelectedIsoCode,
+    hoveredIsoCode,
+    setHoveredIsoCode,
+    selectedCountry,
+    setSelectedCountry,
+    handleCountryClick,
+    handleCountryHover,
+  } = useCountrySelection(countries);
 
-  // Marker creation state
+  // Markers state
   const {
     isAddingMarker,
     modalOpen,
@@ -67,8 +86,15 @@ export default function AtlasPage() {
     handleCreateMarker,
     cancelMarkerCreation,
   } = useMarkerCreation();
+  const {
+    selectedMarker,
+    detailsModalOpen,
+    setDetailsModalOpen,
+    detailsModalPosition,
+    handleMarkerDetails,
+  } = useMarkerDetailsModal();
 
-  // Overlay state
+  // Overlays state
   const {
     overlays,
     editingOverlay,
@@ -79,8 +105,6 @@ export default function AtlasPage() {
     closeOverlayModal,
     setEditingOverlay,
   } = useOverlayContext();
-
-  // Determine if currently editing an existing overlay
   const isEditing =
     !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
 
@@ -89,25 +113,6 @@ export default function AtlasPage() {
 
   // Derived state
   const isLoading = countriesLoading || overlaysLoading || !mapReady;
-
-  // Show UI hint on 'U' key press
-  useUiToggleHint(uiVisible, setUiVisible, setHintKey, setHintMessage);
-
-  // Map ready handler with slight delay
-  const handleMapReady = useCallback(() => {
-    setTimeout(() => setMapReady(true), 150);
-  }, []);
-
-  // Country click handler
-  function handleCountryClick(countryIsoCode: string | null) {
-    const country = countries.find((c) => c.isoCode === countryIsoCode);
-    if (country) setModalCountry(country);
-  }
-
-  // Country hover handler
-  const handleCountryHover = (isoCode: string | null) => {
-    setHoveredIsoCode(isoCode);
-  };
 
   // Center map on a country
   function handleCenterMapOnCountry(isoCode: string) {
@@ -127,25 +132,6 @@ export default function AtlasPage() {
     }
   }
 
-  // Marker details modal state
-  const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
-  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-  const [detailsModalPosition, setDetailsModalPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
-
-  // Handle marker details view
-  const handleMarkerDetails = (
-    marker: Marker,
-    position?: { top: number; left: number }
-  ) => {
-    setSelectedMarker(marker);
-    setDetailsModalOpen(true);
-    if (position) setDetailsModalPosition(position);
-    else setDetailsModalPosition(null);
-  };
-
   // Show error state
   if (error) return <ErrorMessage error={error} />;
 
@@ -160,10 +146,10 @@ export default function AtlasPage() {
         <CountriesPanel
           selectedIsoCode={selectedIsoCode}
           hoveredIsoCode={hoveredIsoCode}
-          modalCountry={modalCountry}
+          selectedCountry={selectedCountry}
           onSelect={setSelectedIsoCode}
           onHover={setHoveredIsoCode}
-          onCountryInfo={setModalCountry}
+          onCountryInfo={setSelectedCountry}
         />
 
         {/* Main Map Area */}
@@ -198,14 +184,14 @@ export default function AtlasPage() {
             isAddingMarker={isAddingMarker}
           />
           <CountryDetailsModal
-            country={modalCountry}
-            isOpen={!!modalCountry}
+            country={selectedCountry}
+            isOpen={!!selectedCountry}
             onCenterMap={() =>
-              modalCountry
-                ? handleCenterMapOnCountry(modalCountry.isoCode)
+              selectedCountry
+                ? handleCenterMapOnCountry(selectedCountry.isoCode)
                 : undefined
             }
-            onClose={() => setModalCountry(null)}
+            onClose={() => setSelectedCountry(null)}
           />
           <MarkerDetailsModal
             marker={selectedMarker}

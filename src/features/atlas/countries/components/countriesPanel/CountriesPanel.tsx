@@ -23,7 +23,7 @@ import { CountryFiltersPanel } from "../countryFilters/CountryFiltersPanel";
 interface CountriesPanelProps {
   selectedIsoCode: string | null;
   hoveredIsoCode: string | null;
-  modalCountry: Country | null;
+  selectedCountry: Country | null;
   onSelect: (iso: string | null) => void;
   onHover: (iso: string | null) => void;
   onCountryInfo?: (country: Country) => void;
@@ -32,7 +32,7 @@ interface CountriesPanelProps {
 export function CountriesPanel({
   selectedIsoCode,
   hoveredIsoCode,
-  modalCountry,
+  selectedCountry,
   onSelect,
   onHover,
   onCountryInfo,
@@ -113,7 +113,7 @@ export function CountriesPanel({
         }
         show={uiVisible && showCountries}
         onHide={toggleCountries}
-        escEnabled={!showFilters && !modalCountry}
+        escEnabled={!showFilters && !selectedCountry}
         showSeparator={false}
         headerActions={
           <>
@@ -163,7 +163,7 @@ export function CountriesPanel({
       {/* Filters panel */}
       {showCountries && showFilters && (
         <CountryFiltersPanel
-          show={showFilters && !modalCountry}
+          show={showFilters && !selectedCountry}
           allRegions={allRegions}
           allSubregions={allSubregions}
           selectedRegion={selectedRegion}

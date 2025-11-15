@@ -6,3 +6,4 @@ export { MarkersPanel } from "./components/markersPanel/MarkersPanel";
 
 // Hooks
 export { useMarkerCreation } from "./hooks/useMarkerCreation";
+export { useMarkerDetailsModal } from "./hooks/useMarkerDetailsModal";
