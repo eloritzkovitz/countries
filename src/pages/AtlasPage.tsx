@@ -53,6 +53,7 @@ export default function AtlasPage() {
     centerOnMarker,
   } = useMapView();
   const svgRef = useRef<SVGSVGElement>(null);
+  const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(null);
 
   // Selection state
   const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);
@@ -183,6 +184,7 @@ export default function AtlasPage() {
             onReady={() => handleMapReady()}
             svgRef={svgRef}
             isAddingMarker={isAddingMarker}
+            setSelectedCoords={(coords) => setSelectedCoords(coords)}
             onMapClickForMarker={handleMapClickForMarker}
             onMarkerDetails={handleMarkerDetails}
             selectedYear={selectedYear}
@@ -190,11 +192,13 @@ export default function AtlasPage() {
           <MapUiContainer
             zoom={zoom}
             setZoom={setZoom}
+            selectedCoords={selectedCoords}
             setTimelineMode={setTimelineMode}
             years={years}
             selectedYear={selectedYear}
             setSelectedYear={setSelectedYear}
             overlays={overlays}
+            isAddingMarker={isAddingMarker}
           />
           <CountryDetailsModal
             country={modalCountry}

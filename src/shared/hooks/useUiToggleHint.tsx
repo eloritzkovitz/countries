@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export function useUiToggleHint(
@@ -7,6 +7,10 @@ export function useUiToggleHint(
   setHintKey: React.Dispatch<React.SetStateAction<number>>,
   setHintMessage: (msg: React.ReactNode) => void
 ) {
+  // Track previous value of uiVisible
+  const prevUiVisible = useRef(uiVisible);
+
+  // Show hint when uiVisible changes
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -20,23 +24,32 @@ export function useUiToggleHint(
       }
       if (e.key.toLowerCase() === "u") {
         setUiVisible((v) => !v);
-        setHintKey((k) => k + 1);
-        setHintMessage(
-          !uiVisible ? (
+        if (!uiVisible) {
+          setHintKey((k) => k + 1);
+          setHintMessage(
             <span>
               <FaEye className="inline mr-2" />
               UI shown. Press U to hide the UI.
             </span>
-          ) : (
-            <span>
-              <FaEyeSlash className="inline mr-2" />
-              UI hidden. Press U to show the UI.
-            </span>
-          )
-        );
+          );
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [uiVisible, setUiVisible, setHintKey, setHintMessage]);
+
+  // Show hint only when UI transitions from visible to hidden
+  useEffect(() => {
+    if (prevUiVisible.current && !uiVisible) {
+      setHintKey((k) => k + 1);
+      setHintMessage(
+        <span>
+          <FaEyeSlash className="inline mr-2" />
+          UI hidden. Press U to show the UI.
+        </span>
+      );
+    }
+    prevUiVisible.current = uiVisible;
+  }, [uiVisible, setHintKey, setHintMessage]);
 }

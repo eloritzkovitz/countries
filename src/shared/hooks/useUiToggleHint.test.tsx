@@ -26,7 +26,14 @@ describe("useUiToggleHint", () => {
     render(<Wrapper />);
   }
 
-  it("toggles uiVisible and updates hint on U key", () => {
+  it("does not show a hint on initial mount, even if hidden", () => {
+    renderWithState(false);
+    expect(stateRef.current.visible).toBe(false);
+    expect(stateRef.current.key).toBe(0);
+    expect(stateRef.current.message).toBe(null);
+  });
+
+  it("shows the hidden hint only when toggling from visible to hidden", () => {
     renderWithState(true);
 
     act(() => {
@@ -43,7 +50,7 @@ describe("useUiToggleHint", () => {
     );
   });
 
-  it("toggles uiVisible back and updates hint on U key again", () => {
+  it("shows the shown hint only when toggling from hidden to visible", () => {
     renderWithState(false);
 
     act(() => {
@@ -83,7 +90,7 @@ describe("useUiToggleHint", () => {
     expect(stateRef.current.message).toBe(null);
 
     document.body.removeChild(input);
-  });  
+  });
 
   it("does not toggle or update hint on irrelevant key", () => {
     renderWithState(true);

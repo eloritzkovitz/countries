@@ -14,7 +14,7 @@ import { ActionButton, ActionsToolbar, ToolbarSeparator } from "@components";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import { isTimelineOverlay } from "@features/overlays";
-import { ZoomControls } from "./ZoomControls";
+import { ZoomControls } from "../controls/ZoomControls";
 import "./MapToolbar.css";
 
 interface MapToolbarProps {
