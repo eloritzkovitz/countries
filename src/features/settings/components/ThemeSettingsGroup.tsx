@@ -1,7 +1,7 @@
 import React from "react";
 import { FaPalette } from "react-icons/fa";
 import { CollapsibleHeader } from "@components";
-import { useTheme } from "@contexts/SettingsContext";
+import { useTheme } from "@features/settings";
 import { ThemeToggle } from "./ThemeToggle";
 
 export function ThemeSettingsGroup() {
@@ -11,7 +11,7 @@ export function ThemeSettingsGroup() {
   return (
     <>
       <CollapsibleHeader
-        icon={<FaPalette style={{ marginRight: 6 }} />}
+        icon={<FaPalette className="mr-1.5" />}
         label="Theme"
         expanded={showThemeSettings}
         onToggle={() => setShowThemeSettings((v) => !v)}

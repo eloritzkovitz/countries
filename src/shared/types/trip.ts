@@ -1,4 +1,4 @@
-import { ALL_TRIP_CATEGORIES, ALL_TRIP_STATUSES, ALL_TRIP_TAGS } from "@features/trips";
+import { ALL_TRIP_CATEGORIES, ALL_TRIP_STATUSES, ALL_TRIP_TAGS } from "@features/trips/constants/trips";
 
 export type Trip = {
   id: string;
@@ -29,33 +29,3 @@ export type TripStatus = (typeof ALL_TRIP_STATUSES)[number];
 
 // TripTag type definition
 export type TripTag = (typeof ALL_TRIP_TAGS)[number];
-
-// SortKey type definition
-export type SortKey =
-  | "name"
-  | "countries"
-  | "year"
-  | "startDate"
-  | "endDate"
-  | "fullDays"
-  | "categories"
-  | "status"
-  | "tags";
-
-// TripFilters type definition
-export type TripFilters = {
-  name: string;
-  country: string[];
-  year: string[];
-  categories: TripCategory[];
-  status: TripStatus | "";
-  tags: TripTag[];
-};
-
-// TripFilterState type definition
-export type TripFilterState = TripFilters & {
-  local: boolean;
-  abroad: boolean;
-  completed: boolean;
-  upcoming: boolean;
-};

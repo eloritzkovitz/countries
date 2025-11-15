@@ -2,7 +2,7 @@ import React, { type ReactNode } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { ActionButton } from "@components";
 
-type CollapsibleHeaderProps = {
+interface CollapsibleHeaderProps {
   icon: React.ReactNode;
   label: string;
   expanded: boolean;

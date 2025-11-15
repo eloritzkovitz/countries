@@ -1,5 +1,5 @@
 // Filter key type
-export type FilterKey = "region" | "subregion" | "sovereignty" | "overlay";
+export type FilterKey = string;
 
 // Filter option type
 export type FilterOption = {
@@ -8,8 +8,8 @@ export type FilterOption = {
 };
 
 // Filter config type
-export type FilterConfig<T = string, P = any> = {
-  key: FilterKey;
+export type FilterConfig<T = string, P = any, K extends FilterKey = string> = {
+  key: K;
   label: string | ((param: P) => string);
   type: "select";
   getOptions: (options?: T[]) => FilterOption[];

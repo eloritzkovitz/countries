@@ -23,3 +23,6 @@ public/data
 *.njsproj
 *.sln
 *.sw?
+
+# Directories
+coverage

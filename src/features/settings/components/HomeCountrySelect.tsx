@@ -1,25 +1,24 @@
 import { useState } from "react";
 import { FaHome, FaChevronDown } from "react-icons/fa";
-import { CollapsibleHeader, CountryWithFlag } from "@components";
+import { CollapsibleHeader } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import { useSettings } from "@contexts/SettingsContext";
-import { CountrySelectModal } from "@features/countries";
+import { CountrySelectModal, CountryWithFlag } from "@features/countries";
+import { useHomeCountry } from "@features/settings";
 
 export function HomeCountrySelect() {
-  const { settings, updateSettings } = useSettings();
   const { countries } = useCountryData();
+  const { homeCountry, setHomeCountry } = useHomeCountry();
   const [modalOpen, setModalOpen] = useState(false);
   const [expanded, setExpanded] = useState(true);
 
   // Find the currently selected country object
-  const selectedCountry = countries.find(
-    (c) => c.isoCode === settings.homeCountry
-  );
+
+  const selectedCountry = countries.find((c) => c.isoCode === homeCountry);
 
   return (
     <div className="settings-group">
       <CollapsibleHeader
-        icon={<FaHome style={{ marginRight: 6 }} />}
+        icon={<FaHome className="mr-1.5" />}
         label="Home Country"
         expanded={expanded}
         onToggle={() => setExpanded((prev) => !prev)}
@@ -35,22 +34,21 @@ export function HomeCountrySelect() {
             <CountryWithFlag
               isoCode={selectedCountry.isoCode}
               name={selectedCountry.name}
-              size="32x24"
             />
           ) : (
             <span className="opacity-50">No country selected</span>
-          )}          
+          )}
           <FaChevronDown className="ml-auto text-gray-400" />
         </button>
       )}
       {/* Country selection modal */}
       <CountrySelectModal
         isOpen={modalOpen}
-        selected={[settings.homeCountry]}
+        selected={[homeCountry]}
         options={countries}
         onChange={(newCountries) => {
           if (newCountries.length > 0) {
-            updateSettings({ homeCountry: newCountries[0] });
+            setHomeCountry(newCountries[0]);
             setModalOpen(false);
           }
         }}

@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.toolbar-container {
+  @apply absolute right-8 bottom-8 z-[101] flex flex-col items-end transition-transform transition-opacity duration-300;
+}
+
+.toolbar-container-hidden {
+  transform: translateX(400px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toolbar-container-visible {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Zoom controls */
+
+.toolbar-zoom-controls {
+  @apply transition-transform transition-opacity duration-300 mb-3;
+}
+
+.toolbar-zoom-controls-hidden {
+  @apply opacity-0 pointer-events-none translate-y-10;
+}
+
+.toolbar-zoom-controls-visible {
+  @apply opacity-100 pointer-events-auto translate-y-0;
+}
+
+/* Toolbar actions row */
+
+.toolbar-actions-row-bg {
+  @apply right-14 bg-gray-200 dark:bg-gray-800 rounded-full shadow border border-gray-300 dark:border-gray-700 px-2 transition-all duration-300;
+}
+
+.toolbar-actions-row-hidden {
+  @apply opacity-0 pointer-events-none translate-x-10;
+}
+
+.toolbar-actions-row-visible {
+  @apply opacity-100 pointer-events-auto translate-x-0;
+}
+
+/* Toolbar buttons */
+
+.toolbar-btn-action {
+  @apply rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white border-none;
+}

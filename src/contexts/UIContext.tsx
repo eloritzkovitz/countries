@@ -1,7 +1,14 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 
-type UIContextType = {
+export type UIContextType = {
   uiVisible: boolean;
   setUiVisible: (v: boolean | ((prev: boolean) => boolean)) => void;
   showMenu: boolean;
@@ -14,6 +21,8 @@ type UIContextType = {
   toggleMarkers: () => void;
   showOverlays: boolean;
   toggleOverlays: () => void;
+  showLegend: boolean;
+  toggleLegend: () => void;
   showExport: boolean;
   toggleExport: () => void;
   showSettings: boolean;
@@ -26,6 +35,15 @@ type UIContextType = {
   setTimelineMode: (v: boolean | ((prev: boolean) => boolean)) => void;
 };
 
+// Type for panel selection
+type PanelSelection =
+  | "countries"
+  | "markers"
+  | "overlays"
+  | "export"
+  | "settings"
+  | null;
+
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: { children: ReactNode }) {
@@ -34,15 +52,18 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // State for which panel is open; null means no panel is open
   const [showMenu, setShowMenu] = useState(false);
-  const [openPanel, setOpenPanel] = useState<
-    "countries" | "markers" | "overlays" | "export" | "settings" | null
-  >("countries");
+  const [openPanel, setOpenPanel] = useState<PanelSelection>("countries");
+  const prevOpenPanel = useRef<PanelSelection>(openPanel);
   const [showFilters, setShowFilters] = useState(false);
 
   // Filters toggle: only works if countries panel is open
   const toggleFilters = () => {
     if (openPanel === "countries") setShowFilters((prev) => !prev);
   };
+
+  // Legend modal state
+  const [showLegend, setShowLegend] = useState(false);
+  const toggleLegend = () => setShowLegend((prev) => !prev);
 
   // Shortcuts modal state
   const [showShortcuts, setShowShortcuts] = useState(false);
@@ -84,6 +105,9 @@ export function UIProvider({ children }: { children: ReactNode }) {
   // Toggle Overlays panel with "O"
   useKeyHandler(toggleOverlays, ["o", "O"], true);
 
+  // Toggle Legend with "L"
+  useKeyHandler(toggleLegend, ["l", "L"], true);
+
   // Toggle Timeline panel with "T"
   useKeyHandler(() => setTimelineMode((prev) => !prev), ["t", "T"], true);
 
@@ -103,6 +127,19 @@ export function UIProvider({ children }: { children: ReactNode }) {
     true
   );
 
+  // Effect to open countries panel when menu closes
+  useEffect(() => {
+    // Only reopen countries if a different panel (not countries) was just closed
+    if (
+      prevOpenPanel.current !== null &&
+      prevOpenPanel.current !== "countries" &&
+      openPanel === null
+    ) {
+      setOpenPanel("countries");
+    }
+    prevOpenPanel.current = openPanel;
+  }, [openPanel]);
+
   return (
     <UIContext.Provider
       value={{
@@ -118,6 +155,8 @@ export function UIProvider({ children }: { children: ReactNode }) {
         toggleMarkers,
         showOverlays,
         toggleOverlays,
+        showLegend,
+        toggleLegend,
         showExport,
         toggleExport,
         showSettings,

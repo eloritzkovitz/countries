@@ -1,13 +1,13 @@
-import { CountryWithFlag } from "@components";
-import { FaTimes } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
+import { CountryWithFlag } from "@features/countries";
 
-type SelectedCountriesListProps = {
+interface SelectedCountriesListProps {
   selectedCountries: {
     isoCode: string;
     name: string;
   }[];
   onRemove: (isoCode: string) => void;
-};
+}
 
 export function SelectedCountriesList({
   selectedCountries,
@@ -27,18 +27,14 @@ export function SelectedCountriesList({
             key={country.isoCode}
             className="flex items-center gap-1 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700"
           >
-            <CountryWithFlag
-              isoCode={country.isoCode}
-              name={country.name}
-              size="32x24"
-            />
+            <CountryWithFlag isoCode={country.isoCode} name={country.name} />
             <button
               type="button"
               className="ml-auto text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
               title="Remove"
               onClick={() => onRemove(country.isoCode)}
             >
-              <FaTimes />
+              <FaXmark />
             </button>
           </span>
         ))}

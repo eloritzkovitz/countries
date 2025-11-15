@@ -6,7 +6,7 @@ import {
   ALL_TRIP_CATEGORIES,
   ALL_TRIP_STATUSES,
   ALL_TRIP_TAGS,
-} from "@features/trips";
+} from "@features/trips/constants/trips";
 import type { Country, Trip, TripCategory, TripStatus, TripTag } from "@types";
 import { capitalizeWords } from "@utils/string";
 

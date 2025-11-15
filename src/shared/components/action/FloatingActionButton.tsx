@@ -1,6 +1,6 @@
 import type { ReactNode, ButtonHTMLAttributes } from "react";
 
-type FloatingActionButtonProps = {
+interface FloatingActionButtonProps {
   onClick?: () => void;
   icon?: ReactNode;
   ariaLabel?: string;

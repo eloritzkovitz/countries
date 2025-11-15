@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-export function useClickOutside(
-  refs: React.RefObject<HTMLElement>[],
+export function useClickOutside<T extends HTMLElement>(
+  refs: React.RefObject<T>[],
   onOutside: () => void,
   enabled = true
 ) {
@@ -12,18 +12,24 @@ export function useClickOutside(
     function handleClickOutside(e: MouseEvent) {
       if (
         refs.every(
-          (ref) => !ref.current || !ref.current.contains(e.target as Node)
+          (ref) =>
+            !ref.current ||
+            !(e.target instanceof Node) ||
+            !ref.current.contains(e.target)
         )
       ) {
         onOutside();
       }
     }
 
+    // Handle scroll or resize outside of all refs
     function handleScrollOrResize(e: Event) {
-      // Only close if the scroll event target is outside all refs
       if (
         refs.every(
-          (ref) => !ref.current || !ref.current.contains(e.target as Node)
+          (ref) =>
+            !ref.current ||
+            !(e.target instanceof Node) ||
+            !ref.current.contains(e.target)
         )
       ) {
         onOutside();

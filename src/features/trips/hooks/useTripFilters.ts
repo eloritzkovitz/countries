@@ -1,16 +1,7 @@
 import { useMemo, useState } from "react";
-import { useSettings } from "@contexts/SettingsContext";
 import { getCountryByIsoCode } from "@features/countries";
-import {
-  filterTrips,
-  getCountryNames,
-  getUsedCountryCodes,
-  getUsedYears,
-  isAbroadTrip,
-  isCompletedTrip,
-  isLocalTrip,
-  isUpcomingTrip,
-} from "@features/trips";
+import { useHomeCountry } from "@features/settings";
+import type { TripFilterState } from "@features/trips/types";
 import {
   getCountryDropdownOptions,
   getYearDropdownOptions,
@@ -18,7 +9,19 @@ import {
   getStatusDropdownOptions,
   getTagDropdownOptions,
 } from "@features/trips/utils/dropdownOptions";
-import type { Trip, TripCategory, TripFilterState } from "@types";
+import {
+  getCountryNames,
+  getUsedCountryCodes,
+  getUsedYears,
+} from "@features/trips/utils/tripData";
+import { filterTrips } from "@features/trips/utils/tripFilters";
+import {
+  isAbroadTrip,
+  isCompletedTrip,
+  isLocalTrip,
+  isUpcomingTrip,
+} from "@features/trips/utils/trips";
+import type { Trip, TripCategory } from "@types";
 
 // Default trip filters
 const defaultTripFilterState: TripFilterState = {
@@ -40,8 +43,7 @@ export function useTripFilters(
   initialFilters?: Partial<TripFilterState>,
   globalSearch?: string
 ) {
-  const settings = useSettings();
-  const homeCountry = settings.settings.homeCountry;
+  const { homeCountry } = useHomeCountry();
 
   // Unified filter state
   const [filters, setFilters] = useState<TripFilterState>({

@@ -5,14 +5,14 @@
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "types": ["vite/client"],
+    "types": ["vite/client", "vitest/globals"],
     "skipLibCheck": true,
     "baseUrl": "src",
     "paths": {
       "@components": ["shared/components/index.ts"],
-      "@components/*": ["shared/components/*"],      
+      "@components/*": ["shared/components/*"],
       "@constants": ["shared/constants/index.ts"],
-      "@constants/*": ["shared/constants/*"],    
+      "@constants/*": ["shared/constants/*"],
       "@contexts": ["contexts/index.ts"],
       "@contexts/*": ["contexts/*"],
       "@features": ["features/index.ts"],
@@ -21,6 +21,8 @@
       "@hooks/*": ["shared/hooks/*"],
       "@services": ["shared/services/index.ts"],
       "@services/*": ["shared/services/*"],
+      "@test-utils": ["shared/test-utils/index.ts"],
+      "@test-utils/*": ["shared/test-utils/*"],
       "@types": ["shared/types/index.ts"],
       "@types/*": ["shared/types/*"],
       "@utils": ["shared/utils/index.ts"],
@@ -43,5 +45,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src", "vitest.config.ts", "**/*.test.ts", "**/*.test.tsx"]
 }

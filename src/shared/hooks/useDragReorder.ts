@@ -6,10 +6,12 @@ export function useDragReorder<T>(
 ) {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
+  // Handlers for drag events
   function handleDragStart(index: number) {
     setDraggedIndex(index);
   }
 
+  // Handle drag over another item
   function handleDragOver(e: React.DragEvent<HTMLLIElement>, index: number) {
     e.preventDefault();
     if (draggedIndex === null || draggedIndex === index) return;
@@ -20,6 +22,7 @@ export function useDragReorder<T>(
     setItems(updated);
   }
 
+  // Handle drag end
   function handleDragEnd() {
     setDraggedIndex(null);
   }

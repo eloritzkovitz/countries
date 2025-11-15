@@ -2,8 +2,9 @@
  * Utilities for filtering and sorting trips.
  */
 
-import { getCountryNames } from "@features/trips";
-import type { SortKey, Trip, TripFilters } from "@types";
+import { getCountryNames } from "@features/trips/utils/tripData";
+import type { TripFilters, TripsSortKey } from "@features/trips/types";
+import type { Trip } from "@types";
 
 /**
  * Sorts trips based on a given key and order.
@@ -15,7 +16,7 @@ import type { SortKey, Trip, TripFilters } from "@types";
  */
 export function sortTrips(
   trips: Trip[],
-  sortKey: SortKey,
+  sortKey: TripsSortKey,
   sortAsc: boolean,
   countries: { isoCode: string; name: string }[]
 ): Trip[] {

@@ -1,14 +1,15 @@
 import {
   FaEye,
   FaEyeSlash,
-  FaEdit,
+  FaPenToSquare,
   FaTrash,
   FaCrosshairs,
-} from "react-icons/fa";
+  FaCircleInfo,
+} from "react-icons/fa6";
 import type { DragEvent } from "react";
 import { ActionButton } from "@components";
 
-export interface PanelListItemProps {
+interface PanelListItemProps {
   color: string;
   name: string;
   visible: boolean;
@@ -78,16 +79,16 @@ export function PanelListItem({
           ariaLabel="Edit"
           title="Edit"
           className="mx-1 text-lg text-blue-600 hover:text-blue-800"
-          icon={<FaEdit />}
+          icon={<FaPenToSquare />}
         />
       )}
       {onRemove && (
         <ActionButton
           onClick={onRemove}
           ariaLabel="Remove"
-          title="Remove"
+          title={removeDisabled ? "This item is managed automatically and cannot be removed" : "Remove"}
           className={`mx-1 text-lg text-red-600 hover:text-red-800 ${removeDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-          icon={<FaTrash />}
+          icon={removeDisabled ? <FaCircleInfo /> : <FaTrash />}
           disabled={removeDisabled}
         />
       )}

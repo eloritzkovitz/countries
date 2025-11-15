@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
-import { useTheme } from "@contexts/SettingsContext";
+import { useTheme } from "@features/settings";
 
-export function Branding({
-  title,
-  size = 48,
-}: {
+interface BrandingProps {
   title?: string;
   size?: number;
-}) {
+}
+
+export function Branding({ title, size = 48 }: BrandingProps) {
   const { theme } = useTheme();
 
   // Light theme colors

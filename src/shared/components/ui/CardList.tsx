@@ -1,4 +1,4 @@
-type CardListProps<T = string> = {
+interface CardListProps<T = string> {
   items?: T[];
   limit?: number;
   colorClass?: string;

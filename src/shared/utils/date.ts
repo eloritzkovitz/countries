@@ -12,3 +12,25 @@ export function formatDate(dateStr?: string, locale: string = "en-GB"): string {
   if (!dateStr) return "";
   return new Date(dateStr).toLocaleDateString(locale);
 }
+
+/**
+ * Gets the year as a string from a date string.
+ * @param date - The date string to extract the year from.
+ * @returns The year as a string, or undefined if the date is not provided.
+ */
+export function getYear(date?: string): string | undefined {
+  if (!date) return undefined;
+  const d = new Date(date);
+  return isNaN(d.getTime()) ? undefined : d.getFullYear().toString();
+}
+
+/**
+ * Gets the year number from a date string.
+ * @param date - The date string to extract the year from.
+ * @returns The year as a number, or undefined if the date is not provided.
+ */
+export function getYearNumber(date?: string): number | undefined {
+  if (!date) return undefined;
+  const d = new Date(date);
+  return isNaN(d.getTime()) ? undefined : d.getFullYear();
+}

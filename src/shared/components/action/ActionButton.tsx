@@ -1,7 +1,9 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-type ActionButtonProps = {
-  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+interface ActionButtonProps {
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];  
+  onMouseEnter?: React.MouseEventHandler<HTMLButtonElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLButtonElement>;
   onClick?: () => void;
   ariaLabel?: string;
   title?: string;
@@ -9,17 +11,21 @@ type ActionButtonProps = {
   icon?: ReactNode;
   children?: ReactNode;
   disabled?: boolean;
+  style?: React.CSSProperties;
 };
 
 export function ActionButton({
+  type = "button", 
+  onMouseEnter,
+  onMouseLeave,
   onClick,
   ariaLabel = "Action",
   title = "Action",
   className,
   icon,
-  children,
-  type = "button",
+  children,  
   disabled = false,
+  style,
 }: ActionButtonProps) {
   const defaultStyle = "action-btn";
   const buttonClass =
@@ -28,11 +34,14 @@ export function ActionButton({
   return (
     <button
       type={type}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       onClick={onClick}
       className={`flex flex-row items-center justify-center gap-2 ${buttonClass}`}
       aria-label={ariaLabel}
       title={title}
       disabled={disabled}
+      style={style}
     >
       {icon && <span className="inline-flex">{icon}</span>}
       {children}

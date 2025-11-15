@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Modal, ModalActions } from "@components";
 
-type ConfirmModalProps = {
+interface ConfirmModalProps {
   isOpen?: boolean;
   title?: ReactNode;
   message: ReactNode;

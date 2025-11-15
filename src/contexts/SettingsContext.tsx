@@ -65,14 +65,5 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Custom hook to use theme
-export function useTheme() {
-  const { settings, updateSettings } = useSettings();
-  const setTheme = (theme: "light" | "dark") => updateSettings({ theme });
-  const toggleTheme = () =>
-    setTheme(settings.theme === "dark" ? "light" : "dark");
-  return { theme: settings.theme, setTheme, toggleTheme };
-}
-
 // Custom hook to use the SettingsContext
 export const useSettings = () => useContext(SettingsContext);

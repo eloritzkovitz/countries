@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CountryFlag, ErrorMessage, LoadingSpinner } from "@components";
-import { getRandomCountry, getCountriesWithOwnFlag } from "@features/countries";
-import { GuessForm, ResultMessage, Scoreboard } from "@features/game";
+import { ErrorMessage, LoadingSpinner } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
+import { CountryFlag, getRandomCountry, getCountriesWithOwnFlag } from "@features/countries";
+import { GuessForm, ResultMessage, Scoreboard } from "@features/game";
 import type { Country } from "@types";
 
 export default function GamesPage() {
@@ -105,10 +105,10 @@ export default function GamesPage() {
             isoCode: currentCountry.isoCode,
             source: "flagcdn",
             style: "flat",
-            size: "96x72",
+            size: "64",
           }}
           alt={currentCountry.name}
-          style={{ width: "5rem", height: "auto", margin: "1rem 0" }}
+          className="block mx-auto mb-8 h-20 w-auto"
         />
         <GuessForm
           guess={guess}

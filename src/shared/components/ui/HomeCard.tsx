@@ -2,19 +2,21 @@ import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { ActionButton } from "@components";
 
+interface HomeCardProps {
+  icon: ReactNode;
+  title: string;
+  description: string;
+  linkTo: string;
+  linkText: string;
+}
+
 export function HomeCard({
   icon,
   title,
   description,
   linkTo,
   linkText,
-}: {
-  icon: ReactNode;
-  title: string;
-  description: string;
-  linkTo: string;
-  linkText: string;
-}) {
+}: HomeCardProps) {
   const navigate = useNavigate();
 
   return (

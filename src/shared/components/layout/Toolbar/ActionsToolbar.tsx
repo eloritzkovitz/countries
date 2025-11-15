@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import "./Toolbar.css"
 
-type ActionsToolbarProps = {
+interface ActionsToolbarProps {
   children?: ReactNode;
   className?: string;
 };
