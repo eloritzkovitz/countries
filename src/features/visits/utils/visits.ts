@@ -118,36 +118,3 @@ export function getVisitedCountriesUpToYear(
   }
   return counts;
 }
-
-/**
- * Gets a mapping of country codes to number of visits up to and including a specific year,
- * including home country if provided.
- * @param trips - Array of trips to analyze.
- * @param year - The year up to which to include trips.
- * @param homeCountry - Optional home country code to include.
- * @returns An object mapping country codes to visit counts.
- */
-export function getVisitedCountryCountsUpToYear(
-  trips: Trip[],
-  year: number,
-  homeCountry?: string
-) {
-  const now = new Date();
-  const counts: Record<string, number> = {};
-  trips.forEach((trip) => {
-    const start = getYearNumber(trip.startDate);
-    if (
-      start !== undefined &&
-      start <= year &&
-      new Date(trip.startDate) <= now
-    ) {
-      trip.countryCodes?.forEach((code) => {
-        counts[code] = (counts[code] || 0) + 1;
-      });
-    }
-  });
-  if (homeCountry) {
-    counts[homeCountry] = (counts[homeCountry] || 0) + 1;
-  }
-  return counts;
-}

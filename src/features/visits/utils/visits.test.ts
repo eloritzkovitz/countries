@@ -97,18 +97,23 @@ describe("visits utils", () => {
       const thisYear = new Date().getFullYear();
       const result = getVisitedCountriesUpToYear(mockTrips, thisYear);
       if (thisYear >= 2023) {
-        expect(result).toEqual(
-          expect.arrayContaining(["US", "FR", "DE", "CA"])
-        );
-        expect(result).not.toContain("JP");
+        expect(result).toEqual({
+          US: 1,
+          FR: 1,
+          DE: 1,
+          CA: 1,
+        });
+        expect(result).not.toHaveProperty("JP");
       } else if (thisYear === 2022) {
-        expect(result).toEqual(expect.arrayContaining(["CA"]));
-        expect(result).not.toContain("US");
-        expect(result).not.toContain("FR");
-        expect(result).not.toContain("DE");
-        expect(result).not.toContain("JP");
+        expect(result).toEqual({
+          CA: 1,
+        });
+        expect(result).not.toHaveProperty("US");
+        expect(result).not.toHaveProperty("FR");
+        expect(result).not.toHaveProperty("DE");
+        expect(result).not.toHaveProperty("JP");
       } else {
-        expect(result).toEqual([]);
+        expect(result).toEqual({});
       }
     });
 
@@ -119,26 +124,30 @@ describe("visits utils", () => {
         thisYear,
         homeCountry
       );
-      expect(result).toContain(homeCountry);
+      expect(result).toHaveProperty(homeCountry);
     });
 
     it("returns only countries visited up to a specific past year", () => {
       const result = getVisitedCountriesUpToYear(mockTrips, 2022);
-      expect(result).toEqual(expect.arrayContaining(["CA"]));
-      expect(result).not.toContain("US");
-      expect(result).not.toContain("FR");
-      expect(result).not.toContain("DE");
-      expect(result).not.toContain("JP");
+      expect(result).toEqual({
+        CA: 1,
+      });
+      expect(result).not.toHaveProperty("US");
+      expect(result).not.toHaveProperty("FR");
+      expect(result).not.toHaveProperty("DE");
+      expect(result).not.toHaveProperty("JP");
     });
 
     it("returns only home country if no trips up to the year and homeCountry is set", () => {
       expect(getVisitedCountriesUpToYear(mockTrips, 1999, homeCountry)).toEqual(
-        [homeCountry]
+        {
+          [homeCountry]: 1,
+        }
       );
     });
 
-    it("returns an empty array if no trips up to the year", () => {
-      expect(getVisitedCountriesUpToYear(mockTrips, 1999)).toEqual([]);
+    it("returns an empty object if no trips up to the year", () => {
+      expect(getVisitedCountriesUpToYear(mockTrips, 1999)).toEqual({});
     });
 
     it("ignores trips with no countryCodes or invalid startDate", () => {
@@ -146,7 +155,7 @@ describe("visits utils", () => {
         { ...mockTrips[0], startDate: undefined, countryCodes: ["US"] } as any,
         { ...mockTrips[1], startDate: "2023-01-01", countryCodes: [] } as any,
       ];
-      expect(getVisitedCountriesUpToYear(trips, 2023)).toEqual([]);
+      expect(getVisitedCountriesUpToYear(trips, 2023)).toEqual({});
     });
   });
 });
