@@ -1,38 +1,33 @@
 import { useCallback, useRef, useState } from "react";
-import {
-  ErrorMessage,
-  MenuPanel,
-  ShortcutsModal,
-  SplashScreen,
-} from "@components";
+import { ErrorMessage, MenuPanel, SplashScreen } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlayContext } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
-import { useUiToggleHint } from "@hooks/useUiToggleHint";
-import { CountryDetailsModal, CountriesPanel } from "@features/countries";
-import { MapExportPanel, WorldMap } from "@features/map";
-import { MapUiContainer, useTimelineState } from "@features/mapUi";
-import { useMapView } from "@features/map/hooks/useMapView";
+import { CountryDetailsModal, CountriesPanel } from "@features/atlas/countries";
+import { MapExportPanel, WorldMap } from "@features/atlas/map";
+import { useMapView } from "@features/atlas/map/hooks/useMapView";
 import {
   MarkerDetailsModal,
   MarkerModal,
   MarkersPanel,
   useMarkerCreation,
-} from "@features/markers";
-import { OverlayModal, OverlaysPanel } from "@features/overlays";
+} from "@features/atlas/markers";
+import { OverlayModal, OverlaysPanel } from "@features/atlas/overlays";
+import {
+  MapUiContainer,
+  ShortcutsModal,
+  useTimelineState,
+  useUiToggleHint,
+} from "@features/atlas/ui";
 import { SettingsPanel } from "@features/settings";
 import type { Country, Marker } from "@types";
 
 export default function AtlasPage() {
   // UI state
   const [mapReady, setMapReady] = useState(false);
-  const {
-    uiVisible,
-    setUiVisible, 
-    setTimelineMode,
-  } = useUI();
+  const { uiVisible, setUiVisible, setTimelineMode } = useUI();
   const [hintMessage, setHintMessage] = useState<React.ReactNode>("");
   const [hintKey, setHintKey] = useState(0);
   const uiHint = useUiHint(hintMessage, 4000, { key: hintKey });
@@ -53,7 +48,9 @@ export default function AtlasPage() {
     centerOnMarker,
   } = useMapView();
   const svgRef = useRef<SVGSVGElement>(null);
-  const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(null);
+  const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(
+    null
+  );
 
   // Selection state
   const [selectedIsoCode, setSelectedIsoCode] = useState<string | null>(null);
@@ -85,7 +82,7 @@ export default function AtlasPage() {
 
   // Determine if currently editing an existing overlay
   const isEditing =
-    !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);  
+    !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
 
   // Timeline state
   const { years, selectedYear, setSelectedYear } = useTimelineState();
@@ -188,7 +185,7 @@ export default function AtlasPage() {
             onMapClickForMarker={handleMapClickForMarker}
             onMarkerDetails={handleMarkerDetails}
             selectedYear={selectedYear}
-          />          
+          />
           <MapUiContainer
             zoom={zoom}
             setZoom={setZoom}
