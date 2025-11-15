@@ -14,13 +14,7 @@ export const MapSvgContainer = forwardRef<SVGSVGElement, MapSvgContainerProps>(
         ref={ref}
         width={width}
         height={height}
-        className={className}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-        }}
+        className={`absolute inset-0 w-full h-full ${className ?? ""}`}
       >
         {children}
       </svg>

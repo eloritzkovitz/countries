@@ -43,12 +43,6 @@ export function Panel({
       style={{
         width,
         minWidth: width,
-        height: "100vh",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        zIndex: 40,
-        willChange: "transform",
         ...style,
       }}
     >

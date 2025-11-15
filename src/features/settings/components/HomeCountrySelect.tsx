@@ -18,7 +18,7 @@ export function HomeCountrySelect() {
   return (
     <div className="settings-group">
       <CollapsibleHeader
-        icon={<FaHome style={{ marginRight: 6 }} />}
+        icon={<FaHome className="mr-1.5" />}
         label="Home Country"
         expanded={expanded}
         onToggle={() => setExpanded((prev) => !prev)}
