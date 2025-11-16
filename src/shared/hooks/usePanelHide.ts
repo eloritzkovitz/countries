@@ -15,17 +15,17 @@ export function usePanelHide({
   isModal = false,
   escEnabled = false,
 }: UsePanelHideOptions) {
-  const { uiVisible, showShortcuts } = useUI();
+  const { uiVisible, openModal } = useUI();
 
   // Hide on Escape key
   useKeyHandler(
     () => {
-      // Only hide the panel if it's a modal or shortcuts modal is not open
+      // Only hide the panel if it's a modal, or if no modal is open
       if (
         show &&
         onHide &&
         escEnabled &&
-        (isModal || (!isModal && !showShortcuts))
+        (isModal || (!isModal && !openModal))
       ) {
         onHide();
       }

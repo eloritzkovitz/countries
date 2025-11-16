@@ -20,20 +20,22 @@ interface UIContextType {
   showMarkers: boolean;
   toggleMarkers: () => void;
   showOverlays: boolean;
-  toggleOverlays: () => void;
-  showLegend: boolean;
-  toggleLegend: () => void;
+  toggleOverlays: () => void;  
   showExport: boolean;
   toggleExport: () => void;
   showSettings: boolean;
   toggleSettings: () => void;
   closePanel: () => void;
+  openModal: ModalSelection;
+  setOpenModal: (v: ModalSelection) => void;
+  showLegend: boolean;
+  toggleLegend: () => void;
   showShortcuts: boolean;
-  openShortcuts: () => void;
-  closeShortcuts: () => void;
+  toggleShortcuts: () => void;
+  closeModal: () => void;
   timelineMode: boolean;
   setTimelineMode: (v: boolean | ((prev: boolean) => boolean)) => void;
-}
+}  
 
 // Type for panel selection
 type PanelSelection =
@@ -43,6 +45,9 @@ type PanelSelection =
   | "export"
   | "settings"
   | null;
+
+// Type for modal selection
+type ModalSelection = "shortcuts" | "legend" | "countryDetails" | null;
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
@@ -60,15 +65,6 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const toggleFilters = () => {
     if (openPanel === "countries") setShowFilters((prev) => !prev);
   };
-
-  // Legend modal state
-  const [showLegend, setShowLegend] = useState(false);
-  const toggleLegend = () => setShowLegend((prev) => !prev);
-
-  // Shortcuts modal state
-  const [showShortcuts, setShowShortcuts] = useState(false);
-  const openShortcuts = () => setShowShortcuts(true);
-  const closeShortcuts = () => setShowShortcuts(false);
 
   // Derived states for individual panels
   const showCountries = openPanel === "countries";
@@ -89,6 +85,19 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const toggleSettings = () =>
     setOpenPanel((prev) => (prev === "settings" ? null : "settings"));
   const closePanel = () => setOpenPanel(null);
+
+  // Modal state
+  const [openModal, setOpenModal] = useState<ModalSelection>(null);
+
+  // Derived states for individual modals
+  const showShortcuts = openModal === "shortcuts";
+  const showLegend = openModal === "legend";
+
+  const toggleLegend = () =>
+    setOpenModal((prev) => (prev === "legend" ? null : "legend"));
+  const toggleShortcuts = () =>
+    setOpenModal((prev) => (prev === "shortcuts" ? null : "shortcuts"));
+  const closeModal = () => setOpenModal(null);
 
   // Toggle UI visibility with "U"
   useKeyHandler(toggleUiVisible, ["u"], true);
@@ -118,14 +127,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
   useKeyHandler(toggleSettings, ["s"], true);
 
   // Open shortcut modal with "?"
-  useKeyHandler(
-    (e) => {
-      e.preventDefault();
-      openShortcuts();
-    },
-    ["?"],
-    true
-  );
+  useKeyHandler(toggleShortcuts, ["?"], true);
 
   // Effect to open countries panel when menu closes
   useEffect(() => {
@@ -155,16 +157,18 @@ export function UIProvider({ children }: { children: ReactNode }) {
         toggleMarkers,
         showOverlays,
         toggleOverlays,
-        showLegend,
-        toggleLegend,
         showExport,
         toggleExport,
         showSettings,
         toggleSettings,
         closePanel,
+        openModal,
+        setOpenModal,
+        showLegend,
+        toggleLegend,
         showShortcuts,
-        openShortcuts,
-        closeShortcuts,
+        toggleShortcuts,
+        closeModal,
         timelineMode,
         setTimelineMode,
       }}

@@ -7,7 +7,7 @@ import type { KeyCommand } from "@types";
 import { ShortcutRow } from "./ShortcutRow";
 
 export function ShortcutsModal() {
-  const { showShortcuts, closeShortcuts } = useUI();
+  const { openModal, closeModal } = useUI();
 
   // Group shortcuts by category
   const groupedCommands = useMemo(() => {
@@ -20,8 +20,8 @@ export function ShortcutsModal() {
 
   return (
     <Modal
-      isOpen={showShortcuts}
-      onClose={closeShortcuts}
+      isOpen={openModal === "shortcuts"}
+      onClose={closeModal}
       position="center"
       className="min-w-[900px] max-w-[1200px] max-h-[90vh] bg-white rounded-xl shadow-2xl p-4 overflow-y-auto"
     >
@@ -33,7 +33,7 @@ export function ShortcutsModal() {
           </>
         }
       >
-        <ActionButton onClick={closeShortcuts} ariaLabel="Close" title="Close">
+        <ActionButton onClick={closeModal} ariaLabel="Close" title="Close">
           <FaXmark />
         </ActionButton>
       </PanelHeader>
