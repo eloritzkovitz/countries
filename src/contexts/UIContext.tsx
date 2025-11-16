@@ -33,7 +33,7 @@ interface UIContextType {
   closeShortcuts: () => void;
   timelineMode: boolean;
   setTimelineMode: (v: boolean | ((prev: boolean) => boolean)) => void;
-};
+}
 
 // Type for panel selection
 type PanelSelection =
@@ -91,31 +91,31 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const closePanel = () => setOpenPanel(null);
 
   // Toggle UI visibility with "U"
-  useKeyHandler(toggleUiVisible, ["u", "U"], true);
+  useKeyHandler(toggleUiVisible, ["u"], true);
 
   // Toggle Countries panel with "C"
-  useKeyHandler(toggleCountries, ["c", "C"], true);
+  useKeyHandler(toggleCountries, ["c"], true);
 
   // Toggle Filters panel with "F"
-  useKeyHandler(toggleFilters, ["f", "F"], true);
+  useKeyHandler(toggleFilters, ["f"], true);
 
   // Toggle Markers panel with "M"
-  useKeyHandler(toggleMarkers, ["m", "M"], true);
+  useKeyHandler(toggleMarkers, ["m"], true);
 
   // Toggle Overlays panel with "O"
-  useKeyHandler(toggleOverlays, ["o", "O"], true);
+  useKeyHandler(toggleOverlays, ["o"], true);
 
   // Toggle Legend with "L"
-  useKeyHandler(toggleLegend, ["l", "L"], true);
+  useKeyHandler(toggleLegend, ["l"], true);
 
   // Toggle Timeline panel with "T"
-  useKeyHandler(() => setTimelineMode((prev) => !prev), ["t", "T"], true);
+  useKeyHandler(() => setTimelineMode((prev) => !prev), ["t"], true);
 
   // Toggle Export panel with "E"
-  useKeyHandler(toggleExport, ["e", "E"], true);
+  useKeyHandler(toggleExport, ["e"], true);
 
   // Toggle Settings panel with "S"
-  useKeyHandler(toggleSettings, ["s", "S"], true);
+  useKeyHandler(toggleSettings, ["s"], true);
 
   // Open shortcut modal with "?"
   useKeyHandler(

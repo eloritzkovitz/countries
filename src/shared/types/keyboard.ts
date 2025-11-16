@@ -32,6 +32,7 @@ export type Key =
   | "ArrowRight"
   | "Enter"
   | "Esc"
+  | "Escape"
   | "Tab"
   | "Backspace"
   | "Delete"

@@ -46,6 +46,7 @@ export function Modal({
   usePanelHide({
     show: isOpen,
     onHide: onClose,
+    isModal: true,
     escEnabled: disableClose ? false : true,
   });
 

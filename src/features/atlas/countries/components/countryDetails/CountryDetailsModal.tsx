@@ -25,14 +25,14 @@ import { VisitedStatusIndicator } from "./VisitedStatusIndicator";
 
 interface CountryDetailsModalProps {
   isOpen: boolean;
-  country: Country | null;  
+  country: Country | null;
   onCenterMap?: () => void;
   onClose: () => void;
-};
+}
 
 export function CountryDetailsModal({
   isOpen,
-  country,  
+  country,
   onCenterMap,
   onClose,
 }: CountryDetailsModalProps) {
@@ -59,7 +59,7 @@ export function CountryDetailsModal({
       e.preventDefault();
       if (onCenterMap) onCenterMap();
     },
-    ["x", "X"],
+    ["x"],
     isOpen
   );
 
