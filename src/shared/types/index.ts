@@ -1,6 +1,6 @@
 export * from "./country";
 export * from "./filters";
-export * from "./keyCommand";
+export * from "./keyboard";
 export * from "./marker";
 export * from "./option";
 export * from "./overlay";

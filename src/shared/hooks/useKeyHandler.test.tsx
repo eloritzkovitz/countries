@@ -1,16 +1,17 @@
 import { render } from "@testing-library/react";
 import { useState } from "react";
+import type { Key, Modifier } from "@types";
 import { useKeyHandler } from "./useKeyHandler";
 
 function TestComponent({
   keys,
   enabled = true,
-  modifiers = {},
+  modifiers = [],
   onKey,
 }: {
-  keys?: string[];
+  keys?: Key[];
   enabled?: boolean;
-  modifiers?: Record<string, boolean>;
+  modifiers?: Modifier[];
   onKey: (e: KeyboardEvent) => void;
 }) {
   useKeyHandler(onKey, keys, enabled, modifiers);
@@ -57,7 +58,7 @@ describe("useKeyHandler", () => {
   it("respects modifier keys", () => {
     const handler = vi.fn();
     render(
-      <TestComponent keys={["a"]} modifiers={{ ctrl: true }} onKey={handler} />
+      <TestComponent keys={["a"]} modifiers={["Ctrl"]} onKey={handler} />
     );
     const event = new KeyboardEvent("keydown", { key: "a", ctrlKey: true });
     window.dispatchEvent(event);
