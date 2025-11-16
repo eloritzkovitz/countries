@@ -1,9 +1,9 @@
-import { useOverlayContext } from "@contexts/OverlayContext";
+import { useOverlays } from "@contexts/OverlayContext";
 import { useTrips } from "@contexts/TripsContext";
 import { getYear } from "@utils/date";
 
 export function useVisitedCountries() {
-  const { overlays } = useOverlayContext();
+  const { overlays } = useOverlays();
   const { trips } = useTrips();
 
   // Get visited countries from overlays

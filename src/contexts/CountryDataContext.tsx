@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { getAllRegions, getAllSubregions, getAllSovereigntyTypes } from "@features/countries";
 
-export type CountryDataContextType = {
+interface CountryDataContextType {
   countries: any[];
   currencies: Record<string, string>;
   allRegions: string[];

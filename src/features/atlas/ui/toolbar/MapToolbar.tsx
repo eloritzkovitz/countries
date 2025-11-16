@@ -11,7 +11,7 @@ import {
   FaMap,
 } from "react-icons/fa6";
 import { ActionButton, ActionsToolbar, ToolbarSeparator } from "@components";
-import { useOverlayContext } from "@contexts/OverlayContext";
+import { useOverlays } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import { isTimelineOverlay } from "@features/atlas/overlays";
 import { ZoomControls } from "../controls/ZoomControls";
@@ -43,7 +43,7 @@ export function MapToolbar({
   const [visible, setVisible] = useState(true);
 
   // Overlay context
-  const { overlays } = useOverlayContext();
+  const { overlays } = useOverlays();
   const visitedOverlay = overlays.find((o) => o.id === "visited-countries");
 
   return (

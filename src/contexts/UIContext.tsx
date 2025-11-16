@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 
-export type UIContextType = {
+interface UIContextType {
   uiVisible: boolean;
   setUiVisible: (v: boolean | ((prev: boolean) => boolean)) => void;
   showMenu: boolean;

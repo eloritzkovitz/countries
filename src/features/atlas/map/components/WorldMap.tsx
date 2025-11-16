@@ -1,20 +1,18 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ComposableMap, ZoomableGroup } from "react-simple-maps";
 import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { useMapUI } from "@contexts/MapUIContext";
-import { useOverlayContext } from "@contexts/OverlayContext";
+import { useOverlays } from "@contexts/OverlayContext";
 import { useContainerDimensions } from "@hooks/useContainerDimensions";
-import { useGeoData } from "@hooks/useGeoData";
 import type { Marker } from "@types";
 import { MapSvgContainer } from "./MapSvgContainer";
 import { CountriesLayer } from "./layers/CountriesLayer";
 import { MapMarkersLayer } from "./layers/MapMarkersLayer";
-import { MapStatus } from "./status/MapStatus";
-import { useMapStatus } from "../hooks/useMapStatus";
 import { useMapEventHandler } from "../hooks/useMapEventHandler";
 import { useMapOverlayItems } from "../hooks/useMapOverlayItems";
 
 interface WorldMapProps {
+  geoData: string;
   zoom: number;
   center: [number, number];
   setZoom: (zoom: number) => void;
@@ -37,6 +35,7 @@ interface WorldMapProps {
 }
 
 export function WorldMap({
+  geoData,
   zoom,
   center,
   handleMoveEnd,
@@ -57,28 +56,12 @@ export function WorldMap({
 
   // Map projection and data
   const { projection } = useMapUI();
-  const { geoData, geoError, loading: geoLoading } = useGeoData();
 
   // Load overlays data
-  const {
-    overlays,
-    loading: overlaysLoading,
-    error: overlaysError,
-  } = useOverlayContext();
+  const { overlays } = useOverlays();
 
   // Get overlay items based on mode
   const overlayItems = useMapOverlayItems(overlays, selectedYear);
-
-  // Determine map status
-  const { isLoading, errorMsg } = useMapStatus({
-    geoLoading,
-    overlaysLoading,
-    dimensions,
-    geoData,
-    overlaysError: overlaysError ?? undefined,
-    geoError: geoError ?? undefined,
-    onReady,
-  });
 
   // Handle map event for mouse move or click
   const handleMapEvent = useMapEventHandler({
@@ -93,16 +76,12 @@ export function WorldMap({
     onMapClickForMarker,
   });
 
-  // Show loading or error state
-  if (isLoading || errorMsg) {
-    return (
-      <MapStatus
-        loading={isLoading}
-        error={errorMsg}
-        containerRef={containerRef}
-      />
-    );
-  }
+  // Call onReady when map is ready
+  useEffect(() => {
+    if (onReady) {
+      onReady();
+    }
+  }, [onReady]);
 
   return (
     <div

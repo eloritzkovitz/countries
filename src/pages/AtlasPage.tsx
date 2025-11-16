@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
 import { ErrorMessage, MenuPanel, SplashScreen } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import { useOverlayContext } from "@contexts/OverlayContext";
+import { useMarkers } from "@contexts/MarkersContext";
+import { useOverlays } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
@@ -27,7 +28,6 @@ import {
   useUiToggleHint,
 } from "@features/atlas/ui";
 import { SettingsPanel } from "@features/settings";
-import type { Marker } from "@types";
 
 export default function AtlasPage() {
   // UI state
@@ -40,9 +40,18 @@ export default function AtlasPage() {
   useUiToggleHint(uiVisible, setUiVisible, setHintKey, setHintMessage);
 
   // Data state
-  const { geoData } = useGeoData();
+  const { geoData, geoError, loading: geoLoading } = useGeoData();
   const { countries, loading: countriesLoading, error } = useCountryData();
-  const { loading: overlaysLoading } = useOverlayContext();
+  const {
+    editingMarker,
+    setEditingMarker,
+    isEditingMarker,
+    isMarkerModalOpen,
+    saveMarker,
+    openEditMarker,
+    closeMarkerModal,
+  } = useMarkers();
+  const { loading: overlaysLoading } = useOverlays();
 
   // Map state
   const {
@@ -53,7 +62,7 @@ export default function AtlasPage() {
     handleMoveEnd,
     centerOnCountry,
     centerOnMarker,
-  } = useMapView();
+  } = useMapView(geoData);
   const svgRef = useRef<SVGSVGElement>(null);
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(
     null
@@ -75,11 +84,8 @@ export default function AtlasPage() {
   // Markers state
   const {
     isAddingMarker,
-    modalOpen,
-    markerCoords,
     startAddingMarker,
     handleMapClickForMarker,
-    handleCreateMarker,
     cancelMarkerCreation,
   } = useMarkerCreation();
   const {
@@ -94,42 +100,24 @@ export default function AtlasPage() {
   const {
     overlays,
     editingOverlay,
+    isEditingOverlay,
     isEditModalOpen,
     openAddOverlay,
     openEditOverlay,
     saveOverlay,
     closeOverlayModal,
     setEditingOverlay,
-  } = useOverlayContext();
-  const isEditing =
-    !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
+  } = useOverlays();
 
   // Timeline state
   const { years, selectedYear, setSelectedYear } = useTimelineState();
 
   // Derived state
-  const isLoading = countriesLoading || overlaysLoading || !mapReady;
-
-  // Center map on a country
-  function handleCenterMapOnCountry(isoCode: string) {
-    if (geoData) {
-      centerOnCountry(geoData, isoCode);
-    }
+  const isLoading =
+    countriesLoading || overlaysLoading || geoLoading || !mapReady;
+  if (error || geoError) {
+    return <ErrorMessage error={error || geoError || "Unknown error"} />;
   }
-
-  // Center map on a marker
-  function handleCenterMapOnMarker(
-    marker: { longitude: number; latitude: number } | Marker
-  ) {
-    centerOnMarker(marker);
-    // If a marker is provided, show its details
-    if ("id" in marker) {
-      handleMarkerDetails(marker);
-    }
-  }
-
-  // Show error state
-  if (error) return <ErrorMessage error={error} />;
 
   return (
     <>
@@ -151,6 +139,7 @@ export default function AtlasPage() {
         {/* Main Map Area */}
         <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
           <WorldMap
+            geoData={geoData}
             zoom={zoom}
             center={center}
             setZoom={setZoom}
@@ -160,7 +149,7 @@ export default function AtlasPage() {
             onCountryHover={handleCountryHover}
             selectedIsoCode={selectedIsoCode}
             hoveredIsoCode={hoveredIsoCode}
-            onReady={() => handleMapReady()}
+            onReady={handleMapReady}
             svgRef={svgRef}
             isAddingMarker={isAddingMarker}
             setSelectedCoords={(coords) => setSelectedCoords(coords)}
@@ -182,11 +171,7 @@ export default function AtlasPage() {
           <CountryDetailsModal
             country={selectedCountry}
             isOpen={!!selectedCountry}
-            onCenterMap={() =>
-              selectedCountry
-                ? handleCenterMapOnCountry(selectedCountry.isoCode)
-                : undefined
-            }
+            onCenterMap={() => centerOnCountry(selectedCountry?.isoCode ?? "")}
             onClose={() => setSelectedCountry(null)}
           />
           <MarkerDetailsModal
@@ -196,14 +181,20 @@ export default function AtlasPage() {
             position={detailsModalPosition}
           />
           <MarkerModal
-            open={modalOpen}
-            coords={markerCoords}
-            onSubmit={handleCreateMarker}
-            onClose={cancelMarkerCreation}
+            marker={editingMarker}
+            onChange={setEditingMarker}
+            onSave={saveMarker}
+            onClose={() => {
+              closeMarkerModal();
+              cancelMarkerCreation();
+            }}
+            isOpen={isMarkerModalOpen}
+            isEditing={isEditingMarker}
           />
           <MarkersPanel
             onAddMarker={startAddingMarker}
-            onCenterMap={handleCenterMapOnMarker}
+            onEditMarker={openEditMarker}
+            onCenterMap={centerOnMarker}
           />
           <OverlayModal
             overlay={editingOverlay}
@@ -211,7 +202,7 @@ export default function AtlasPage() {
             onSave={saveOverlay}
             onClose={closeOverlayModal}
             isOpen={isEditModalOpen}
-            isEditing={isEditing}
+            isEditing={isEditingOverlay}
           />
           <OverlaysPanel
             onEditOverlay={openEditOverlay}
@@ -222,10 +213,9 @@ export default function AtlasPage() {
           <SettingsPanel />
         </div>
         <ShortcutsModal />
-
-        {/* Splash screen */}
-        {isLoading && <SplashScreen />}
       </div>
+      {/* Splash screen */}
+      {isLoading && <SplashScreen />}
     </>
   );
 }

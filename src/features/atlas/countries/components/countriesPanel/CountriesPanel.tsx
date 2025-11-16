@@ -8,7 +8,7 @@ import {
   Separator,
 } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import { useOverlayContext } from "@contexts/OverlayContext";
+import { useOverlays } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import { useCountryFilters } from "@features/atlas/countries/hooks/useCountryFilters";
 import { sortCountries } from "@features/countries/utils/countryList";
@@ -40,8 +40,7 @@ export function CountriesPanel({
   // Context data state
   const { countries, allRegions, allSubregions, loading, error, refreshData } =
     useCountryData();
-  const { overlays, overlaySelections, setOverlaySelections } =
-    useOverlayContext();
+  const { overlays, overlaySelections, setOverlaySelections } = useOverlays();
 
   const {
     uiVisible,
@@ -64,7 +63,7 @@ export function CountriesPanel({
     filteredCountries,
     allCount,
     visitedCount,
-    isVisitedOnly
+    isVisitedOnly,
   } = useCountryFilters({
     countries,
     overlays,

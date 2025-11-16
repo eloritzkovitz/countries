@@ -4,7 +4,7 @@ import { useSyncVisitedCountriesOverlay } from "@features/atlas/overlays";
 import { overlaysService } from "@services/overlaysService";
 import type { AnyOverlay } from "@types";
 
-export type OverlayContextType = {
+interface OverlayContextType {
   overlays: AnyOverlay[];
   setOverlays: React.Dispatch<React.SetStateAction<AnyOverlay[]>>;
   overlaySelections: Record<string, string>;
@@ -20,6 +20,7 @@ export type OverlayContextType = {
   loading: boolean;
   error: string | null;
   editingOverlay: AnyOverlay | null;
+  isEditingOverlay: boolean;
   isEditModalOpen: boolean;
   openAddOverlay: () => void;
   openEditOverlay: (overlay: AnyOverlay) => void;
@@ -44,9 +45,10 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Modal state
+  // Editing state
   const [editingOverlay, setEditingOverlay] = useState<AnyOverlay | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const isEditingOverlay = !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
 
   // Load overlays from service on mount
   useEffect(() => {
@@ -173,6 +175,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
         loading,
         error,
         editingOverlay,
+        isEditingOverlay,
         isEditModalOpen,
         openAddOverlay,
         openEditOverlay,
@@ -187,9 +190,9 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
 }
 
 // Custom hook for consuming the OverlayContext
-export function useOverlayContext() {
+export function useOverlays() {
   const ctx = useContext(OverlayContext);
   if (!ctx)
-    throw new Error("useOverlayContext must be used within OverlayProvider");
+    throw new Error("useOverlays must be used within OverlayProvider");
   return ctx;
 }

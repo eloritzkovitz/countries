@@ -11,32 +11,37 @@ import type { Marker } from "@types";
 import "./MarkerModal.css";
 
 interface MarkerModalProps {
-  open: boolean;
-  coords: [number, number] | null;
-  marker?: Marker;
-  onSubmit: (name: string, color?: string, description?: string) => void;
+  marker: Marker | null;
+  onChange: (marker: Marker) => void;
+  onSave: () => void;
   onClose: () => void;
+  isOpen: boolean;
+  isEditing: boolean;
 }
 
 export const MarkerModal: React.FC<MarkerModalProps> = ({
-  open,
-  coords,
   marker,
-  onSubmit,
+  onChange,
+  onSave,
   onClose,
+  isOpen,
+  isEditing,
 }) => {
   const nameRef = useRef<HTMLInputElement>(null);
 
   // Focus the name input when the modal opens
   useEffect(() => {
-    if (open && nameRef.current) {
+    if (isOpen && nameRef.current) {
       nameRef.current.focus();
     }
-  }, [open]);
+  }, [isOpen]);
+
+  // Don't render if no marker (for edit)
+  if (!isOpen || !marker) return null;
 
   return (
     <Modal
-      isOpen={open}
+      isOpen={isOpen}
       onClose={onClose}
       position="center"
       className="modal min-w-[900px] max-w-[1200px] max-h-[90vh]"
@@ -45,7 +50,7 @@ export const MarkerModal: React.FC<MarkerModalProps> = ({
         title={
           <>
             <FaMapPin />
-            {marker ? "Edit Marker" : "Add Marker"}
+            {isEditing ? "Edit Marker" : "Add Marker"}
           </>
         }
       >
@@ -53,68 +58,86 @@ export const MarkerModal: React.FC<MarkerModalProps> = ({
           <FaTimes />
         </ActionButton>
       </PanelHeader>
-      {open && (coords || marker) ? (
-        <form
-          className="space-y-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const form = e.target as HTMLFormElement;
-            const fd = new FormData(form);
-            const name = String(fd.get("name") || "");
-            const color = fd.get("color") ? String(fd.get("color")) : undefined;
-            const description = fd.get("description")
-              ? String(fd.get("description"))
-              : undefined;
-            onSubmit(name, color, description);
-          }}
-        >
-          <FormField label="Name">
-            <input
-              ref={nameRef}
-              name="name"
-              className="form-field"
-              placeholder="Marker name"
-              required
-              defaultValue={marker?.name || ""}
-              autoFocus
-            />
-          </FormField>
-          <FormField label="Color">
-            <input
-              name="color"
-              type="color"
-              className="w-8 h-8 p-0 border rounded mt-1"
-              defaultValue={marker?.color || "#e53e3e"}
-            />
-          </FormField>
-          <FormField label="Description">
-            <input
-              name="description"
-              className="form-field"
-              placeholder="Description (optional)"
-              defaultValue={marker?.description || ""}
-            />
-          </FormField>
-          {coords && !marker && (
-            <div className="text-xs text-gray-500">
-              Location: {coords[0].toFixed(4)}, {coords[1].toFixed(4)}
-            </div>
-          )}
-          <div className="flex justify-end gap-2 mt-4">
-            <ModalActions
-              onCancel={onClose}
-              submitIcon={
-                marker ? (
-                  <FaSave className="inline" />
-                ) : (
-                  <FaMapPin className="inline" />
-                )
-              }
-              submitLabel={marker ? "Save Changes" : "Add Marker"}
-            />
+      <form
+        className="space-y-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSave();
+        }}
+      >
+        <FormField label="Name">
+          <input
+            ref={nameRef}
+            name="name"
+            className="form-field"
+            placeholder="Marker name"
+            required
+            value={marker?.name || ""}
+            onChange={(e) =>
+              onChange({
+                ...marker!,
+                name: e.target.value,
+                // For add: ensure coords are set
+                longitude: marker?.longitude ?? 0,
+                latitude: marker?.latitude ?? 0,
+              })
+            }
+            autoFocus
+          />
+        </FormField>
+        <FormField label="Color">
+          <input
+            name="color"
+            type="color"
+            className="w-8 h-8 p-0 border rounded mt-1"
+            value={marker?.color || "#e53e3e"}
+            onChange={(e) =>
+              onChange({
+                ...marker!,
+                color: e.target.value,
+                longitude: marker?.longitude ?? 0,
+                latitude: marker?.latitude ?? 0,
+              })
+            }
+          />
+        </FormField>
+        <FormField label="Description">
+          <input
+            name="description"
+            className="form-field"
+            placeholder="Description (optional)"
+            value={marker?.description || ""}
+            onChange={(e) =>
+              onChange({
+                ...marker!,
+                description: e.target.value,
+                longitude: marker?.longitude ?? 0,
+                latitude: marker?.latitude ?? 0,
+              })
+            }
+          />
+        </FormField>
+        {marker && !isEditing && (
+          <div className="text-xs text-gray-500">
+            Location: {marker.longitude.toFixed(4)}, {marker.latitude.toFixed(4)}
           </div>
-        </form>
-      ) : null}
+        )}
+        <div className="flex justify-end gap-2 mt-4">
+          <ModalActions
+            onCancel={onClose}
+            onSubmit={onSave}
+            submitType="submit"
+            submitIcon={
+              isEditing ? (
+                <FaSave className="inline" />
+              ) : (
+                <FaMapPin className="inline" />
+              )
+            }
+            submitLabel={isEditing ? "Save Changes" : "Add Marker"}
+          />
+        </div>
+      </form>
     </Modal>
   );
 };
