@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { getCountryCenterAndZoom } from "@features/atlas/map";
+import type { Marker } from "@types";
 
 export function useMapView(
+  geoData: any,
   initialZoom = DEFAULT_MAP_SETTINGS.minZoom,
-  initialCenter: [number, number] = [0, 0]
+  initialCenter: [number, number] = [0, 0],
+  onMarkerDetails?: (marker: Marker) => void
 ) {
   const [zoom, setZoom] = useState(initialZoom);
   const [center, setCenter] = useState<[number, number]>(initialCenter);
@@ -17,7 +20,8 @@ export function useMapView(
   }, [zoom, center]);
 
   // Center map on a specific country by its ISO code
-  const centerOnCountry = (geoData: any, isoCode: string) => {
+  const centerOnCountry = (isoCode: string) => {
+    if (!geoData) return;
     const result = getCountryCenterAndZoom(geoData, isoCode);
     if (result) {
       setCenter(result.center);
@@ -26,12 +30,13 @@ export function useMapView(
   };
 
   // Center map on a marker
-  const centerOnMarker = (
-    marker: { longitude: number; latitude: number },
-    zoomLevel: number = 20
-  ) => {
+  const centerOnMarker = (marker: Marker, zoomLevel: number = 20) => {
     setCenter([marker.longitude, marker.latitude]);
     setZoom(zoomLevel);
+    // If a marker is provided, show its details
+    if (onMarkerDetails && "id" in marker) {
+      onMarkerDetails(marker);
+    }
   };
 
   // Handler for map move end

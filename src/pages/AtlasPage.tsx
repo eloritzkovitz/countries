@@ -1,33 +1,19 @@
 import { useRef, useState } from "react";
-import { ErrorMessage, MenuPanel, SplashScreen } from "@components";
+import { ErrorMessage, SplashScreen } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
-import { useOverlayContext } from "@contexts/OverlayContext";
+import { useOverlays } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
-import {
-  CountryDetailsModal,
-  CountriesPanel,
-  useCountrySelection,
-} from "@features/atlas/countries";
+import { useCountrySelection } from "@features/atlas/countries";
 import { WorldMap, useMapReady, useMapView } from "@features/atlas/map";
+import { useMarkerCreation } from "@features/atlas/markers";
 import {
-  MarkerDetailsModal,
-  MarkerModal,
-  MarkersPanel,
-  useMarkerCreation,
-  useMarkerDetailsModal,
-} from "@features/atlas/markers";
-import { OverlayModal, OverlaysPanel } from "@features/atlas/overlays";
-import {
-  MapExportPanel,
+  AtlasUiContainer,
   MapUiContainer,
-  ShortcutsModal,
   useTimelineState,
   useUiToggleHint,
 } from "@features/atlas/ui";
-import { SettingsPanel } from "@features/settings";
-import type { Marker } from "@types";
 
 export default function AtlasPage() {
   // UI state
@@ -40,9 +26,9 @@ export default function AtlasPage() {
   useUiToggleHint(uiVisible, setUiVisible, setHintKey, setHintMessage);
 
   // Data state
-  const { geoData } = useGeoData();
+  const { geoData, geoError, loading: geoLoading } = useGeoData();
   const { countries, loading: countriesLoading, error } = useCountryData();
-  const { loading: overlaysLoading } = useOverlayContext();
+  const { overlays, loading: overlaysLoading } = useOverlays();
 
   // Map state
   const {
@@ -53,7 +39,7 @@ export default function AtlasPage() {
     handleMoveEnd,
     centerOnCountry,
     centerOnMarker,
-  } = useMapView();
+  } = useMapView(geoData);
   const svgRef = useRef<SVGSVGElement>(null);
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(
     null
@@ -72,85 +58,37 @@ export default function AtlasPage() {
     handleCountryHover,
   } = useCountrySelection(countries);
 
-  // Markers state
-  const {
-    isAddingMarker,
-    modalOpen,
-    markerCoords,
-    startAddingMarker,
-    handleMapClickForMarker,
-    handleCreateMarker,
-    cancelMarkerCreation,
-  } = useMarkerCreation();
-  const {
-    selectedMarker,
-    detailsModalOpen,
-    setDetailsModalOpen,
-    detailsModalPosition,
-    handleMarkerDetails,
-  } = useMarkerDetailsModal();
-
-  // Overlays state
-  const {
-    overlays,
-    editingOverlay,
-    isEditModalOpen,
-    openAddOverlay,
-    openEditOverlay,
-    saveOverlay,
-    closeOverlayModal,
-    setEditingOverlay,
-  } = useOverlayContext();
-  const isEditing =
-    !!editingOverlay && overlays.some((o) => o.id === editingOverlay.id);
+  // Marker creation state
+  const { isAddingMarker } = useMarkerCreation();
 
   // Timeline state
   const { years, selectedYear, setSelectedYear } = useTimelineState();
 
   // Derived state
-  const isLoading = countriesLoading || overlaysLoading || !mapReady;
-
-  // Center map on a country
-  function handleCenterMapOnCountry(isoCode: string) {
-    if (geoData) {
-      centerOnCountry(geoData, isoCode);
-    }
+  const isLoading =
+    countriesLoading || overlaysLoading || geoLoading || !mapReady;
+  if (error || geoError) {
+    return <ErrorMessage error={error || geoError || "Unknown error"} />;
   }
-
-  // Center map on a marker
-  function handleCenterMapOnMarker(
-    marker: { longitude: number; latitude: number } | Marker
-  ) {
-    centerOnMarker(marker);
-    // If a marker is provided, show its details
-    if ("id" in marker) {
-      handleMarkerDetails(marker);
-    }
-  }
-
-  // Show error state
-  if (error) return <ErrorMessage error={error} />;
 
   return (
     <>
       {uiHint}
       <div className="flex h-screen bg-gray-100 relative">
-        {/* Menu Panel */}
-        <MenuPanel />
-
-        {/* Countries Panel */}
-        <CountriesPanel
+        <AtlasUiContainer
+          svgRef={svgRef}
           selectedIsoCode={selectedIsoCode}
+          setSelectedIsoCode={setSelectedIsoCode}
           hoveredIsoCode={hoveredIsoCode}
+          setHoveredIsoCode={setHoveredIsoCode}
           selectedCountry={selectedCountry}
-          onSelect={setSelectedIsoCode}
-          onHover={setHoveredIsoCode}
-          onCountryInfo={setSelectedCountry}
+          setSelectedCountry={setSelectedCountry}
+          centerOnCountry={centerOnCountry}
+          centerOnMarker={centerOnMarker}
         />
-
-        {/* Main Map Area */}
         <div className="flex-2 flex flex-col items-stretch justify-stretch relative h-screen min-h-0">
           <WorldMap
+            geoData={geoData}
             zoom={zoom}
             center={center}
             setZoom={setZoom}
@@ -160,12 +98,10 @@ export default function AtlasPage() {
             onCountryHover={handleCountryHover}
             selectedIsoCode={selectedIsoCode}
             hoveredIsoCode={hoveredIsoCode}
-            onReady={() => handleMapReady()}
+            onReady={handleMapReady}
             svgRef={svgRef}
             isAddingMarker={isAddingMarker}
             setSelectedCoords={(coords) => setSelectedCoords(coords)}
-            onMapClickForMarker={handleMapClickForMarker}
-            onMarkerDetails={handleMarkerDetails}
             selectedYear={selectedYear}
           />
           <MapUiContainer
@@ -179,53 +115,10 @@ export default function AtlasPage() {
             overlays={overlays}
             isAddingMarker={isAddingMarker}
           />
-          <CountryDetailsModal
-            country={selectedCountry}
-            isOpen={!!selectedCountry}
-            onCenterMap={() =>
-              selectedCountry
-                ? handleCenterMapOnCountry(selectedCountry.isoCode)
-                : undefined
-            }
-            onClose={() => setSelectedCountry(null)}
-          />
-          <MarkerDetailsModal
-            marker={selectedMarker}
-            open={detailsModalOpen}
-            onClose={() => setDetailsModalOpen(false)}
-            position={detailsModalPosition}
-          />
-          <MarkerModal
-            open={modalOpen}
-            coords={markerCoords}
-            onSubmit={handleCreateMarker}
-            onClose={cancelMarkerCreation}
-          />
-          <MarkersPanel
-            onAddMarker={startAddingMarker}
-            onCenterMap={handleCenterMapOnMarker}
-          />
-          <OverlayModal
-            overlay={editingOverlay}
-            onChange={setEditingOverlay}
-            onSave={saveOverlay}
-            onClose={closeOverlayModal}
-            isOpen={isEditModalOpen}
-            isEditing={isEditing}
-          />
-          <OverlaysPanel
-            onEditOverlay={openEditOverlay}
-            onAddOverlay={openAddOverlay}
-            overlayModalOpen={isEditModalOpen}
-          />
-          <MapExportPanel svgRef={svgRef} />
-          <SettingsPanel />
         </div>
-        <ShortcutsModal />
-
-        {/* Splash screen */}
-        {isLoading && <SplashScreen />}
       </div>
+      {/* Splash screen */}
+      {isLoading && <SplashScreen />}
     </>
   );
 }

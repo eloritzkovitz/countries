@@ -7,7 +7,7 @@ import {
   FaXmark,
 } from "react-icons/fa6";
 import { ActionButton, ErrorMessage, LoadingSpinner, Panel } from "@components";
-import { useOverlayContext } from "@contexts/OverlayContext";
+import { useOverlays } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
 import {
   importOverlaysFromFile,
@@ -38,7 +38,7 @@ export function OverlaysPanel({
     removeOverlay,
     loading,
     error,
-  } = useOverlayContext();
+  } = useOverlays();
 
   // Drag state
   const { draggedIndex, handleDragStart, handleDragOver, handleDragEnd } =

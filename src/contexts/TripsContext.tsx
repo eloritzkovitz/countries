@@ -3,7 +3,7 @@ import type { Trip } from "@types";
 import { getAutoTripStatus } from "@features/trips/utils/trips";
 import { tripsService } from "@services/tripsService";
 
-type TripsContextType = {
+interface TripsContextType {
   trips: Trip[];
   loading: boolean;
   addTrip: (trip: Trip) => void;

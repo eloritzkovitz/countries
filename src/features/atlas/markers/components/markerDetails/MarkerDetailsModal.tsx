@@ -1,28 +1,29 @@
-import { FaMapMarkerAlt, FaTimes } from "react-icons/fa";
-import { Modal } from "@components";
+import { FaLocationDot, FaXmark } from "react-icons/fa6";
+import { ActionButton, Modal, PanelHeader } from "@components";
 import type { Marker } from "@types";
 
 interface MarkerDetailsModalProps {
-  open: boolean;
+  isOpen: boolean;
   marker: Marker | null;
-  position: { top: number; left: number } | null;
+  position: { top: number; left: number } | null;  
   onClose: () => void;
 }
 
 export function MarkerDetailsModal({
-  open,
+  isOpen,
   marker,
-  position,
+  position,  
   onClose,
 }: MarkerDetailsModalProps) {
+  // Don't render the modal if no marker is selected
   if (!marker) return null;
 
   return (
     <Modal
-      isOpen={open}
+      isOpen={isOpen}
       onClose={onClose}
       position={position ? "custom" : "center"}
-      className="min-w-[400px] max-w-[600px] bg-white rounded-xl shadow-2xl p-6 overflow-y-auto"
+      className="min-w-[400px] max-w-[600px] bg-white rounded-xl shadow-2xl p-8 overflow-y-auto"
       style={
         position
           ? {
@@ -35,19 +36,22 @@ export function MarkerDetailsModal({
           : undefined
       }
     >
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <FaMapMarkerAlt />
-          <h2 className="text-xl font-bold">{marker.name}</h2>
-        </div>
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          title="Close"
-          className="action-btn text-gray-500 hover:text-red-600 text-xl"
+      <div className="relative overflow-visible">
+        <PanelHeader
+          title={
+            <span className="flex items-center gap-2">
+              <FaLocationDot />
+              {marker.name}
+            </span>
+          }
         >
-          <FaTimes />
-        </button>
+          <ActionButton
+            onClick={onClose}
+            ariaLabel="Close country details"
+            title="Close"
+            icon={<FaXmark />}
+          />
+        </PanelHeader>
       </div>
       <div className="mb-4 text-gray-700">
         {marker.description || "No description provided."}

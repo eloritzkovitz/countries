@@ -19,12 +19,14 @@ export const keyCommands: KeyCommand[] = [
   { key: "r", modifiers: [], action: "Reset Filters", category: "Filters" },  
 
   // Toolbar
-  { key: "c", modifiers: [], action: "Toggle Countries Panel", category: "Toolbar" },
-  { key: "e", modifiers: [], action: "Toggle Export Panel", category: "Toolbar" },
-  { key: "f", modifiers: [], action: "Toggle Filters Panel", category: "Toolbar" },
-  { key: "m", modifiers: [], action: "Toggle Markers Panel", category: "Toolbar" },
-  { key: "o", modifiers: [], action: "Toggle Overlays Panel", category: "Toolbar" },  
-  { key: "s", modifiers: [], action: "Toggle Settings Panel", category: "Toolbar" },
+  { key: "c", modifiers: [], action: "Toggle Countries", category: "Toolbar" },
+  { key: "e", modifiers: [], action: "Toggle Export", category: "Toolbar" },
+  { key: "f", modifiers: [], action: "Toggle Filters", category: "Toolbar" },
+  { key: "l", modifiers: [], action: "Toggle Legend", category: "Toolbar" },  
+  { key: "m", modifiers: [], action: "Toggle Markers", category: "Toolbar" },
+  { key: "o", modifiers: [], action: "Toggle Overlays", category: "Toolbar" },  
+  { key: "s", modifiers: [], action: "Toggle Settings", category: "Toolbar" },
+  { key: "t", modifiers: [], action: "Toggle Timeline", category: "Toolbar" },
   { key: "u", modifiers: [], action: "Toggle UI", category: "Toolbar" },  
 
   // Map

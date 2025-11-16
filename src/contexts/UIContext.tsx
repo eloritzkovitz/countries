@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useKeyHandler } from "@hooks/useKeyHandler";
 
-export type UIContextType = {
+interface UIContextType {
   uiVisible: boolean;
   setUiVisible: (v: boolean | ((prev: boolean) => boolean)) => void;
   showMenu: boolean;
@@ -20,20 +20,22 @@ export type UIContextType = {
   showMarkers: boolean;
   toggleMarkers: () => void;
   showOverlays: boolean;
-  toggleOverlays: () => void;
-  showLegend: boolean;
-  toggleLegend: () => void;
+  toggleOverlays: () => void;  
   showExport: boolean;
   toggleExport: () => void;
   showSettings: boolean;
   toggleSettings: () => void;
   closePanel: () => void;
+  openModal: ModalSelection;
+  setOpenModal: (v: ModalSelection) => void;
+  showLegend: boolean;
+  toggleLegend: () => void;
   showShortcuts: boolean;
-  openShortcuts: () => void;
-  closeShortcuts: () => void;
+  toggleShortcuts: () => void;
+  closeModal: () => void;
   timelineMode: boolean;
   setTimelineMode: (v: boolean | ((prev: boolean) => boolean)) => void;
-};
+}  
 
 // Type for panel selection
 type PanelSelection =
@@ -43,6 +45,9 @@ type PanelSelection =
   | "export"
   | "settings"
   | null;
+
+// Type for modal selection
+type ModalSelection = "shortcuts" | "legend" | "countryDetails" | null;
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
@@ -60,15 +65,6 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const toggleFilters = () => {
     if (openPanel === "countries") setShowFilters((prev) => !prev);
   };
-
-  // Legend modal state
-  const [showLegend, setShowLegend] = useState(false);
-  const toggleLegend = () => setShowLegend((prev) => !prev);
-
-  // Shortcuts modal state
-  const [showShortcuts, setShowShortcuts] = useState(false);
-  const openShortcuts = () => setShowShortcuts(true);
-  const closeShortcuts = () => setShowShortcuts(false);
 
   // Derived states for individual panels
   const showCountries = openPanel === "countries";
@@ -90,42 +86,48 @@ export function UIProvider({ children }: { children: ReactNode }) {
     setOpenPanel((prev) => (prev === "settings" ? null : "settings"));
   const closePanel = () => setOpenPanel(null);
 
+  // Modal state
+  const [openModal, setOpenModal] = useState<ModalSelection>(null);
+
+  // Derived states for individual modals
+  const showShortcuts = openModal === "shortcuts";
+  const showLegend = openModal === "legend";
+
+  const toggleLegend = () =>
+    setOpenModal((prev) => (prev === "legend" ? null : "legend"));
+  const toggleShortcuts = () =>
+    setOpenModal((prev) => (prev === "shortcuts" ? null : "shortcuts"));
+  const closeModal = () => setOpenModal(null);
+
   // Toggle UI visibility with "U"
-  useKeyHandler(toggleUiVisible, ["u", "U"], true);
+  useKeyHandler(toggleUiVisible, ["u"], true);
 
   // Toggle Countries panel with "C"
-  useKeyHandler(toggleCountries, ["c", "C"], true);
+  useKeyHandler(toggleCountries, ["c"], true);
 
   // Toggle Filters panel with "F"
-  useKeyHandler(toggleFilters, ["f", "F"], true);
+  useKeyHandler(toggleFilters, ["f"], true);
 
   // Toggle Markers panel with "M"
-  useKeyHandler(toggleMarkers, ["m", "M"], true);
+  useKeyHandler(toggleMarkers, ["m"], true);
 
   // Toggle Overlays panel with "O"
-  useKeyHandler(toggleOverlays, ["o", "O"], true);
+  useKeyHandler(toggleOverlays, ["o"], true);
 
   // Toggle Legend with "L"
-  useKeyHandler(toggleLegend, ["l", "L"], true);
+  useKeyHandler(toggleLegend, ["l"], true);
 
   // Toggle Timeline panel with "T"
-  useKeyHandler(() => setTimelineMode((prev) => !prev), ["t", "T"], true);
+  useKeyHandler(() => setTimelineMode((prev) => !prev), ["t"], true);
 
   // Toggle Export panel with "E"
-  useKeyHandler(toggleExport, ["e", "E"], true);
+  useKeyHandler(toggleExport, ["e"], true);
 
   // Toggle Settings panel with "S"
-  useKeyHandler(toggleSettings, ["s", "S"], true);
+  useKeyHandler(toggleSettings, ["s"], true);
 
   // Open shortcut modal with "?"
-  useKeyHandler(
-    (e) => {
-      e.preventDefault();
-      openShortcuts();
-    },
-    ["?"],
-    true
-  );
+  useKeyHandler(toggleShortcuts, ["?"], true);
 
   // Effect to open countries panel when menu closes
   useEffect(() => {
@@ -155,16 +157,18 @@ export function UIProvider({ children }: { children: ReactNode }) {
         toggleMarkers,
         showOverlays,
         toggleOverlays,
-        showLegend,
-        toggleLegend,
         showExport,
         toggleExport,
         showSettings,
         toggleSettings,
         closePanel,
+        openModal,
+        setOpenModal,
+        showLegend,
+        toggleLegend,
         showShortcuts,
-        openShortcuts,
-        closeShortcuts,
+        toggleShortcuts,
+        closeModal,
         timelineMode,
         setTimelineMode,
       }}

@@ -20,21 +20,21 @@ import type { Overlay } from "@types";
 import { ColorPickerModal } from "./ColorPickerModal";
 
 interface OverlayModalProps {
+  isOpen: boolean;
+  isEditing: boolean;
   overlay: Overlay | null;
   onChange: (overlay: Overlay) => void;
   onSave: () => void;
-  onClose: () => void;
-  isOpen: boolean;
-  isEditing: boolean;
+  onClose: () => void;  
 };
 
 export function OverlayModal({
+  isOpen,
+  isEditing,
   overlay,
   onChange,
   onSave,
-  onClose,
-  isOpen,
-  isEditing,
+  onClose,  
 }: OverlayModalProps) {
   const { countries } = useCountryData();
   const [countryModalOpen, setCountryModalOpen] = useState(false);

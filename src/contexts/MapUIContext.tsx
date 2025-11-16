@@ -1,7 +1,7 @@
 import { createContext, useContext, type ReactNode } from "react";
 import { useSettings } from "./SettingsContext";
 
-type MapUIContextType = {
+interface MapUIContextType {
   projection: string;
   setProjection: (v: string) => void;
   borderColor: string;

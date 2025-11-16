@@ -23,16 +23,16 @@ import { CountryVisitsDrawer } from "./CountryVisitsDrawer";
 import { SovereigntyBadge } from "./SovereigntyBadge";
 import { VisitedStatusIndicator } from "./VisitedStatusIndicator";
 
-type CountryDetailsModalProps = {
-  country: Country | null;
+interface CountryDetailsModalProps {
   isOpen: boolean;
+  country: Country | null;
   onCenterMap?: () => void;
   onClose: () => void;
-};
+}
 
 export function CountryDetailsModal({
-  country,
   isOpen,
+  country,
   onCenterMap,
   onClose,
 }: CountryDetailsModalProps) {
@@ -59,7 +59,7 @@ export function CountryDetailsModal({
       e.preventDefault();
       if (onCenterMap) onCenterMap();
     },
-    ["x", "X"],
+    ["x"],
     isOpen
   );
 

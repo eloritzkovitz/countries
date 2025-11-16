@@ -1,50 +1,31 @@
-import { useState } from "react";
 import { FaMapPin, FaPlus, FaTimes } from "react-icons/fa";
 import { ActionButton, Panel } from "@components";
 import { DEFAULT_PANEL_WIDTH } from "@constants";
 import { useMarkers } from "@contexts/MarkersContext";
 import { useUI } from "@contexts/UIContext";
 import { useDragReorder } from "@hooks/useDragReorder";
+import type { Marker } from "@types";
 import { MarkersPanelItem } from "./MarkersPanelItem";
-import { MarkerModal } from "../markerModal/MarkerModal";
 
 interface MarkersPanelProps {
   onAddMarker: () => void;
-  onCenterMap: (marker: { longitude: number; latitude: number }) => void;
+  onEditMarker: (marker: Marker) => void;
+  onCenterMap: (marker: Marker) => void;
 }
 
-export function MarkersPanel({ onAddMarker, onCenterMap }: MarkersPanelProps) {
-  const {
-    markers,
-    editMarker,
-    removeMarker,
-    toggleMarkerVisibility,
-    reorderMarkers,
-  } = useMarkers();
+export function MarkersPanel({
+  onAddMarker,
+  onEditMarker,
+  onCenterMap,
+}: MarkersPanelProps) {
+  const { markers, removeMarker, toggleMarkerVisibility, reorderMarkers } =
+    useMarkers();
   const { showMarkers, closePanel } = useUI();
   const { draggedIndex, handleDragStart, handleDragOver, handleDragEnd } =
     useDragReorder(markers, reorderMarkers);
-  const [editingMarker, setEditingMarker] = useState<any | null>(null);
 
   return (
     <>
-      <MarkerModal
-        open={!!editingMarker}
-        marker={editingMarker || undefined}
-        onSubmit={(name, color, description) => {
-          if (editingMarker) {
-            editMarker({
-              ...editingMarker,
-              name,
-              color: color || editingMarker.color,
-              description: description ?? editingMarker.description,
-            });
-            setEditingMarker(null);
-          }
-        }}
-        onClose={() => setEditingMarker(null)}
-        coords={null}
-      />
       <Panel
         title={
           <>
@@ -85,7 +66,7 @@ export function MarkersPanel({ onAddMarker, onCenterMap }: MarkersPanelProps) {
                   marker={marker}
                   idx={idx}
                   onToggleVisibility={() => toggleMarkerVisibility(marker.id)}
-                  onEdit={() => setEditingMarker(marker)}
+                  onEdit={() => onEditMarker(marker)}
                   onCenter={() => onCenterMap(marker)}
                   onRemove={() => removeMarker(marker.id)}
                   draggedIndex={draggedIndex}
