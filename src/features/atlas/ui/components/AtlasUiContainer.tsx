@@ -1,4 +1,3 @@
-import { MenuPanel } from "@components";
 import { useMarkers } from "@contexts/MarkersContext";
 import { useOverlays } from "@contexts/OverlayContext";
 import { CountryDetailsModal, CountriesPanel } from "@features/atlas/countries";
@@ -9,8 +8,10 @@ import {
   useMarkerCreation,
 } from "@features/atlas/markers";
 import { OverlayModal, OverlaysPanel } from "@features/atlas/overlays";
-import { MapExportPanel, ShortcutsModal } from "@features/atlas/ui";
 import { SettingsPanel } from "@features/settings";
+import { MapExportPanel } from "../export/components/MapExportPanel";
+import { MenuPanel } from "../menu/MenuPanel";
+import { ShortcutsModal } from "../shortcuts/ShortcutsModal";
 
 interface AtlasUiContainerProps {
   svgRef: React.RefObject<SVGSVGElement | null>;
@@ -67,6 +68,7 @@ export function AtlasUiContainer({
 
   return (
     <>
+      {/* Panels */}
       <MenuPanel />
       <CountriesPanel
         selectedIsoCode={selectedIsoCode}
@@ -76,17 +78,31 @@ export function AtlasUiContainer({
         onHover={setHoveredIsoCode}
         onCountryInfo={setSelectedCountry}
       />
+      <MarkersPanel
+        onAddMarker={startAddingMarker}
+        onEditMarker={openEditMarker}
+        onCenterMap={centerOnMarker}
+      />
+      <OverlaysPanel
+        onEditOverlay={openEditOverlay}
+        onAddOverlay={openAddOverlay}
+        overlayModalOpen={isEditModalOpen}
+      />
+      <MapExportPanel svgRef={svgRef} />
+      <SettingsPanel />
+
+      {/* Modals */}
       <CountryDetailsModal
-        country={selectedCountry}
         isOpen={!!selectedCountry}
+        country={selectedCountry}
         onCenterMap={() => centerOnCountry(selectedCountry?.isoCode ?? "")}
         onClose={() => setSelectedCountry(null)}
       />
       <MarkerDetailsModal
+        isOpen={detailsModalOpen}
         marker={selectedMarker}
-        open={detailsModalOpen}
-        onClose={() => closeMarkerDetails()}
         position={detailsModalPosition}
+        onClose={() => closeMarkerDetails()}
       />
       <MarkerModal
         marker={editingMarker}
@@ -99,26 +115,14 @@ export function AtlasUiContainer({
         isOpen={isMarkerModalOpen}
         isEditing={isEditingMarker}
       />
-      <MarkersPanel
-        onAddMarker={startAddingMarker}
-        onEditMarker={openEditMarker}
-        onCenterMap={centerOnMarker}
-      />
       <OverlayModal
+        isOpen={isEditModalOpen}
+        isEditing={isEditingOverlay}
         overlay={editingOverlay}
         onChange={setEditingOverlay}
         onSave={saveOverlay}
         onClose={closeOverlayModal}
-        isOpen={isEditModalOpen}
-        isEditing={isEditingOverlay}
       />
-      <OverlaysPanel
-        onEditOverlay={openEditOverlay}
-        onAddOverlay={openAddOverlay}
-        overlayModalOpen={isEditModalOpen}
-      />
-      <MapExportPanel svgRef={svgRef} />
-      <SettingsPanel />
       <ShortcutsModal />
     </>
   );

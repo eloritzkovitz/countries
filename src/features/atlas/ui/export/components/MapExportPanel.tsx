@@ -10,16 +10,16 @@ import {
 import { useUI } from "@contexts/UIContext";
 import { SvgOptions } from "./SvgOptions";
 import { ImageOptions } from "./ImageOptions";
+import {
+  EXPORT_FORMAT_OPTIONS,
+  PNG_SCALE_OPTIONS,
+} from "../constants/exportOptions";
 import type {
   ExportFormat,
   ImageExportOptions,
   SvgExportOptions,
-} from "./types";
-import {
-  EXPORT_FORMAT_OPTIONS,
-  PNG_SCALE_OPTIONS,
-} from "./constants/exportOptions";
-import { exportSvg, exportSvgAsImage } from "./utils/mapExport";
+} from "../types";
+import { exportSvg, exportSvgAsImage } from "../utils/mapExport";
 import "./MapExportPanel.css";
 
 type MapExportModalProps = {
