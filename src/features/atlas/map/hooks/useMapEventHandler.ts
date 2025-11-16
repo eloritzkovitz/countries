@@ -1,14 +1,13 @@
 import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { getGeoCoordsFromMouseEvent } from "@features/atlas/map";
+import { useMarkers } from "@contexts/MarkersContext";
 
-type UseMapEventHandlerProps = {
+interface UseMapEventHandlerProps {
   projection: string | null;
   dimensions: { width: number; height: number };
   zoom: number;
   center: [number, number];
-  isAddingMarker: boolean | undefined;
   setSelectedCoords: (coords: [number, number]) => void;
-  onMapClickForMarker?: (coords: [number, number]) => void;
 };
 
 export function useMapEventHandler({
@@ -16,10 +15,10 @@ export function useMapEventHandler({
   dimensions,
   zoom,
   center,
-  isAddingMarker,
   setSelectedCoords,
-  onMapClickForMarker,
 }: UseMapEventHandlerProps) {
+  const { isAddingMarker, handleMapClickForMarker } = useMarkers();
+
   return (event: React.MouseEvent<SVGSVGElement>) => {
     const coords = getGeoCoordsFromMouseEvent(
       event,
@@ -32,8 +31,8 @@ export function useMapEventHandler({
     );
     if (coords) {
       setSelectedCoords([coords[0], coords[1]]);
-      if (isAddingMarker && onMapClickForMarker && event.type === "click") {
-        onMapClickForMarker([coords[1], coords[0]]);
+      if (isAddingMarker && handleMapClickForMarker && event.type === "click") {
+        handleMapClickForMarker([coords[0], coords[1]]);
       }
     }
   };

@@ -4,6 +4,10 @@ import type { Marker } from "@types";
 
 interface MarkersContextType {
   markers: Marker[];
+  isAddingMarker: boolean;
+  startAddingMarker: () => void;
+  handleMapClickForMarker: (coords: [number, number]) => void;
+  cancelMarkerCreation: () => void;
   addMarker: (marker: Marker) => void;
   editMarker: (updated: Marker) => void;
   removeMarker: (id: string) => void;
@@ -17,6 +21,14 @@ interface MarkersContextType {
   openEditMarker: (marker: Marker) => void;
   saveMarker: () => void;
   closeMarkerModal: () => void;
+  selectedMarker: Marker | null;
+  detailsModalOpen: boolean;
+  detailsModalPosition: { top: number; left: number } | null;
+  showMarkerDetails: (
+    marker: Marker,
+    coords?: { top: number; left: number }
+  ) => void;
+  closeMarkerDetails: () => void;
 }
 
 const MarkersContext = createContext<MarkersContextType | undefined>(undefined);
@@ -27,10 +39,22 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [initialized, setInitialized] = useState(false);
 
+  // Adding state
+  const [isAddingMarker, setIsAddingMarker] = useState(false);
+
   // Editing state
   const [editingMarker, setEditingMarker] = useState<Marker | null>(null);
   const [isMarkerModalOpen, setMarkerModalOpen] = useState(false);
-  const isEditingMarker = !!editingMarker && markers.some((m) => m.id === editingMarker.id);
+  const isEditingMarker =
+    !!editingMarker && markers.some((m) => m.id === editingMarker.id);
+
+  // Selection state
+  const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [detailsModalPosition, setDetailsModalPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
 
   // Load markers from IndexedDB on mount
   useEffect(() => {
@@ -50,6 +74,23 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
       markersService.save(markers);
     }
   }, [markers, initialized]);
+
+  // Start adding a new marker
+  function startAddingMarker() {
+    setIsAddingMarker(true);
+  }
+
+  // Handle map click for adding marker
+  const handleMapClickForMarker = (coords: [number, number]) => {
+    if (!isAddingMarker) return;
+    openAddMarker(coords);
+    setIsAddingMarker(false);
+  };
+
+  // Cancel marker creation
+  function cancelMarkerCreation() {
+    setIsAddingMarker(false);
+  }
 
   // Add a new marker
   const addMarker = async (marker: Marker) => {
@@ -111,7 +152,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
     setEditingMarker({ ...marker });
     setMarkerModalOpen(true);
   }
-  
+
   // Save marker (add or edit)
   function saveMarker() {
     if (!editingMarker) return;
@@ -128,12 +169,33 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
   function closeMarkerModal() {
     setMarkerModalOpen(false);
     setEditingMarker(null);
-  }  
+  }
+
+  // Show marker details modal
+  function showMarkerDetails(
+    marker: Marker,
+    position?: { top: number; left: number }
+  ) {
+    setSelectedMarker(marker);
+    setDetailsModalOpen(true);
+    setDetailsModalPosition(position ?? null);
+  }
+
+  // Close marker details modal
+  function closeMarkerDetails() {
+    setDetailsModalOpen(false);
+    setSelectedMarker(null);
+    setDetailsModalPosition(null);
+  }
 
   return (
     <MarkersContext.Provider
       value={{
         markers,
+        isAddingMarker,
+        startAddingMarker,
+        handleMapClickForMarker,
+        cancelMarkerCreation,
         addMarker,
         editMarker,
         removeMarker,
@@ -147,6 +209,11 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
         openEditMarker,
         saveMarker,
         closeMarkerModal,
+        selectedMarker,
+        detailsModalOpen,
+        detailsModalPosition,
+        showMarkerDetails,
+        closeMarkerDetails,
       }}
     >
       {children}

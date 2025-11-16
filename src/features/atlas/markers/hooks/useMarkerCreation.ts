@@ -1,24 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMarkers } from "@contexts/MarkersContext";
 
 export function useMarkerCreation() {
-  const [isAddingMarker, setIsAddingMarker] = useState(false);
-  const { openAddMarker } = useMarkers();
+  const {
+    isAddingMarker,
+    startAddingMarker,
+    handleMapClickForMarker,
+    cancelMarkerCreation,
+  } = useMarkers();
 
-  // Start the process of adding a marker
-  const startAddingMarker = () => setIsAddingMarker(true);
-
-  // Map click handler for adding marker
-  const handleMapClickForMarker = (coords: [number, number]) => {
-    if (!isAddingMarker) return;
-    openAddMarker(coords);
-    setIsAddingMarker(false);
-  };
-
-  // Cancel marker creation
-  const cancelMarkerCreation = () => setIsAddingMarker(false);
-
-  // Listen for Escape key to cancel marker creation
+  // Handle Escape key to cancel marker creation
   useEffect(() => {
     if (!isAddingMarker) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -28,7 +19,7 @@ export function useMarkerCreation() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isAddingMarker]);
+  }, [isAddingMarker, cancelMarkerCreation]);  
 
   return {
     isAddingMarker,

@@ -4,7 +4,6 @@ import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlays } from "@contexts/OverlayContext";
 import { useContainerDimensions } from "@hooks/useContainerDimensions";
-import type { Marker } from "@types";
 import { MapSvgContainer } from "./MapSvgContainer";
 import { CountriesLayer } from "./layers/CountriesLayer";
 import { MapMarkersLayer } from "./layers/MapMarkersLayer";
@@ -27,10 +26,8 @@ interface WorldMapProps {
   hoveredIsoCode: string | null;
   onReady?: () => void;
   svgRef?: React.Ref<SVGSVGElement>;
-  isAddingMarker?: boolean;
+  isAddingMarker: boolean;
   setSelectedCoords?: (coords: [number, number] | null) => void;
-  onMapClickForMarker?: (coords: [number, number]) => void;
-  onMarkerDetails?: (marker: Marker) => void;
   selectedYear: number;
 }
 
@@ -47,15 +44,13 @@ export function WorldMap({
   svgRef,
   isAddingMarker,
   setSelectedCoords,
-  onMapClickForMarker,
-  onMarkerDetails,
   selectedYear,
 }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
 
   // Map projection and data
-  const { projection } = useMapUI();
+  const { projection } = useMapUI();  
 
   // Load overlays data
   const { overlays } = useOverlays();
@@ -69,11 +64,9 @@ export function WorldMap({
     dimensions,
     zoom,
     center,
-    isAddingMarker,
     setSelectedCoords: setSelectedCoords
       ? (coords) => setSelectedCoords(coords)
       : () => {},
-    onMapClickForMarker,
   });
 
   // Call onReady when map is ready
@@ -133,7 +126,6 @@ export function WorldMap({
               height={dimensions.height}
               scaleDivisor={DEFAULT_MAP_SETTINGS.scaleDivisor}
               zoom={zoom}
-              onMarkerDetails={onMarkerDetails}
             />
           </ZoomableGroup>
         </ComposableMap>
