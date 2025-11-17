@@ -1,23 +1,13 @@
-import type { SovereigntyType } from "@types";
-
 type SovereigntyGroup = {
   name: string;
   countries?: { name: string; isoCode: string }[];
   dependencies?: { name: string; isoCode: string }[];
   regions?: { name: string; isoCode: string }[];
   territories?: { name: string; isoCode: string }[];
-  disputes?: { name: string; isoCode: string; }[];
+  disputes?: { name: string; isoCode: string }[];
 };
 
-// Predefined sovereignty order for consistent dropdown ordering
-export const SOVEREIGNTY_ORDER: SovereigntyType[] = [
-  "Sovereign",
-  "Dependency",
-  "Overseas Region",
-  "Disputed",
-  "Unrecognized",  
-];
-
+// List of sovereign states with their dependent territories, regions, and disputes
 export const SOVEREIGN_DEPENDENCIES: Record<string, SovereigntyGroup> = {
   AU: {
     name: "Australia",
@@ -124,7 +114,7 @@ export const SOVEREIGN_DEPENDENCIES: Record<string, SovereigntyGroup> = {
   RS: {
     name: "Serbia",
     disputes: [{ name: "Kosovo", isoCode: "XK" }],
-  },  
+  },
   US: {
     name: "United States",
     dependencies: [
@@ -135,5 +125,5 @@ export const SOVEREIGN_DEPENDENCIES: Record<string, SovereigntyGroup> = {
       { name: "United States Minor Outlying Islands", isoCode: "UM" },
       { name: "U.S. Virgin Islands", isoCode: "VI" },
     ],
-  },  
+  },
 };

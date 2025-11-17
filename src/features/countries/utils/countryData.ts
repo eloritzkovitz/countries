@@ -1,11 +1,10 @@
 /**
  * Utility functions for handling country data.
  */
-
-import { EXCLUDED_ISO_CODES, SOVEREIGN_FLAG_MAP } from "@constants";
-import { SOVEREIGN_DEPENDENCIES } from "@features/countries/constants/sovereignties";
+import { SOVEREIGN_DEPENDENCIES } from "@features/countries/constants/sovereignDependencies";
 import type { Country, SovereigntyType, Overlay } from "@types";
-import type { FlagSource, FlagStyle, FlagSize } from "../types/countryFlag";
+import { EXCLUDED_ISO_CODES, SOVEREIGN_FLAG_MAP } from "../constants/sovereignty";
+import type { FlagSource, FlagStyle, FlagSize } from "../types/flag";
 
 /**
  * Extracts the ISO country code from various possible property names.
