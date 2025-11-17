@@ -2,10 +2,10 @@ import { FaCog, FaTimes } from "react-icons/fa";
 import { ActionButton, Panel, Separator } from "@components";
 import { DEFAULT_PANEL_WIDTH } from "@constants";
 import { useUI } from "@contexts/UIContext";
-import { HomeCountrySelect } from "./HomeCountrySelect";
-import { ThemeSettingsGroup } from "./ThemeSettingsGroup";
-import { MapSettingsGroup } from "./MapSettingsGroup";
 import { OverlayPaletteSettingsGroup } from "./colors/OverlayPaletteSettingsGroup";
+import { HomeCountrySelect } from "./home/HomeCountrySelect";
+import { MapSettingsGroup } from "./map/MapSettingsGroup";
+import { ThemeSettingsGroup } from "./theme/ThemeSettingsGroup";
 import "./Settings.css";
 
 export function SettingsPanel() {
