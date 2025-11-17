@@ -91,7 +91,7 @@ export const OCEAN_PALETTE: ColorPalette = {
 
 export const TROPICAL_PALETTE: ColorPalette = {
   name: "Tropical",
-  colors: ["#ff6f61", "#ffcc5c", "#88d8b0", "#4ecdc4", "#1a535c"],
+  colors: ["#1a535c", "#4ecdc4", "#88d8b0", "#ffcc5c", "#ff6f61"],
 };
 
 export const FOREST_PALETTE: ColorPalette = {
