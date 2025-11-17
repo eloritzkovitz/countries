@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { computeVisitedCountriesFromTrips } from "@features/visits";
 import { overlaysService } from "@services/overlaysService";
+import { useCountryColors } from "@features/settings/hooks/useCountryColors";
 import type { AnyOverlay, Trip } from "@types";
 
 export function useSyncVisitedCountriesOverlay(
@@ -9,28 +10,37 @@ export function useSyncVisitedCountriesOverlay(
   setOverlays: React.Dispatch<React.SetStateAction<AnyOverlay[]>>,
   loading: boolean
 ) {
-  // Sync visited countries overlay when trips change
+  // Get the current visited color from the selected palette
+  const { VISITED_COUNTRY_COLOR } = useCountryColors();
+
   useEffect(() => {
     if (!loading && overlays.length > 0) {
       const visitedOverlayId = "visited-countries";
       const visitedCountries = computeVisitedCountriesFromTrips(trips);
 
-      const prevCountries =
-        overlays.find((o) => o.id === visitedOverlayId)?.countries || [];
+      const prevOverlay = overlays.find((o) => o.id === visitedOverlayId);
+      const prevCountries = prevOverlay?.countries || [];
       const hasChanged =
         prevCountries.length !== visitedCountries.length ||
         prevCountries.some((c, i) => visitedCountries[i] !== c);
 
-      // Update overlay if countries have changed
-      if (hasChanged) {
+      // Also check if the color has changed
+      const colorChanged = prevOverlay?.color !== VISITED_COUNTRY_COLOR;
+
+      // Update overlay if countries or color have changed
+      if (hasChanged || colorChanged) {
         const updated = overlays.map((overlay) =>
           overlay.id === visitedOverlayId
-            ? { ...overlay, countries: visitedCountries }
+            ? {
+                ...overlay,
+                countries: visitedCountries,
+                color: VISITED_COUNTRY_COLOR,
+              }
             : overlay
         );
         setOverlays(updated);
         overlaysService.save(updated);
       }
     }
-  }, [trips, loading, overlays, setOverlays]);
+  }, [trips, loading, overlays, setOverlays, VISITED_COUNTRY_COLOR]);
 }

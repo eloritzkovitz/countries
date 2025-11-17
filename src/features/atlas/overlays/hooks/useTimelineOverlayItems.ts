@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { MAP_STYLE_CONFIG } from "@constants";
+import { MAP_BG_COLOR } from "@constants/colors";
 import { useHomeCountry } from "@features/settings";
-import { getVisitColor } from "@features/atlas/ui/legend/constants/colors";
-import { useVisitedCountriesTimeline } from "@features/visits";
+import { getVisitColor, useVisitedCountriesTimeline } from "@features/visits";
 import type { TimelineOverlay, VisitColorMode } from "@types";
+import { useVisitColorRoles } from "@features/settings/hooks/useVisitColorRoles";
 
 export function useTimelineOverlayItems(
   overlays: TimelineOverlay[],
@@ -21,6 +21,8 @@ export function useTimelineOverlayItems(
   const newThisYear = getVisitedCountriesForYear(selectedYear);
   const nextUpcomingYearByCountry = getUpcomingCountries();
 
+  const palette = useVisitColorRoles(colorMode);
+
   // Collect all country codes from overlays
   const allCountryCodes = Array.from(
     new Set([
@@ -29,7 +31,7 @@ export function useTimelineOverlayItems(
         .flatMap((o) => o.countries || []),
       ...Object.keys(nextUpcomingYearByCountry),
     ])
-  );
+  );  
 
   return useMemo(() => {
     return overlays
@@ -55,8 +57,9 @@ export function useTimelineOverlayItems(
             color: getVisitColor(
               count,
               isHome,
-              MAP_STYLE_CONFIG.default.fill,
+              MAP_BG_COLOR,
               colorMode,
+              palette,
               isNewThisYear,
               isRevisitThisYear,
               isUpcomingVisit,
