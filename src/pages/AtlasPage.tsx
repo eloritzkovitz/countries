@@ -18,6 +18,7 @@ import {
   useTimelineState,
   useUiToggleHint,
 } from "@features/atlas/ui";
+import type { VisitColorMode } from "@types";
 
 export default function AtlasPage() {
   // UI state
@@ -66,6 +67,7 @@ export default function AtlasPage() {
   const { isAddingMarker } = useMarkerCreation();
 
   // Timeline state
+  const [colorMode, setColorMode] = useState<VisitColorMode>("cumulative");
   const { years, selectedYear, setSelectedYear } = useTimelineState();
 
   // Derived state
@@ -107,6 +109,7 @@ export default function AtlasPage() {
             isAddingMarker={isAddingMarker}
             setSelectedCoords={(coords) => setSelectedCoords(coords)}
             selectedYear={selectedYear}
+            colorMode={colorMode}
           />
           <MapUiContainer
             zoom={zoom}
@@ -118,6 +121,8 @@ export default function AtlasPage() {
             setSelectedYear={setSelectedYear}
             overlays={overlays}
             isAddingMarker={isAddingMarker}
+            colorMode={colorMode}
+            setColorMode={setColorMode}
           />
         </div>
       </div>

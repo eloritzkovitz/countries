@@ -5,4 +5,4 @@ export { MapUiContainer } from "./components/MapUiContainer";
 // Hooks
 export { useUiToggleHint } from "./hooks/useUiToggleHint";
 export { useMapLegendItems } from "./legend/useMapLegendItems";
-export { useTimelineState } from "./timeline/useTimelineState";
+export { useTimelineState } from "./timeline/hooks/useTimelineState";

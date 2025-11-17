@@ -4,6 +4,7 @@ import {
   computeVisitedCountriesFromTrips,
   getVisitedCountriesForYear,
   getVisitedCountriesUpToYear,
+  getNextUpcomingTripYearByCountry,
 } from "./visits";
 
 describe("visits utils", () => {
@@ -156,6 +157,81 @@ describe("visits utils", () => {
         { ...mockTrips[1], startDate: "2023-01-01", countryCodes: [] } as any,
       ];
       expect(getVisitedCountriesUpToYear(trips, 2023)).toEqual({});
+    });
+  });
+
+  describe("getNextUpcomingTripYearByCountry", () => {
+    it("returns an empty object if there are no upcoming trips", () => {
+      // All trips in the past
+      const trips = mockTrips.map((trip) => ({
+        ...trip,
+        startDate: "2000-01-01",
+      }));
+      expect(getNextUpcomingTripYearByCountry(trips)).toEqual({});
+    });
+
+    it("returns the next upcoming year for each country with a future trip", () => {
+      const now = new Date();
+      const nextYear = now.getFullYear() + 1;
+      const futureTrips = [
+        {
+          ...mockTrips[0],
+          startDate: `${nextYear}-05-01`,
+          countryCodes: ["US", "CA"],
+        },
+        {
+          ...mockTrips[1],
+          startDate: `${nextYear + 1}-06-01`,
+          countryCodes: ["FR"],
+        },
+        {
+          ...mockTrips[2],
+          startDate: `${nextYear}-07-01`,
+          countryCodes: ["JP", "US"],
+        },
+      ];
+      const result = getNextUpcomingTripYearByCountry(futureTrips);
+      expect(result).toEqual({
+        US: nextYear,
+        CA: nextYear,
+        FR: nextYear + 1,
+        JP: nextYear,
+      });
+    });
+
+    it("returns the earliest upcoming year if multiple future trips exist for a country", () => {
+      const now = new Date();
+      const nextYear = now.getFullYear() + 1;
+      const futureTrips = [
+        {
+          ...mockTrips[0],
+          startDate: `${nextYear + 2}-05-01`,
+          countryCodes: ["US"],
+        },
+        {
+          ...mockTrips[1],
+          startDate: `${nextYear}-06-01`,
+          countryCodes: ["US"],
+        },
+      ];
+      const result = getNextUpcomingTripYearByCountry(futureTrips);
+      expect(result).toEqual({
+        US: nextYear,
+      });
+    });
+
+    it("ignores trips with invalid or missing startDate", () => {
+      const now = new Date();
+      const nextYear = now.getFullYear() + 1;
+      const trips = [
+        { ...mockTrips[0], startDate: undefined } as any,
+        { ...mockTrips[1], startDate: "invalid-date" } as any,
+        { ...mockTrips[2], startDate: `${nextYear}-07-01` } as any,
+      ];
+      const result = getNextUpcomingTripYearByCountry(trips);
+      expect(result).toEqual({
+        JP: nextYear,
+      });
     });
   });
 });

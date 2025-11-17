@@ -118,3 +118,28 @@ export function getVisitedCountriesUpToYear(
   }
   return counts;
 }
+
+/**
+ * Gets a mapping of country codes to their next upcoming trip year (after today).
+ * @param trips - Array of trips to analyze.
+ * @returns Record of country code -> next upcoming year
+ */
+export function getNextUpcomingTripYearByCountry(trips: Trip[]): Record<string, number> {
+  const now = new Date();
+  const nextYearByCountry: Record<string, number> = {};
+  for (const trip of trips) {
+    const start = trip.startDate ? new Date(trip.startDate) : undefined;
+    if (start && start > now) {
+      const year = start.getFullYear();
+      for (const code of trip.countryCodes || []) {
+        if (
+          !nextYearByCountry[code] ||
+          year < nextYearByCountry[code]
+        ) {
+          nextYearByCountry[code] = year;
+        }
+      }
+    }
+  }
+  return nextYearByCountry;
+}
