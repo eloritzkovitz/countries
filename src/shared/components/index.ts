@@ -45,5 +45,6 @@ export { SortableFilterHeader } from "./table/SortableFilterHeader";
 
 // UI components
 export { CardList } from "./ui/CardList";
+export { ColorDot } from "./ui/ColorDot";
 export { HomeCard } from "./ui/HomeCard";
 export { PwaUpdateUiHint } from "./ui/PwaUpdateUiHint";
