@@ -13,6 +13,7 @@ describe("visits utils", () => {
   describe("getYearsFromTrips", () => {
     it("returns unique sorted years from trips", () => {
       const years = getYearsFromTrips(mockTrips);
+      // Update expected years to match endDate years in mockTrips
       expect(years).toEqual([2022, 2023, 2099]);
     });
 
@@ -20,10 +21,10 @@ describe("visits utils", () => {
       expect(getYearsFromTrips([])).toEqual([]);
     });
 
-    it("ignores trips without a valid startDate", () => {
+    it("ignores trips without a valid endDate", () => {
       const trips = [
-        { ...mockTrips[0], startDate: undefined } as any,
-        { ...mockTrips[1], startDate: undefined } as any,
+        { ...mockTrips[0], endDate: undefined } as any,
+        { ...mockTrips[1], endDate: undefined } as any,
       ];
       expect(getYearsFromTrips(trips)).toEqual([]);
     });
@@ -151,10 +152,10 @@ describe("visits utils", () => {
       expect(getVisitedCountriesUpToYear(mockTrips, 1999)).toEqual({});
     });
 
-    it("ignores trips with no countryCodes or invalid startDate", () => {
+    it("ignores trips with no countryCodes or invalid endDate", () => {
       const trips = [
-        { ...mockTrips[0], startDate: undefined, countryCodes: ["US"] } as any,
-        { ...mockTrips[1], startDate: "2023-01-01", countryCodes: [] } as any,
+        { ...mockTrips[0], endDate: undefined, countryCodes: ["US"] } as any,
+        { ...mockTrips[1], endDate: "2023-01-01", countryCodes: [] } as any,
       ];
       expect(getVisitedCountriesUpToYear(trips, 2023)).toEqual({});
     });
@@ -162,10 +163,9 @@ describe("visits utils", () => {
 
   describe("getNextUpcomingTripYearByCountry", () => {
     it("returns an empty object if there are no upcoming trips", () => {
-      // All trips in the past
       const trips = mockTrips.map((trip) => ({
         ...trip,
-        startDate: "2000-01-01",
+        endDate: "2000-01-01",
       }));
       expect(getNextUpcomingTripYearByCountry(trips)).toEqual({});
     });
@@ -176,17 +176,17 @@ describe("visits utils", () => {
       const futureTrips = [
         {
           ...mockTrips[0],
-          startDate: `${nextYear}-05-01`,
+          endDate: `${nextYear}-05-01`,
           countryCodes: ["US", "CA"],
         },
         {
           ...mockTrips[1],
-          startDate: `${nextYear + 1}-06-01`,
+          endDate: `${nextYear + 1}-06-01`,
           countryCodes: ["FR"],
         },
         {
           ...mockTrips[2],
-          startDate: `${nextYear}-07-01`,
+          endDate: `${nextYear}-07-01`,
           countryCodes: ["JP", "US"],
         },
       ];
@@ -205,12 +205,12 @@ describe("visits utils", () => {
       const futureTrips = [
         {
           ...mockTrips[0],
-          startDate: `${nextYear + 2}-05-01`,
+          endDate: `${nextYear + 2}-05-01`,
           countryCodes: ["US"],
         },
         {
           ...mockTrips[1],
-          startDate: `${nextYear}-06-01`,
+          endDate: `${nextYear}-06-01`,
           countryCodes: ["US"],
         },
       ];
@@ -220,13 +220,13 @@ describe("visits utils", () => {
       });
     });
 
-    it("ignores trips with invalid or missing startDate", () => {
+    it("ignores trips with invalid or missing endDate", () => {
       const now = new Date();
       const nextYear = now.getFullYear() + 1;
       const trips = [
-        { ...mockTrips[0], startDate: undefined } as any,
-        { ...mockTrips[1], startDate: "invalid-date" } as any,
-        { ...mockTrips[2], startDate: `${nextYear}-07-01` } as any,
+        { ...mockTrips[0], endDate: undefined } as any,
+        { ...mockTrips[1], endDate: "invalid-date" } as any,
+        { ...mockTrips[2], endDate: `${nextYear}-07-01` } as any,
       ];
       const result = getNextUpcomingTripYearByCountry(trips);
       expect(result).toEqual({
