@@ -18,6 +18,7 @@ export function useOverlayPaletteSettings() {
         [mode]: paletteName,
       },
     });
+    window.location.reload(); // Reload the app after changing palette
   };
 
   return { overlayPalettes, setPalette };
