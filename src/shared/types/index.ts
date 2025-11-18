@@ -1,3 +1,4 @@
+export * from "./colors";
 export * from "./country";
 export * from "./filters";
 export * from "./keyboard";

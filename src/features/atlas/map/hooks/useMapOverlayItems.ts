@@ -4,12 +4,12 @@ import {
   isTimelineOverlay,
 } from "@features/atlas/overlays";
 import { useUI } from "@contexts/UIContext";
-import type { AnyOverlay, VisitColorMode } from "@types";
+import type { AnyOverlay, OverlayMode } from "@types";
 
 export function useMapOverlayItems(
   overlays: AnyOverlay[],
   selectedYear: number,
-  colorMode: VisitColorMode
+  colorMode: OverlayMode
 ) {
   const { timelineMode } = useUI();
   const timelineOverlays = overlays.filter(isTimelineOverlay);

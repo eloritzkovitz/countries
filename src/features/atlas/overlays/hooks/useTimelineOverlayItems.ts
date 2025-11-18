@@ -1,14 +1,13 @@
 import { useMemo } from "react";
 import { MAP_BG_COLOR } from "@constants/colors";
-import { useHomeCountry } from "@features/settings";
+import { useHomeCountry, useVisitColorRoles } from "@features/settings";
 import { getVisitColor, useVisitedCountriesTimeline } from "@features/visits";
-import type { TimelineOverlay, VisitColorMode } from "@types";
-import { useVisitColorRoles } from "@features/settings/hooks/useVisitColorRoles";
+import type { TimelineOverlay, OverlayMode } from "@types";
 
 export function useTimelineOverlayItems(
   overlays: TimelineOverlay[],
   selectedYear: number,
-  colorMode: VisitColorMode
+  colorMode: OverlayMode
 ) {
   const {
     getVisitedCountriesUpToYear,

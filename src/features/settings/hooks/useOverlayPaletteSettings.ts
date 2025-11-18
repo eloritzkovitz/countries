@@ -1,6 +1,6 @@
 import { useSettings } from "@contexts/SettingsContext";
 import { COLOR_PALETTES } from "@constants/colors";
-import type { OverlayModeKey } from "@types";
+import type { OverlayMode } from "@types";
 
 export function useOverlayPaletteSettings() {
   const { settings, updateSettings } = useSettings();
@@ -11,7 +11,7 @@ export function useOverlayPaletteSettings() {
     yearly: COLOR_PALETTES[0].name,
   };
 
-  const setPalette = (mode: OverlayModeKey, paletteName: string) => {
+  const setPalette = (mode: OverlayMode, paletteName: string) => {
     updateSettings({
       overlayPalettes: {
         ...overlayPalettes,

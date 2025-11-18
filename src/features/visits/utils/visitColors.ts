@@ -1,5 +1,5 @@
-import { type ColorPalette, HOME_COUNTRY_COLOR } from "@constants/colors";
-import type { VisitColorMode, VisitColorRoles } from "@types";
+import { HOME_COUNTRY_COLOR } from "@constants/colors";
+import type { ColorPalette, OverlayMode, VisitColorRoles } from "@types";
 
 /**
  * Get the color for a country based on visit count and mode
@@ -18,7 +18,7 @@ export function getVisitColor(
   count: number,
   isHome: boolean,
   defaultFill: string,
-  mode: VisitColorMode = "cumulative",
+  mode: OverlayMode = "cumulative",
   palette: VisitColorRoles,
   isNewThisYear?: boolean,
   isRevisitThisYear?: boolean,
