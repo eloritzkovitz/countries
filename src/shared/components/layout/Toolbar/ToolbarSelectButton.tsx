@@ -1,0 +1,42 @@
+import { FaChevronDown } from "react-icons/fa6";
+import React from "react";
+
+interface ToolbarSelectButtonProps<T extends string | number> {
+  value: T;
+  onChange: (value: T) => void;
+  options: { value: T; label: React.ReactNode }[];
+  ariaLabel: string;
+  width?: string;
+}
+
+export function ToolbarSelectButton<T extends string | number>({
+  value,
+  onChange,
+  options,
+  ariaLabel,
+  width = "150px",
+}: ToolbarSelectButtonProps<T>) {
+  return (
+    <div
+      className="toolbar-btn rounded-full flex items-center justify-center relative"
+      style={{ width, height: "48px", padding: 0 }}
+    >
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value as T)}
+        className="w-full h-full text-center bg-gray-700 border border-gray-600 rounded-full appearance-none text-blue-800 dark:text-white font-semibold outline-none p-0 m-0 bg-inherit shadow-none border-none select-none"
+        aria-label={ariaLabel}
+      >
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+      <span className="ml-5" />
+      <span className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-blue-800 dark:text-white">
+        <FaChevronDown />
+      </span>
+    </div>
+  );
+}

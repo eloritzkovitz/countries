@@ -3,10 +3,14 @@ import { ErrorMessage, SplashScreen } from "@components";
 import { useCountryData } from "@contexts/CountryDataContext";
 import { useOverlays } from "@contexts/OverlayContext";
 import { useUI } from "@contexts/UIContext";
-import { useGeoData } from "@hooks/useGeoData";
 import { useUiHint } from "@hooks/useUiHint";
 import { useCountrySelection } from "@features/atlas/countries";
-import { WorldMap, useMapReady, useMapView } from "@features/atlas/map";
+import {
+  WorldMap,
+  useGeoData,
+  useMapReady,
+  useMapView,
+} from "@features/atlas/map";
 import { useMarkerCreation } from "@features/atlas/markers";
 import {
   AtlasUiContainer,
@@ -14,6 +18,7 @@ import {
   useTimelineState,
   useUiToggleHint,
 } from "@features/atlas/ui";
+import type { VisitColorMode } from "@types";
 
 export default function AtlasPage() {
   // UI state
@@ -62,6 +67,7 @@ export default function AtlasPage() {
   const { isAddingMarker } = useMarkerCreation();
 
   // Timeline state
+  const [colorMode, setColorMode] = useState<VisitColorMode>("cumulative");
   const { years, selectedYear, setSelectedYear } = useTimelineState();
 
   // Derived state
@@ -103,6 +109,7 @@ export default function AtlasPage() {
             isAddingMarker={isAddingMarker}
             setSelectedCoords={(coords) => setSelectedCoords(coords)}
             selectedYear={selectedYear}
+            colorMode={colorMode}
           />
           <MapUiContainer
             zoom={zoom}
@@ -114,6 +121,8 @@ export default function AtlasPage() {
             setSelectedYear={setSelectedYear}
             overlays={overlays}
             isAddingMarker={isAddingMarker}
+            colorMode={colorMode}
+            setColorMode={setColorMode}
           />
         </div>
       </div>

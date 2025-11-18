@@ -3,6 +3,7 @@ import { useHomeCountry } from "@features/settings";
 import {
   getVisitedCountriesForYear,
   getVisitedCountriesUpToYear,
+  getNextUpcomingTripYearByCountry,
 } from "../utils/visits";
 
 export function useVisitedCountriesTimeline() {
@@ -14,5 +15,6 @@ export function useVisitedCountriesTimeline() {
       getVisitedCountriesForYear(trips, year, homeCountry),
     getVisitedCountriesUpToYear: (year: number) =>
       getVisitedCountriesUpToYear(trips, year, homeCountry),
+    getUpcomingCountries: () => getNextUpcomingTripYearByCountry(trips),
   };
 }

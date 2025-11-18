@@ -35,6 +35,7 @@ export { PanelListItem } from "./layout/Panel/PanelListItem";
 
 // Toolbar components
 export { ActionsToolbar } from "./layout/Toolbar/ActionsToolbar";
+export { ToolbarSelectButton } from "./layout/Toolbar/ToolbarSelectButton";
 export { ToolbarSeparator } from "./layout/Toolbar/ToolbarSeparator";
 export { ToolbarToggleGroup } from "./layout/Toolbar/ToolbarToggleGroup";
 
@@ -44,5 +45,6 @@ export { SortableFilterHeader } from "./table/SortableFilterHeader";
 
 // UI components
 export { CardList } from "./ui/CardList";
+export { ColorDot } from "./ui/ColorDot";
 export { HomeCard } from "./ui/HomeCard";
 export { PwaUpdateUiHint } from "./ui/PwaUpdateUiHint";

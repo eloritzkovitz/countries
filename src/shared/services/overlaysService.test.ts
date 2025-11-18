@@ -7,6 +7,7 @@ vi.mock("@utils/db", () => {
     toArray: vi.fn(),
     clear: vi.fn(),
     bulkAdd: vi.fn(),
+    bulkPut: vi.fn(),
     add: vi.fn(),
     put: vi.fn(),
     delete: vi.fn(),
@@ -26,6 +27,7 @@ const { __overlaysMock: overlaysMock } = (await import(
     toArray: ReturnType<typeof vi.fn>;
     clear: ReturnType<typeof vi.fn>;
     bulkAdd: ReturnType<typeof vi.fn>;
+    bulkPut: ReturnType<typeof vi.fn>;
     add: ReturnType<typeof vi.fn>;
     put: ReturnType<typeof vi.fn>;
     delete: ReturnType<typeof vi.fn>;
@@ -57,7 +59,7 @@ describe("overlaysService", () => {
     const overlays = [{ id: "foo" }];
     await overlaysService.save(overlays as any);
     expect(overlaysMock.clear).toHaveBeenCalled();
-    expect(overlaysMock.bulkAdd).toHaveBeenCalledWith(overlays);
+    expect(overlaysMock.bulkPut).toHaveBeenCalledWith(overlays);
   });
 
   it("adds an overlay", async () => {

@@ -1,5 +1,5 @@
 import { CountryFlag } from "./CountryFlag";
-import type { FlagSize } from "./types";
+import type { FlagSize } from "../../types/flag";
 
 interface CountryWithFlagProps {
   isoCode: string;

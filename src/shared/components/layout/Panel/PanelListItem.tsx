@@ -7,7 +7,7 @@ import {
   FaCircleInfo,
 } from "react-icons/fa6";
 import type { DragEvent } from "react";
-import { ActionButton } from "@components";
+import { ActionButton, ColorDot } from "@components";
 
 interface PanelListItemProps {
   color: string;
@@ -47,11 +47,7 @@ export function PanelListItem({
       onDragEnd={handleDragEnd}
       style={{ cursor: dragged ? "grabbing" : "grab" }}
     >
-      <span
-        className="inline-block w-[22px] h-[22px] rounded-full mr-1"
-        style={{ background: color }}
-        title={name}
-      />
+      <ColorDot color={color} size={22} />
       <strong className="flex-1">{name}</strong>
       {onToggleVisibility && (
         <ActionButton
@@ -86,8 +82,14 @@ export function PanelListItem({
         <ActionButton
           onClick={onRemove}
           ariaLabel="Remove"
-          title={removeDisabled ? "This item is managed automatically and cannot be removed" : "Remove"}
-          className={`mx-1 text-lg text-red-600 hover:text-red-800 ${removeDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+          title={
+            removeDisabled
+              ? "This item is managed automatically and cannot be removed"
+              : "Remove"
+          }
+          className={`mx-1 text-lg text-red-600 hover:text-red-800 ${
+            removeDisabled ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           icon={removeDisabled ? <FaCircleInfo /> : <FaTrash />}
           disabled={removeDisabled}
         />

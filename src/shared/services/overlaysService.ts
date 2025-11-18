@@ -27,7 +27,7 @@ export const overlaysService = {
   // Save overlays to IndexedDB
   async save(overlays: AnyOverlay[]) {
     await appDb.overlays.clear();
-    await appDb.overlays.bulkAdd(overlays);
+    await appDb.overlays.bulkPut(overlays);
   },
 
   // Add a new overlay

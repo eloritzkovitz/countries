@@ -1,7 +1,7 @@
 import React from "react";
 import * as Flags from "country-flag-icons/react/3x2";
-import { SOVEREIGN_FLAG_MAP } from "@constants";
-import type { Flag } from "./types";
+import { SOVEREIGN_FLAG_MAP } from "../../constants/sovereignty";
+import type { Flag } from "../../types/flag";
 import { getFlagUrl } from "../../utils/countryData";
 
 interface CountryFlagProps {

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { computeVisitedCountriesFromTrips } from "@features/visits";
 import { overlaysService } from "@services/overlaysService";
+import { useCountryColors } from "@features/settings/hooks/useCountryColors";
 import type { AnyOverlay, Trip } from "@types";
 
 export function useSyncVisitedCountriesOverlay(
@@ -9,28 +10,37 @@ export function useSyncVisitedCountriesOverlay(
   setOverlays: React.Dispatch<React.SetStateAction<AnyOverlay[]>>,
   loading: boolean
 ) {
-  // Sync visited countries overlay when trips change
+  const { VISITED_COUNTRY_COLOR } = useCountryColors();
+
   useEffect(() => {
-    if (!loading && overlays.length > 0) {
-      const visitedOverlayId = "visited-countries";
-      const visitedCountries = computeVisitedCountriesFromTrips(trips);
+    if (loading || overlays.length === 0) return;
 
-      const prevCountries =
-        overlays.find((o) => o.id === visitedOverlayId)?.countries || [];
-      const hasChanged =
-        prevCountries.length !== visitedCountries.length ||
-        prevCountries.some((c, i) => visitedCountries[i] !== c);
+    const visitedOverlayId = "visited-countries";
+    const visitedOverlay = overlays.find((o) => o.id === visitedOverlayId);
+    if (!visitedOverlay) return;
 
-      // Update overlay if countries have changed
-      if (hasChanged) {
-        const updated = overlays.map((overlay) =>
-          overlay.id === visitedOverlayId
-            ? { ...overlay, countries: visitedCountries }
-            : overlay
-        );
-        setOverlays(updated);
-        overlaysService.save(updated);
-      }
+    const visitedCountries = computeVisitedCountriesFromTrips(trips);
+    const prevCountries = visitedOverlay.countries || [];
+    const hasChanged =
+      prevCountries.length !== visitedCountries.length ||
+      prevCountries.some((c, i) => visitedCountries[i] !== c);
+
+    // Also check if the color has changed
+    const colorChanged = visitedOverlay.color !== VISITED_COUNTRY_COLOR;
+
+    // Only update if something changed
+    if (hasChanged || colorChanged) {
+      const updated = overlays.map((overlay) =>
+        overlay.id === visitedOverlayId
+          ? {
+              ...overlay,
+              countries: visitedCountries,
+              color: VISITED_COUNTRY_COLOR,
+            }
+          : overlay
+      );
+      setOverlays(updated);
+      overlaysService.save(updated);
     }
-  }, [trips, loading, overlays, setOverlays]);
+  }, [trips, loading, overlays, setOverlays, VISITED_COUNTRY_COLOR]);
 }

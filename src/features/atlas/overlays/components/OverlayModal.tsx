@@ -112,6 +112,7 @@ export function OverlayModal({
                 type="button"
                 variant="secondary"
                 onClick={() => setColorModalOpen(true)}
+                disabled={isVisited}
               >
                 <FaPencil className="inline" /> Edit
               </FormButton>
@@ -181,9 +182,7 @@ export function OverlayModal({
               <div className="flex items-center text-base text-gray-400 mr-4">
                 <FaCircleInfo size={24} className="mr-4" />
                 <span>
-                  This overlay is managed automatically based on your trips.
-                  <br />
-                  You can only change its color.
+                  This overlay is managed automatically based on your trips.                  
                 </span>
               </div>
             )}
@@ -199,6 +198,7 @@ export function OverlayModal({
                 )
               }
               submitLabel={isEditing ? "Save Changes" : "Add Overlay"}
+              disabled={isVisited}
             />
           </div>
         </form>

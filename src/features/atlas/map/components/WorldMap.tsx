@@ -4,6 +4,7 @@ import { DEFAULT_MAP_SETTINGS } from "@constants";
 import { useMapUI } from "@contexts/MapUIContext";
 import { useOverlays } from "@contexts/OverlayContext";
 import { useContainerDimensions } from "@hooks/useContainerDimensions";
+import type { VisitColorMode } from "@types";
 import { MapSvgContainer } from "./MapSvgContainer";
 import { CountriesLayer } from "./layers/CountriesLayer";
 import { MapMarkersLayer } from "./layers/MapMarkersLayer";
@@ -29,6 +30,7 @@ interface WorldMapProps {
   isAddingMarker: boolean;
   setSelectedCoords?: (coords: [number, number] | null) => void;
   selectedYear: number;
+  colorMode: VisitColorMode;
 }
 
 export function WorldMap({
@@ -45,6 +47,7 @@ export function WorldMap({
   isAddingMarker,
   setSelectedCoords,
   selectedYear,
+  colorMode,
 }: WorldMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useContainerDimensions(containerRef);
@@ -56,7 +59,7 @@ export function WorldMap({
   const { overlays } = useOverlays();
 
   // Get overlay items based on mode
-  const overlayItems = useMapOverlayItems(overlays, selectedYear);
+  const overlayItems = useMapOverlayItems(overlays, selectedYear, colorMode);
 
   // Handle map event for mouse move or click
   const handleMapEvent = useMapEventHandler({

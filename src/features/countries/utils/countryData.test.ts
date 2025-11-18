@@ -11,11 +11,11 @@ import {
 } from "./countryData";
 
 // Mock constants
-vi.mock("@constants", () => ({
+vi.mock("../constants/sovereignty", () => ({
   EXCLUDED_ISO_CODES: ["XX"],
   SOVEREIGN_FLAG_MAP: { YY: "US" },
 }));
-vi.mock("@features/countries/constants/sovereignties", () => ({
+vi.mock("../constants/sovereignDependencies", () => ({
   SOVEREIGN_DEPENDENCIES: {
     US: {
       name: "United States",

@@ -5,4 +5,8 @@ export type Settings = {
   projection?: string;
   borderColor?: string;
   borderWidth?: number;
+  overlayPalettes?: Record<OverlayMode, string>;
 };
+
+// Overlay mode keys type definition
+export type OverlayMode = "standard" | "cumulative" | "yearly";

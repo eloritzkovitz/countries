@@ -1,7 +1,15 @@
-import { MAP_STYLE_CONFIG } from "@constants";
-import { VISIT_COLORS, HOME_COUNTRY_COLOR } from "./constants/colors";
+import { MAP_BG_COLOR } from "@constants/colors";
+import { useVisitColorRoles } from "@features/settings/hooks/useVisitColorRoles";
+import type { VisitColorMode } from "@types";
 
-export function useMapLegendItems(overlays: any[], timelineMode: boolean) {
+export function useMapLegendItems(
+  overlays: any[],
+  timelineMode: boolean,
+  colorMode: VisitColorMode
+) {
+  // Get dynamic color roles for the current mode
+  const colorRoles = useVisitColorRoles(colorMode);
+
   // Legend items for static overlays
   const overlayLegendItems = overlays
     .filter((o) => o.visible)
@@ -10,15 +18,27 @@ export function useMapLegendItems(overlays: any[], timelineMode: boolean) {
       label: o.name,
     }));
 
-  // Legend items for timeline mode
-  const timelineLegendItems = [
-    { color: HOME_COUNTRY_COLOR, label: "Home country" },
-    { color: MAP_STYLE_CONFIG.default.fill, label: "Not visited" },
-    { color: VISIT_COLORS[0], label: "1 visit" },
-    { color: VISIT_COLORS[1], label: "2 visits" },
-    { color: VISIT_COLORS[2], label: "3 visits" },
-    { color: VISIT_COLORS[3], label: "4+ visits" },
+  // Cumulative mode legend items (dynamic)
+  const cumulativeLegendItems = [
+    { color: colorRoles.home, label: "Home country" },
+    { color: colorRoles.visitCounts[3], label: "4+ visits" },
+    { color: colorRoles.visitCounts[2], label: "3 visits" },
+    { color: colorRoles.visitCounts[1], label: "2 visits" },
+    { color: colorRoles.visitCounts[0], label: "1 visit" },
+    { color: MAP_BG_COLOR, label: "Not visited" },
   ];
 
-  return timelineMode ? timelineLegendItems : overlayLegendItems;
+  // Yearly mode legend items (dynamic)
+  const yearlyLegendItems = [
+    { color: colorRoles.home, label: "Home country" },
+    { color: colorRoles.yearly.upcoming, label: "Upcoming first visit" },
+    { color: colorRoles.yearly.upcomingRevisit, label: "Upcoming revisit" },
+    { color: colorRoles.yearly.new, label: "First visit this year" },
+    { color: colorRoles.yearly.revisit, label: "Revisit this year" },
+    { color: colorRoles.yearly.previous, label: "Visited in previous years" },
+    { color: MAP_BG_COLOR, label: "Not visited" },
+  ];
+
+  if (!timelineMode) return overlayLegendItems;
+  return colorMode === "cumulative" ? cumulativeLegendItems : yearlyLegendItems;
 }

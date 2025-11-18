@@ -4,7 +4,7 @@ export { CountryWithFlag } from "./components/countryFlag/CountryWithFlag";
 export { CountryFlag } from "./components/countryFlag/CountryFlag";
 
 // Constants
-export { SOVEREIGNTY_ORDER } from "./constants/sovereignties";
+export { SOVEREIGNTY_ORDER } from "./constants/sovereignty";
 
 // Utils
 export {

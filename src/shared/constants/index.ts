@@ -1,3 +1,10 @@
+import {
+  MAP_BG_COLOR,
+  MAP_BORDER_COLOR_DARK,
+  MAP_BORDER_COLOR_GRAY,
+  MAP_BORDER_COLOR_LIGHT,
+} from "./colors";
+
 // UI and Layout
 export const DEFAULT_PANEL_WIDTH = 350;
 
@@ -8,25 +15,33 @@ export const DEFAULT_MAP_SETTINGS = {
   scaleDivisor: 2.8,
   minZoom: 1,
   maxZoom: 20,
-  bgColor: "bg-gray-100",
+  bgColor: MAP_BG_COLOR,
 };
 
-// Map styles
-export const MAP_STYLE_CONFIG = {
-  default: {
-    fill: "#b5bfca",
-    stroke: "#222",
-    strokeWidth: 0.1,
-    outline: "none",
-    cursor: "pointer",
-  },
-  hovered: {
-    fill: "#0078d4",
-  },
-  selected: {
-    fill: "#fff",
-  },
-};
+// Function to get map style configuration
+export function getMapStyleConfig({
+  hoveredColor,
+  selectedColor,
+}: {
+  hoveredColor: string;
+  selectedColor: string;
+}) {
+  return {
+    default: {
+      fill: MAP_BG_COLOR,
+      stroke: MAP_BORDER_COLOR_DARK,
+      strokeWidth: 0.1,
+      outline: "none",
+      cursor: "pointer",
+    },
+    hovered: {
+      fill: hoveredColor,
+    },
+    selected: {
+      fill: selectedColor,
+    },
+  };
+}
 
 // Map options
 export const MAP_OPTIONS = {
@@ -36,33 +51,13 @@ export const MAP_OPTIONS = {
     { value: "geoMercator", label: "Mercator" },
   ],
   strokeColor: [
-    { value: "#222", label: "Dark" },
-    { value: "#fff", label: "Light" },
-    { value: "#b5bfca", label: "Gray" },
+    { value: MAP_BORDER_COLOR_DARK, label: "Dark" },
+    { value: MAP_BORDER_COLOR_LIGHT, label: "Light" },
+    { value: MAP_BORDER_COLOR_GRAY, label: "Gray" },
   ],
   strokeWidth: [
     { value: 0.1, label: "Thin" },
     { value: 0.5, label: "Medium" },
     { value: 1, label: "Thick" },
   ],
-};
-
-// Data
-export const EXCLUDED_ISO_CODES = [
-  // List of country codes that do not have their own flags
-  "BV", // Bouvet Island
-  "HM", // Heard Island and McDonald Islands
-  "MF", // Saint Martin
-  "SJ", // Svalbard and Jan Mayen
-  "UM", // United States Minor Outlying Islands
-];
-
-export const SOVEREIGN_FLAG_MAP: Record<string, string> = {
-  AK: "GB", // Akrotiri and Dhekelia → United Kingdom
-  BV: "NO", // Bouvet Island → Norway
-  GF: "FR", // French Guiana → France
-  HM: "AU", // Heard Island and McDonald Islands → Australia
-  MF: "FR", // Saint Martin → France
-  SJ: "NO", // Svalbard and Jan Mayen → Norway
-  UM: "US", // United States Minor Outlying Islands → United States
 };

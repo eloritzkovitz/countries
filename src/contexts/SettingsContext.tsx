@@ -8,12 +8,18 @@ import {
 import type { Settings } from "@types";
 import { settingsService } from "@services/settingsService";
 
+const defaultOverlayPalettes = {
+  standard: "Classic",
+  yearly: "Classic",
+  cumulative: "Classic",
+};
+
 const SettingsContext = createContext<{
   settings: Settings;
   updateSettings: (updates: Partial<Settings>) => Promise<void>;
   loading: boolean;
 }>({
-  settings: { id: "main", homeCountry: "", theme: "light" },
+  settings: { id: "main", homeCountry: "", theme: "light", overlayPalettes: defaultOverlayPalettes },
   updateSettings: async () => {},
   loading: false,
 });
@@ -23,6 +29,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     id: "main",
     homeCountry: "",
     theme: "light",
+    overlayPalettes: defaultOverlayPalettes,
   });
   const [loading, setLoading] = useState(true);
 

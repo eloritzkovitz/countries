@@ -35,7 +35,7 @@ function collectCountryCodes(
  */
 export function getYearsFromTrips(trips: Trip[]) {
   const allYears = trips
-    .map((trip) => trip.startDate && new Date(trip.startDate).getFullYear())
+    .map((trip) => trip.endDate && new Date(trip.endDate).getFullYear())
     .filter(Boolean) as number[];
   return Array.from(new Set(allYears)).sort((a, b) => a - b);
 }
@@ -54,8 +54,8 @@ export function computeVisitedCountriesFromTrips(
   return collectCountryCodes(
     trips,
     (trip) => {
-      const start = trip.startDate ? new Date(trip.startDate) : undefined;
-      return !!(start && !isNaN(start.getTime()) && start <= now);
+      const end = trip.endDate ? new Date(trip.endDate) : undefined;
+      return !!(end && !isNaN(end.getTime()) && end <= now);
     },
     homeCountry
   );
@@ -102,11 +102,12 @@ export function getVisitedCountriesUpToYear(
   const now = new Date();
   const counts: Record<string, number> = {};
   trips.forEach((trip) => {
-    const start = getYearNumber(trip.startDate);
+    const end = getYearNumber(trip.endDate);
     if (
-      start !== undefined &&
-      start <= year &&
-      new Date(trip.startDate) <= now
+      end !== undefined &&
+      end <= year &&
+      trip.endDate &&
+      new Date(trip.endDate) <= now
     ) {
       trip.countryCodes?.forEach((code) => {
         counts[code] = (counts[code] || 0) + 1;
@@ -117,4 +118,28 @@ export function getVisitedCountriesUpToYear(
     counts[homeCountry] = (counts[homeCountry] || 0) + 1;
   }
   return counts;
+}
+
+/**
+ * Gets a mapping of country codes to their next upcoming trip year (after today).
+ * @param trips - Array of trips to analyze.
+ * @returns Record of country code -> next upcoming year
+ */
+export function getNextUpcomingTripYearByCountry(
+  trips: Trip[]
+): Record<string, number> {
+  const now = new Date();
+  const nextYearByCountry: Record<string, number> = {};
+  for (const trip of trips) {
+    const end = trip.endDate ? new Date(trip.endDate) : undefined;
+    if (end && end > now) {
+      const year = end.getFullYear();
+      for (const code of trip.countryCodes || []) {
+        if (!nextYearByCountry[code] || year < nextYearByCountry[code]) {
+          nextYearByCountry[code] = year;
+        }
+      }
+    }
+  }
+  return nextYearByCountry;
 }
