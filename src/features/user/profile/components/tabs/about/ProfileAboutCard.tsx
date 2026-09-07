@@ -7,7 +7,7 @@ import {
   FaLocationDot,
   FaRegCalendarDays,
 } from "react-icons/fa6";
-import { Card, TabButton } from "@components";
+import { Card, TabControl } from "@components";
 import { CountryWithFlag } from "@features/countries";
 import type { Country } from "@features/countries/types";
 import { ProfileField } from "../../ProfileField";
@@ -44,27 +44,27 @@ export function ProfileAboutCard({
       )
     : null;
 
+  const tabs = [
+    {
+      value: "personal-details" as const,
+      label: t("profile.about.personalDetails.title"),
+    },
+    ...(!displaySocialLinks
+      ? []
+      : [
+          {
+            value: "contact" as const,
+            label: t("profile.about.contactInfo.title"),
+          },
+        ]),
+  ];
+
   return (
     <Card className="mt-6">
       <h2 className="text-xl font-bold">{t("profile.about.title")}</h2>
 
       {/* Tab Navigation */}
-      <div className="flex gap-2">
-        <TabButton
-          active={activeTab === "personal-details"}
-          onClick={() => setActiveTab("personal-details")}
-        >
-          {t("profile.about.personalDetails.title")}
-        </TabButton>
-        {displaySocialLinks && (
-          <TabButton
-            active={activeTab === "contact"}
-            onClick={() => setActiveTab("contact")}
-          >
-            {t("profile.about.contactInfo.title")}
-          </TabButton>
-        )}
-      </div>
+      <TabControl tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
       {/* Personal Details Tab */}
       {activeTab === "personal-details" && (

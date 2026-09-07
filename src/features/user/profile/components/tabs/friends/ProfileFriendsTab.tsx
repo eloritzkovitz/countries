@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
-import { Card, LoadingSpinner, TabButton } from "@components";
+import { Card, LoadingSpinner, TabControl } from "@components";
 import { useAuth } from "@features/user/auth";
 import { useUserFriends } from "@features/user/friends/hooks/useUserFriends";
 import { useFriendProfiles } from "@features/user/friends/hooks/useFriendProfiles";
@@ -61,27 +61,29 @@ export function ProfileFriendsTab({ profileUser }: ProfileFriendsTabProps) {
   // Determine if the current user is viewing their own profile
   const isOwnProfile = currentUser?.uid === profileUser.uid;
 
+  const tabs = [
+    {
+      value: "all" as const,
+      label: `${t("profile.friends.tabs.all", "All friends")} (${friendUids.length})`,
+    },
+    ...(!isOwnProfile
+      ? [
+          {
+            value: "mutual" as const,
+            label: `${t("profile.friends.tabs.mutual", "Mutual friends")} (${mutualCount || 0})`,
+          },
+        ]
+      : []),
+  ];
+
   return (
     <Card className="mt-6">
       <div className="flex items-center justify-between pb-2 mb-4">
-        <div className="flex gap-2">
-          <TabButton
-            active={activeTab === "all"}
-            onClick={() => handleTabChange("all")}
-          >
-            {t("profile.friends.tabs.all", "All friends")} ({friendUids.length})
-          </TabButton>
-
-          {!isOwnProfile && (
-            <TabButton
-              active={activeTab === "mutual"}
-              onClick={() => handleTabChange("mutual")}
-            >
-              {t("profile.friends.tabs.mutual", "Mutual friends")} (
-              {mutualCount || 0})
-            </TabButton>
-          )}
-        </div>
+        <TabControl
+          tabs={tabs}
+          activeTab={activeTab}
+          onChange={handleTabChange}
+        />
       </div>
 
       {isLoading ? (

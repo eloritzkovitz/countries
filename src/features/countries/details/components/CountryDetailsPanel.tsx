@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { TabButton } from "@components";
+import { TabControl } from "@components";
 import type { CategorizedVisits } from "@features/visits/types";
 import { useGetCountryFactsQuery } from "@features/countries";
 import { CountryAffiliationsContent } from "./CountryAffiliationsContent";
@@ -43,15 +43,7 @@ export function CountryDetailsPanel({
 
   const [internalTab, setInternalTab] = useState<CountryDetailsTab>(initialTab);
 
-  const activeTab = externalActiveTab ?? internalTab;
-
-  const tabLabels: Record<CountryDetailsTab, string> = {
-    overview: t("countries.details.tabs.overview"),
-    facts: t("countries.details.tabs.facts"),
-    territories: t("countries.details.tabs.territories"),
-    affiliations: t("countries.details.tabs.affiliations"),
-    visits: t("countries.details.tabs.visits"),
-  };
+  const activeTab = externalActiveTab ?? internalTab;  
 
   const countryFacts = useMemo(
     () => facts.filter((fact) => fact.countryCodes.includes(country.isoCode)),
@@ -83,6 +75,15 @@ export function CountryDetailsPanel({
     return availableTabs;
   }, [currentHasFactsTab, currentHasTerritoriesTab, currentHasAffiliationsTab]);
 
+  const tabItems = useMemo(
+    () =>
+      tabs.map((tab) => ({
+        value: tab,
+        label: t(`countries.details.tabs.${tab}`),
+      })),
+    [tabs, t],
+  );
+
   // Reset to overview tab when modal is closed, if resetTabOnClose is true
   useEffect(() => {
     if (resetTabOnClose && !isOpen) {
@@ -112,16 +113,12 @@ export function CountryDetailsPanel({
 
   return (
     <div className={`flex flex-col h-full min-h-0 ${className}`}>
-      <div className="flex gap-2 mb-4 shrink-0">
-        {tabs.map((tab) => (
-          <TabButton
-            key={tab}
-            active={activeTab === tab}
-            onClick={() => handleTabChange(tab)}
-          >
-            {tabLabels[tab]}
-          </TabButton>
-        ))}
+      <div className="mb-4 shrink-0">
+        <TabControl
+          tabs={tabItems}
+          activeTab={activeTab}
+          onChange={handleTabChange}
+        />
       </div>
 
       <div className="relative flex-1 min-h-0 overflow-y-auto px-2">

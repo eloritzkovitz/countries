@@ -7,7 +7,7 @@ import {
   DirectionalIcon,
   EmptyListMessage,
   LoadingSpinner,
-  TabButton,
+  TabControl,
 } from "@components";
 import { CountryFlagGrid } from "@features/countries";
 import { useAuth } from "@features/user/auth";
@@ -99,6 +99,23 @@ export function ProfileCountryComparison() {
   const otherUserVisitedCount = otherUserVisitedCountryCodes.length;
   const countryCodes = comparison.visited[activeFilter];
 
+  const filters = [
+    {
+      value: "shared" as const,
+      label: `${t("profile.visits.compare.filters.both", "Both")} (${comparison.visited.shared.length})`,
+    },
+    {
+      value: "currentUser" as const,
+      label: `${t("profile.visits.compare.filters.currentUser", "Only me")} (${comparison.visited.currentUser.length})`,
+    },
+    {
+      value: "otherUser" as const,
+      label: `${t("profile.visits.compare.filters.otherUser", "Only {{name}}", {
+        name: profileFirstName,
+      })} (${comparison.visited.otherUser.length})`,
+    },
+  ];
+
   return (
     <div className="space-y-6">
       <Card
@@ -142,32 +159,12 @@ export function ProfileCountryComparison() {
           />
         </div>
 
-        <div className="flex gap-2 mt-8">
-          <TabButton
-            active={activeFilter === "shared"}
-            onClick={() => handleFilterChange("shared")}
-          >
-            {t("profile.visits.compare.filters.both", "Both")} (
-            {comparison.visited.shared.length})
-          </TabButton>
-
-          <TabButton
-            active={activeFilter === "currentUser"}
-            onClick={() => handleFilterChange("currentUser")}
-          >
-            {t("profile.visits.compare.filters.currentUser", "Only me")} (
-            {comparison.visited.currentUser.length})
-          </TabButton>
-
-          <TabButton
-            active={activeFilter === "otherUser"}
-            onClick={() => handleFilterChange("otherUser")}
-          >
-            {t("profile.visits.compare.filters.otherUser", "Only {{name}}", {
-              name: profileFirstName,
-            })}{" "}
-            ({comparison.visited.otherUser.length})
-          </TabButton>
+        <div className="mt-8">
+          <TabControl
+            tabs={filters}
+            activeTab={activeFilter}
+            onChange={handleFilterChange}
+          />
         </div>
 
         <div className="mt-8">

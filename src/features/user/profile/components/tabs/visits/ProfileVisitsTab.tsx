@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ActionButton, Card, EmptyListMessage, TabButton } from "@components";
+import { ActionButton, Card, EmptyListMessage, TabControl } from "@components";
 import { CountryFlagGrid } from "@features/countries";
 import { useAuth } from "@features/user/auth";
 import type { UserProfile } from "../../../types";
@@ -30,6 +30,17 @@ export function ProfileVisitsTab({ profileUser }: ProfileVisitsTabProps) {
 
   const isOwnProfile = currentUser?.uid === profileUser.uid;
 
+  const tabs = [
+    {
+      value: "visited" as const,
+      label: `${t("profile.visits.tabs.visited", "Visited")} (${visitedCountryCodes.length})`,
+    },
+    {
+      value: "wantToVisit" as const,
+      label: `${t("profile.visits.tabs.wantToVisit", "Want to visit")} (${wantToVisitCountryCodes.length})`,
+    },
+  ];
+
   const handleTabChange = (tab: VisitsTab) => {
     if (tab === "visited") {
       searchParams.delete("tab");
@@ -48,21 +59,11 @@ export function ProfileVisitsTab({ profileUser }: ProfileVisitsTabProps) {
     <Card className="mt-6">
       <div className="flex items-center justify-between pb-2 mb-4">
         <div className="flex gap-2">
-          <TabButton
-            active={activeTab === "visited"}
-            onClick={() => handleTabChange("visited")}
-          >
-            {t("profile.visits.tabs.visited", "Visited")} (
-            {visitedCountryCodes.length})
-          </TabButton>
-
-          <TabButton
-            active={activeTab === "wantToVisit"}
-            onClick={() => handleTabChange("wantToVisit")}
-          >
-            {t("profile.visits.tabs.wantToVisit", "Want to visit")} (
-            {wantToVisitCountryCodes.length})
-          </TabButton>
+          <TabControl
+            tabs={tabs}
+            activeTab={activeTab}
+            onChange={handleTabChange}
+          />
         </div>
 
         {!isOwnProfile && (

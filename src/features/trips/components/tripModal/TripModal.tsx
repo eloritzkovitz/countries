@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, ModalActions, ModalHeader, TabButton } from "@components";
+import { Modal, ModalActions, ModalHeader, TabControl } from "@components";
 import { ICONS } from "@constants/icons";
 import {
   CountrySelectModal,
@@ -105,6 +105,21 @@ export function TripModal({
     .map((isoCode) => getCountryByIsoCode(isoCode, { countries }))
     .filter(Boolean);
 
+  const tabs = [
+    {
+      value: "overview" as const,
+      label: t("modal.tabs.overview"),
+    },
+    {
+      value: "details" as const,
+      label: t("modal.tabs.details"),
+    },
+    {
+      value: "destinations" as const,
+      label: t("modal.tabs.destinations"),
+    },
+  ];
+
   const isValid =
     !!trip.name.trim() &&
     trip.countryCodes.length > 0 &&
@@ -135,28 +150,7 @@ export function TripModal({
         />
 
         {/* Tabs */}
-        <div className="flex gap-2">
-          <TabButton
-            active={activeTab === "overview"}
-            onClick={() => setActiveTab("overview")}
-          >
-            {t("modal.tabs.overview")}
-          </TabButton>
-
-          <TabButton
-            active={activeTab === "details"}
-            onClick={() => setActiveTab("details")}
-          >
-            {t("modal.tabs.details")}
-          </TabButton>
-
-          <TabButton
-            active={activeTab === "destinations"}
-            onClick={() => setActiveTab("destinations")}
-          >
-            {t("modal.tabs.destinations")}
-          </TabButton>
-        </div>
+        <TabControl tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
         <form
           className="flex flex-col flex-1 min-h-0"

@@ -51,7 +51,6 @@ export { SelectInput } from "./inputs/SelectInput/SelectInput";
 export { SortSelect } from "./inputs/SortSelect/SortSelect";
 export { StarRatingInput } from "./inputs/StarRating/StarRatingInput";
 export { Switch } from "./inputs/Switch/Switch";
-export { TabButton } from "./inputs/Button/TabButton";
 export { ViewModeSegmentedControl } from "./inputs/SegmentedToggle/ViewModeSegmentedControl";
 
 // Media components
@@ -76,6 +75,7 @@ export { SidePanelMenu } from "./navigation/Menu/SidePanelMenu";
 export { SubmenuSection } from "./navigation/Menu/SubmenuSection";
 export { PageHeader } from "./navigation/PageHeader";
 export { Pagination } from "./navigation/Pagination/Pagination";
+export { TabControl } from "./navigation/Tabs/TabControl";
 export { ToolbarSelectButton } from "./navigation/Toolbar/ToolbarSelectButton";
 export { ToolbarToggleGroup } from "./navigation/Toolbar/ToolbarToggleGroup";
 export * from "./navigation/Menu/menuUtils";
