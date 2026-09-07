@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import { resolveBackendUrl } from "@lib/api-client/env";
-import type { TripLocation } from "../types";
-
-interface LocationsResponse {
-  locations: TripLocation[];
-}
+import { searchLocations, type Location } from "@lib/locations";
 
 interface UseLocationSearchProps {
   isOpen: boolean;
@@ -14,7 +9,7 @@ interface UseLocationSearchProps {
 }
 
 interface UseLocationSearchResult {
-  locations: TripLocation[];
+  locations: Location[];
   loading: boolean;
 }
 
@@ -32,9 +27,10 @@ export function useLocationSearch({
   countryCodes,
   language,
 }: UseLocationSearchProps): UseLocationSearchResult {
-  const [locations, setLocations] = useState<TripLocation[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // Fetch locations based on search query and country codes
   useEffect(() => {
     if (!isOpen || !search.trim() || countryCodes.length === 0) {
       setLocations([]);
@@ -44,41 +40,19 @@ export function useLocationSearch({
 
     const controller = new AbortController();
 
-    const searchLocations = async () => {
+    const fetchLocations = async () => {
       setLoading(true);
 
       try {
-        const backendUrl = resolveBackendUrl({
-          envVar: "VITE_API_URL",
-        });
-
-        if (!backendUrl) {
-          throw new Error("Backend URL is not configured");
-        }
-
         const results = await Promise.all(
-          countryCodes.map(async (countryCode) => {
-            const params = new URLSearchParams({
-              q: search.trim(),
+          countryCodes.map((countryCode) =>
+            searchLocations(
+              search.trim(),
               countryCode,
-              lang: language,
-            });
-
-            const response = await fetch(
-              `${backendUrl}/api/locations/search?${params.toString()}`,
-              {
-                signal: controller.signal,
-              },
-            );
-
-            if (!response.ok) {
-              throw new Error(`Location search failed: ${response.status}`);
-            }
-
-            const data = (await response.json()) as LocationsResponse;
-
-            return data.locations;
-          }),
+              language,
+              controller.signal,
+            ),
+          ),
         );
 
         const uniqueLocations = Array.from(
@@ -100,7 +74,7 @@ export function useLocationSearch({
       }
     };
 
-    const timeout = window.setTimeout(searchLocations, 300);
+    const timeout = window.setTimeout(fetchLocations, 300);
 
     return () => {
       window.clearTimeout(timeout);

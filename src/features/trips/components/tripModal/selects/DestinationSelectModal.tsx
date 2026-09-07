@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ModalSelect } from "@components";
 import { ICONS } from "@constants/icons";
+import type { Location } from "@lib/locations";
 import { useLocationSearch } from "../../../hooks/useLocationSearch";
-import type { TripLocation } from "../../../types";
 
 interface DestinationSelectModalProps {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export function DestinationSelectModal({
   });
 
   return (
-    <ModalSelect<TripLocation>
+    <ModalSelect<Location>
       isOpen={isOpen}
       title={
         <>
@@ -46,7 +46,7 @@ export function DestinationSelectModal({
       onSearchChange={setSearch}
       getItemValue={(location) => String(location.id)}
       getItemSearchLabel={(location) => location.name}
-      placeholder={t("modal.locations.searchPlaceholder")}
+      placeholder={t("modal.destinations.locations.searchPlaceholder")}
       emptyMessage={
         loading
           ? t("common:components.search.searching")
