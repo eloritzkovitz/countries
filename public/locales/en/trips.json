@@ -2,11 +2,13 @@
   "pageTitle": "My Trips",
   "loading": "Loading trips...",
   "noTrips": "No trips yet.",
+
   "table": {
     "toolbar": {
       "search": {
         "placeholder": "Search trips"
       },
+      
       "filters": {
         "clearFilters": "Clear Filters",
         "local": "Local",
@@ -15,12 +17,14 @@
         "upcoming": "Upcoming",
         "completed": "Completed",
         "cancelled": "Cancelled",
-        "favorites": "Favorites",       
+        "favorites": "Favorites",
         "filtersToggle": "Toggle {{label}}"
       },
+
       "calendar": {
         "viewCalendar": "View Calendar"
       },
+
       "importExport": {
         "importTitle": "Import Trips",
         "importConfirmTitle": "Import trips?",
@@ -31,6 +35,7 @@
         "exportCSV": "Export as CSV",
         "exportJSON": "Export as JSON"
       },
+
       "bulkActions": {
         "duplicateSelected": "Duplicate selected",
         "deleteSelected": "Delete selected",
@@ -41,6 +46,7 @@
         "cancel": "Cancel"
       }
     },
+
     "headers": {
       "name": "Name",
       "rating": "Rating",
@@ -54,6 +60,7 @@
       "status": "Status",
       "tags": "Tags"
     },
+
     "placeholders": {
       "searchByName": "Search by name",
       "allRatings": "All Ratings",
@@ -64,10 +71,12 @@
       "allStatuses": "All Statuses",
       "allTags": "All Tags"
     },
+
     "itemLabels": {
       "singular": "trip",
       "plural": "trips"
     },
+
     "actions": {
       "sharedDisabledTitle": "Shared trips cannot be edited",
       "moreActions": "More actions",
@@ -80,26 +89,49 @@
       "deleteTrip": "Delete Trip"
     }
   },
+
   "modal": {
     "titleAdd": "Add Trip",
     "titleEdit": "Edit Trip",
-    "form": {
+
+    "tabs": {
+      "overview": "Overview",
+      "details": "Details",
+      "destinations": "Destinations"
+    },
+
+    "overview": {
       "name": "Name",
       "startDate": "Start Date",
       "endDate": "End Date",
       "tentativeDates": "Tentative Dates",
       "fullDays": "Full Days",
+      "notesTitle": "Notes",
+      "notesPlaceholder": "Add notes about this trip..."
+    },
+
+    "details": {
       "participants": "Participants",
       "selectParticipants": "Select participants",
       "categories": "Categories",
       "selectCategories": "Select categories",
       "tags": "Tags",
-      "addTags": "Add tags",
-      "countriesTitle": "Countries",
-      "noCountriesSelected": "No countries selected",
-      "notesTitle": "Notes",
-      "notesPlaceholder": "Add notes about this trip..."
+      "addTags": "Add tags"
     },
+
+    "destinations": {
+      "countriesTitle": "Countries",
+      "noCountries": "No countries selected",
+
+      "locations": {
+        "title": "Locations",
+        "noLocations": "No locations selected",
+        "selectTitle": "Select Locations",
+        "searchPlaceholder": "Search locations",
+        "noResults": "No locations found."
+      }
+    },
+
     "actions": {
       "saveChanges": "Save Changes",
       "addTrip": "Add Trip",
@@ -110,6 +142,7 @@
       "add": "Add"
     }
   },
+
   "categories": {
     "solo": "Solo",
     "couple": "Couple",
@@ -143,7 +176,9 @@
     "cultural": "Cultural",
     "other": "Other"
   },
+
   "types": { "local": "Local", "abroad": "Abroad" },
+
   "statuses": {
     "planned": "Planned",
     "upcoming": "Upcoming",
@@ -151,6 +186,7 @@
     "completed": "Completed",
     "cancelled": "Cancelled"
   },
+
   "tags": {
     "beach": "Beach",
     "mountain": "Mountain",

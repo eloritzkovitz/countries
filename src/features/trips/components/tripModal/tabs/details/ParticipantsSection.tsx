@@ -1,27 +1,27 @@
 import { useTranslation } from "react-i18next";
 import { EmptyListMessage } from "@components";
 import { ICONS } from "@constants/icons";
-import { CategoriesList } from "../common/CategoriesList";
-import type { TripCategory } from "../../types";
+import type { UserProfile } from "@features/user/profile/types";
+import { ParticipantsList } from "../../../common/ParticipantsList";
 
-interface CategoriesSectionProps {
-  selectedCategories: TripCategory[];
+interface ParticipantsSectionProps {
+  selectedParticipants: UserProfile[];
   onEdit: () => void;
-  onRemove: (category: TripCategory) => void;
+  onRemove: (uid: string) => void;
 }
 
-export function CategoriesSection({
-  selectedCategories,
+export function ParticipantsSection({
+  selectedParticipants,
   onEdit,
   onRemove,
-}: CategoriesSectionProps) {
+}: ParticipantsSectionProps) {
   const { t } = useTranslation("trips");
 
   return (
     <div className="flex-1 min-h-0 pt-2">
       <div className="flex items-center justify-between mb-2">
         <span className="font-semibold">
-          {t("modal.form.categories", "Categories")}
+          {t("modal.details.participantsTitle", "Participants")}
         </span>
         <button
           type="button"
@@ -29,23 +29,23 @@ export function CategoriesSection({
           onClick={onEdit}
         >
           <ICONS.edit className="me-1" />
-          {selectedCategories.length > 0
+          {selectedParticipants.length > 0
             ? t("modal.actions.edit")
             : t("modal.actions.add")}
         </button>
       </div>
 
-      {selectedCategories.length === 0 ? (
+      {selectedParticipants.length === 0 ? (
         <EmptyListMessage
-          message={t("modal.form.noCategories", "No categories selected.")}
+          message={t("modal.details.noParticipants", "No participants added yet.")}
         />
       ) : (
-        <CategoriesList
-          categories={selectedCategories}
-          removable={true}
-          onRemove={onRemove}
-          limit={50}
-        />
+        <div className="p-1">
+          <ParticipantsList
+            uids={selectedParticipants.map((p) => p.uid)}
+            onRemove={onRemove}
+          />
+        </div>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { ICONS } from "@constants/icons";
-import { TripCountriesList } from "../common/TripCountriesList";
+import { TripCountriesList } from "../../../common/TripCountriesList";
 
 interface CountriesSectionProps {
   selectedCountries: { isoCode: string; name: string }[];
@@ -18,7 +18,7 @@ export function CountriesSection({
   return (
     <div className="flex-1 min-h-0 overflow-auto">
       <div className="flex items-center justify-between mb-1">
-        <span className="font-semibold">{t("modal.form.countriesTitle")}</span>
+        <span className="font-semibold">{t("modal.destinations.countriesTitle")}</span>
         <button
           type="button"
           className="flex items-center gap-1 px-2 py-1 rounded hover:bg-input-hover text-sm font-medium"

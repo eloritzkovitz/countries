@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { EmptyListMessage } from "@components";
 import { ICONS } from "@constants/icons";
-import { TagsList } from "../common/TagsList";
-import type { TripTag } from "../../types";
+import { TagsList } from "../../../common/TagsList";
+import type { TripTag } from "../../../../types";
 
 interface TagsSectionProps {
   selectedTags: TripTag[];
@@ -20,7 +20,7 @@ export function TagsSection({
   return (
     <div className="flex-1 min-h-0 pt-2">
       <div className="flex items-center justify-between mb-2">
-        <span className="font-semibold">{t("modal.form.tags", "Tags")}</span>
+        <span className="font-semibold">{t("modal.details.tags", "Tags")}</span>
         <button
           type="button"
           className="flex items-center gap-1 px-2 py-1 rounded hover:bg-input-hover text-sm font-medium"
@@ -35,7 +35,7 @@ export function TagsSection({
 
       {selectedTags.length === 0 ? (
         <EmptyListMessage
-          message={t("modal.form.noTags", "No tags selected.")}
+          message={t("modal.details.noTags", "No tags selected.")}
         />
       ) : (
         <TagsList

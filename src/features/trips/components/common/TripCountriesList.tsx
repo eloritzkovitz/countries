@@ -23,7 +23,7 @@ export function TripCountriesList({
     <div>
       <div className="flex flex-col gap-3">
         {countries.length === 0 && (
-          <EmptyListMessage message={t("modal.form.noCountriesSelected")} />
+          <EmptyListMessage message={t("modal.destinations.noCountriesSelected")} />
         )}
         {countries.map((country) => (
           <span key={country.isoCode} className="flex items-center py-0.5">

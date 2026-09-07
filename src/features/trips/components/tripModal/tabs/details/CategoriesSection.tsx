@@ -1,27 +1,27 @@
 import { useTranslation } from "react-i18next";
 import { EmptyListMessage } from "@components";
 import { ICONS } from "@constants/icons";
-import type { UserProfile } from "@features/user/profile/types";
-import { ParticipantsList } from "../common/ParticipantsList";
+import { CategoriesList } from "../../../common/CategoriesList";
+import type { TripCategory } from "../../../../types";
 
-interface ParticipantsSectionProps {
-  selectedParticipants: UserProfile[];
+interface CategoriesSectionProps {
+  selectedCategories: TripCategory[];
   onEdit: () => void;
-  onRemove: (uid: string) => void;
+  onRemove: (category: TripCategory) => void;
 }
 
-export function ParticipantsSection({
-  selectedParticipants,
+export function CategoriesSection({
+  selectedCategories,
   onEdit,
   onRemove,
-}: ParticipantsSectionProps) {
+}: CategoriesSectionProps) {
   const { t } = useTranslation("trips");
 
   return (
     <div className="flex-1 min-h-0 pt-2">
       <div className="flex items-center justify-between mb-2">
         <span className="font-semibold">
-          {t("modal.form.participantsTitle", "Participants")}
+          {t("modal.details.categories", "Categories")}
         </span>
         <button
           type="button"
@@ -29,23 +29,23 @@ export function ParticipantsSection({
           onClick={onEdit}
         >
           <ICONS.edit className="me-1" />
-          {selectedParticipants.length > 0
+          {selectedCategories.length > 0
             ? t("modal.actions.edit")
             : t("modal.actions.add")}
         </button>
       </div>
 
-      {selectedParticipants.length === 0 ? (
+      {selectedCategories.length === 0 ? (
         <EmptyListMessage
-          message={t("modal.form.noParticipants", "No participants added yet.")}
+          message={t("modal.details.noCategories", "No categories selected.")}
         />
       ) : (
-        <div className="p-1">
-          <ParticipantsList
-            uids={selectedParticipants.map((p) => p.uid)}
-            onRemove={onRemove}
-          />
-        </div>
+        <CategoriesList
+          categories={selectedCategories}
+          removable={true}
+          onRemove={onRemove}
+          limit={50}
+        />
       )}
     </div>
   );

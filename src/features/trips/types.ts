@@ -6,35 +6,35 @@ import {
 
 /** Represents a trip. */
 export type Trip = {
-  /** The unique identifier for the trip */
+  /** The unique identifier for the trip. */
   id: string;
-  /** The name of the trip */
+  /** The name of the trip. */
   name: string;
-  /** A detailed description of the trip */
+  /** A detailed description of the trip. */
   description?: string;
-  /** Indicates if the trip is marked as a favorite */
+  /** Indicates if the trip is marked as a favorite. */
   favorite?: boolean;
-  /** The rating given to the trip */
+  /** The rating given to the trip. */
   rating?: number | null;
-  /** List of country ISO codes associated with the trip */
+  /** List of country ISO codes associated with the trip. */
   countryCodes: string[];
-  /** List of locations visited during the trip */
-  locations?: Location[];
-  /** The start date of the trip in ISO format */
+  /** List of location IDs visited during the trip. */
+  locationIds?: number[];
+  /** The start date of the trip in ISO format. */
   startDate?: string;
-  /** The end date of the trip in ISO format */
+  /** The end date of the trip in ISO format. */
   endDate?: string;
-  /** Total number of full days spent on the trip */
+  /** Total number of full days spent on the trip. */
   fullDays?: number;
-  /** UIDs of participants in this trip */
+  /** UIDs of participants in this trip. */
   participants?: string[];
-  /** Additional attributes for the trip */
+  /** Additional attributes for the trip. */
   categories?: TripCategory[];
-  /** The current status of the trip */
+  /** The current status of the trip. */
   status?: TripStatus;
-  /** Additional notes about the trip */
+  /** Additional notes about the trip. */
   notes?: string;
-  /** Tags associated with the trip */
+  /** Tags associated with the trip. */
   tags?: TripTag[];
 };
 
@@ -42,12 +42,6 @@ export type Trip = {
 export type SharedTrip = {
   ownerUid: string;
   tripId: string;
-};
-
-/** Represents a geographical location with region and cities. */
-export type Location = {
-  region: string;
-  cities: string[];
 };
 
 /** Represents a trip category */
@@ -97,4 +91,18 @@ export type TripFilterState = TripFilters & {
   planned: boolean;
   cancelled: boolean;
   favorite: boolean;
+};
+
+export type TripLocation = {
+  id: number;
+  name: string;
+  countryCode: string;
+  countryName: string;
+  admin1?: {
+    id: number;
+    name: string;
+    code: string;
+  };
+  latitude: number;
+  longitude: number;
 };
