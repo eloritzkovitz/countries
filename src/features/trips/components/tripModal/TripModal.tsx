@@ -1,6 +1,12 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, ModalActions, ModalHeader, TabControl } from "@components";
+import {
+  Modal,
+  ModalActions,
+  ModalHeader,
+  TabControl,
+  type TabControlItem,
+} from "@components";
 import { ICONS } from "@constants/icons";
 import {
   CountrySelectModal,
@@ -22,6 +28,8 @@ import type { Trip, TripCategory, TripTag } from "../../types";
 import { getAutoTripStatus } from "../../utils/trips";
 import "./TripModal.css";
 
+type TripTab = "overview" | "details" | "destinations";
+
 interface TripModalProps {
   isOpen: boolean;
   trip: Trip | null;
@@ -30,8 +38,6 @@ interface TripModalProps {
   onClose: () => void;
   isEditing: boolean;
 }
-
-type TripTab = "overview" | "details" | "destinations";
 
 /** Renders the add/edit trip modal. */
 export function TripModal({
@@ -105,17 +111,17 @@ export function TripModal({
     .map((isoCode) => getCountryByIsoCode(isoCode, { countries }))
     .filter(Boolean);
 
-  const tabs = [
+  const tabs: TabControlItem<TripTab>[] = [
     {
-      value: "overview" as const,
+      value: "overview",
       label: t("modal.tabs.overview"),
     },
     {
-      value: "details" as const,
+      value: "details",
       label: t("modal.tabs.details"),
     },
     {
-      value: "destinations" as const,
+      value: "destinations",
       label: t("modal.tabs.destinations"),
     },
   ];

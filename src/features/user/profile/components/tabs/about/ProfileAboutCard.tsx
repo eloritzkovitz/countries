@@ -7,11 +7,13 @@ import {
   FaLocationDot,
   FaRegCalendarDays,
 } from "react-icons/fa6";
-import { Card, TabControl } from "@components";
+import { Card, TabControl, type TabControlItem } from "@components";
 import { CountryWithFlag } from "@features/countries";
 import type { Country } from "@features/countries/types";
 import { ProfileField } from "../../ProfileField";
 import { SocialLinks } from "../../social/SocialLinks";
+
+type ProfileAboutTab = "personal-details" | "contact";
 
 interface ProfileAboutCardProps {
   displayEmail: string | null;
@@ -30,9 +32,8 @@ export function ProfileAboutCard({
   displayBiography,
   displaySocialLinks,
 }: ProfileAboutCardProps) {
-  const [activeTab, setActiveTab] = useState<"personal-details" | "contact">(
-    "personal-details",
-  );
+  const [activeTab, setActiveTab] =
+    useState<ProfileAboutTab>("personal-details");
   const { t } = useTranslation("user");
 
   const notSpecified = t("profile.about.notSpecified");
@@ -44,20 +45,19 @@ export function ProfileAboutCard({
       )
     : null;
 
-  const tabs = [
+  const tabs: TabControlItem<ProfileAboutTab>[] = [
     {
-      value: "personal-details" as const,
+      value: "personal-details",
       label: t("profile.about.personalDetails.title"),
     },
-    ...(!displaySocialLinks
-      ? []
-      : [
-          {
-            value: "contact" as const,
-            label: t("profile.about.contactInfo.title"),
-          },
-        ]),
   ];
+
+  if (displaySocialLinks) {
+    tabs.push({
+      value: "contact",
+      label: t("profile.about.contactInfo.title"),
+    });
+  }
 
   return (
     <Card className="mt-6">

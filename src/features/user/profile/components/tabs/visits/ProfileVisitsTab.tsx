@@ -1,9 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { ActionButton, Card, EmptyListMessage, TabControl } from "@components";
+import { useNavigate } from "react-router-dom";
+import {
+  ActionButton,
+  Card,
+  EmptyListMessage,
+  TabControl,
+  type TabControlItem,
+} from "@components";
 import { CountryFlagGrid } from "@features/countries";
 import { useAuth } from "@features/user/auth";
+import { useQueryParam } from "@hooks";
 import type { UserProfile } from "../../../types";
 import { getAllVisitedCountryCodes } from "../../../utils/countryTracking";
 
@@ -17,10 +24,8 @@ export function ProfileVisitsTab({ profileUser }: ProfileVisitsTabProps) {
   const { t } = useTranslation("user");
   const { user: currentUser } = useAuth();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  const activeTab: VisitsTab =
-    searchParams.get("tab") === "wantToVisit" ? "wantToVisit" : "visited";
+  const [activeTab, setActiveTab] = useQueryParam<VisitsTab>("tab", "visited");
 
   const visitedCountryCodes = getAllVisitedCountryCodes(profileUser);
   const wantToVisitCountryCodes = profileUser.wantToVisitCountryCodes ?? [];
@@ -30,26 +35,16 @@ export function ProfileVisitsTab({ profileUser }: ProfileVisitsTabProps) {
 
   const isOwnProfile = currentUser?.uid === profileUser.uid;
 
-  const tabs = [
+  const tabs: TabControlItem<VisitsTab>[] = [
     {
-      value: "visited" as const,
+      value: "visited",
       label: `${t("profile.visits.tabs.visited", "Visited")} (${visitedCountryCodes.length})`,
     },
     {
-      value: "wantToVisit" as const,
+      value: "wantToVisit",
       label: `${t("profile.visits.tabs.wantToVisit", "Want to visit")} (${wantToVisitCountryCodes.length})`,
     },
   ];
-
-  const handleTabChange = (tab: VisitsTab) => {
-    if (tab === "visited") {
-      searchParams.delete("tab");
-    } else {
-      searchParams.set("tab", "wantToVisit");
-    }
-
-    setSearchParams(searchParams, { replace: true });
-  };
 
   const handleCompare = () => {
     navigate(`/users/${profileUser.username}/visits/compare`);
@@ -62,7 +57,7 @@ export function ProfileVisitsTab({ profileUser }: ProfileVisitsTabProps) {
           <TabControl
             tabs={tabs}
             activeTab={activeTab}
-            onChange={handleTabChange}
+            onChange={setActiveTab}
           />
         </div>
 

@@ -1,6 +1,6 @@
-import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { TabControl } from "@components";
+import { useLocation, useNavigate } from "react-router-dom";
+import { TabControl, type TabControlItem } from "@components";
 import type { UserProfile } from "../../types";
 
 type ProfileTab = "overview" | "friends" | "visits";
@@ -27,17 +27,17 @@ export function ProfileTabNav({ profileUser }: ProfileTabNavProps) {
       ? "visits"
       : "overview";
 
-  const tabs = [
+  const tabs: TabControlItem<ProfileTab>[] = [
     {
-      value: "overview" as const,
+      value: "overview",
       label: t("profile.tabs.about", "About"),
     },
     {
-      value: "friends" as const,
+      value: "friends",
       label: t("profile.tabs.friends", "Friends"),
     },
     {
-      value: "visits" as const,
+      value: "visits",
       label: t("profile.tabs.visits", "Visits"),
     },
   ];

@@ -1,9 +1,9 @@
 import { TabButton } from "./TabButton";
 
-interface TabControlItem<T extends string> {
+export type TabControlItem<T extends string> = {
   value: T;
   label: React.ReactNode;
-}
+};
 
 interface TabControlProps<T extends string> {
   tabs: TabControlItem<T>[];

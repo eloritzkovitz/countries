@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   ActionButton,
   Card,
@@ -8,9 +8,11 @@ import {
   EmptyListMessage,
   LoadingSpinner,
   TabControl,
+  type TabControlItem,
 } from "@components";
 import { CountryFlagGrid } from "@features/countries";
 import { useAuth } from "@features/user/auth";
+import { useQueryParam } from "@hooks";
 import { ProfileComparisonStat } from "./ProfileComparisonStat";
 import { useUserProfile } from "../../../hooks/useUserProfile";
 import {
@@ -24,7 +26,6 @@ export function ProfileCountryComparison() {
   const { t } = useTranslation("user");
   const { username } = useParams<{ username: string }>();
   const { user: currentUser } = useAuth();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const { profile: myProfile, loading: myProfileLoading } = useUserProfile({
     uid: currentUser?.uid,
@@ -34,12 +35,10 @@ export function ProfileCountryComparison() {
     username,
   });
 
-  const activeFilter: ComparisonFilter =
-    searchParams.get("filter") === "currentUser"
-      ? "currentUser"
-      : searchParams.get("filter") === "otherUser"
-        ? "otherUser"
-        : "shared";
+  const [activeFilter, setActiveFilter] = useQueryParam<ComparisonFilter>(
+    "filter",
+    "shared",
+  );
 
   const profileFirstName = otherUser?.displayName?.trim().split(/\s+/)[0] ?? "";
 
@@ -71,16 +70,6 @@ export function ProfileCountryComparison() {
     otherUserVisitedCountryCodes,
   ]);
 
-  const handleFilterChange = (filter: ComparisonFilter) => {
-    if (filter === "shared") {
-      searchParams.delete("filter");
-    } else {
-      searchParams.set("filter", filter);
-    }
-
-    setSearchParams(searchParams, { replace: true });
-  };
-
   const isLoading = myProfileLoading || profileLoading;
 
   if (isLoading) {
@@ -99,17 +88,17 @@ export function ProfileCountryComparison() {
   const otherUserVisitedCount = otherUserVisitedCountryCodes.length;
   const countryCodes = comparison.visited[activeFilter];
 
-  const filters = [
+  const filters: TabControlItem<ComparisonFilter>[] = [
     {
-      value: "shared" as const,
+      value: "shared",
       label: `${t("profile.visits.compare.filters.both", "Both")} (${comparison.visited.shared.length})`,
     },
     {
-      value: "currentUser" as const,
+      value: "currentUser",
       label: `${t("profile.visits.compare.filters.currentUser", "Only me")} (${comparison.visited.currentUser.length})`,
     },
     {
-      value: "otherUser" as const,
+      value: "otherUser",
       label: `${t("profile.visits.compare.filters.otherUser", "Only {{name}}", {
         name: profileFirstName,
       })} (${comparison.visited.otherUser.length})`,
@@ -163,7 +152,7 @@ export function ProfileCountryComparison() {
           <TabControl
             tabs={filters}
             activeTab={activeFilter}
-            onChange={handleFilterChange}
+            onChange={setActiveFilter}
           />
         </div>
 

@@ -75,7 +75,7 @@ export { SidePanelMenu } from "./navigation/Menu/SidePanelMenu";
 export { SubmenuSection } from "./navigation/Menu/SubmenuSection";
 export { PageHeader } from "./navigation/PageHeader";
 export { Pagination } from "./navigation/Pagination/Pagination";
-export { TabControl } from "./navigation/Tabs/TabControl";
+export { TabControl, type TabControlItem } from "./navigation/Tabs/TabControl";
 export { ToolbarSelectButton } from "./navigation/Toolbar/ToolbarSelectButton";
 export { ToolbarToggleGroup } from "./navigation/Toolbar/ToolbarToggleGroup";
 export * from "./navigation/Menu/menuUtils";
