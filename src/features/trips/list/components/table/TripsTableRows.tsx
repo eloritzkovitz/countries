@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { Checkbox, StarRatingInput, TableCell } from "@components";
 import { ICONS } from "@constants/icons";
 import type { Country } from "@features/countries/types";
@@ -92,7 +93,12 @@ export function TripsTableRows({
           {trip.favorite && (
             <ICONS.favorite className="h-5 w-5 inline text-danger me-2" />
           )}
-          {trip.name}
+          <Link
+            to={`/trips/${trip.id}`}
+            className="font-medium hover:!text-info"
+          >
+            {trip.name}
+          </Link>
         </TableCell>
 
         {/* Rating */}

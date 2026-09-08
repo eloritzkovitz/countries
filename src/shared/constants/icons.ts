@@ -11,6 +11,7 @@ import {
   FaBug,
   FaCalendar,
   FaCalendarDay,
+  FaCalendarDays,
   FaChartLine,
   FaChartSimple,
   FaCheck,
@@ -162,6 +163,8 @@ export const ICONS = {
   timezones: FaClock,
   // Trips
   trips: FaSuitcaseRolling,
+  tripDates: FaCalendarDays,
+  tripDuration: FaHourglassStart,
   tripCategory: PiCirclesFourFill,
   tripTag: FaTag,
   tripLocal: FaLocationDot,

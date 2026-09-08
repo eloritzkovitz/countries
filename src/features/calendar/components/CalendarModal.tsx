@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LoadingSpinner, Modal, ModalHeader, OverlayPortal } from "@components";
 import { ICONS } from "@constants/icons";
 import { useUI } from "@app/contexts/UIContext";
@@ -15,6 +16,8 @@ const CalendarSidePanel = lazy(() =>
 
 /** Renders the calendar modal. */
 export default function CalendarModal() {
+  const navigate = useNavigate();
+
   const { trips } = useTrips();
   const { filters, setFilters, filteredTrips } = useTripFilters(trips);
   const { calendarDate, closeCalendar } = useUI();
@@ -71,6 +74,10 @@ export default function CalendarModal() {
           <div className="flex flex-col flex-1 min-w-0">
             <AppCalendar
               trips={filteredTrips}
+              onSelectTrip={(trip) => {
+                closeCalendar();
+                navigate(`/trips/${trip.id}`);
+              }}
               view={view}
               date={date}
               onViewChange={setView}
