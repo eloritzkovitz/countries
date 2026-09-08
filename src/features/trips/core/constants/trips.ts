@@ -136,15 +136,6 @@ export const TRIP_STATUS_ICONS = [
   ICONS.tripCancelled,
 ];
 
-
-export const TRIP_STATUS_COLOR_CLASSES: Record<TripStatus, string> = {
-  planned: "bg-status-planned/90 hover:bg-status-planned",
-  upcoming: "bg-status-upcoming/90 hover:bg-status-upcoming",
-  "in-progress": "bg-status-inprogress/90 hover:bg-status-inprogress",
-  completed: "bg-status-completed/90 hover:bg-status-completed",
-  cancelled: "bg-status-cancelled/90 hover:bg-status-cancelled",
-};
-
 export const FUTURE_TRIP_STATUSES: TripStatus[] = [
   "in-progress",
   "upcoming",

@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { STATUS_COLOR_CLASSES } from "@constants/colors";
 import { ICONS } from "@constants/icons";
 import type { CategorizedVisits } from "@features/visits/types";
 import { VisitSection } from "./VisitSection";
@@ -14,7 +15,6 @@ export function CountryVisitsContent({
 }: CountryVisitsContentProps) {
   const { t } = useTranslation("atlas");
 
-  // Handler for clicking on a visit chip
   const handleVisitChipClick = (tripId: string | undefined) => {
     if (tripId) {
       onTripClick?.(tripId);
@@ -28,22 +28,24 @@ export function CountryVisitsContent({
         title={t("countries.details.visits.planned")}
         count={visits.tentative.length}
         visits={visits.tentative}
-        status="planned"
+        badgeColorClass={STATUS_COLOR_CLASSES.planned}
       />
+
       <VisitSection
         icon={<ICONS.tripUpcoming />}
         title={t("countries.details.visits.upcoming")}
         count={visits.upcoming.length}
         visits={visits.upcoming}
-        status="upcoming"
+        badgeColorClass={STATUS_COLOR_CLASSES.upcoming}
         onVisitClick={handleVisitChipClick}
       />
+
       <VisitSection
         icon={<ICONS.tripCompleted />}
         title={t("countries.details.visits.completed")}
         count={visits.past.length}
         visits={visits.past}
-        status="completed"
+        badgeColorClass={STATUS_COLOR_CLASSES.completed}
         onVisitClick={handleVisitChipClick}
       />
     </div>

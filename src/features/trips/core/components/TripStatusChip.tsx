@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Chip } from "@components";
-import { TRIP_STATUS_COLOR_CLASSES } from "../constants/trips";
+import { STATUS_COLOR_CLASSES } from "@constants/colors";
 import type { TripStatus } from "../types";
 
 export function TripStatusChip({ status }: { status?: TripStatus }) {
@@ -10,7 +10,7 @@ export function TripStatusChip({ status }: { status?: TripStatus }) {
   if (!status) return null;
 
   const colorClass =
-    TRIP_STATUS_COLOR_CLASSES[status] || TRIP_STATUS_COLOR_CLASSES.planned;
+    STATUS_COLOR_CLASSES[status] || STATUS_COLOR_CLASSES.planned;
   const label = t(`statuses.${status}`, { defaultValue: status });
 
   return (
