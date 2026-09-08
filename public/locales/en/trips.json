@@ -80,6 +80,7 @@
     "actions": {
       "sharedDisabledTitle": "Shared trips cannot be edited",
       "moreActions": "More actions",
+      "viewTrip": "View Trip",
       "viewInCalendar": "View in Calendar",
       "editTrip": "Edit Trip",
       "duplicate": "Duplicate",

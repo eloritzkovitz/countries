@@ -10,6 +10,7 @@ import {
 } from "@components";
 import { ICONS } from "@constants/icons";
 import { useCalendarNavigation } from "@features/calendar/hooks/useCalendarNavigation";
+import { usePageTitle } from "@hooks";
 import { CategoriesList } from "../../core/components/CategoriesList";
 import { ParticipantsList } from "../../core/components/ParticipantsList";
 import { TagsList } from "../../core/components/TagsList";
@@ -24,8 +25,9 @@ export default function TripDetailsPage() {
   const { t } = useTranslation("trips");
 
   const { tripId } = useParams<{ tripId: string }>();
-
   const trip = trips.find((trip) => trip.id === tripId);
+
+  usePageTitle(trip ? trip.name : t("pageTitle", "Trip Details"));
 
   const { locations, loading: locationsLoading } = useTripLocations(
     trip?.locationIds ?? [],
@@ -109,32 +111,25 @@ export default function TripDetailsPage() {
           </div>
         </Card>
 
-        {/* Overview */}
-        <Card title={t("modal.tabs.overview", "Overview")}>
+        {/* Details */}
+        <Card title={t("modal.tabs.details", "Details")}>
           <div>
-            <SectionHeader>
-              {t("modal.details.categories", "Categories")}
-            </SectionHeader>
-
-            <CategoriesList
-              categories={trip.categories ?? []}
-              limit={trip.categories?.length}
-            />
-          </div>
-
-          <div>
-            <SectionHeader>{t("modal.details.tags", "Tags")}</SectionHeader>
-
-            <TagsList tags={trip.tags ?? []} limit={trip.tags?.length} />
-          </div>
-
-          <div className={trip.categories?.length ? "mt-5" : ""}>
             <SectionHeader>
               {t("modal.details.participants", "Participants")} (
               {trip.participants?.length ?? 0})
             </SectionHeader>
-
             <ParticipantsList uids={trip.participants ?? []} />
+
+            <SectionHeader
+              title={t("modal.details.categories", "Categories")}
+            />
+            <CategoriesList
+              categories={trip.categories ?? []}
+              limit={trip.categories?.length}
+            />
+
+            <SectionHeader title={t("modal.details.tags", "Tags")} />
+            <TagsList tags={trip.tags ?? []} limit={trip.tags?.length} />
           </div>
         </Card>
 

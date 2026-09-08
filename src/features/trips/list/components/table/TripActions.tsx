@@ -1,5 +1,6 @@
 import { forwardRef, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
   ActionButton,
   DirectionalIcon,
@@ -37,6 +38,8 @@ export const TripActions = forwardRef(function TripActions(
   { trip, onEdit }: TripActionsProps,
   ref,
 ) {
+  const navigate = useNavigate();
+
   const { t } = useTranslation("trips");
   const {
     sharedTripIds,
@@ -171,6 +174,17 @@ export const TripActions = forwardRef(function TripActions(
         containerRef={menuRef as React.RefObject<HTMLDivElement>}
         disableScroll
       >
+        <MenuButton
+          onClick={() => {
+            handleCloseAll();
+            navigate(`/trips/${trip.id}`);
+          }}
+          icon={<ICONS.view />}
+          className="w-full"
+        >
+          {t("table.actions.viewTrip")}
+        </MenuButton>
+
         {hasValidStartDate(trip) && (
           <MenuButton
             onClick={() => {
@@ -183,6 +197,8 @@ export const TripActions = forwardRef(function TripActions(
             {t("table.actions.viewInCalendar")}
           </MenuButton>
         )}
+
+        <Separator className="my-2" />
 
         <MenuButton
           onClick={() => {
@@ -311,12 +327,13 @@ export const TripActions = forwardRef(function TripActions(
         <Separator className="my-2" />
 
         <MenuButton
+          variant="danger"
           onClick={() => {
             menuActions.onDelete?.();
             handleCloseAll();
           }}
           icon={<ICONS.remove />}
-          className="!text-danger w-full"
+          className="w-full"
         >
           {t("table.actions.deleteTrip")}
         </MenuButton>

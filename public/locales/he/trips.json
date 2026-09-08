@@ -80,6 +80,7 @@
     "actions": {
       "sharedDisabledTitle": "לא ניתן לערוך טיולים משותפים",
       "moreActions": "עוד פעולות",
+      "viewTrip": "הצג טיול",
       "viewInCalendar": "הצג בלוח שנה",
       "editTrip": "ערוך טיול",
       "duplicate": "שכפול",
