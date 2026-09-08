@@ -2,8 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Chip, EmptyListMessage } from "@components";
 import { useUI } from "@app/contexts/UIContext";
 import { CountryFlag, useCountryData } from "@features/countries";
-import type { Trip } from "@features/trips/types";
-import { getTripDays } from "@features/trips/utils/trips";
+import { getTripDays, type Trip } from "@features/trips";
 import { formatDate } from "@utils";
 
 interface TripListProps {

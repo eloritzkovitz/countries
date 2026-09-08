@@ -41,7 +41,7 @@ const SettingsRoutes = lazy(
   () => import("@features/settings/core/routes/SettingsRoutes"),
 );
 
-const TripsPage = lazy(() => import("@features/trips/pages/TripsPage"));
+const TripsPage = lazy(() => import("@features/trips/list/pages/TripsPage"));
 
 /** Main application routes component. */
 export function AppRoutes() {

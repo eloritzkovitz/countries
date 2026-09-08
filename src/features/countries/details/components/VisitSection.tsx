@@ -2,7 +2,7 @@ import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Chip, CollapsibleHeader, DirectionalIcon } from "@components";
 import type { Visit } from "@features/visits/types";
-import { TRIP_STATUS_COLOR_CLASSES } from "@features/trips/constants/trips";
+import { TRIP_STATUS_COLOR_CLASSES } from "@features/trips/core/constants/trips";
 import type { TripStatus } from "@features/trips/types";
 
 const DEFAULT_BADGE_COLOR = "bg-muted/20 text-foreground";

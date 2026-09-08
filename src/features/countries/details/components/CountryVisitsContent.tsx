@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { ICONS } from "@constants/icons";
 import { useUI } from "@app/contexts/UIContext";
-import { useTrips } from "@features/trips/context/TripsContext";
+import { useTrips } from "@features/trips/core/context/TripsContext";
 import type { CategorizedVisits } from "@features/visits/types";
 import { VisitSection } from "./VisitSection";
 
