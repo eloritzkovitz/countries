@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import { useCalendarNavigation } from "@features/calendar";
 import {
   CountryDetailsPanel,
   CountryFlag,
@@ -48,6 +49,7 @@ export function CountryStats({
   onBack,
 }: CountryStatsProps) {
   const location = useLocation();
+  const { openTripInCalendar } = useCalendarNavigation();
   const { countries, countryByIsoCode, currencies } = useCountryData();
   const { navigateToCountry } = useExploreNavigation(countries);
   const { visitedCountryCodes, getCountryVisitsCategorized } =
@@ -175,6 +177,7 @@ export function CountryStats({
           activeTab={currentTab}
           onTabChange={handleTabChange}
           onSelectCountry={setSelectedIsoCode}
+          onTripClick={openTripInCalendar}
           className="text-lg"
         />
       </div>

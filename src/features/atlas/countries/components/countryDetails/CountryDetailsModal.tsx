@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useUI } from "@app/contexts/UIContext";
 import { Modal } from "@components";
 import { useCenterOnCountry } from "@features/atlas/map/hooks/useCenterOnCountry";
+import { useCalendarNavigation } from "@features/calendar";
 import {
   CountryDetailsPanel,
   useCountryData,
@@ -24,6 +25,7 @@ export function CountryDetailsModal({
   onClose,
 }: CountryDetailsModalProps) {
   const { singleKeyShortcutsEnabled } = useAccessibility();
+  const { openTripInCalendar } = useCalendarNavigation();
   const { countryByIsoCode, currencies } = useCountryData();
   const centerOnCountry = useCenterOnCountry();
   const { showCalendar } = useUI();
@@ -85,6 +87,7 @@ export function CountryDetailsModal({
             resetTabOnClose={true}
             isOpen={!!isOpen}
             onSelectCountry={handleSelectCountry}
+            onTripClick={openTripInCalendar}
             className="flex-1 min-h-0"
           />
         </div>

@@ -1,24 +1,24 @@
 import { useTranslation } from "react-i18next";
 import { ICONS } from "@constants/icons";
-import { useUI } from "@app/contexts/UIContext";
-import { useTrips } from "@features/trips/core/context/TripsContext";
 import type { CategorizedVisits } from "@features/visits/types";
 import { VisitSection } from "./VisitSection";
 
 interface CountryVisitsContentProps {
   visits: CategorizedVisits;
+  onTripClick?: (tripId: string) => void;
 }
 
-export function CountryVisitsContent({ visits }: CountryVisitsContentProps) {
-  const { trips } = useTrips();
-  const { handleViewInCalendar } = useUI();
+export function CountryVisitsContent({
+  visits,
+  onTripClick,
+}: CountryVisitsContentProps) {
   const { t } = useTranslation("atlas");
 
   // Handler for clicking on a visit chip
   const handleVisitChipClick = (tripId: string | undefined) => {
-    if (!tripId) return;
-    const trip = trips.find((t) => t.id === tripId);
-    if (trip) handleViewInCalendar(trip);
+    if (tripId) {
+      onTripClick?.(tripId);
+    }
   };
 
   return (

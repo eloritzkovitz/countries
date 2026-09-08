@@ -22,6 +22,7 @@ interface CountryDetailsPanelProps {
   isOpen?: boolean;
   onTabChange?: (tab: CountryDetailsTab) => void;
   onSelectCountry?: (isoCode: string) => void;
+  onTripClick?: (tripId: string) => void;
   className?: string;
 }
 
@@ -35,6 +36,7 @@ export function CountryDetailsPanel({
   isOpen = true,
   onTabChange,
   onSelectCountry,
+  onTripClick,
   className = "",
 }: CountryDetailsPanelProps) {
   const { data: facts = [], isLoading: factsLoading } =
@@ -43,7 +45,7 @@ export function CountryDetailsPanel({
 
   const [internalTab, setInternalTab] = useState<CountryDetailsTab>(initialTab);
 
-  const activeTab = externalActiveTab ?? internalTab;  
+  const activeTab = externalActiveTab ?? internalTab;
 
   const countryFacts = useMemo(
     () => facts.filter((fact) => fact.countryCodes.includes(country.isoCode)),
@@ -147,7 +149,10 @@ export function CountryDetailsPanel({
           )}
 
           {activeTab === "visits" && (
-            <CountryVisitsContent visits={categorizedVisits} />
+            <CountryVisitsContent
+              visits={categorizedVisits}
+              onTripClick={onTripClick}
+            />
           )}
         </div>
       </div>
