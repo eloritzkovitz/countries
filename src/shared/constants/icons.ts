@@ -49,6 +49,7 @@ import {
   FaGlobe,
   FaHatWizard,
   FaHeart,
+  FaHourglass,
   FaHourglassStart,
   FaHouse,
   FaKeyboard,
@@ -164,7 +165,7 @@ export const ICONS = {
   // Trips
   trips: FaSuitcaseRolling,
   tripDates: FaCalendarDays,
-  tripDuration: FaHourglassStart,
+  tripDuration: FaHourglass,
   tripCategory: PiCirclesFourFill,
   tripTag: FaTag,
   tripLocal: FaLocationDot,

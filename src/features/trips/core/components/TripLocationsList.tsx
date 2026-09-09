@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ActionButton, LoadingSpinner, SectionHeader } from "@components";
 import { ICONS } from "@constants/icons";
-import { CountryWithFlag } from "@features/countries";
+import { CountryWithFlag, SPECIAL_COUNTRIES } from "@features/countries";
 import type { Location } from "@lib/locations";
 
 interface TripLocationsListProps {
@@ -89,34 +89,58 @@ export function TripLocationsList({
                     b[0].admin1?.name ?? "",
                   ),
                 )
-                .map(([admin1Code, admin1Locations]) => (
-                  <div key={admin1Code}>
-                    <SectionHeader title={admin1Locations[0].admin1?.name} />
+                .map(([admin1Code, admin1Locations]) => {
+                  const admin1 = admin1Locations[0].admin1!;
+                  const admin1IsoCode =
+                    `${countryCode}-${admin1.code}`.toUpperCase();
+                  const hasFlag = Boolean(
+                    SPECIAL_COUNTRIES[admin1IsoCode]?.flag,
+                  );
 
-                    <div className="ms-3 flex flex-col gap-1">
-                      {[...admin1Locations]
-                        .sort((a, b) => a.name.localeCompare(b.name))
-                        .map((location) => (
-                          <div
-                            key={location.id}
-                            className="flex items-center justify-between rounded bg-input px-3 py-2"
-                          >
-                            <span>{location.name}</span>
-
-                            {onRemove && (
-                              <ActionButton
-                                icon={<ICONS.close />}
-                                variant="custom"
-                                className="p-1"
-                                ariaLabel={t("editor.actions.remove")}
-                                onClick={() => onRemove(location.id)}
+                  return (
+                    <div key={admin1Code}>
+                      {hasFlag ? (
+                        <SectionHeader
+                          title={
+                            <span className="flex items-center gap-2">
+                              <CountryWithFlag
+                                country={{
+                                  isoCode: admin1IsoCode,
+                                  name: admin1.name,
+                                }}
                               />
-                            )}
-                          </div>
-                        ))}
+                            </span>
+                          }
+                        />
+                      ) : (
+                        <SectionHeader title={admin1.name} />
+                      )}
+
+                      <div className="ms-3 flex flex-col gap-1">
+                        {[...admin1Locations]
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((location) => (
+                            <div
+                              key={location.id}
+                              className="flex items-center justify-between rounded bg-input px-3 py-2"
+                            >
+                              <span>{location.name}</span>
+
+                              {onRemove && (
+                                <ActionButton
+                                  icon={<ICONS.close />}
+                                  variant="custom"
+                                  className="p-1"
+                                  ariaLabel={t("editor.actions.remove")}
+                                  onClick={() => onRemove(location.id)}
+                                />
+                              )}
+                            </div>
+                          ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
 
               {[...country.locationsWithoutAdmin1]
                 .sort((a, b) => a.name.localeCompare(b.name))
