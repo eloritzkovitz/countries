@@ -12,7 +12,7 @@ interface LocationsResponse {
  * @throws Error if the backend URL is not configured or if the fetch fails.
  * @returns A promise that resolves to an array of TripLocation objects.
  */
-export async function getLocationsByIds(
+export async function fetchLocationsByIds(
   locationIds: number[],
   signal?: AbortSignal,
 ): Promise<Location[]> {
@@ -45,7 +45,7 @@ export async function getLocationsByIds(
  * @throws Error if the backend URL is not configured or if the search fails.
  * @returns A promise that resolves to an array of Location objects matching the search criteria.
  */
-export async function searchLocations(
+export async function fetchSearchLocations(
   query: string,
   countryCode: string,
   language: string,

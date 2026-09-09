@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { ActionButton, LoadingSpinner, SectionHeader } from "@components";
-import { ICONS } from "@constants/icons";
+import { LoadingSpinner, SectionHeader } from "@components";
 import { CountryWithFlag, SPECIAL_COUNTRIES } from "@features/countries";
+import { useLanguage } from "@features/settings/account";
 import type { Location } from "@lib/locations";
+import { TripLocationItem } from "./TripLocationItem";
 
 interface TripLocationsListProps {
   locations: Location[];
@@ -17,6 +18,7 @@ export function TripLocationsList({
   onRemove,
 }: TripLocationsListProps) {
   const { t } = useTranslation("trips");
+  const { current: lang } = useLanguage();
 
   const groupedLocations = useMemo(() => {
     const countries = new Map<
@@ -93,6 +95,7 @@ export function TripLocationsList({
                   const admin1 = admin1Locations[0].admin1!;
                   const admin1IsoCode =
                     `${countryCode}-${admin1.code}`.toUpperCase();
+
                   const hasFlag = Boolean(
                     SPECIAL_COUNTRIES[admin1IsoCode]?.flag,
                   );
@@ -120,22 +123,12 @@ export function TripLocationsList({
                         {[...admin1Locations]
                           .sort((a, b) => a.name.localeCompare(b.name))
                           .map((location) => (
-                            <div
+                            <TripLocationItem
                               key={location.id}
-                              className="flex items-center justify-between rounded bg-input px-3 py-2"
-                            >
-                              <span>{location.name}</span>
-
-                              {onRemove && (
-                                <ActionButton
-                                  icon={<ICONS.close />}
-                                  variant="custom"
-                                  className="p-1"
-                                  ariaLabel={t("editor.actions.remove")}
-                                  onClick={() => onRemove(location.id)}
-                                />
-                              )}
-                            </div>
+                              location={location}
+                              lang={lang}
+                              onRemove={onRemove}
+                            />
                           ))}
                       </div>
                     </div>
@@ -145,22 +138,12 @@ export function TripLocationsList({
               {[...country.locationsWithoutAdmin1]
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((location) => (
-                  <div
+                  <TripLocationItem
                     key={location.id}
-                    className="ms-3 flex items-center justify-between rounded bg-input px-3 py-2"
-                  >
-                    <span>{location.name}</span>
-
-                    {onRemove && (
-                      <ActionButton
-                        icon={<ICONS.close />}
-                        variant="custom"
-                        className="p-1"
-                        ariaLabel={t("editor.actions.remove")}
-                        onClick={() => onRemove(location.id)}
-                      />
-                    )}
-                  </div>
+                    location={location}
+                    lang={lang}
+                    onRemove={onRemove}
+                  />
                 ))}
             </div>
           </div>
