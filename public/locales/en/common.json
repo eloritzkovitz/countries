@@ -162,6 +162,12 @@
     "date": {
       "tbd": "TBD"
     },
+    "duration": {
+      "dayUnit": "day",
+      "daysUnit": "days",
+      "days_one": "{{count}} day",
+      "days_other": "{{count}} days"
+    },
     "timeAgo": {
       "justNow": "Just now",
       "minutes_one": "{{count}}m ago",

@@ -3,12 +3,34 @@
   "loading": "Loading trips...",
   "noTrips": "No trips yet.",
 
+  "fields": {
+    "name": "Name",
+    "rating": "Rating",
+    "countries": "Countries",
+    "destinations": "Destinations",
+    "year": "Year",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "fullDays": "Full Days",
+    "participants": "Participants",
+    "categories": "Categories",
+    "status": "Status",
+    "tags": "Tags",
+    "notes": "Notes"
+  },
+
+  "sections": {
+    "overview": "Overview",
+    "details": "Details",
+    "destinations": "Destinations"
+  },
+
   "table": {
     "toolbar": {
       "search": {
         "placeholder": "Search trips"
       },
-      
+
       "filters": {
         "clearFilters": "Clear Filters",
         "local": "Local",
@@ -47,20 +69,6 @@
       }
     },
 
-    "headers": {
-      "name": "Name",
-      "rating": "Rating",
-      "countries": "Countries",
-      "year": "Year",
-      "startDate": "Start Date",
-      "endDate": "End Date",
-      "fullDays": "Full Days",
-      "participants": "Participants",
-      "categories": "Categories",
-      "status": "Status",
-      "tags": "Tags"
-    },
-
     "placeholders": {
       "searchByName": "Search by name",
       "allRatings": "All Ratings",
@@ -75,59 +83,57 @@
     "itemLabels": {
       "singular": "trip",
       "plural": "trips"
-    },
-
-    "actions": {
-      "sharedDisabledTitle": "Shared trips cannot be edited",
-      "moreActions": "More actions",
-      "viewTrip": "View Trip",
-      "viewInCalendar": "View in Calendar",
-      "editTrip": "Edit Trip",
-      "duplicate": "Duplicate",
-      "favorite": "Favorite",
-      "unfavorite": "Unfavorite",
-      "rate": "Rate",
-      "deleteTrip": "Delete Trip"
     }
   },
 
-  "modal": {
-    "titleAdd": "Add Trip",
-    "titleEdit": "Edit Trip",
+  "actions": {
+    "sharedDisabledTitle": "Shared trips cannot be edited",
+    "moreActions": "More actions",
+    "viewTrip": "View Trip",
+    "viewInCalendar": "View in Calendar",
+    "editTrip": "Edit Trip",
+    "duplicate": "Duplicate",
+    "favorite": "Favorite",
+    "unfavorite": "Unfavorite",
+    "rate": "Rate",
+    "deleteTrip": "Delete Trip"
+  },
 
-    "tabs": {
-      "overview": "Overview",
-      "details": "Details",
-      "destinations": "Destinations"
-    },
+  "editor": {
+    "titleAdd": "Add Trip",
+    "titleEdit": "Edit Trip",    
 
     "overview": {
-      "name": "Name",
-      "startDate": "Start Date",
-      "endDate": "End Date",
       "tentativeDates": "Tentative Dates",
-      "fullDays": "Full Days",
-      "notesTitle": "Notes",
-      "notesPlaceholder": "Add notes about this trip..."
+      "notesPlaceholder": "Add notes about this trip...",
+      "noNotes": "No notes available."
     },
 
     "details": {
-      "participants": "Participants",
-      "selectParticipants": "Select participants",
-      "categories": "Categories",
-      "selectCategories": "Select categories",
-      "tags": "Tags",
-      "addTags": "Add tags"
+      "participants": {
+        "select": "Select participants",
+        "none": "No participants selected."
+      },
+      "categories": {
+        "select": "Select categories",
+        "none": "No categories selected."
+      },
+      "tags": {
+        "select": "Select tags",
+        "none": "No tags selected."
+      }
     },
 
     "destinations": {
-      "countriesTitle": "Countries",
-      "noCountries": "No countries selected",
+      "countries": {
+        "select": "Select Countries",
+        "none": "No countries selected."
+      },
 
       "locations": {
         "title": "Locations",
-        "noLocations": "No locations selected",
-        "selectTitle": "Select Locations",
+        "select": "Select Locations",
+        "none": "No locations selected.",
         "searchPlaceholder": "Search locations",
         "noResults": "No locations found."
       }
@@ -136,11 +142,9 @@
     "actions": {
       "saveChanges": "Save Changes",
       "addTrip": "Add Trip",
-      "removeCountry": "Remove",
-      "editCountries": "Edit Countries",
-      "selectCountries": "Select Countries",
+      "add": "Add",
       "edit": "Edit",
-      "add": "Add"
+      "remove": "Remove"
     }
   },
 

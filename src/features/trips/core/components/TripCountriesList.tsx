@@ -23,7 +23,7 @@ export function TripCountriesList({
     <div>
       <div className="flex flex-col gap-3">
         {countries.length === 0 && (
-          <EmptyListMessage message={t("modal.destinations.noCountriesSelected")} />
+          <EmptyListMessage message={t("editor.destinations.countries.none")} />
         )}
         {countries.map((country) => (
           <span key={country.isoCode} className="flex items-center py-0.5">
@@ -32,7 +32,7 @@ export function TripCountriesList({
               <button
                 type="button"
                 className="ms-auto text-muted hover:text-muted-hover"
-                aria-label={t("modal.actions.removeCountry")}
+                aria-label={t("editor.actions.remove")}
                 onClick={() => onRemove && onRemove(country.isoCode)}
               >
                 <FaXmark />

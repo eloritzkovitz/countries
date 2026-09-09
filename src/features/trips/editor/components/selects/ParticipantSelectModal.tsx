@@ -32,7 +32,7 @@ export function ParticipantSelectModal({
       title={
         <>
           <ICONS.friends />
-          {t("trips:modal.participants.selectTitle", "Select Participants")}
+          {t("trips:editor.details.participants.select", "Select participants")}
         </>
       }
       items={options}
@@ -40,8 +40,8 @@ export function ParticipantSelectModal({
       getItemValue={(option) => option.value}
       getItemSearchLabel={(option) => option.label}
       emptyMessage={t(
-        "trips:modal.participants.noResults",
-        "No friends found.",
+        "trips:editor.details.participants.none",
+        "No participants selected.",
       )}
       onChange={onChange}
       onClose={onClose}

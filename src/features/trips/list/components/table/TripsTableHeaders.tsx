@@ -68,7 +68,7 @@ export function TripsTableHeaders({
         </TableHeader>
         <TableHeader colKey="name" renderResizeHandle={renderResizeHandle}>
           <SortableFilterHeader
-            label={t("table.headers.name")}
+            label={t("fields.name")}
             sortKey="name"
             sortBy={sortBy}
             onSort={handleSort}
@@ -79,7 +79,7 @@ export function TripsTableHeaders({
         </TableHeader>
         <TableHeader colKey="rating" renderResizeHandle={renderResizeHandle}>
           <SortableFilterHeader
-            label={t("table.headers.rating")}
+            label={t("fields.rating")}
             sortKey="rating"
             sortBy={sortBy}
             onSort={handleSort}
@@ -106,7 +106,7 @@ export function TripsTableHeaders({
         </TableHeader>
         <TableHeader colKey="countries" renderResizeHandle={renderResizeHandle}>
           <SortableFilterHeader
-            label={t("table.headers.countries")}
+            label={t("fields.countries")}
             sortKey="countries"
             sortBy={sortBy}
             onSort={handleSort}
@@ -137,7 +137,7 @@ export function TripsTableHeaders({
         </TableHeader>
         <TableHeader colKey="year" renderResizeHandle={renderResizeHandle}>
           <SortableFilterHeader
-            label={t("table.headers.year")}
+            label={t("fields.year")}
             sortKey="year"
             sortBy={sortBy}
             onSort={handleSort}
@@ -157,7 +157,7 @@ export function TripsTableHeaders({
         </TableHeader>
         <TableHeader colKey="startDate" renderResizeHandle={renderResizeHandle}>
           <SortableFilterHeader
-            label={t("table.headers.startDate")}
+            label={t("fields.startDate")}
             sortKey="startDate"
             sortBy={sortBy}
             onSort={handleSort}
@@ -166,7 +166,7 @@ export function TripsTableHeaders({
         </TableHeader>
         <TableHeader colKey="endDate" renderResizeHandle={renderResizeHandle}>
           <SortableFilterHeader
-            label={t("table.headers.endDate")}
+            label={t("fields.endDate")}
             sortKey="endDate"
             sortBy={sortBy}
             onSort={handleSort}
@@ -175,7 +175,7 @@ export function TripsTableHeaders({
         </TableHeader>
         <TableHeader colKey="fullDays" renderResizeHandle={renderResizeHandle}>
           <SortableFilterHeader
-            label={t("table.headers.fullDays")}
+            label={t("fields.fullDays")}
             sortKey="fullDays"
             sortBy={sortBy}
             onSort={handleSort}
@@ -187,7 +187,7 @@ export function TripsTableHeaders({
           renderResizeHandle={renderResizeHandle}
         >
           <SortableFilterHeader
-            label={t("table.headers.participants")}
+            label={t("fields.participants")}
             sortKey="participants"
             sortBy={sortBy}
             onSort={handleSort}
@@ -216,7 +216,7 @@ export function TripsTableHeaders({
           renderResizeHandle={renderResizeHandle}
         >
           <SortableFilterHeader
-            label={t("table.headers.categories")}
+            label={t("fields.categories")}
             sortKey="categories"
             sortBy={sortBy}
             onSort={handleSort}
@@ -249,7 +249,7 @@ export function TripsTableHeaders({
         </TableHeader>
         <TableHeader colKey="status" renderResizeHandle={renderResizeHandle}>
           <SortableFilterHeader
-            label={t("table.headers.status")}
+            label={t("fields.status")}
             sortKey="status"
             sortBy={sortBy}
             onSort={handleSort}
@@ -268,7 +268,7 @@ export function TripsTableHeaders({
         </TableHeader>
         <TableHeader colKey="tags" renderResizeHandle={renderResizeHandle}>
           <SortableFilterHeader
-            label={t("table.headers.tags")}
+            label={t("fields.tags")}
             sortKey="tags"
             sortBy={sortBy}
             onSort={handleSort}

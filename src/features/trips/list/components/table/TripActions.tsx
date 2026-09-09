@@ -142,8 +142,8 @@ export const TripActions = forwardRef(function TripActions(
   if (isShared) {
     return (
       <ActionButton
-        ariaLabel={t("table.actions.sharedDisabledTitle")}
-        title={t("table.actions.sharedDisabledTitle")}
+        ariaLabel={t("actions.sharedDisabledTitle")}
+        title={t("actions.sharedDisabledTitle")}
         icon={<ICONS.more />}
         rounded
         disabled
@@ -160,8 +160,8 @@ export const TripActions = forwardRef(function TripActions(
             handleCloseAll();
             setOpen((v) => !v);
           }}
-          ariaLabel={t("table.actions.moreActions")}
-          title={t("table.actions.moreActions")}
+          ariaLabel={t("actions.moreActions")}
+          title={t("actions.moreActions")}
           icon={<ICONS.more />}
           rounded
         />
@@ -182,7 +182,7 @@ export const TripActions = forwardRef(function TripActions(
           icon={<ICONS.view />}
           className="w-full"
         >
-          {t("table.actions.viewTrip")}
+          {t("actions.viewTrip")}
         </MenuButton>
 
         {hasValidStartDate(trip) && (
@@ -194,7 +194,7 @@ export const TripActions = forwardRef(function TripActions(
             icon={<ICONS.calendar />}
             className="w-full"
           >
-            {t("table.actions.viewInCalendar")}
+            {t("actions.viewInCalendar")}
           </MenuButton>
         )}
 
@@ -208,7 +208,7 @@ export const TripActions = forwardRef(function TripActions(
           icon={<ICONS.edit />}
           className="w-full"
         >
-          {t("table.actions.editTrip")}
+          {t("actions.editTrip")}
         </MenuButton>
 
         {canMarkCompleted(trip) && (
@@ -220,7 +220,7 @@ export const TripActions = forwardRef(function TripActions(
             icon={<ICONS.tripCompleted />}
             className="w-full"
           >
-            {t("table.actions.markCompleted", "Mark Completed")}
+            {t("actions.markCompleted", "Mark Completed")}
           </MenuButton>
         )}
 
@@ -233,7 +233,7 @@ export const TripActions = forwardRef(function TripActions(
             icon={<ICONS.tripCancelled />}
             className="w-full"
           >
-            {t("table.actions.markCancelled", "Mark Cancelled")}
+            {t("actions.markCancelled", "Mark Cancelled")}
           </MenuButton>
         )}
 
@@ -246,7 +246,7 @@ export const TripActions = forwardRef(function TripActions(
             icon={<ICONS.refresh />}
             className="w-full"
           >
-            {t("table.actions.restoreTrip", "Restore Trip")}
+            {t("actions.restoreTrip", "Restore Trip")}
           </MenuButton>
         )}
 
@@ -260,7 +260,7 @@ export const TripActions = forwardRef(function TripActions(
           icon={<ICONS.duplicate />}
           className="w-full"
         >
-          {t("table.actions.duplicate")}
+          {t("actions.duplicate")}
         </MenuButton>
 
         {trip.status === "completed" && (
@@ -279,9 +279,7 @@ export const TripActions = forwardRef(function TripActions(
               }
               className="w-full"
             >
-              {trip.favorite
-                ? t("table.actions.unfavorite")
-                : t("table.actions.favorite")}
+              {trip.favorite ? t("actions.unfavorite") : t("actions.favorite")}
             </MenuButton>
 
             <div
@@ -294,7 +292,7 @@ export const TripActions = forwardRef(function TripActions(
                 icon={<ICONS.rate className="text-yellow-400" />}
                 className="w-full flex items-center justify-between"
               >
-                {t("table.actions.rate")}
+                {t("actions.rate")}
                 <DirectionalIcon direction="next" className="ms-auto" />
               </MenuButton>
 
@@ -335,7 +333,7 @@ export const TripActions = forwardRef(function TripActions(
           icon={<ICONS.remove />}
           className="w-full"
         >
-          {t("table.actions.deleteTrip")}
+          {t("actions.deleteTrip")}
         </MenuButton>
       </Menu>
 

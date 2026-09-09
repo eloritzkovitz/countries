@@ -20,7 +20,7 @@ export function TagsSection({
   return (
     <div className="flex-1 min-h-0 pt-2">
       <div className="flex items-center justify-between mb-2">
-        <span className="font-semibold">{t("modal.details.tags", "Tags")}</span>
+        <span className="font-semibold">{t("fields.tags", "Tags")}</span>
         <button
           type="button"
           className="flex items-center gap-1 px-2 py-1 rounded hover:bg-input-hover text-sm font-medium"
@@ -28,14 +28,14 @@ export function TagsSection({
         >
           <ICONS.edit className="me-1" />
           {selectedTags.length > 0
-            ? t("modal.actions.edit")
-            : t("modal.actions.add")}
+            ? t("editor.actions.edit")
+            : t("editor.actions.add")}
         </button>
       </div>
 
       {selectedTags.length === 0 ? (
         <EmptyListMessage
-          message={t("modal.details.noTags", "No tags selected.")}
+          message={t("editor.details.noTags", "No tags selected.")}
         />
       ) : (
         <TagsList

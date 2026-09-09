@@ -161,6 +161,12 @@
     "date": {
       "tbd": "טרם"
     },
+    "duration": {
+      "dayUnit": "יום",
+      "daysUnit": "ימים",
+      "days_one": "יום אחד",
+      "days_other": "{{count}} ימים"
+    },
     "timeAgo": {
       "justNow": "עכשיו",
       "minutes_one": "לפני {{count}}ח",

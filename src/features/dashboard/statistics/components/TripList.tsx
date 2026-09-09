@@ -69,8 +69,9 @@ export function TripList({
               <span className="font-semibold text-base">{trip.name}</span>
               {showDuration && trip.startDate && trip.endDate && (
                 <span className="text-muted text-sm">
-                  | {getTripDays(trip)}{" "}
-                  {t("statistics.overview.days", { defaultValue: "days" })}
+                  {t("common:formatting.duration.days", {
+                    count: getTripDays(trip),
+                  })}
                 </span>
               )}
               <span className="flex-1" />

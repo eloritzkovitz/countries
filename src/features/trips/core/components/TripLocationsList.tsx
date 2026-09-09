@@ -64,7 +64,7 @@ export function TripLocationsList({
   if (locations.length === 0) {
     return (
       <p className="text-sm text-muted">
-        {t("modal.destinations.locations.noLocations")}
+        {t("editor.destinations.locations.none")}
       </p>
     );
   }
@@ -108,7 +108,7 @@ export function TripLocationsList({
                                 icon={<ICONS.close />}
                                 variant="custom"
                                 className="p-1"
-                                ariaLabel={t("modal.actions.remove")}
+                                ariaLabel={t("editor.actions.remove")}
                                 onClick={() => onRemove(location.id)}
                               />
                             )}
@@ -132,7 +132,7 @@ export function TripLocationsList({
                         icon={<ICONS.close />}
                         variant="custom"
                         className="p-1"
-                        ariaLabel={t("modal.actions.remove")}
+                        ariaLabel={t("editor.actions.remove")}
                         onClick={() => onRemove(location.id)}
                       />
                     )}

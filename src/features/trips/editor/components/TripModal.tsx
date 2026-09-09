@@ -114,15 +114,15 @@ export function TripModal({
   const tabs: TabControlItem<TripTab>[] = [
     {
       value: "overview",
-      label: t("modal.tabs.overview"),
+      label: t("sections.overview"),
     },
     {
       value: "details",
-      label: t("modal.tabs.details"),
+      label: t("sections.details"),
     },
     {
       value: "destinations",
-      label: t("modal.tabs.destinations"),
+      label: t("sections.destinations"),
     },
   ];
 
@@ -150,7 +150,7 @@ export function TripModal({
           title={
             <>
               <ICONS.trips />
-              {isEditing ? t("modal.titleEdit") : t("modal.titleAdd")}
+              {isEditing ? t("editor.titleEdit") : t("editor.titleAdd")}
             </>
           }
         />
@@ -216,8 +216,8 @@ export function TripModal({
               }
               submitLabel={
                 isEditing
-                  ? t("modal.actions.saveChanges")
-                  : t("modal.actions.addTrip")
+                  ? t("editor.actions.saveChanges")
+                  : t("editor.actions.addTrip")
               }
               disabled={!isValid}
             />

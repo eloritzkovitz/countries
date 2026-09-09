@@ -68,7 +68,7 @@ export function TripsOverview() {
           <p className="text-2xl font-bold">
             {totalDaysTraveling ? animatedTotalDays : "—"}
             <span className="ms-1 text-sm font-normal text-muted">
-              {t("statistics.overview.days", { defaultValue: "days/trip" })}
+              {t("common:formatting.duration.daysUnit")}
             </span>
           </p>
         </Card>
@@ -84,7 +84,7 @@ export function TripsOverview() {
           <p className="text-2xl font-bold">
             {averageTripDuration ? formattedAvgDuration : "0.0"}{" "}
             <span className="text-sm font-normal text-muted">
-              {t("statistics.overview.days", { defaultValue: "days/trip" })}
+              {t("common:formatting.duration.daysUnit")}
             </span>
           </p>
         </Card>

@@ -77,7 +77,7 @@ export default function TripDetailsPage() {
   return (
     <>
       <Container className="mt-12">
-        <PageHeader title={t("backToTrips", "Trips")} fallbackPath="/trips" />
+        <PageHeader title={t("pageTitle", "My Trips")} fallbackPath="/trips" />
 
         <div className="mx-auto space-y-6">
           {/* Trip header */}
@@ -104,7 +104,7 @@ export default function TripDetailsPage() {
                   onClick={() => handleEdit(trip)}
                   icon={<ICONS.edit className="h-4 w-4" />}
                 >
-                  {t("actions.edit", "Edit trip")}
+                  {t("actions.editTrip", "Edit trip")}
                 </ActionButton>
               </div>
             </div>
@@ -127,7 +127,9 @@ export default function TripDetailsPage() {
 
                 <p className="font-medium">
                   {startDate && endDate
-                    ? `${trip.fullDays} ${t("modal.details.days", "days")}`
+                    ? t("common:formatting.duration.days", {
+                        count: trip.fullDays,
+                      })
                     : t("common:formatting.date.tbd")}
                 </p>
               </div>
@@ -136,32 +138,39 @@ export default function TripDetailsPage() {
             </div>
           </Card>
 
+          {/* Destinations */}
+          <Card title={t("sections.destinations", "Destinations")}>
+            <TripLocationsList
+              locations={locations}
+              loading={locationsLoading}
+            />
+          </Card>
+
           {/* Details */}
-          <Card title={t("modal.tabs.details", "Details")}>
+          <Card title={t("sections.details", "Details")}>
             <SectionHeader>
-              {t("modal.details.participants", "Participants")} (
+              {t("fields.participants", "Participants")} (
               {trip.participants?.length ?? 0})
             </SectionHeader>
             <ParticipantsList uids={trip.participants ?? []} />
 
             <SectionHeader
-              title={t("modal.details.categories", "Categories")}
+              title={t("fields.categories", "Categories")}
             />
             <CategoriesList
               categories={trip.categories ?? []}
               limit={trip.categories?.length}
             />
 
-            <SectionHeader title={t("modal.details.tags", "Tags")} />
+            <SectionHeader title={t("fields.tags", "Tags")} />
             <TagsList tags={trip.tags ?? []} limit={trip.tags?.length} />
           </Card>
 
-          {/* Destinations */}
-          <Card title={t("modal.tabs.destinations", "Destinations")}>
-            <TripLocationsList
-              locations={locations}
-              loading={locationsLoading}
-            />
+          {/* Notes */}
+          <Card title={t("fields.notes", "Notes")}>
+            <p className="whitespace-pre-line text-muted">
+              {trip.notes || t("editor.overview.noNotes", "No notes available.")}
+            </p>
           </Card>
         </div>
       </Container>

@@ -37,7 +37,7 @@ export function DestinationSelectModal({
       title={
         <>
           <ICONS.location />
-          {t("modal.destinations.locations.selectTitle")}
+          {t("editor.destinations.locations.select")}
         </>
       }
       items={locations}
@@ -46,11 +46,11 @@ export function DestinationSelectModal({
       onSearchChange={setSearch}
       getItemValue={(location) => String(location.id)}
       getItemSearchLabel={(location) => location.name}
-      placeholder={t("modal.destinations.locations.searchPlaceholder")}
+      placeholder={t("editor.destinations.locations.searchPlaceholder")}
       emptyMessage={
         loading
           ? t("common:components.search.searching")
-          : t("modal.destinations.locations.noResults")
+          : t("editor.destinations.locations.noResults")
       }
       multiple
       onChange={(values) => {

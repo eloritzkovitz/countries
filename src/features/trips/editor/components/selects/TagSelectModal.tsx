@@ -23,7 +23,7 @@ export function TagSelectModal({
   onChange,
   onClose,
 }: TagSelectModalProps) {
-  const { t } = useTranslation(["trips", "common"]);
+  const { t } = useTranslation("trips");
 
   return (
     <ModalSelect<TagOption>
@@ -31,14 +31,14 @@ export function TagSelectModal({
       title={
         <>
           <ICONS.tripTag />
-          {t("trips:modal.tags.selectTitle", "Select Tags")}
+          {t("editor.details.tags.select", "Select Tags")}
         </>
       }
       items={options}
       selectedValues={selected}
       getItemValue={(opt) => opt.value}
       getItemSearchLabel={(opt) => opt.label}
-      emptyMessage={t("trips:modal.tags.noResults", "No matching tags found.")}
+      emptyMessage={t("editor.details.tags.none")}
       onChange={(values) => onChange(values as TripTag[])}
       onClose={onClose}
       renderItem={(opt) => (

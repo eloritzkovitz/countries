@@ -27,7 +27,7 @@ export function TripOverviewTab({
   return (
     <div className="flex flex-col gap-4">
       {/* Name */}
-      <FormField label={t("modal.overview.name")}>
+      <FormField label={t("fields.name")}>
         <InputBox
           id="trip-name"
           name="trip-name"
@@ -45,7 +45,7 @@ export function TripOverviewTab({
 
       {/* Dates */}
       <div className="grid grid-cols-2 gap-4">
-        <FormField label={t("modal.overview.startDate")} disabled={isTentative}>
+        <FormField label={t("fields.startDate")} disabled={isTentative}>
           <DateSelect
             value={trip.startDate ?? ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +67,7 @@ export function TripOverviewTab({
           />
         </FormField>
 
-        <FormField label={t("modal.overview.endDate")} disabled={isTentative}>
+        <FormField label={t("fields.endDate")} disabled={isTentative}>
           <DateSelect
             value={trip.endDate ?? ""}
             min={trip.startDate || undefined}
@@ -86,7 +86,7 @@ export function TripOverviewTab({
       {/* Tentative dates */}
       <FormField label="">
         <Checkbox
-          label={t("modal.overview.tentativeDates")}
+          label={t("editor.overview.tentativeDates")}
           checked={isTentative}
           onChange={(tentative) => {
             onTentativeChange(tentative);
@@ -103,7 +103,7 @@ export function TripOverviewTab({
       </FormField>
 
       {/* Full days */}
-      <FormField label={t("modal.overview.fullDays")} disabled={isTentative}>
+      <FormField label={t("fields.fullDays")} disabled={isTentative}>
         <NumberInput
           label=""
           value={trip.fullDays ?? 1}
@@ -119,7 +119,7 @@ export function TripOverviewTab({
       </FormField>
 
       {/* Notes */}
-      <FormField label={t("modal.overview.notesTitle")}>
+      <FormField label={t("fields.notes")}>
         <InputBox
           id="trip-notes"
           name="trip-notes"
@@ -132,7 +132,7 @@ export function TripOverviewTab({
               notes: e.target.value,
             })
           }
-          placeholder={t("modal.overview.notesPlaceholder")}
+          placeholder={t("editor.overview.notesPlaceholder")}
         />
       </FormField>
     </div>

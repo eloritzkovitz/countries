@@ -24,23 +24,19 @@ export function LocationsSection({
     <div className="flex-1 min-h-0 overflow-auto">
       <div className="flex items-center justify-between mb-1">
         <span className="font-semibold">
-          {t("modal.destinations.locations.title")}
+          {t("editor.destinations.locations.title")}
         </span>
 
         <ActionButton
           icon={<ICONS.edit />}
           variant="custom"
           className="px-2 py-1 text-sm"
-          ariaLabel={
-            locations.length > 0
-              ? t("modal.editLocations")
-              : t("modal.selectLocations")
-          }
+          ariaLabel={t("editor.destinations.locations.select")}
           onClick={onEdit}
         >
           {locations.length > 0
-            ? t("modal.actions.edit")
-            : t("modal.actions.add")}
+            ? t("editor.actions.edit")
+            : t("editor.actions.add")}
         </ActionButton>
       </div>
 

@@ -21,7 +21,7 @@ export function CategoriesSection({
     <div className="flex-1 min-h-0 pt-2">
       <div className="flex items-center justify-between mb-2">
         <span className="font-semibold">
-          {t("modal.details.categories", "Categories")}
+          {t("fields.categories", "Categories")}
         </span>
         <button
           type="button"
@@ -30,14 +30,14 @@ export function CategoriesSection({
         >
           <ICONS.edit className="me-1" />
           {selectedCategories.length > 0
-            ? t("modal.actions.edit")
-            : t("modal.actions.add")}
+            ? t("editor.actions.edit")
+            : t("editor.actions.add")}
         </button>
       </div>
 
       {selectedCategories.length === 0 ? (
         <EmptyListMessage
-          message={t("modal.details.noCategories", "No categories selected.")}
+          message={t("editor.details.noCategories", "No categories selected.")}
         />
       ) : (
         <CategoriesList

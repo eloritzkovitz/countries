@@ -32,7 +32,7 @@ export function CategorySelectModal({
       title={
         <>
           <ICONS.tripCategory className="text-2xl" />
-          {t("trips:modal.categories.selectTitle", "Select Categories")}
+          {t("trips:editor.details.categories.select", "Select categories")}
         </>
       }
       items={options}
@@ -40,8 +40,8 @@ export function CategorySelectModal({
       getItemValue={(opt) => opt.value}
       getItemSearchLabel={(opt) => opt.label}
       emptyMessage={t(
-        "trips:modal.categories.noResults",
-        "No matching categories found.",
+        "trips:editor.details.categories.none",
+        "No categories selected.",
       )}
       onChange={(values) => onChange(values as TripCategory[])}
       onClose={onClose}

@@ -21,7 +21,7 @@ export function ParticipantsSection({
     <div className="flex-1 min-h-0 pt-2">
       <div className="flex items-center justify-between mb-2">
         <span className="font-semibold">
-          {t("modal.details.participantsTitle", "Participants")}
+          {t("fields.participants", "Participants")}
         </span>
         <button
           type="button"
@@ -30,14 +30,17 @@ export function ParticipantsSection({
         >
           <ICONS.edit className="me-1" />
           {selectedParticipants.length > 0
-            ? t("modal.actions.edit")
-            : t("modal.actions.add")}
+            ? t("editor.actions.edit")
+            : t("editor.actions.add")}
         </button>
       </div>
 
       {selectedParticipants.length === 0 ? (
         <EmptyListMessage
-          message={t("modal.details.noParticipants", "No participants added yet.")}
+          message={t(
+            "editor.details.noParticipants",
+            "No participants added yet.",
+          )}
         />
       ) : (
         <div className="p-1">
