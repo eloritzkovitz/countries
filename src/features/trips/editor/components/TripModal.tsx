@@ -23,9 +23,9 @@ import { TagSelectModal } from "./selects/TagSelectModal";
 import { TripDestinationsTab } from "./tabs/destinations/TripDestinationsTab";
 import { TripDetailsTab } from "./tabs/details/TripDetailsTab";
 import { TripOverviewTab } from "./tabs/overview/TripOverviewTab";
-import { useTripFilters } from "../../../core/hooks/useTripFilters";
-import type { Trip, TripCategory, TripTag } from "../../../core/types";
-import { getAutoTripStatus } from "../../../core/utils/trips";
+import { useTripFilters } from "../../core/hooks/useTripFilters";
+import type { Trip, TripCategory, TripTag } from "../../core/types";
+import { getAutoTripStatus } from "../../core/utils/trips";
 import "./TripModal.css";
 
 type TripTab = "overview" | "details" | "destinations";

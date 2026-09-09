@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { ICONS } from "@constants/icons";
-import { TripCountriesList } from "../../../../../core/components/TripCountriesList";
+import { TripCountriesList } from "../../../../core/components/TripCountriesList";
 
 interface CountriesSectionProps {
   selectedCountries: { isoCode: string; name: string }[];

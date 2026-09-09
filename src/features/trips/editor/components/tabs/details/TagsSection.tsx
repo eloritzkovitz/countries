@@ -1,47 +1,45 @@
 import { useTranslation } from "react-i18next";
 import { EmptyListMessage } from "@components";
 import { ICONS } from "@constants/icons";
-import type { TripCategory } from "@features/trips/core/types";
-import { CategoriesList } from "../../../../../core/components/CategoriesList";
+import type { TripTag } from "@features/trips/core/types";
+import { TagsList } from "../../../../core/components/TagsList";
 
-interface CategoriesSectionProps {
-  selectedCategories: TripCategory[];
+interface TagsSectionProps {
+  selectedTags: TripTag[];
   onEdit: () => void;
-  onRemove: (category: TripCategory) => void;
+  onRemove: (tag: TripTag) => void;
 }
 
-export function CategoriesSection({
-  selectedCategories,
+export function TagsSection({
+  selectedTags,
   onEdit,
   onRemove,
-}: CategoriesSectionProps) {
+}: TagsSectionProps) {
   const { t } = useTranslation("trips");
 
   return (
     <div className="flex-1 min-h-0 pt-2">
       <div className="flex items-center justify-between mb-2">
-        <span className="font-semibold">
-          {t("modal.details.categories", "Categories")}
-        </span>
+        <span className="font-semibold">{t("modal.details.tags", "Tags")}</span>
         <button
           type="button"
           className="flex items-center gap-1 px-2 py-1 rounded hover:bg-input-hover text-sm font-medium"
           onClick={onEdit}
         >
           <ICONS.edit className="me-1" />
-          {selectedCategories.length > 0
+          {selectedTags.length > 0
             ? t("modal.actions.edit")
             : t("modal.actions.add")}
         </button>
       </div>
 
-      {selectedCategories.length === 0 ? (
+      {selectedTags.length === 0 ? (
         <EmptyListMessage
-          message={t("modal.details.noCategories", "No categories selected.")}
+          message={t("modal.details.noTags", "No tags selected.")}
         />
       ) : (
-        <CategoriesList
-          categories={selectedCategories}
+        <TagsList
+          tags={selectedTags}
           removable={true}
           onRemove={onRemove}
           limit={50}

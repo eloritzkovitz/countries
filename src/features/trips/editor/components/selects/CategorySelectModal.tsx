@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { ModalSelect } from "@components";
 import { ICONS } from "@constants/icons";
-import { TRIP_CATEGORY_ICONS } from "../../../../core/constants/tripCategoryIcons";
-import type { TripCategory } from "../../../../core/types";
+import { TRIP_CATEGORY_ICONS } from "../../../core/constants/tripCategoryIcons";
+import type { TripCategory } from "../../../core/types";
 
 interface CategoryOption {
   value: TripCategory;

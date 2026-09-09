@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { ModalSelect } from "@components";
 import { ICONS } from "@constants/icons";
-import type { TripTag } from "../../../../core/types";
+import type { TripTag } from "../../../core/types";
 
 interface TagOption {
   value: TripTag;

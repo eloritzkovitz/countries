@@ -3,14 +3,14 @@ import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "@components";
 import { useCountryData } from "@features/countries";
 import { usePageTitle, useScreenSize, useTablePagination } from "@hooks";
-import { TripModal } from "../components/modal/TripModal";
 import { TripsTable } from "../components/table/TripsTable";
 import { TripsToolbar } from "../components/toolbar/TripsToolbar";
-import { useTripModal } from "../hooks/useTripModal";
 import { useTrips } from "../../core/context/TripsContext";
 import { useTripFilters } from "../../core/hooks/useTripFilters";
 import type { TripFilterState, TripSortBy } from "../../core/types";
 import { sortTrips } from "../../core/utils/tripSort";
+import { TripModal } from "../../editor/components/TripModal";
+import { useTripEditor } from "../../editor/hooks/useTripEditor";
 
 export default function TripsPage() {
   const { countries } = useCountryData();
@@ -54,7 +54,7 @@ export default function TripsPage() {
   });
 
   const { isOpen, trip, setTrip, handleAdd, handleEdit, handleSave, onClose } =
-    useTripModal();
+    useTripEditor();
 
   // Update filter handler
   const handleUpdateFilter = (key: string, value: unknown) => {

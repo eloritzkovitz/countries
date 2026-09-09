@@ -1,8 +1,8 @@
 import type { Country } from "@features/countries/types";
 import { CountriesSection } from "./CountriesSection";
 import { LocationsSection } from "./LocationsSection";
-import { useTripLocations } from "../../../../../core/hooks/useTripLocations";
-import type { Trip } from "../../../../../core/types";
+import { useTripLocations } from "../../../../core/hooks/useTripLocations";
+import type { Trip } from "../../../../core/types";
 
 interface TripDestinationsTabProps {
   trip: Trip;

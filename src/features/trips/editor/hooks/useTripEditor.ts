@@ -14,10 +14,9 @@ const emptyTrip: Trip = {
 };
 
 /**
- * Manages the state and handlers for the Trip modal.
- * @returns State and handlers for the Trip modal
+ * Manages the state and handlers for creating and editing trips.
  */
-export function useTripModal() {
+export function useTripEditor() {
   const { addTrip, editTrip, trips } = useTrips();
 
   const modal = useDisclosure<Trip>();
