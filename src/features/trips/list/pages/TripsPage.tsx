@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 import { LoadingSpinner } from "@components";
 import { useCountryData } from "@features/countries";
 import { usePageTitle, useScreenSize, useTablePagination } from "@hooks";
@@ -13,6 +14,8 @@ import { TripModal } from "../../editor/components/TripModal";
 import { useTripEditor } from "../../editor/hooks/useTripEditor";
 
 export default function TripsPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { countries } = useCountryData();
   const { isMobile } = useScreenSize();
   const { trips, loading } = useTrips();
@@ -22,6 +25,8 @@ export default function TripsPage() {
   const [sortBy, setSortBy] = useState<TripSortBy>("startDate-desc");
 
   usePageTitle(t("pageTitle", "Trips"));
+
+  const pageFromUrl = Math.max(1, Number(searchParams.get("page")) || 1);
 
   const {
     filteredTrips,
@@ -49,7 +54,7 @@ export default function TripsPage() {
     totalCount: totalTripsCount,
   } = useTablePagination({
     items: sortedTrips,
-    initialPage: 1,
+    initialPage: pageFromUrl,
     initialPageSize: 20,
   });
 
@@ -64,6 +69,20 @@ export default function TripsPage() {
         value as TripFilterState[keyof TripFilterState],
       );
     }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+
+    setSearchParams((params) => {
+      if (page === 1) {
+        params.delete("page");
+      } else {
+        params.set("page", String(page));
+      }
+
+      return params;
+    });
   };
 
   return (
@@ -116,7 +135,7 @@ export default function TripsPage() {
               tagOptions={tagOptions}
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              onPageChange={handlePageChange}
               pageSize={pageSize}
               totalCount={totalTripsCount}
               onPageSizeChange={setPageSize}
