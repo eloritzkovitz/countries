@@ -1,3 +1,4 @@
+import { EMPTY_NUMBER_ARRAY } from "@constants/arrays";
 import type { Country } from "@features/countries/types";
 import { CountriesSection } from "./CountriesSection";
 import { LocationsSection } from "./LocationsSection";
@@ -21,7 +22,7 @@ export function TripDestinationsTab({
   onChange,
 }: TripDestinationsTabProps) {
   const { locations, loading: locationsLoading } = useTripLocations(
-    trip.locationIds ?? [],
+    trip.locationIds ?? EMPTY_NUMBER_ARRAY,
   );
 
   return (
