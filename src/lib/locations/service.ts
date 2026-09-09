@@ -4,15 +4,15 @@ import type { Location } from "./types";
 
 /**
  * Retrieves locations by their IDs, utilizing a cache to minimize network requests.
- * @param locationIds - An array of location IDs to retrieve.
+ * @param locationIds - The IDs of the locations to retrieve.
  * @param signal - An optional AbortSignal to cancel the request if needed.
- * @returns A promise that resolves to an array of Location objects corresponding to the provided IDs. Locations found in the cache will be returned immediately, while missing locations will be fetched from the server and then cached for future use.
+ * @returns A promise that resolves to an array of Location objects.
  */
 export async function getLocationsByIds(
   locationIds: number[],
   signal?: AbortSignal,
 ): Promise<Location[]> {
-  const cached = getCachedLocations(locationIds);
+  const cached = await getCachedLocations(locationIds);
 
   const cachedIds = new Set(cached.map((location) => location.id));
 
@@ -21,7 +21,7 @@ export async function getLocationsByIds(
   if (missingIds.length > 0) {
     const fetched = await fetchLocationsByIds(missingIds, signal);
 
-    cacheLocations(fetched);
+    await cacheLocations(fetched);
     cached.push(...fetched);
   }
 
@@ -37,10 +37,10 @@ export async function getLocationsByIds(
 /**
  * Searches for locations through the backend API.
  * @param query - The search query string.
- * @param countryCode - The country code to filter the search results.
+ * @param countryCode - The country code to filter the search.
  * @param language - The language to use for the search results.
- * @param signal - An optional AbortSignal to cancel the request if needed.
- * @returns A promise that resolves to an array of Location objects matching the search criteria. The results will be cached for future use.
+ * @param signal - An optional AbortSignal to cancel the request.
+ * @returns A promise that resolves to the matching Location objects.
  */
 export async function searchLocations(
   query: string,
@@ -55,7 +55,7 @@ export async function searchLocations(
     signal,
   );
 
-  cacheLocations(locations);
+  await cacheLocations(locations);
 
   return locations;
 }
