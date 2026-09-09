@@ -9,12 +9,16 @@ import { TripLocationItem } from "./TripLocationItem";
 interface TripLocationsListProps {
   locations: Location[];
   loading?: boolean;
+  selectedLocationId?: number;
+  onLocationClick?: (location: Location) => void;
   onRemove?: (locationId: number) => void;
 }
 
 export function TripLocationsList({
   locations,
   loading = false,
+  selectedLocationId,
+  onLocationClick,
   onRemove,
 }: TripLocationsListProps) {
   const { t } = useTranslation("trips");
@@ -127,6 +131,8 @@ export function TripLocationsList({
                               key={location.id}
                               location={location}
                               lang={lang}
+                              selected={location.id === selectedLocationId}
+                              onClick={onLocationClick}
                               onRemove={onRemove}
                             />
                           ))}
@@ -142,6 +148,8 @@ export function TripLocationsList({
                     key={location.id}
                     location={location}
                     lang={lang}
+                    selected={location.id === selectedLocationId}
+                    onClick={onLocationClick}
                     onRemove={onRemove}
                   />
                 ))}

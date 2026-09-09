@@ -9,11 +9,11 @@ import {
 } from "@components";
 import { EMPTY_NUMBER_ARRAY } from "@constants/arrays";
 import { usePageTitle } from "@hooks";
+import { TripDestinationsCard } from "../components/TripDestinationsCard";
 import { TripHeader } from "../components/TripHeader";
 import { CategoriesList } from "../../core/components/CategoriesList";
 import { ParticipantsList } from "../../core/components/ParticipantsList";
 import { TagsList } from "../../core/components/TagsList";
-import { TripLocationsList } from "../../core/components/TripLocationsList";
 import { useTrips } from "../../core/context/TripsContext";
 import { useTripLocations } from "../../core/hooks/useTripLocations";
 import { useTripNavigation } from "../../core/hooks/useTripNavigation";
@@ -67,7 +67,10 @@ export default function TripDetailsPage() {
   return (
     <>
       <Container className="mt-12">
-        <PageHeader title={t("pageTitle", "My Trips")} fallbackPath="/trips" />
+        <PageHeader
+          title={t("pageTitle", "My Trips")}
+          onBack={() => navigate("/trips")}
+        />
 
         <div className="mx-auto space-y-6">
           {/* Trip header */}
@@ -91,12 +94,10 @@ export default function TripDetailsPage() {
           />
 
           {/* Destinations */}
-          <Card title={t("sections.destinations", "Destinations")}>
-            <TripLocationsList
-              locations={locations}
-              loading={locationsLoading}
-            />
-          </Card>
+          <TripDestinationsCard
+            locations={locations}
+            loading={locationsLoading}
+          />
 
           {/* Details */}
           <Card title={t("sections.details", "Details")}>

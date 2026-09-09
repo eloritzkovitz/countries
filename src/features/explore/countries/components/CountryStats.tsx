@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import { WikipediaButton } from "@components";
 import { useCalendarNavigation } from "@features/calendar";
 import {
   CountryDetailsPanel,
@@ -12,12 +13,12 @@ import { useQueryParam, useScreenSize } from "@hooks";
 import { CountrySection } from "./CountrySection";
 import { getCountryNavigation } from "../utils/countryNavigation";
 import { ExploreHeader } from "../../core/components/ExploreHeader";
-import { WikipediaButton } from "../../core/components/WikipediaButton";
 import { useExploreNavigation } from "../../core/hooks/useExploreNavigation";
 import type {
   CountryNavigationScope,
   ExploreCountryViewControls,
 } from "../../core/types";
+import { useLanguage } from "@features/settings/account/hooks/useLanguage";
 
 interface CountryStatsProps extends ExploreCountryViewControls {
   selectedIsoCode?: string;
@@ -54,6 +55,7 @@ export function CountryStats({
   const { navigateToCountry } = useExploreNavigation(countries);
   const { visitedCountryCodes, getCountryVisitsCategorized } =
     useCountryTracking();
+  const { current: lang } = useLanguage();
   const { isMobile } = useScreenSize();
 
   const navigationState = location.state as {
@@ -165,7 +167,7 @@ export function CountryStats({
           actions={
             <div className="flex items-center gap-2">
               <VisitedStatusIndicator country={selectedCountry} />
-              <WikipediaButton searchTerm={selectedCountry.name} />
+              <WikipediaButton searchTerm={selectedCountry.name} lang={lang} />
             </div>
           }
         />

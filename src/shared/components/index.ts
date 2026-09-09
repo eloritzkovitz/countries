@@ -80,6 +80,7 @@ export { Pagination } from "./navigation/Pagination/Pagination";
 export { TabControl, type TabControlItem } from "./navigation/Tabs/TabControl";
 export { ToolbarSelectButton } from "./navigation/Toolbar/ToolbarSelectButton";
 export { ToolbarToggleGroup } from "./navigation/Toolbar/ToolbarToggleGroup";
+export { WikipediaButton } from "./navigation/WikipediaButton";
 export * from "./navigation/Menu/menuUtils";
 
 // Overlay components

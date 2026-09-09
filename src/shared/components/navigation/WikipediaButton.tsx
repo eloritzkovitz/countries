@@ -1,21 +1,21 @@
 import { useTranslation } from "react-i18next";
 import { FaWikipediaW } from "react-icons/fa6";
-import { ActionButton } from "@components";
-import { useLanguage } from "@features/settings/account";
 import { getWikipediaUrl } from "@utils";
+import { ActionButton } from "../inputs/Button/ActionButton";
 
 interface WikipediaButtonProps {
   searchTerm?: string;
+  lang?: string;
   url?: string;
   className?: string;
 }
 
 export function WikipediaButton({
   searchTerm,
+  lang,
   url,
   className = "",
 }: WikipediaButtonProps) {
-  const { current: lang } = useLanguage();
   const { t } = useTranslation("common");
 
   // Determine the target URL for the Wikipedia button, prioritizing the provided URL prop
