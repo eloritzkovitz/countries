@@ -2,14 +2,14 @@ import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Checkbox, StarRatingInput, TableCell } from "@components";
-import { ICONS } from "@constants/icons";
 import type { Country } from "@features/countries/types";
 import { formatDate } from "@utils";
 import { TripActions } from "./TripActions";
 import { CategoriesList } from "../../../core/components/CategoriesList";
-import { TripCountriesList } from "../../../core/components/TripCountriesList";
 import { ParticipantsList } from "../../../core/components/ParticipantsList";
 import { TagsList } from "../../../core/components/TagsList";
+import { TripCountriesList } from "../../../core/components/TripCountriesList";
+import { TripIndicators } from "../../../core/components/TripIndicators";
 import { TripStatusChip } from "../../../core/components/TripStatusChip";
 import { useTrips } from "../../../core/context/TripsContext";
 import type { Trip } from "../../../core/types";
@@ -27,7 +27,8 @@ export function TripsTableRows({
   countryByIsoCode,
   onEdit,
 }: TripsTableRowsProps) {
-  const { updateTripRating, selectedTripIds, selectTrip } = useTrips();
+  const { updateTripRating, selectedTripIds, selectTrip, sharedTripIds } =
+    useTrips();
   const { t } = useTranslation("common");
 
   const rowSpan = trip.countryCodes?.length || 1;
@@ -90,15 +91,19 @@ export function TripsTableRows({
 
         {/* Name */}
         <TableCell rowSpan={rowSpan}>
-          {trip.favorite && (
-            <ICONS.favorite className="h-5 w-5 inline text-danger me-2" />
-          )}
-          <Link
-            to={`/trips/${trip.id}`}
-            className="font-medium hover:!text-info"
-          >
-            {trip.name}
-          </Link>
+          <div className="flex items-center gap-2">
+            <TripIndicators
+              favorite={trip.favorite}
+              sharedWithMe={sharedTripIds.has(trip.id)}
+            />
+
+            <Link
+              to={`/trips/${trip.id}`}
+              className="font-medium hover:!text-info"
+            >
+              {trip.name}
+            </Link>
+          </div>
         </TableCell>
 
         {/* Rating */}

@@ -19,6 +19,11 @@
     "notes": "הערות"
   },
 
+  "indicators": {
+    "favorite": "מועדף",
+    "sharedWithMe": "משותף איתי"
+  },
+
   "sections": {
     "overview": "סקירה",
     "details": "פרטים",

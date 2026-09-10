@@ -8,19 +8,26 @@ import {
 } from "@components";
 import { ICONS } from "@constants/icons";
 import { useCalendarNavigation } from "@features/calendar/hooks/useCalendarNavigation";
+import { TripIndicators } from "../../core/components/TripIndicators";
 import { TripStatusChip } from "../../core/components/TripStatusChip";
 import type { Trip } from "../../core/types";
 
 interface TripHeaderProps {
   trip: Trip;
   onEdit: () => void;
+  sharedWithMe?: boolean;
   navigation?: {
     previous?: NavigationItem;
     next?: NavigationItem;
   };
 }
 
-export function TripHeader({ trip, onEdit, navigation }: TripHeaderProps) {
+export function TripHeader({
+  trip,
+  onEdit,
+  sharedWithMe,
+  navigation,
+}: TripHeaderProps) {
   const { openTripInCalendar } = useCalendarNavigation();
   const { t } = useTranslation("trips");
 
@@ -44,11 +51,7 @@ export function TripHeader({ trip, onEdit, navigation }: TripHeaderProps) {
       <Card className="p-6">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              {trip.favorite && (
-                <ICONS.favorite className="h-10 w-10 inline text-danger me-2" />
-              )}
-
+            <div className="flex items-center">
               <h1 className="text-3xl font-bold tracking-tight">{trip.name}</h1>
             </div>
           </div>
@@ -93,6 +96,11 @@ export function TripHeader({ trip, onEdit, navigation }: TripHeaderProps) {
           </div>
 
           <StarRatingInput value={trip.rating} readOnly />
+
+          <TripIndicators
+            favorite={trip.favorite}
+            sharedWithMe={sharedWithMe}
+          />
         </div>
       </Card>
     </>

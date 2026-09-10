@@ -19,6 +19,11 @@
     "notes": "Notes"
   },
 
+  "indicators": {
+    "favorite": "Favorite",
+    "sharedWithMe": "Shared with me"
+  },
+
   "sections": {
     "overview": "Overview",
     "details": "Details",
@@ -101,7 +106,7 @@
 
   "editor": {
     "titleAdd": "Add Trip",
-    "titleEdit": "Edit Trip",    
+    "titleEdit": "Edit Trip",
 
     "overview": {
       "tentativeDates": "Tentative Dates",
